@@ -1,0 +1,169 @@
+:root {
+    --companion-surface: #1a1d24;
+    --companion-surface-soft: #22262f;
+    --companion-border: #343a48;
+    --companion-text: #e8e4dc;
+    --companion-accent: #7189aa;
+    --companion-shadow: rgba(0, 0, 0, 0.28);
+    --companion-size: 4.75rem;
+}
+
+html[data-theme="bright"] {
+    --companion-surface: var(--wuxia-paper-raised, #f8f3e7);
+    --companion-surface-soft: var(--wuxia-paper-muted, #ded4c1);
+    --companion-border: var(--wuxia-hairline, rgba(40, 50, 43, 0.22));
+    --companion-text: var(--wuxia-ink, #20251f);
+    --companion-accent: var(--wuxia-pine, #31594d);
+    --companion-shadow: rgba(57, 48, 36, 0.2);
+}
+
+.jianghu-companion {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 40;
+    width: var(--companion-size);
+    height: var(--companion-size);
+    isolation: isolate;
+    transition: top 0.2s ease-out, left 0.2s ease-out;
+}
+
+.jianghu-companion.is-dragging {
+    transition: none;
+}
+
+.jianghu-companion.is-positioning {
+    transition: none;
+}
+
+.jianghu-companion-toggle {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    padding: 0;
+    border: 1px solid var(--companion-border);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 50% 38%, var(--companion-surface-soft), var(--companion-surface) 72%);
+    box-shadow: 0 8px 24px var(--companion-shadow);
+    color: var(--companion-text);
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    place-items: end center;
+}
+
+.jianghu-companion-toggle:hover {
+    border-color: var(--companion-accent);
+    box-shadow: 0 10px 28px var(--companion-shadow);
+}
+
+.jianghu-companion-toggle:focus-visible {
+    outline: 2px solid var(--companion-accent);
+    outline-offset: 3px;
+}
+
+.jianghu-companion.is-dragging .jianghu-companion-toggle {
+    cursor: grabbing;
+}
+
+.jianghu-companion-avatar {
+    display: block;
+    width: 108%;
+    max-width: none;
+    height: 108%;
+    pointer-events: none;
+    object-fit: contain;
+    object-position: center bottom;
+    transform: translateY(2%);
+}
+
+.jianghu-companion-message {
+    position: absolute;
+    top: 50%;
+    width: max-content;
+    max-width: min(16rem, calc(100vw - var(--companion-size) - 2rem));
+    padding: 0.72rem 0.88rem;
+    border: 1px solid var(--companion-border);
+    border-radius: 8px;
+    background: var(--companion-surface);
+    box-shadow: 0 8px 24px var(--companion-shadow);
+    color: var(--companion-text);
+    font: 600 0.82rem/1.55 "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, serif;
+    pointer-events: none;
+}
+
+.jianghu-companion-message[hidden] {
+    display: none;
+}
+
+.jianghu-companion-message::after {
+    content: "";
+    position: absolute;
+    top: var(--companion-arrow-y, 50%);
+    width: 0.62rem;
+    height: 0.62rem;
+    border: solid var(--companion-border);
+    background: var(--companion-surface);
+}
+
+.jianghu-companion.is-right .jianghu-companion-message {
+    right: calc(100% + 0.72rem);
+}
+
+.jianghu-companion.is-right .jianghu-companion-message::after {
+    right: -0.36rem;
+    border-width: 1px 1px 0 0;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.jianghu-companion.is-left .jianghu-companion-message {
+    left: calc(100% + 0.72rem);
+}
+
+.jianghu-companion.is-left .jianghu-companion-message::after {
+    left: -0.36rem;
+    border-width: 0 0 1px 1px;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.jianghu-companion.is-speaking .jianghu-companion-message {
+    animation: jianghu-companion-message-in 0.18s ease-out;
+}
+
+.jianghu-companion.is-speaking .jianghu-companion-avatar {
+    animation: jianghu-companion-greeting 0.42s ease-in-out 2;
+    transform-origin: center bottom;
+}
+
+@keyframes jianghu-companion-message-in {
+    from { opacity: 0; transform: translateX(0.25rem); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes jianghu-companion-greeting {
+    0%, 100% { transform: translateY(2%) rotate(0); }
+    50% { transform: translateY(2%) rotate(-2deg); }
+}
+
+@media (max-width: 460px) {
+    :root { --companion-size: 4rem; }
+    .jianghu-companion-message {
+        max-width: calc(100vw - var(--companion-size) - 1.5rem);
+        padding: 0.65rem 0.75rem;
+        font-size: 0.78rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .jianghu-companion,
+    .jianghu-companion-toggle {
+        transition: none;
+    }
+    .jianghu-companion.is-speaking .jianghu-companion-message,
+    .jianghu-companion.is-speaking .jianghu-companion-avatar {
+        animation: none;
+    }
+}

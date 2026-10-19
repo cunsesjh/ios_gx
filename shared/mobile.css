@@ -1,0 +1,29 @@
+/* Cross-page mobile guardrails. */
+html { overflow-x: hidden; }
+body { min-width: 0; overflow-x: hidden; }
+img, canvas, svg, video { max-width: 100%; }
+button, input, select, textarea { max-width: 100%; }
+.page-reset-button { display: inline-flex; align-items: center; justify-content: center; gap: .38rem; min-height: 2.35rem; padding: .38rem .78rem; border: 1px solid var(--border-color, #7a6a52); border-radius: 6px; background: var(--bg-secondary, #f7f2e8); color: var(--text-primary, #2d251b); box-shadow: 0 1px 2px rgba(45, 37, 27, .08); font: 600 .82rem var(--font-sans, sans-serif); line-height: 1; white-space: nowrap; cursor: pointer; transition: border-color .18s ease, background-color .18s ease, color .18s ease, transform .18s ease; }
+.page-reset-button::before { content: '\21BA'; font-size: 1.05rem; line-height: .8; }
+.page-reset-button:hover { border-color: var(--accent, #8f3b2e); background: var(--bg-tertiary, #efe5d4); color: var(--accent, #8f3b2e); transform: translateY(-1px); }
+.page-reset-button:active { transform: translateY(0); }
+.page-reset-button:focus-visible { outline: 2px solid var(--accent, #8f3b2e); outline-offset: 2px; }
+@media (max-width: 640px) {
+  .home-shell, .license-shell, .convert-shell, .app-container { width: 100%; max-width: none; box-sizing: border-box; }
+  .wuxia-home .home-shell, .wuxia-simulator .app-container { width: 100%; }
+  .theme-switch { max-width: calc(100vw - 1rem); flex-wrap: wrap; justify-content: center; }
+  .page-reset-button { min-height: 2.3rem; padding-inline: .72rem; }
+  .sim-nav, .convert-nav, .license-nav, .module-tool-switcher, .task-directions, .drop-mode-switch { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
+  .sim-nav > *, .convert-nav > *, .license-nav > *, .task-directions > *, .drop-mode-switch > * { flex: 0 0 auto; white-space: nowrap; }
+  .archive-summary-actions, .form-grid, .task-toolbar, .wiki-toolbar, .task-content, .wiki-workspace, .convert-steps { min-width: 0; }
+  .archive-summary-actions > *, .form-grid > *, .task-toolbar > *, .wiki-toolbar > * { min-width: 0; }
+  table { max-width: 100%; }
+  .table-wrap, .table-container, .result-table-wrap { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  input, select, textarea { min-width: 0; }
+}
+@media (max-width: 460px) {
+  /* Keep the extra mobile scroll room inside the framed result card. */
+  .wuxia-simulator .exchange-sequence-results { flex: 0 0 auto; min-height: 0; overflow: hidden; padding-bottom: clamp(7rem, 26dvh, 10rem); box-sizing: border-box; }
+  .wuxia-simulator .exchange-sequence-grid { max-height: none; overflow: visible; }
+}
+@media (max-width: 400px) { .theme-switch button { padding-inline: .45rem; font-size: .78rem; } .app-title-row h1, .convert-header h1, .license-header h1 { font-size: clamp(1.25rem, 7vw, 1.55rem); } }

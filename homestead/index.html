@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>烟雨江湖 · 家园派遣</title>
+    <meta name="description" content="烟雨江湖家园派遣推演：手记池进度、坐骑游历奖励与后续派遣序列">
+    <link rel="stylesheet" href="../shared/tool_page.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/fixed_prediction.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/theme-switch.css?v=1.4.38">
+    <link id="wuxiaThemeStylesheet" rel="stylesheet" href="../shared/wuxia-theme.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/wasm_loading.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/feature_shell.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/jianghu_companion.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/mobile.css?v=1.4.38">
+    <script src="../shared/opencc-js-cn2t.min.js?v=1.4.38"></script>
+    <script src="../shared/i18n.js?v=1.4.38"></script>
+    <script src="../shared/theme.js?v=1.4.38"></script>
+</head>
+<body class="wuxia-simulator">
+    <div class="app-container homestead-app fixed-prediction">
+        <div class="theme-switch" role="group" aria-label="界面与语言">
+            <button type="button" data-theme-choice="bright" aria-pressed="false">明亮</button>
+            <button type="button" data-theme-choice="care" aria-pressed="false">护眼</button>
+            <span class="preference-divider" aria-hidden="true"></span>
+            <button type="button" data-language-choice="zh-CN" aria-pressed="false">简体</button>
+            <button type="button" data-language-choice="zh-TW" aria-pressed="false">繁體</button>
+        </div>
+        <header class="app-header">
+            <div class="app-title-row">
+                <h1>家园</h1>
+                <span id="appVersion" class="app-version"></span>
+            </div>
+            <nav class="sim-nav" aria-label="收藏功能快捷入口"><a href="../index.html">首页</a></nav>
+        </header>
+
+        <section class="archive-summary" aria-label="存档信息">
+            <div class="archive-summary-info">
+                <div class="archive-summary-item"><span>存档状态</span><strong id="saveStatus">未导入</strong></div>
+                <div class="archive-summary-item"><span>主角</span><strong id="archiveMainRole">—</strong></div>
+            </div>
+            <div class="archive-summary-actions">
+                <a id="archiveImportButton" class="btn btn-archive-action" href="../index.html">导入数据</a>
+                <button id="btnResetPage" class="btn btn-archive-action" type="button" aria-live="polite">重置本页</button>
+            </div>
+        </section>
+
+        <nav class="module-tool-switcher" id="tabBar" data-module-tabs role="tablist" aria-label="家园小模块切换">
+            <button id="homesteadTabDispatch" class="module-tool-link is-active" type="button" role="tab" data-homestead-tool="dispatch" aria-controls="panelHomesteadDispatch" aria-selected="true">派遣推演</button>
+        </nav>
+
+        <main id="panelHomesteadDispatch" role="tabpanel" aria-labelledby="homesteadTabDispatch">
+            <section class="history-panel" aria-labelledby="homeProgressTitle">
+                <h2 id="homeProgressTitle">派遣与手记池进度</h2>
+                <p id="homeExperience" class="prediction-note">导入存档后显示派遣经验。</p>
+                <div id="homeBooks" class="prediction-progress"></div>
+                <p class="prediction-note">累计获取量来自存档记录，可能包含其他获取途径和已出发派遣的奖励；下一次距离按下方派遣顺序计算。</p>
+                <div id="homeHorses" class="prediction-progress"></div>
+            </section>
+
+            <section class="config-panel" aria-labelledby="homePredictionTitle">
+                <h2 id="homePredictionTitle">派遣推演</h2>
+                <p class="prediction-note">每行对应一次派遣，集中显示药材丹药、珍材树苗和手记三个奖励池的确定种类，仅在数量确定时标注数量；其他奖励池不在此表内。</p>
+                <div class="prediction-controls">
+                    <label>派遣伙伴<select id="homeRole"><option value="">请先导入存档</option></select></label>
+                    <label>交替派遣伙伴<select id="homeSecondRole"><option value="">不交替</option></select></label>
+                    <label>后续派遣总次数<input id="homeCount" type="number" min="1" max="500" value="30"></label>
+                    <button id="homePredict" class="btn btn-primary" type="button" disabled>开始推演</button>
+                </div>
+                <p class="prediction-note">两匹马共用序列。选择交替伙伴后，按上方两位伙伴轮流出发；同一伙伴可在归来后再次派遣。出发前需在游戏中满足下阵、伤势与任务条件。</p>
+                <p id="homeStatus" class="prediction-status" role="status">请先导入存档。</p>
+                <p id="homeAdvances" class="prediction-note"></p>
+                <div id="homeResults" class="table-wrap prediction-results"></div>
+            </section>
+        </main>
+
+        <footer class="app-footer"><p>派遣规则依据烟雨江湖官服 1.124.73302 核对 · 数据来源于 <a href="https://wiki.biligame.com/yanyu/" target="_blank" rel="noopener">烟雨江湖 Wiki</a></p></footer>
+    </div>
+    <script src="../shared/version.js?v=1.4.38"></script>
+    <script src="../shared/game_catalog.js?v=1.4.38"></script>
+    <script src="../shared/game_profile.js?v=1.4.38"></script>
+    <script src="../shared/runtime_loader.js?v=1.4.38"></script>
+    <script src="../shared/algorithm_wasm_bridge.js?v=1.4.38"></script>
+    <script src="../shared/pako.min.js?v=1.4.38"></script>
+    <script src="../shared/save_decrypt.js?v=1.4.38"></script>
+    <script src="../shared/access_gate.js?v=1.4.38"></script>
+    <script src="../shared/equip_data.js?v=1.4.38"></script>
+    <script src="../shared/wasm_algorithm_api.js?v=1.4.38" data-wasm-modules="drop"></script>
+    <script src="../shared/calculation_worker_client.js?v=1.4.38"></script>
+    <script src="../shared/archive_state.js?v=1.4.38"></script>
+    <script src="../shared/simulation_policy.js?v=1.4.38"></script>
+    <script src="../shared/fixed_simulation.js?v=1.4.38"></script>
+    <script src="./dispatch.js?v=1.4.38"></script>
+    <script src="../shared/feature_registry.js?v=1.4.38"></script>
+    <script src="../shared/feature_shell.js?v=1.4.38"></script>
+    <script src="../shared/site_cache.js?v=1.4.38"></script>
+    <script src="../shared/jianghu_companion.js?v=1.4.38"></script>
+    <script src="../shared/page_reset.js?v=1.4.38"></script>
+</body>
+</html>

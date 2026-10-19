@@ -1,0 +1,1 @@
+var PROTOCOL_VERSION="3.1",WEB_VERSION="1.4.38",EXPORTER_VERSION="2.9.0",CORE_VERSION="3.1.6_s48";!function(){function t(){var t=document.getElementById("appVersion");t&&(t.textContent="v"+WEB_VERSION)}"loading"===document.readyState?document.addEventListener("DOMContentLoaded",t):t()}();

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>授权码查询 · 观星模拟器</title>
+    <meta name="description" content="查询烟雨江湖存档工具授权码的导出次数、剩余绑定账号数量与剩余时间">
+    <link rel="stylesheet" href="./license.css?v=1.4.38">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/theme-switch.css?v=1.4.38">
+    <link id="wuxiaThemeStylesheet" rel="stylesheet" href="../shared/wuxia-theme.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/jianghu_companion.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/mobile.css?v=1.4.38">
+    <script src="../shared/opencc-js-cn2t.min.js?v=1.4.38"></script>
+    <script src="../shared/i18n.js?v=1.4.38"></script>
+    <script src="../shared/theme.js?v=1.4.38"></script>
+</head>
+<body class="wuxia-license">
+    <main class="license-shell">
+        <div class="theme-switch" role="group" aria-label="界面与语言">
+            <button type="button" data-theme-choice="bright" aria-pressed="false">明亮</button>
+            <button type="button" data-theme-choice="care" aria-pressed="false">护眼</button>
+            <span class="preference-divider" aria-hidden="true"></span>
+            <button type="button" data-language-choice="zh-CN" aria-pressed="false">简体</button>
+            <button type="button" data-language-choice="zh-TW" aria-pressed="false">繁體</button>
+        </div>
+
+        <nav class="license-nav" aria-label="页面导航">
+            <a href="../index.html">返回首页</a>
+        </nav>
+
+        <header class="license-header">
+            <h1>授权码查询</h1>
+            <span>查看当前授权码的可导出次数、剩余换绑次数与到期时间。</span>
+        </header>
+
+        <section class="license-panel" aria-labelledby="licenseQueryTitle">
+            <div class="license-panel-heading">
+                <div>
+                    <p>授权查询</p>
+                    <h2 id="licenseQueryTitle">输入授权码</h2>
+                </div>
+                <strong>安全查询</strong>
+            </div>
+
+            <label class="license-field" for="licenseCodeQuery">
+                <span>授权码</span>
+                <input id="licenseCodeQuery" type="password" autocomplete="off" spellcheck="false" placeholder="请输入需要查询的授权码">
+            </label>
+
+            <button id="btnQueryLicense" class="license-query-button" type="button">查询授权码</button>
+            <p id="licenseQueryMessage" class="license-message" role="status" aria-live="polite" hidden></p>
+
+            <dl id="licenseQueryResult" class="license-result" aria-label="授权码查询结果" hidden>
+                <div class="license-result-item">
+                    <dt>状态</dt>
+                    <dd id="licenseStatusValue">—</dd>
+                </div>
+                <div class="license-result-item">
+                    <dt>可导出次数</dt>
+                    <dd id="licenseRemainingExports">—</dd>
+                </div>
+                <div class="license-result-item">
+                    <dt>剩余换绑次数</dt>
+                    <dd id="licenseRemainingBindings">—</dd>
+                </div>
+                <div class="license-result-item">
+                    <dt>到期时间</dt>
+                    <dd id="licenseRemainingDays">—</dd>
+                </div>
+            </dl>
+
+            <div class="license-privacy">
+                <strong>仅查询当前授权码</strong>
+                <span>授权码不会写入网址或保存在浏览器中，页面也不会显示其他授权记录。</span>
+            </div>
+        </section>
+
+        <footer class="app-footer">
+            <p>数据来源于 <a href="https://wiki.biligame.com/yanyu/" target="_blank" rel="noopener">烟雨江湖 Wiki</a></p>
+        </footer>
+    </main>
+    <script src="./license.js?v=1.4.38"></script>
+    <script src="../shared/jianghu_companion.js?v=1.4.38"></script>
+    <script src="../shared/page_reset.js?v=1.4.38"></script>
+</body>
+</html>

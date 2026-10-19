@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据转换 · 观星模拟器</title>
+    <meta name="description" content="将烟雨江湖 JSON 数据在浏览器本地打包为可直接导入本站的 CXK001 存档">
+    <link rel="stylesheet" href="./convert.css?v=1.4.38">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/theme-switch.css?v=1.4.38">
+    <link id="wuxiaThemeStylesheet" rel="stylesheet" href="../shared/wuxia-theme.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/jianghu_companion.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/mobile.css?v=1.4.38">
+    <script src="../shared/opencc-js-cn2t.min.js?v=1.4.38"></script>
+    <script src="../shared/i18n.js?v=1.4.38"></script>
+    <script src="../shared/theme.js?v=1.4.38"></script>
+</head>
+<body class="wuxia-convert">
+    <main class="convert-shell">
+        <div class="theme-switch" role="group" aria-label="界面与语言">
+            <button type="button" data-theme-choice="bright" aria-pressed="false">明亮</button>
+            <button type="button" data-theme-choice="care" aria-pressed="false">护眼</button>
+            <span class="preference-divider" aria-hidden="true"></span>
+            <button type="button" data-language-choice="zh-CN" aria-pressed="false">简体</button>
+            <button type="button" data-language-choice="zh-TW" aria-pressed="false">繁體</button>
+        </div>
+        <nav class="convert-nav" aria-label="页面导航">
+            <a href="../index.html">返回首页</a>
+        </nav>
+
+        <header class="convert-header">
+            <h1>数据转换</h1>
+            <span>导入 JSON 数据，使用授权码打包为可直接导入本站的 CXK001 存档。</span>
+        </header>
+
+        <section class="convert-panel" aria-labelledby="convertTitle">
+            <div class="panel-heading">
+                <div>
+                    <h2 id="convertTitle">生成 CXK001 存档</h2>
+                </div>
+                <strong>CXK001</strong>
+            </div>
+
+            <div class="privacy-note">
+                <strong>数据仅在当前浏览器处理</strong>
+                <span>授权服务只验证授权码与生成任务，不接收你导入的 JSON 正文。</span>
+            </div>
+
+            <div class="form-grid">
+                <label class="field">
+                    <span>渠道</span>
+                    <select id="convertChannel">
+                        <option value="com.lanjing.yanyu.lanjing">官服</option>
+                        <option value="com.lanjing.yanyu.huawei">华为</option>
+                        <option value="com.lanjing.yanyu.mi">小米</option>
+                        <option value="com.lanjing.yanyu.mz">魅族</option>
+                        <option value="com.lanjing.yanyu.aligames">九游</option>
+                        <option value="com.lanjing.yanyu.m4399">4399</option>
+                        <option value="com.lanjing.yanyu.net.nearme.gamecenter">OPPO</option>
+                        <option value="com.lanjing.yanyu.honor">荣耀</option>
+                        <option value="com.lanjing.yanyu.bilibili">Bilibili</option>
+                        <option value="com.hetun.uc.yanyu">抖音</option>
+                        <option value="com.wuxia.novastar">国际服</option>
+                        <option value="com.lanjing.yanyu.huluxia">葫芦侠</option>
+                        <option value="com.lanjing.yanyu.ljpre">先行服</option>
+                        <option value="com.lanjing.yanyu.vivo">vivo</option>
+                        <option value="com.tencent.tmgp.lanjing.yanyu">应用宝</option>
+                        <option value="com.lanjing.yanyu.yuedong">悦动</option>
+                    </select>
+                </label>
+
+                <label class="field">
+                    <span>授权码</span>
+                    <input id="convertLicense" type="password" autocomplete="off" spellcheck="false" placeholder="请输入有效授权码">
+                </label>
+            </div>
+
+            <label class="file-drop" for="convertJsonFile">
+                <input id="convertJsonFile" type="file" accept="application/json,.json" hidden>
+                <strong id="convertFileName">选择 JSON 数据</strong>
+            </label>
+
+            <button id="btnConvert" class="btn-convert" type="button">转换并下载</button>
+            <p id="convertMessage" class="convert-message" role="status">转换会消耗授权码的一次导出次数。</p>
+        </section>
+
+        <section class="convert-steps" aria-label="转换说明">
+            <article><span>01</span><strong>选择数据</strong><p>导入完整的角色 JSON，并选择数据所属渠道。</p></article>
+            <article><span>02</span><strong>验证授权</strong><p>授权成功后取得当前文件专用的随机密钥与凭证。</p></article>
+            <article><span>03</span><strong>本地打包</strong><p>浏览器生成标准 CXK001 文件，完成后自动下载。</p></article>
+        </section>
+
+        <footer class="app-footer">
+            <p>数据来源于 <a href="https://wiki.biligame.com/yanyu/" target="_blank" rel="noopener">烟雨江湖 Wiki</a></p>
+        </footer>
+    </main>
+    <script src="../shared/pako.min.js?v=1.4.38"></script>
+    <script src="./convert.js?v=1.4.38"></script>
+    <script src="../shared/jianghu_companion.js?v=1.4.38"></script>
+    <script src="../shared/page_reset.js?v=1.4.38"></script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+.ai-prediction-panel {
+    margin-bottom: 1.25rem;
+    padding: 1.2rem 1.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-card);
+}
+
+.ai-prediction-title-row {
+    align-items: flex-start;
+}
+
+.ai-prediction-title-row .section-heading {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 1.08rem;
+}
+
+.ai-kicker {
+    color: var(--purple-bright);
+    font-size: 0.64rem;
+    letter-spacing: 0.16em;
+}
+
+.ai-local-note,
+.ai-target-count,
+.ai-route-strength {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.7rem;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid rgba(95, 173, 106, 0.36);
+    border-radius: 999px;
+    background: rgba(95, 173, 106, 0.09);
+    color: var(--green-bright);
+    font-size: 0.7rem;
+    white-space: nowrap;
+}
+
+.ai-prediction-intro {
+    margin: -0.3rem 0 0.9rem;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    line-height: 1.6;
+}
+
+
+.ai-target-toolbar label:has(.auto-step-number) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.ai-target-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.65rem;
+    color: var(--text-secondary);
+    font-size: 0.76rem;
+}
+
+.ai-target-toolbar input {
+    flex: 1;
+    min-width: 11rem;
+    padding: 0.48rem 0.65rem;
+    border: 1px solid var(--border-color);
+    border-radius: 7px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font: inherit;
+}
+
+.ai-target-count {
+    margin-left: auto;
+    border-color: rgba(155, 107, 201, 0.4);
+    background: rgba(155, 107, 201, 0.1);
+    color: var(--purple-bright);
+}
+
+.ai-talent-choices {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+    max-height: 15rem;
+    padding: 0.65rem;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 9px;
+    background: rgba(12, 13, 16, 0.45);
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-accent) transparent;
+}
+
+.ai-talent-choice {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 2.35rem;
+    padding: 0.45rem 0.6rem;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 7px;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.75rem;
+    line-height: 1.35;
+}
+
+.ai-talent-choice:hover {
+    border-color: var(--purple);
+    color: var(--text-primary);
+}
+
+.ai-talent-choice input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.ai-talent-choice.is-selected {
+    border-color: var(--purple-bright);
+    background: rgba(155, 107, 201, 0.18);
+    color: var(--purple-bright);
+}
+
+.ai-talent-choice.is-required {
+    cursor: not-allowed;
+}
+
+.ai-talent-choice em {
+    margin-left: auto;
+    padding: 0.08rem 0.3rem;
+    border-radius: 999px;
+    background: rgba(155, 107, 201, 0.14);
+    color: var(--purple-bright);
+    font-size: 0.58rem;
+    font-style: normal;
+    white-space: nowrap;
+}
+
+.ai-talent-choice.is-hidden {
+    display: none;
+}
+
+.ai-selection-message {
+    min-height: 1.35rem;
+    margin-top: 0.45rem;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    line-height: 1.5;
+}
+
+.ai-selection-message.is-error {
+    color: var(--red);
+}
+
+.ai-search-settings {
+    margin-top: 0.55rem;
+    border-top: 1px dashed var(--border-color);
+    color: var(--text-secondary);
+}
+
+.ai-search-settings summary {
+    width: max-content;
+    padding: 0.65rem 0 0.45rem;
+    color: var(--blue-bright);
+    cursor: pointer;
+    font-size: 0.75rem;
+}
+
+.ai-settings-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem;
+}
+
+.wash-tree-settings .ai-settings-grid {
+    grid-template-columns: minmax(0, 24rem);
+}
+
+.ai-settings-grid label {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.5rem 0.6rem;
+    border: 1px solid var(--border-color);
+    border-radius: 7px;
+    background: var(--bg-secondary);
+    font-size: 0.72rem;
+}
+
+.ai-settings-grid input {
+    width: 4.5rem;
+    padding: 0.25rem 0.35rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    text-align: right;
+}
+
+.ai-search-settings > p {
+    margin-top: 0.45rem;
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    line-height: 1.5;
+}
+
+.ai-search-actions {
+    display: flex;
+    gap: 0.55rem;
+    margin-top: 0.8rem;
+}
+
+.btn-ai-predict {
+    flex: 1;
+    border-color: rgba(155, 107, 201, 0.6);
+    background: linear-gradient(135deg, rgba(155, 107, 201, 0.28), rgba(91, 143, 212, 0.14));
+    color: var(--purple-bright);
+}
+
+.btn-ai-predict:hover {
+    border-color: var(--purple-bright);
+    background: linear-gradient(135deg, rgba(155, 107, 201, 0.38), rgba(91, 143, 212, 0.2));
+}
+
+.btn-ai-predict:disabled,
+.ai-search-actions .btn:disabled {
+    cursor: wait;
+    opacity: 0.58;
+}
+
+.ai-search-progress {
+    margin-top: 0.8rem;
+}
+
+.ai-progress-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.35rem;
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+}
+
+.ai-progress-track {
+    height: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--bg-secondary);
+}
+
+.ai-progress-fill {
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--blue), var(--purple-bright));
+    transition: width 0.2s ease;
+}
+
+.ai-progress-detail {
+    margin-top: 0.4rem;
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+}
+
+.ai-prediction-results {
+    margin-top: 0.9rem;
+}
+
+.ai-result-empty,
+.ai-result-error {
+    padding: 1rem;
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    line-height: 1.55;
+    text-align: center;
+}
+
+.ai-result-error {
+    border-color: rgba(224, 116, 106, 0.4);
+    color: var(--red);
+}
+
+@media (max-width: 640px) {
+    .ai-prediction-panel { padding: 1rem 0.85rem; }
+    .ai-prediction-title-row { flex-direction: column; }
+    .ai-target-count { margin-left: 0; }
+    .ai-talent-choices { grid-template-columns: repeat(2, minmax(0, 1fr)); max-height: 18rem; }
+    .ai-settings-grid { grid-template-columns: 1fr; }
+}

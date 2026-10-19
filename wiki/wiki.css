@@ -1,0 +1,75 @@
+.wiki-app { max-width: 1240px; }
+.wiki-intro { display: grid; grid-template-columns: minmax(12rem, .8fr) minmax(20rem, 1.8fr) auto; gap: 1rem; align-items: center; margin-bottom: 1rem; padding: 1rem 1.15rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-card); }
+.wiki-intro h2, .wiki-intro p { margin: 0; }
+.wiki-intro > p { color: var(--text-secondary); line-height: 1.65; }
+.wiki-kicker { margin-bottom: .2rem !important; color: var(--accent); font-size: .82rem; letter-spacing: .12em; }
+.wiki-version { color: var(--text-secondary); font-size: .82rem; white-space: nowrap; }
+.wiki-toolbar { display: grid; grid-template-columns: minmax(18rem, 1.5fr) minmax(12rem, .7fr) auto; gap: .75rem; align-items: end; margin-bottom: .8rem; }
+.wiki-toolbar label { display: grid; gap: .28rem; color: var(--text-secondary); font-size: .82rem; }
+.wiki-toolbar input, .wiki-toolbar select { width: 100%; min-height: 44px; padding: .62rem .75rem; border: 1px solid var(--border-color); border-radius: 7px; background: var(--bg-card); color: var(--text-primary); font: inherit; }
+.wiki-toolbar input:focus-visible, .wiki-toolbar select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.wiki-result-meta { padding-bottom: .7rem; color: var(--text-secondary); font-size: .84rem; white-space: nowrap; }
+.wiki-workspace { min-width: 0; }
+.wiki-list-panel { min-width: 0; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-card); overflow: hidden; }
+.wiki-list { display: grid; }
+.wiki-entry-item { min-width: 0; border-bottom: 1px solid var(--border-color); }
+.wiki-entry-item:last-child { border-bottom: 0; }
+.wiki-entry { display: grid; grid-template-columns: minmax(12rem, 1fr) auto auto; gap: .75rem; align-items: center; width: 100%; min-height: 68px; padding: .72rem .9rem; border: 0; background: transparent; color: var(--text-primary); text-align: left; cursor: pointer; }
+.wiki-entry:hover { background: var(--bg-card-hover); }
+.wiki-entry.is-active { background: var(--bg-secondary); box-shadow: inset 3px 0 0 var(--accent); }
+.wiki-entry:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+.wiki-entry-name strong { display: block; font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, serif; font-size: 1.02rem; }
+.wiki-entry-level { display: block; margin-top: .2rem; color: var(--text-secondary); font-size: .78rem; }
+.wiki-entry-classification { display: flex; gap: .42rem; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.wiki-entry-classification span { padding: .2rem .5rem; border: 1px solid var(--border-color); border-radius: 999px; color: var(--text-secondary); font-size: .78rem; white-space: nowrap; }
+.wiki-entry-toggle { color: var(--accent); font-size: .8rem; white-space: nowrap; }
+.wiki-entry-detail { padding: .2rem 1.15rem 1rem; background: var(--bg-secondary); box-shadow: inset 3px 0 0 var(--accent); }
+.wiki-entry-detail-inner { max-width: 70rem; }
+.wiki-empty { padding: 2rem 1rem; color: var(--text-secondary); text-align: center; }
+.wiki-pagination { display: flex; justify-content: center; gap: .75rem; align-items: center; padding: .75rem; }
+.wiki-pagination button { min-height: 40px; padding: .4rem .8rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); color: var(--text-primary); cursor: pointer; }
+.wiki-pagination button:disabled { opacity: .45; cursor: default; }
+.wiki-description { margin: .9rem 0; color: var(--text-secondary); line-height: 1.72; }
+.wiki-detail-section { padding: .78rem 0; border-top: 1px solid var(--border-color); }
+.wiki-detail-section:first-of-type { border-top: 0; }
+.wiki-detail-section h3 { margin: 0 0 .55rem; font-size: .95rem; }
+.wiki-facts, .wiki-source-list, .wiki-ingredient-list { display: grid; gap: .42rem; margin: 0; padding: 0; list-style: none; }
+.wiki-facts li, .wiki-source-list li, .wiki-ingredient-list li { display: flex; justify-content: space-between; gap: .8rem; color: var(--text-secondary); line-height: 1.5; }
+.wiki-effect-list li { justify-content: flex-start; }
+.wiki-ingredient-list li > strong { margin-left: auto; text-align: right; }
+.wiki-facts strong, .wiki-source-list strong { color: var(--text-primary); font-weight: 600; }
+.wiki-detail-action { display: inline-flex; align-items: center; min-height: 42px; margin-top: .65rem; padding: .45rem .75rem; border: 1px solid var(--accent); border-radius: 6px; color: var(--accent); text-decoration: none; }
+.wiki-technique-list { display: grid; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.wiki-technique-item { border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-card); overflow: hidden; }
+.wiki-technique-button { display: flex; justify-content: space-between; gap: .75rem; align-items: center; width: 100%; min-height: 48px; padding: .55rem .7rem; border: 0; background: transparent; color: var(--text-primary); text-align: left; cursor: pointer; }
+.wiki-technique-button:hover { background: var(--bg-card-hover); }
+.wiki-technique-button.is-active { background: var(--bg-secondary); box-shadow: inset 3px 0 0 var(--accent); }
+.wiki-technique-button:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+.wiki-technique-button span { display: flex; gap: .65rem; align-items: baseline; min-width: 0; }
+.wiki-technique-button b { color: var(--accent); font-size: .76rem; font-weight: 500; white-space: nowrap; }
+.wiki-technique-button strong { font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, serif; }
+.wiki-technique-button small { color: var(--text-secondary); white-space: nowrap; }
+.wiki-technique-detail { padding: .72rem .85rem .82rem; border-top: 1px solid var(--border-color); }
+.wiki-technique-description { margin: 0; color: var(--text-secondary); line-height: 1.72; white-space: pre-line; }
+.wiki-technique-formulas { margin-top: .72rem; padding-top: .65rem; border-top: 1px dashed var(--border-color); }
+.wiki-technique-formulas h4 { margin: 0 0 .42rem; color: var(--text-primary); font-size: .85rem; }
+.wiki-technique-formulas ul { display: grid; gap: .35rem; margin: 0; padding: 0; list-style: none; }
+.wiki-technique-formulas li { display: grid; grid-template-columns: minmax(5rem, .35fr) minmax(0, 1fr); gap: .75rem; align-items: baseline; }
+.wiki-technique-formulas span { color: var(--text-secondary); }
+.wiki-technique-formulas strong { color: var(--text-primary); font-weight: 600; }
+.wiki-technique-formula-note { margin-top: .72rem; padding: .65rem .72rem; border-left: 2px solid var(--accent); background: var(--bg-secondary); }
+.wiki-technique-formula-note h4 { margin: 0 0 .32rem; color: var(--text-primary); font-size: .85rem; }
+.wiki-technique-formula-note p { margin: 0; color: var(--text-secondary); line-height: 1.65; }
+.wiki-technique-buffs { margin-top: .72rem; padding-top: .65rem; border-top: 1px dashed var(--border-color); }
+.wiki-technique-buffs > h4 { margin: 0 0 .5rem; color: var(--text-primary); font-size: .85rem; }
+.wiki-technique-buff { padding: .65rem .72rem; border: 1px solid var(--border-color); border-radius: 7px; background: var(--bg-secondary); }
+.wiki-technique-buff + .wiki-technique-buff { margin-top: .5rem; }
+.wiki-technique-buff h5 { margin: 0 0 .28rem; color: var(--accent); font-size: .88rem; }
+.wiki-technique-buff p { margin: 0 0 .48rem; color: var(--text-secondary); line-height: 1.65; }
+.wiki-technique-buff ul { display: grid; gap: .3rem; margin: 0; padding: 0; list-style: none; }
+.wiki-technique-buff li { display: grid; grid-template-columns: minmax(5rem, .35fr) minmax(0, 1fr); gap: .75rem; }
+.wiki-technique-buff li span { color: var(--text-secondary); }
+.wiki-technique-buff li strong { color: var(--text-primary); font-weight: 600; }
+@media (max-width: 900px) { .wiki-intro { grid-template-columns: 1fr; } .wiki-toolbar { grid-template-columns: 1fr 1fr; } .wiki-result-meta { grid-column: 1 / -1; padding: 0; } }
+@media (max-width: 620px) { .wiki-app { padding-left: .75rem; padding-right: .75rem; } .wiki-toolbar { grid-template-columns: 1fr; } .wiki-result-meta { grid-column: auto; } .wiki-entry { grid-template-columns: minmax(0, 1fr) auto; min-height: 72px; padding: .68rem .72rem; } .wiki-entry-classification { grid-column: 1 / -1; grid-row: 2; justify-content: flex-start; } .wiki-entry-toggle { grid-column: 2; grid-row: 1; } .wiki-entry-detail { padding: .15rem .85rem .85rem; } .wiki-facts li, .wiki-source-list li, .wiki-ingredient-list li { align-items: flex-start; } .wiki-technique-button span { align-items: flex-start; flex-direction: column; gap: .12rem; } .wiki-technique-formulas li, .wiki-technique-buff li { grid-template-columns: 1fr; gap: .1rem; } }
+@media (prefers-reduced-motion: reduce) { .wiki-entry { transition: none; } }

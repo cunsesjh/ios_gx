@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>烟雨江湖 · 任务百科</title>
+    <meta name="description" content="按主线、支线、势力与伙伴任务检索任务，并在任务与任务道具之间双向定位">
+    <link rel="stylesheet" href="../shared/tool_page.css?v=1.4.38">
+    <link rel="stylesheet" href="./task.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/theme-switch.css?v=1.4.38">
+    <link id="wuxiaThemeStylesheet" rel="stylesheet" href="../shared/wuxia-theme.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/feature_shell.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/jianghu_companion.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/mobile.css?v=1.4.38">
+    <script src="../shared/opencc-js-cn2t.min.js?v=1.4.38"></script>
+    <script src="../shared/i18n.js?v=1.4.38"></script>
+    <script src="../shared/theme.js?v=1.4.38"></script>
+</head>
+<body class="wuxia-simulator">
+    <div class="app-container task-app">
+        <div class="theme-switch" role="group" aria-label="界面与语言">
+            <button type="button" data-theme-choice="bright" aria-pressed="false">明亮</button>
+            <button type="button" data-theme-choice="care" aria-pressed="false">护眼</button>
+            <span class="preference-divider" aria-hidden="true"></span>
+            <button type="button" data-language-choice="zh-CN" aria-pressed="false">简体</button>
+            <button type="button" data-language-choice="zh-TW" aria-pressed="false">繁體</button>
+        </div>
+        <header class="app-header">
+            <div class="app-title-row"><h1>任务百科</h1><span id="appVersion" class="app-version"></span></div>
+            <nav class="sim-nav" aria-label="百科导航"><a href="../wiki/index.html">烟雨百科</a><a href="../index.html">首页</a></nav>
+        </header>
+        <section class="archive-summary" aria-label="百科与存档状态">
+            <div class="archive-summary-info">
+                <div class="archive-summary-item"><span>访问模式</span><strong>公开百科</strong></div>
+                <div class="archive-summary-item"><span>存档状态</span><strong id="saveStatus">未导入</strong></div>
+                <div id="archiveMainRoleItem" class="archive-summary-item" hidden><span>主角</span><strong id="archiveMainRole">—</strong></div>
+            </div>
+            <div class="archive-summary-actions">
+                <a id="archiveImportButton" class="btn btn-archive-action" href="../index.html">导入数据</a>
+                <button id="btnResetPage" class="btn btn-archive-action" type="button">重置本页</button>
+            </div>
+        </section>
+        <p class="task-intro"><strong>任务与道具双向索引：</strong>搜索任务可查看相关道具；搜索任务道具会直接定位到对应任务。导入存档后，还会补充可触发、进行中与条件不足等离线雷达状态。</p>
+        <nav class="task-directions" id="taskDirections" aria-label="任务方向">
+            <button class="task-direction is-active" type="button" data-direction="main" aria-pressed="true"><span>主线任务</span><small id="mainCount">0</small></button>
+            <button class="task-direction" type="button" data-direction="side" aria-pressed="false"><span>支线任务</span><small id="sideCount">0</small></button>
+            <button class="task-direction" type="button" data-direction="faction" aria-pressed="false"><span>势力任务</span><small id="factionCount">0</small></button>
+            <button class="task-direction" type="button" data-direction="partner" aria-pressed="false"><span>伙伴任务</span><small id="partnerCount">0</small></button>
+        </nav>
+        <main class="task-workspace">
+            <div class="task-toolbar">
+                <label class="task-search-shell"><span>搜索</span><input id="taskSearch" type="search" placeholder="任务名称、任务道具、地图或人物" autocomplete="off"></label>
+                <label><span>小分类</span><select id="taskSubcategory"><option value="all">全部</option></select></label>
+                <label><span>雷达状态</span><select id="taskStatus"><option value="all">全部状态</option></select></label>
+            </div>
+            <p id="taskCatalogSummary" class="task-summary">正在读取任务目录。</p>
+            <div class="task-content">
+                <section class="task-list-panel" aria-label="任务列表">
+                    <div class="task-list-heading"><strong id="resultMeta">0 条任务</strong><span>点击条目查看详情</span></div>
+                    <div id="taskResults" class="task-results" aria-live="polite"></div>
+                    <p id="taskEmpty" class="task-empty" hidden>没有符合当前条件的任务。</p>
+                    <nav id="taskPagination" class="task-pagination" aria-label="任务翻页" hidden>
+                        <button id="taskPrevPage" class="btn" type="button">上一页</button>
+                        <span id="taskPageMeta"></span>
+                        <button id="taskNextPage" class="btn" type="button">下一页</button>
+                    </nav>
+                </section>
+                <aside id="taskDetail" class="task-detail" aria-live="polite">
+                    <p class="task-detail-placeholder">从左侧选择一个任务，查看触发位置、前置条件、相关道具与存档雷达判断。</p>
+                </aside>
+            </div>
+        </main>
+        <footer class="app-footer"><p>任务目录来自游戏客户端离线资料；补充线索数据来源于 <a href="https://wiki.biligame.com/yanyu/" target="_blank" rel="noopener">烟雨江湖 Wiki</a> 并标注来源，未知信息不作推测。</p></footer>
+    </div>
+    <script src="../shared/version.js?v=1.4.38"></script>
+    <script src="../shared/pako.min.js?v=1.4.38"></script>
+    <script src="../shared/save_decrypt.js?v=1.4.38"></script>
+    <script src="../shared/archive_state.js?v=1.4.38"></script>
+    <script src="../wiki/encyclopedia_data.js?v=1.4.38"></script>
+    <script src="./graph_catalog.js?v=1.4.38"></script>
+    <script src="./catalog.js?v=1.4.38"></script>
+    <script src="./radar.js?v=1.4.38"></script>
+    <script src="./task.js?v=1.4.38"></script>
+    <script src="../shared/feature_registry.js?v=1.4.38"></script>
+    <script src="../shared/feature_shell.js?v=1.4.38"></script>
+    <script src="../shared/site_cache.js?v=1.4.38"></script>
+    <script src="../shared/jianghu_companion.js?v=1.4.38"></script>
+    <script src="../shared/page_reset.js?v=1.4.38"></script>
+</body>
+</html>

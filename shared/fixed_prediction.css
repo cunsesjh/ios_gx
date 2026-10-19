@@ -1,0 +1,32 @@
+.fixed-prediction .prediction-controls { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; }
+.fixed-prediction label { display: grid; gap: .4rem; color: var(--text-secondary); flex: 1 1 160px; }
+.fixed-prediction select, .fixed-prediction input { min-height: 44px; width: 100%; padding: .5rem; border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); background: var(--bg-primary); font: inherit; }
+.fixed-prediction button { min-height: 44px; }
+html[data-theme="bright"] .fixed-prediction .btn-primary { background: var(--wuxia-cinnabar); color: var(--wuxia-paper-raised); border-color: var(--wuxia-cinnabar-deep); }
+html[data-theme="bright"] .fixed-prediction .btn-primary:hover { background: var(--wuxia-cinnabar-deep); }
+.fixed-prediction :focus-visible { outline: 2px solid var(--border-accent); outline-offset: 3px; }
+.fixed-prediction .prediction-note { color: var(--text-secondary); line-height: 1.7; margin: .7rem 0; }
+.fixed-prediction .prediction-progress { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin: 1rem 0; }
+.fixed-prediction .prediction-stat { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 1rem; min-width: 0; }
+.fixed-prediction .prediction-stat h3 { font-family: var(--font-serif); margin-bottom: .6rem; }
+.fixed-prediction .prediction-stat p { margin-top: .35rem; color: var(--text-secondary); line-height: 1.6; }
+.fixed-prediction progress { width: 100%; height: 8px; accent-color: var(--green); margin-top: .5rem; }
+.fixed-prediction .prediction-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.fixed-prediction th, .fixed-prediction td { padding: .75rem; text-align: left; border-bottom: 1px solid var(--border-color); }
+.fixed-prediction th { color: var(--text-secondary); background: var(--bg-secondary); white-space: nowrap; }
+.fixed-prediction .table-wrap { overflow-x: auto; border: 1px solid var(--border-color); border-radius: 6px; }
+.fixed-prediction .prediction-status { min-height: 1.6em; color: var(--text-secondary); margin: 1rem 0; }
+.fixed-prediction .prediction-results { margin-top: 1rem; }
+.homestead-app { max-width: 1200px; }
+.homestead-app .history-panel { padding: 1rem; }
+.homestead-app .dispatch-rewards { list-style: none; margin: 0; padding: 0; line-height: 1.7; }
+.homestead-app .dispatch-rewards li + li { margin-top: .25rem; }
+.homestead-app .dispatch-book { font-weight: 600; }
+.homestead-app .book-green { color: var(--green-bright); }
+.homestead-app .book-blue { color: var(--blue-bright); }
+.homestead-app .book-red { color: var(--red); }
+@media (max-width: 600px) {
+    .fixed-prediction .prediction-progress { grid-template-columns: 1fr; }
+    .fixed-prediction .prediction-controls > * { flex-basis: 100%; }
+    .fixed-prediction th, .fixed-prediction td { padding: .6rem .45rem; }
+}
