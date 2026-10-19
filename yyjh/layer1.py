@@ -501,7 +501,7 @@ def cmd_har(a):
         for s in r.steps:
             print(f'  - {s.label}: {s.value}')
         if a.out:
-            outs = report.write_all(r, outdir=_o(a.out))
+            outs = report.write_all(r, outdir=_o(a.out), write_db=False)
             for k, v in outs.items():
                 print(f'  -> {k}: {v}')
         return 0

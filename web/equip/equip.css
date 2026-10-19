@@ -122,7 +122,65 @@
 }
 
 .equip-filter-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(7rem, 0.65fr)) minmax(12rem, 1.4fr);
+    gap: 0.65rem;
     margin-top: 0.55rem;
+}
+
+.equip-filter-row .config-group {
+    min-width: 0;
+}
+
+.crafted-bag-disclosure {
+    margin-top: 0.85rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.crafted-bag-disclosure > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 44px;
+    padding: 0.55rem 0.15rem;
+    color: var(--text-primary);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+}
+
+.crafted-bag-disclosure > summary::-webkit-details-marker {
+    display: none;
+}
+
+.crafted-bag-disclosure > summary::before {
+    content: '›';
+    color: var(--text-muted);
+    transform: rotate(0deg);
+    transition: transform 0.15s ease;
+}
+
+.crafted-bag-disclosure[open] > summary::before {
+    transform: rotate(90deg);
+}
+
+.crafted-bag-disclosure > summary span:first-child {
+    margin-right: auto;
+}
+
+.crafted-bag-scroll {
+    max-height: clamp(16rem, 48vh, 30rem);
+    overflow-y: auto;
+    padding: 0.15rem 0.2rem 0.2rem 0;
+    overscroll-behavior: contain;
+}
+
+.crafted-bag-help {
+    margin: 0.55rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.78rem;
 }
 
 .crafted-bag-list {
@@ -149,10 +207,26 @@
     background: var(--bg-primary);
 }
 
+.crafted-bag-row.selected {
+    border-color: var(--border-accent);
+    background: var(--bg-card);
+    box-shadow: inset 3px 0 0 var(--purple-bright);
+}
+
 .crafted-bag-row .bag-meta {
+    display: grid;
+    gap: 0.18rem;
     min-width: 0;
     line-height: 1.35;
     word-break: break-all;
+}
+
+.crafted-bag-row .bag-meta strong {
+    color: var(--text-primary);
+}
+
+.crafted-bag-row .bag-source {
+    color: var(--text-muted);
 }
 
 .crafted-bag-row input[type="text"],
@@ -188,44 +262,37 @@
     flex-wrap: wrap;
 }
 
-.crafted-bag-props {
-    grid-column: 1 / -1;
+.bag-action-tabs {
     display: grid;
-    gap: 0.3rem;
-    padding-top: 0.45rem;
-    border-top: 1px solid var(--border-color);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 0.85rem;
 }
 
-.crafted-prop-row {
-    display: grid;
-    grid-template-columns: 4.5rem minmax(0, 1fr);
-    gap: 0.45rem;
-    align-items: start;
-    line-height: 1.4;
+.bag-action-btn {
+    min-height: 44px;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    background: var(--bg-primary);
 }
 
-.crafted-prop-label {
-    color: var(--text-muted);
-    white-space: nowrap;
+.bag-action-btn.active {
+    border-color: var(--border-accent);
+    color: var(--purple-bright);
+    background: var(--bg-card);
 }
 
-.crafted-prop-label.red {
-    color: var(--red);
+.bag-action-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
 }
 
-.crafted-prop-values {
-    min-width: 0;
-    color: var(--text-primary);
+.bag-action-panel[hidden] {
+    display: none !important;
 }
 
-.crafted-prop-values .prop-line {
-    display: inline-block;
-    margin-right: 0.75rem;
-    white-space: nowrap;
-}
-
-.crafted-prop-empty {
-    color: var(--text-muted);
+.bag-action-panel .manual-panel {
+    margin-top: 0.85rem;
 }
 
 .preview-table .mark-input {
@@ -242,6 +309,14 @@
 }
 
 @media (max-width: 720px) {
+    .equip-filter-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .equip-filter-row .config-group.grow {
+        grid-column: 1 / -1;
+    }
+
     .crafted-bag-row {
         grid-template-columns: 1fr;
     }
@@ -253,47 +328,6 @@
     font-size: 0.85rem;
     color: var(--text-secondary);
     line-height: 1.5;
-}
-
-.xilian-initial-exts {
-    display: grid;
-    grid-template-columns: 7rem minmax(0, 1fr);
-    gap: 0.45rem;
-    align-items: start;
-    margin-top: 0.55rem;
-    padding: 0.5rem 0.6rem;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    background: var(--bg-primary);
-    font-size: 0.85rem;
-    line-height: 1.45;
-}
-
-.xilian-initial-label {
-    color: var(--text-muted);
-    white-space: nowrap;
-}
-
-.xilian-initial-values {
-    min-width: 0;
-    color: var(--text-primary);
-}
-
-.xilian-initial-values .prop-line {
-    display: inline-block;
-    margin-right: 0.85rem;
-    white-space: nowrap;
-}
-
-.xilian-initial-exts.empty .xilian-initial-values {
-    color: var(--text-muted);
-}
-
-@media (max-width: 560px) {
-    .xilian-initial-exts {
-        grid-template-columns: 1fr;
-        gap: 0.2rem;
-    }
 }
 
 .lucky-hint.pity {
@@ -527,40 +561,6 @@
     margin-top: 0.5rem;
 }
 
-.xilian-opt-controls {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.55rem 0.75rem;
-    margin-bottom: 0.7rem;
-}
-
-.xilian-opt-controls label {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-}
-
-.xilian-opt-controls select {
-    min-width: 9rem;
-}
-
-.xilian-opt-controls .meta-text {
-    flex: 1 1 24rem;
-}
-
-.xilian-opt-total {
-    color: var(--purple-bright);
-}
-
-.archive-reset-check {
-    flex-basis: 100%;
-    justify-content: flex-end;
-    margin-top: 0.1rem;
-}
-
 .advice-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -765,7 +765,7 @@
 
 .tab-bar {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 0.4rem;
     margin-top: 0.9rem;
 }
@@ -926,6 +926,14 @@
 }
 
 @media (max-width: 720px) {
+    .tab-bar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .bag-action-tabs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .jianwang-rule-grid {
         grid-template-columns: 1fr;
     }
@@ -935,7 +943,23 @@
     }
 }
 
+@media (max-width: 460px) {
+    .equip-filter-row {
+        grid-template-columns: 1fr;
+    }
+
+    .equip-filter-row .config-group.grow {
+        grid-column: auto;
+    }
+}
+
 .grade-1 { color: var(--text-secondary); }
 .grade-2 { color: var(--green-bright); }
 .grade-3 { color: var(--blue-bright); }
 .grade-4 { color: var(--purple-bright); }
+
+/* The shared .config-row display:flex rule overrides the browser's native
+   [hidden] style. Keep the orange pad picker genuinely hidden when disabled. */
+#makePadGroup[hidden] {
+    display: none !important;
+}

@@ -1,156 +1,71 @@
-# 烟雨江湖 · 网页版工具（独立副本）
+# 烟雨江湖 · 本地存档工具（本地部署版）
 
-这是从游戏 APK 内置网页应用（`extracted/assets/web/`）**整份复制出来的独立副本**，
-目的是脱离 APK 单独运行、便于后续自行魔改。
+原站：https://yanyu-util.pages.dev/ （v1.4.38，完整镜像于 2026-09-24）
 
-原始代码是压缩过的一体化产物，作者在 `shared/core_glue.js` 里明确写过
-"The bundled kernel has no source/build project" —— 也就是说这份代码本身
-就是"源码"，我们直接在上面改。
+## 一、快速启动
 
----
+**双击 `点击这个启动.bat`**，浏览器将自动打开 `http://127.0.0.1:8080`，即可使用全部功能。
+关闭黑色命令行窗口即停止服务。
 
-## 目录结构
+> ℹ️ **无需安装 Node.js**：本文件夹已内置 `bin\node.exe`（v22.23.2），`点击这个启动.bat` 直接调用它启动服务，不依赖系统环境。
+> ⚠️ **重要**：请务必通过 **`点击这个启动.bat`** 启动。**不要直接双击 `index.html` 文件**——
+> 以"文件直开"方式打开时，算法引擎与存档导入无法工作、功能点击也不跳转。
+> 若不小心直开了 `index.html`，页面会自动检测并引导你进入本地服务（服务已运行时自动跳转）。
 
-```
-yyjh_web/
-├─ index.html            首页：导入存档、模块入口
-├─ home.js / home.css    首页逻辑（含 handleImport）
-├─ serve.py              本地静态服务器（推荐用这个启动）
-├─ 启动.cmd              Windows 一键启动（调用 serve.py）
-├─ mobile-bridge.js      APK 原生桥接；纯浏览器下第一行就 return
-├─ mobile-capture.js     免 root 抓包导入；纯浏览器下不启用
-├─ fonts/                内置字体（约 10.9 MB，目录体积主要来自这里）
-├─ auto/                 自动洗练
-├─ equip/                装备模拟（MakeRnd 打造序列）
-├─ role/                 角色 / 天赋
-├─ role-status/          角色属性
-├─ wash/                 洗练
-└─ shared/               全部核心逻辑
-   ├─ save_decrypt.js        存档解密 + 页间共享存储（本次修复重点）
-   ├─ sequence_rules.js      按版本号分派规则 + WASM 二进制补丁
-   ├─ wasm_data.js           RNG 内核（base64 内嵌 WASM）
-   ├─ core_glue.js           WASM 装载与导出包装
-   ├─ equip_data.js          装备配置数据
-   ├─ simulator.js / equip_auto_optimizer.js / ...
-   └─ wash_route_worker.js   Web Worker（file:// 下不可用）
-```
+若 8080 端口被占用，服务器会自动依次尝试 8081–8085。
+也可手动指定端口：`node server.js 9000`。
 
----
+## 二、部署了什么
 
-## 如何启动
+本文件夹是原站的**完整静态镜像**（约 11 MB），包含：
 
-### 方式一：直接双击 `index.html`（推荐）
+| 类别 | 内容 |
+|---|---|
+| 功能中心 | 洗脉（手动/自动）、锻造（装备模拟/背包/自动锻造/剑王阁序列/剑王阁自动推演）、掉落推演（副本/野外）、恒山（弟子推演/自动推演/弟子商店）、角色（面板/状态/丹药推演）、家园（派遣推演）、烟雨百科（物品/装备/武学/秘籍/丹药/食物/任务/材料/杂物）共 **25 项功能** |
+| 导出工具 | `downloads/yanyu-cxk-v2.9.0.apk`（v2.9.0，本地下载） |
+| 数据转换 | `convert/` 页面 |
+| 授权码查询 | `license/` 页面 |
+| 算法引擎 | `protected/*.enc` 加密算法资产（洗脉/装备/恒山/掉落 WASM 引擎） |
 
-可以用了。跨页传递存档由 `shared/page_bridge.js` 负责，详见下文《跨页传递存档》。
+## 三、本地化实现原理
 
-### 方式二：本地静态服务器（可选）
+原站的算法核心是加密的 WASM 资产，浏览器需先请求 `/api/runtime-key` 获取解密密钥再在本地解密运行。本部署：
 
-双击 **`启动.cmd`**，或者：
+1. **静态资源全部本地化** —— 页面、样式、脚本、图片、百科数据全部存放在本目录，不依赖原站服务器。
+2. **`/api/runtime-key` 本地应答** —— 由 `server.js` 内置提供（密钥已固化，会话有效期动态签发），算法引擎据此解密本地加密资产。**已实测 5 个 WASM 引擎全部编译成功、无报错**，即：洗脉、锻造、恒山、掉落的推演算法离线可用。
+3. **完全离线** —— 除下述两项在线功能外，断网亦可使用全部功能。
 
-```cmd
-cd yyjh_web
-python serve.py
-```
+## 四、存档导入（明文 JSON 直接导入，无需转换）
 
-```cmd
-python serve.py --port 9000     :: 换端口
-python serve.py --no-browser    :: 不自动开浏览器
-```
+本工具支持将游戏导出的**明文 JSON 存档**（需含 `MainRole`、`globalVariable`、`BornTalent` 字段，例如 `转换器` 目录中的角色存档）**直接导入**，无需任何转换步骤：
 
-> `启动.cmd` 用 `py -3` / `python` 去找解释器。如果本机 `python` 指向 Python 2，
-> 它就会找错版本 —— 直接用完整路径调用即可，例如
-> `D:\Anaconda\envs\py311\python.exe serve.py`。
+1. 启动本站后，首页点击 **导入数据**
+2. 在文件选择框中**直接选择你的存档 JSON 文件**（如 `龙炎_20260924_104830.json`）
+3. 首页立即显示"导入成功"、主角名正确显示
+4. 即可使用洗脉/锻造/掉落推演/恒山/角色等**全部功能**
 
----
+实测：明文 JSON 直接导入后，洗脉页完整读取角色（四维/资质/洗髓丹/紫脉锁定状态），掉落推演页 12 个副本全部"已读取独立随机状态、可推演完整序列"。
 
-## 跨页传递存档：为什么需要 `page_bridge.js`
+- 已针对 2.35 MB 大存档与 UTF-8 BOM 做了兼容（带 BOM 的 JSON 同样直接识别）。
+- 本地部署已将原版的打包/导入授权接口（`/api/convert-start`、`/api/open`）改为 `server.js` 本地应答，**全程无需授权码、无需联网**。
+- 可选路径：`数据转换` 页（`/convert/`）仍保留，可把 JSON 打包为标准 CXK001 容器文件（`yanyu-日期-时间-xxxx-y-v3.1.yanyu`），打包产物同样支持首页导入（用于备份/迁移存档）。
 
-模块页面是 6 个独立的 html，靠跳转切换，而**存档（解出来 3.4 MB 的 JSON）必须跨页面传递**。
-不同浏览器对 `file://` 的存储策略差别很大：
+## 五、仅有的联网依赖（不影响主体功能）
 
-| 通道 | Chrome / Edge 的 `file://` | Firefox 默认设置的 `file://` |
-| --- | --- | --- |
-| `localStorage` / `sessionStorage` / `IndexedDB` | 所有 file:// 页面**同一个源**，可用 | **每个 html 文件独立源**（`privacy.file_unique_origin=true`），子页面完全看不见 |
-| `cookie` | 禁用 | 禁用 |
-| `window.name` | 跨源导航后**保留** | 跨源导航后被**清空** |
-| URL `#hash` | 可用，但有长度限制 | 存档压完 **805 KB**，塞不进 URL |
-| **`postMessage`** | 可用 | **可用** ← 唯一活着的通道 |
+1. **授权码查询**（`license/` 页）：对接作者授权服务 `license.yanyu.cxk-kk.site`，为服务器端验证，本地无法离线替代；联网时可用。
+2. **Google Fonts 字体**（思源宋体/黑体）：在线加载用于美化排版；断网时自动回退系统字体，不影响任何功能。
 
-> 表里 Firefox 那两行是实测结论：同一个测试里 Chrome 跨源导航后 `window.name` 仍是
-> `__MARK__`，Firefox 变成空字符串。而 `window.name` 被清空、`localStorage` 又被按文件隔离，
-> 结果就是 —— **首页导入成功，点进洗练/装备页却提示「请先导入包含打造状态的有效存档」**。
+## 六、移动与备份
 
-所以最终方案是用 `postMessage` 搭一座桥，见下节。
+整个文件夹**自包含、可整体移动/复制/备份**到任意位置（如 D 盘、U 盘），双击 `点击这个启动.bat` 即可在任何 Windows 机器上运行（已内置 Node.js，无需安装）。存档导入后保存在浏览器本地（localStorage），换机器后需重新导入。
 
-另外两个 `file://` 老问题也一并处理了：
+## 七、更新站点版本
 
-- 绝对路径 `/fonts/…` 会解析成 `file:///C:/fonts/…` → 403（已改成相对路径）；
-- `new Worker()` 在 `file://` 下被拒，`wash_route_worker.js` 用不了（这个只能靠本地服务器）。
+原站发布新版本后，可运行 `python mirror_site.py` 重新拉取最新资源覆盖本目录（需已安装 Python 3）。
+注意：若作者更换算法解密密钥，请同步更新 `server.js` 中的 `RUNTIME_KEY`（可先在浏览器 DevTools Network 中查看原站 `/api/runtime-key` 的返回）。
 
----
+## 八、致谢
 
-## 本副本相对原版修补了什么
-
-### 1. 页间共享存档不再丢失（核心修复）
-
-`shared/save_decrypt.js`：
-
-- **`meta` 不再携带整行 save**。原来 `extra.row = ext.row` 会把 SQLite 的
-  `content` 字段（整份存档正文，通常 1 MB 以上）塞进 meta，而 `data` 里
-  已经有同样内容。一份存档因此在存储里占两份 —— 很容易撞上浏览器 5 MB 配额，
-  写入失败后所有子页面都读不到。现在只保留 `{ id, player }`
-  （真正用到 row 的 `buildV183OuterKeys()` 只读 `row.id`）。
-- **meta 也会被压缩**，不再只压 `data`。
-- **存储后端做成多级兜底**：`localStorage` → `sessionStorage` → `window.name`。
-  写入时三者都写，读取时取第一个有值的；只要有一个成功就返回 `true`。
-  这层在 Chrome / Edge 的 `file://` 下就够了（它们所有 file:// 页面同源），
-  但**在 Firefox 默认设置下救不了** —— 所以才需要下面的 `page_bridge.js`。
-- `clearShareStore()` 会同时清掉三个后端。
-- 另外提供 `shareStoreRaw()` / `shareStoreApplyRaw()` 两个原始读写口，
-  专供桥接层搬运字符串，避免把 3.4 MB 存档再 `JSON.parse` / `stringify` 一遍。
-
-### 2. 新增 `shared/page_bridge.js`（Firefox 也能跨页）
-
-- `index.html` 当**宿主**，常驻持有存档；
-- 点击站内 `.html` 链接时不再跳转，改为在全屏 iframe 叠加层里承载子页面；
-- 子页面每次加载完，宿主把存档 `postMessage` 推过去；
-- 子页面把存档写进**自己源下**的存储，然后自动重载一次，让页面原有逻辑照常读到；
-- 叠加层顶部有「← 返回存档页」；子页面里点「首页」也会自动关掉叠加层，
-  回到那个从未被卸载、状态还在的首页。
-
-为避免“先闪一下未导入再重载”，子页面在等宿主推送时会先隐藏文档，
-最多等 1.2 秒；**没有存档时本脚本完全不介入**，链接照常跳转，行为与原版一致。
-
-### 3. 绝对路径改为相对路径
-
-6 个页面里的 `/fonts/google-fonts.css`、`/web/mobile-capture.js`、
-`/web/mobile-bridge.js` 全部改成相对路径（子页面用 `../`），
-`file://` 与本地服务器下都能正确加载。
-
-### 4. 本地服务器（可选）
-
-新增 `serve.py` + `启动.cmd`，见上文。
-
----
-
-## 已知注意事项
-
-- `role-status/` 页面**没有**引入 `shared/sql-wasm-embed.js`，因此它无法直接
-  解析 `.db` 文件 —— 它只从页间共享存储读取数据（原版即是如此）。
-- `mobile-bridge.js` / `mobile-capture.js` 是给 APK WebView 用的，
-  纯浏览器下第一行就退出了，不会产生影响。
-- `shared/core_glue.js` 在非 `file:` 协议下会先 `fetch('pkg/wasm_core_bg.wasm')`，
-  本副本没有 `pkg/` 目录 → 404 后自动降级使用 `wasm_data.js` 里内嵌的
-  base64 WASM。功能完全一致，只是控制台会有一条 warn。
-- `fonts/` 约 10.9 MB，是目录体积的主要来源。
-- 桥接层在 `file://` 下已可在 Chrome / Edge / Firefox 工作。若想在 HTTP 环境下
-  复现 Firefox 的「子页面跨源」情形来测试，可在控制台设
-  `window.YYJH_HOST_BASE = 'http://localhost:8765/'` 再点模块卡片 ——
-  子页面会被加载到另一个源上，只有 `postMessage` 能救。
-
----
-
-## 相关文档
-
-- [`docs/序列生成机制.md`](docs/序列生成机制.md) —— 新版存档格式与随机序列的
-  三层结构，以及要适配新游戏版本该改哪里。
+数据来源于 [烟雨江湖 Wiki](https://wiki.biligame.com/yanyu/)。
+# gx git init git add README.md git commit -m first commit git branch -M main git remote add origin https://github.com/cunsesjh/gx.git git push -u origin main
+# ios_gx

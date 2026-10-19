@@ -4,31 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>烟雨江湖 · 角色面板</title>
-    <meta name="description" content="烟雨江湖角色数值面板：四维、天赋、装备与战斗附加">
-    <link rel="stylesheet" href="../shared/simulator.css">
-    <link rel="stylesheet" href="./role.css">
-    <link href="../fonts/google-fonts.css" rel="stylesheet">
-    <script src="../shared/page_bridge.js"></script>
+    <meta name="description" content="烟雨江湖角色数值面板：最终属性、四维、修为、天赋与装备">
+    <link rel="stylesheet" href="../shared/tool_page.css?v=1.4.38">
+    <link rel="stylesheet" href="./role.css?v=1.4.38">
+    <link rel="stylesheet" href="./status.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/fixed_prediction.css?v=1.4.38">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/theme-switch.css?v=1.4.38">
+    <link id="wuxiaThemeStylesheet" rel="stylesheet" href="../shared/wuxia-theme.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/feature_shell.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/jianghu_companion.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/mobile.css?v=1.4.38">
+    <script src="../shared/opencc-js-cn2t.min.js?v=1.4.38"></script>
+    <script src="../shared/i18n.js?v=1.4.38"></script>
+    <script src="../shared/theme.js?v=1.4.38"></script>
 </head>
-<body>
+<body class="wuxia-simulator">
     <div class="app-container role-app">
+        <div class="theme-switch" role="group" aria-label="界面与语言">
+            <button type="button" data-theme-choice="bright" aria-pressed="false">明亮</button>
+            <button type="button" data-theme-choice="care" aria-pressed="false">护眼</button>
+            <span class="preference-divider" aria-hidden="true"></span>
+            <button type="button" data-language-choice="zh-CN" aria-pressed="false">简体</button>
+            <button type="button" data-language-choice="zh-TW" aria-pressed="false">繁體</button>
+        </div>
         <header class="app-header">
-            <h1>角色面板</h1>
-            <p class="subtitle">烟雨江湖 · 存档角色数值一览 <span id="appVersion" class="app-version"></span></p>
-            <nav class="sim-nav">
-                <a href="../index.html">首页</a>
-                <span class="nav-sep">·</span>
-                <a href="../wash/index.html">洗髓模拟</a>
-                <span class="nav-sep">·</span>
-                <a href="../equip/index.html">装备模拟</a>
-                <span class="nav-sep">·</span>
-                <a href="../role/index.html" class="active" aria-current="page">角色面板</a>
-                <span class="nav-sep">·</span>
-                <a href="../role-status/index.html">角色状态</a>
-                <span class="nav-sep">·</span>
-                <span class="nav-sep">·</span>
-                <a href="../auto/index.html">自动模拟</a>
-            </nav>
+            <div class="app-title-row">
+                <h1>角色</h1>
+                <span id="appVersion" class="app-version"></span>
+            </div>
+            <nav class="sim-nav" aria-label="收藏功能快捷入口"><a href="../index.html">首页</a></nav>
         </header>
 
         <section class="archive-summary" aria-label="存档信息">
@@ -44,10 +49,14 @@
             </div>
             <div class="archive-summary-actions">
                 <a id="archiveImportButton" class="btn btn-archive-action" href="../index.html">导入数据</a>
-                <button id="btnExportTable" class="btn btn-archive-action" type="button">导出表格</button>
-                <button id="btnResetWebsite" class="btn btn-archive-action" type="button" aria-live="polite">重置网页</button>
+                <button id="btnResetPage" class="btn btn-archive-action" type="button" aria-live="polite">重置本页</button>
             </div>
         </section>
+        <nav class="module-tool-switcher" id="tabBar" data-module-tabs role="tablist" aria-label="角色小模块切换">
+            <button id="roleTabOverview" class="module-tool-link is-active" type="button" role="tab" data-role-tool="overview" aria-controls="panelRoleOverview" aria-selected="true">角色面板</button>
+            <button id="roleTabStatus" class="module-tool-link" type="button" role="tab" data-role-tool="status" aria-controls="panelRoleStatus" aria-selected="false" tabindex="-1">角色状态</button>
+            <button id="roleTabMedicine" class="module-tool-link" type="button" role="tab" data-role-tool="medicine" aria-controls="panelRoleMedicine" aria-selected="false" tabindex="-1">丹药推演</button>
+        </nav>
 <section class="config-panel">
             <div class="config-row" id="roleSelectRow" hidden>
                 <div class="config-group grow">
@@ -60,11 +69,12 @@
                 </div>
                 <div class="config-group grow">
                     <label>筛选</label>
-                    <input type="search" id="roleFilter" placeholder="名称 / ID / 标签" autocomplete="off">
+                    <input type="search" id="roleFilter" placeholder="名称 / 标签" autocomplete="off">
                 </div>
             </div>
         </section>
 
+        <section id="panelRoleOverview" role="tabpanel" aria-labelledby="roleTabOverview">
         <div id="roleEmpty" class="role-empty">导入存档后选择角色，查看四维、天赋、穿戴与战斗附加数值</div>
 
         <div id="rolePanel" class="role-panel" hidden>
@@ -79,9 +89,23 @@
             <section class="history-panel">
                 <div class="panel-header">
                     <h2>最终属性</h2>
-                    <span class="meta-text">底数 + 装备 + 激活武学 + 经脉 + 秘技(技艺) + 合道 + 天赋；武学免伤仅计常驻效果，不含触发、低血量、回合及叠层加成</span>
+                    <span class="meta-text">网页按存档字段与客户端数据表重新推算，并非游戏面板直出值</span>
+                </div>
+                <div class="source-legend" aria-label="数值证据说明">
+                    <span class="evidence evidence-save">存档原值</span>
+                    <span class="evidence evidence-table">游戏数据表</span>
+                    <span class="evidence evidence-calc">网页推算</span>
+                    <span class="evidence evidence-unknown">无法反拆</span>
                 </div>
                 <div id="roleFinal" class="stat-grid final-grid"></div>
+            </section>
+
+            <section class="history-panel source-ledger-panel">
+                <div class="panel-header">
+                    <h2>玩家数值组成</h2>
+                    <span id="sourceLedgerMeta" class="meta-text">点击属性展开贡献与口径</span>
+                </div>
+                <div id="roleSources" class="source-ledger"></div>
             </section>
 
             <section class="history-panel">
@@ -95,7 +119,7 @@
             <section class="history-panel">
                 <div class="panel-header">
                     <h2>修为</h2>
-                    <span class="meta-text">WXXW（上限1500）× 0.025 × 系潜力 = 加成%；影响气血/攻击/招架/闪避/速度/聚气</span>
+                    <span class="meta-text">min（累计修为，1500）× 0.025 × 系潜力 = 加成%；累计修为可超过1500，计算最大值为1500；影响气血/攻击/招架/闪避/速度/聚气</span>
                 </div>
                 <div id="roleXiuwei" class="attr-table-wrap"></div>
             </section>
@@ -103,7 +127,7 @@
             <section class="history-panel">
                 <div class="panel-header">
                     <h2>战斗附加</h2>
-                    <span class="meta-text">存档 Ext*：剧情/活动永久加值，已计入面板总属性，游戏不单独列出</span>
+                    <span class="meta-text">存档永久附加汇总：含丹药、修炼、剧情等，已计入最终值；随机来源无法完整反拆</span>
                 </div>
                 <div id="roleCombat" class="stat-grid combat-grid"></div>
             </section>
@@ -143,29 +167,69 @@
                 </div>
             </section>
         </div>
+        </section>
+
+        <section id="panelRoleStatus" role="tabpanel" aria-labelledby="roleTabStatus" hidden>
+            <div id="roleStatusEmpty" class="role-status-empty">导入存档后选择角色，查看永久培养来源、当前进度与属性上限</div>
+            <main id="roleStatusPanel" class="role-status-panel" hidden>
+                <section class="history-panel role-status-overview">
+                    <div class="panel-header role-status-header">
+                        <div><span class="role-status-kicker">CHARACTER PROGRESS</span><h2 id="roleStatusName">—</h2></div>
+                        <span id="roleStatusTag" class="meta-text"></span>
+                    </div>
+                    <div id="roleStatusSummary" class="role-status-summary" aria-label="角色状态概览"></div>
+                </section>
+                <div id="roleStatus" class="role-status-groups"></div>
+            </main>
+        </section>
+
+        <section id="panelRoleMedicine" class="fixed-prediction config-panel" role="tabpanel" aria-labelledby="roleTabMedicine" hidden>
+            <h2>丹药推演</h2>
+            <p class="prediction-note">按官服规则推演六种固定丹药。无常丹、真武丹、黄泉水和九幽菇的序列由全队共享，换人服用会推进后续结果；阎罗花与碎血晶按每位角色的服用次数计算。</p>
+            <div class="prediction-controls">
+                <label>丹药<select id="medicineChoice"></select></label>
+                <label>后续服用次数<input id="medicineCount" type="number" min="1" max="100" value="30"></label>
+                <button id="medicinePredict" class="btn btn-primary" type="button" disabled>开始推演</button>
+            </div>
+            <p class="prediction-note">从导入记录开始，假定连续由当前角色服用，最多推演至服用或资质上限。推演不受当前背包数量限制。</p>
+            <p id="medicineProgress" class="prediction-note"></p>
+            <p id="medicineStatus" class="prediction-status" role="status">导入存档后选择角色。</p>
+            <div id="medicineResults" class="table-wrap prediction-results"></div>
+        </section>
 
         <footer class="app-footer">
             <p>数据来源于 <a href="https://wiki.biligame.com/yanyu/" target="_blank" rel="noopener">烟雨江湖 Wiki</a></p>
         </footer>
     </div>
 
-    <script src="../shared/version.js"></script>
-    <script src="../shared/data.js"></script>
-    <script src="../shared/born_talent_data.js"></script>
-    <script src="../shared/battle_talent_data.js"></script>
-    <script src="../shared/life_hedao_data.js"></script>
-    <script src="../shared/extra_attr_data.js"></script>
-    <script src="../shared/martial_dmg_off_data.js"></script>
-    <script src="../shared/equip_data.js"></script>
-    <script src="../shared/kongfu_data.js"></script>
-    <script src="../shared/wasm_data.js"></script>
-    <script src="../shared/sequence_rules.js"></script>
-    <script src="../shared/core_glue.js"></script>
-    <script src="../shared/pako.min.js"></script>
-    <script src="../shared/sql-wasm.js"></script>
-    <script src="../shared/sql-wasm-embed.js"></script>
-    <script src="../shared/save_decrypt.js?v=2.1.44-fork"></script>
-    <script src="../shared/archive_state.js"></script>
-    <script src="role.js"></script>
-<script src="../mobile-capture.js"></script><script src="../mobile-bridge.js"></script></body>
+    <script src="../shared/version.js?v=1.4.38"></script>
+    <script src="../shared/data.js?v=1.4.38"></script>
+    <script src="../shared/born_talent_data.js?v=1.4.38"></script>
+    <script src="../shared/battle_talent_data.js?v=1.4.38"></script>
+    <script src="../shared/life_hedao_data.js?v=1.4.38"></script>
+    <script src="../shared/extra_attr_data.js?v=1.4.38"></script>
+    <script src="../shared/equip_data.js?v=1.4.38"></script>
+    <script src="../shared/kongfu_data.js?v=1.4.38"></script>
+    <script src="../shared/role_status_data.js?v=1.4.38"></script>
+    <script src="../shared/pako.min.js?v=1.4.38"></script>
+    <script src="../shared/save_decrypt.js?v=1.4.38"></script>
+    <script src="../shared/access_gate.js?v=1.4.38"></script>
+    <script src="../shared/runtime_loader.js?v=1.4.38"></script>
+    <script src="../shared/algorithm_wasm_bridge.js?v=1.4.38"></script>
+    <script src="../shared/wasm_algorithm_api.js?v=1.4.38" data-wasm-modules="drop"></script>
+    <script src="../shared/calculation_worker_client.js?v=1.4.38"></script>
+    <script src="../shared/archive_state.js?v=1.4.38"></script>
+    <script src="../shared/game_catalog.js?v=1.4.38"></script>
+    <script src="../shared/game_profile.js?v=1.4.38"></script>
+    <script src="../shared/simulation_policy.js?v=1.4.38"></script>
+    <script src="../shared/fixed_simulation.js?v=1.4.38"></script>
+    <script src="status.js?v=1.4.38"></script>
+    <script src="medicine.js?v=1.4.38"></script>
+    <script src="role.js?v=1.4.38"></script>
+    <script src="../shared/feature_registry.js?v=1.4.38"></script>
+    <script src="../shared/feature_shell.js?v=1.4.38"></script>
+    <script src="../shared/site_cache.js?v=1.4.38"></script>
+    <script src="../shared/jianghu_companion.js?v=1.4.38"></script>
+    <script src="../shared/page_reset.js?v=1.4.38"></script>
+</body>
 </html>

@@ -8,9 +8,9 @@
     batch    <目录>           批量处理
 
 输出（默认 tool_1.1/output/）：
-    <平台>-<区服>-<用户名>-<时间戳>.db          初版 dat.db
-    <平台>-<区服>-<用户名>-<时间戳>.json        解密后的完整存档
-    <平台>-<区服>-<用户名>-<时间戳>.meta.json   元信息
+    <平台><区服>区-<用户名>/<时间戳>/dat.db          初版 dat.db
+    <平台><区服>区-<用户名>/<时间戳>/dat.json        解密后的完整存档
+    <平台><区服>区-<用户名>/<时间戳>/dat.meta.json   元信息
 （账号是敏感信息，只写在 meta.json 里，不进文件名）
 
 为什么 capture / local 要"去内存抓"：
@@ -171,7 +171,7 @@ def _finish(res, args):
 
     outdir = paths.resolve_out(args.outdir) if args.outdir else paths.OUT_DIR
     outs = report.write_all(res, outdir=outdir, name=getattr(args, 'name', None),
-                            write_db=not getattr(args, 'no_db', False),
+                            write_db=getattr(args, 'db', False),
                             write_json=not getattr(args, 'no_json', False),
                             write_report=getattr(args, 'report', False),
                             write_meta=not getattr(args, 'no_meta', False))
@@ -211,7 +211,8 @@ def pipeline_capture(args):
     res.kind = 'har'
     for s in res.steps:
         ui.step(s.label, s.value)
-    ui.info(f'  账号: {res.account}（{res.runtime}，{res.server or "?"} 服）')
+    ui.info(f'  账号: {res.account}（{report.platform_tag(res.runtime)}，'
+            f'{res.server or "?"} 服）')
 
     if getattr(args, 'mem', 'auto') != 'off':
         # ★ 抓包自带 realKey（就是外层密钥那把）—— 白送的，直接记下来。
@@ -547,11 +548,12 @@ def pipeline_batch(args):
 # ───────────────────────── 注册 ─────────────────────────
 def _add_out(p):
     p.add_argument('--outdir', help='输出根目录（默认 tool_1.1/output）')
-    p.add_argument('--name', help='换掉第一层目录名（默认 平台-区服-用户名）')
+    p.add_argument('--name', help='换掉第一层目录名（默认 平台+区服区-用户名）')
     p.add_argument('--save-format', choices=('v18', 'current'), default='v18',
                    help='dat.db 里的存档格式：v18(默认)=平台固定密钥，'
                         '存档工具/解析网站直接能读；current=按版本的内层密钥')
-    p.add_argument('--no-db', action='store_true', help='不写 dat.db')
+    p.add_argument('--db', action='store_true',
+                   help='额外写一份 dat.db（网站导入用明文 JSON，一般不需要）')
     p.add_argument('--no-json', action='store_true', help='不写 JSON')
     p.add_argument('--no-meta', action='store_true', help='不写 meta.json')
     p.add_argument('--report', action='store_true', help='额外写一份流程报告 .report.md')

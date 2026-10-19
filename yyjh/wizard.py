@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """向导层：给"只想用一下"的人用的入口。
 
-**它不改任何业务逻辑** —— 只是在 `yyjh local` / `yyjh capture` 前面套一层问答，
+**它不改任何业务逻辑** —— 只是在 `yyjh capture` 前面套一层问答，
 跑完再问一句要不要打开网页版模拟器。
 
 流程::
@@ -9,30 +9,29 @@
     已导入过存档时先列出来，默认选最新的那条，选中就直接开浏览器
         └─ 选「导入新存档」→ 回到开头流程
 
-    选择模式
-        ├─ local    本地存档  → 我有文件 / 从模拟器拉取
-        └─ capture  抓包导入  → 输入抓包文件路径
+    抓包导入 → 输入抓包文件路径
 
     导入成功 → 问「是否打开网页版」→ 打开(默认浏览器) / 退出
+
+（local 本地存档模式已移除，导入只走抓包 capture）
 
 用法::
 
     python run.py            不带参数就是它
     python -m yyjh start
 
-参数会原样转给底下的 local / capture，例如 `yyjh start --pkg huawei --report`。
+参数会原样转给底下的 capture，例如 `yyjh start --pkg huawei --report`。
 
 调试用：设 `YYJH_WIZARD_TTY=1` 可以在管道/重定向下也走交互分支
 （正常使用时不需要，它就是给测试用的口子）。
 """
-import io
 import json
 import os
 import subprocess
 import sys
 import webbrowser
 
-from . import __version__, ui
+from . import __version__, report, ui
 from .config import paths
 
 # 「已导入」列表最多显示几条（多了翻屏没意义）
@@ -40,144 +39,11 @@ LIST_LIMIT = 15
 # 回车以外表示退出的输入
 _QUIT = ('q', 'quit', 'exit')
 
-# 与 web 端 shared/save_decrypt.js 里的键名保持一致
-SAVE_SHARE_KEY = 'yyjh_share_save_v1'
-SAVE_SHARE_META_KEY = 'yyjh_share_save_meta_v1'
-# 自动载入入口页：生成在 web/ 下，但**不改动 web 里任何既有文件**
-AUTOLOAD_NAME = '_autoload_last.html'
-
-
 # ───────────────────────── 网页版 ─────────────────────────
-def web_index():
-    """网页版入口文件（tool_1.1/web/index.html）。"""
-    return os.path.join(paths.TOOL_DIR, 'web', 'index.html')
-
-
-def _uri_of(path):
-    p = os.path.abspath(path)
-    if not os.path.exists(p):
-        return None
-    try:
-        from pathlib import Path
-        return Path(p).as_uri()
-    except Exception:                                  # pragma: no cover
-        return 'file:///' + p.replace(os.sep, '/')
-
-
-def _web_uri():
-    return _uri_of(web_index())
-
-
-def pack_save(data):
-    """压成 web 端 loadShareStore() 认得的形式：base64(zlib(JSON))。
-
-    web 端解压走 pako.inflate，与 Python 的 zlib 是同一个容器格式
-    （RFC1950 头 + adler32 尾），两边互通。
-    """
-    import base64
-    import zlib
-    raw = json.dumps(data, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
-    return base64.b64encode(zlib.compress(raw, 9)).decode('ascii')
-
-
-def write_autoload(row):
-    """在 web/ 下生成一个「自动载入」入口页，返回它的路径（不行就返回 None）。
-
-    做法：把 web/index.html **原样复制**一份，只在 </head> 前插一段脚本，
-    把存档写进 localStorage —— 打开它就等于「已经导入过」。
-    web/ 里没有任何既有文件被改动，index.html 照旧能单独使用。
-    """
-    src = web_index()
-    json_path = row.get('json')
-    if not os.path.exists(src) or not json_path or not os.path.exists(json_path):
-        return None
-    with io.open(json_path, encoding='utf-8') as f:
-        data = json.load(f)
-    with io.open(src, encoding='utf-8') as f:
-        html = f.read()
-
-    old = row.get('meta') or {}
-    seed = {
-        'version': str(old.get('version') or ''),
-        'platform': str(old.get('runtime') or old.get('platform') or 'android'),
-        'channel': str(old.get('channel') or ''),
-        'format': 'json-local',
-        'fileName': os.path.basename(row.get('db') or json_path),
-        'importedAt': int(_now() * 1000),
-    }
-    script = ''.join([
-        '<script>(function(){try{',
-        'localStorage.setItem(', json.dumps(SAVE_SHARE_KEY), ',',
-        json.dumps(pack_save(data)), ');',
-        'localStorage.setItem(', json.dumps(SAVE_SHARE_META_KEY), ',',
-        json.dumps(json.dumps(seed, ensure_ascii=False)), ');',
-        '}catch(e){document.addEventListener("DOMContentLoaded",function(){',
-        'var m=document.getElementById("homeImportMessage");',
-        'if(m){m.textContent="自动载入存档失败："+((e&&e.message)||e);',
-        'm.classList.add("is-error");}});}})();</script>',
-    ])
-    out = os.path.join(os.path.dirname(src), AUTOLOAD_NAME)
-    with io.open(out, 'w', encoding='utf-8', newline='\n') as f:
-        f.write(html.replace('</head>', script + '\n</head>', 1))
-    return out
-
-
-def refresh_worker_bundle():
-    """刷新网页版的「后台计算线程整包」（file:// 下自动洗脉要用）。
-
-    改过 web/shared 里的优化器却忘了重打时，这里会自动补上。
-    失败不影响其它功能（http 下本来也不需要这个包）。
-    """
-    try:
-        from . import webapp
-        shared = os.path.join(os.path.dirname(web_index()), 'shared')
-        path, changed = webapp.write_bundle(shared)
-        if changed:
-            ui.debug(f'已重新生成后台线程整包 {os.path.basename(path)}')
-        return path
-    except Exception as e:                             # noqa: BLE001
-        ui.debug(f'刷新后台线程整包失败（不影响使用）：{e}')
-        return None
-
-
-def open_web(snapshot=None):
-    """用默认浏览器打开网页版。
-
-    给了 snapshot 就先生成自动载入页（进去直接就是已导入状态），
-    否则就是普通的 web/index.html。
-    """
-    refresh_worker_bundle()
-    target = web_index()
-    if snapshot:
-        try:
-            page = write_autoload(snapshot)
-            if page:
-                target = page
-            else:
-                ui.debug('这条记录没有 dat.json，改开普通入口页')
-        except Exception as e:
-            ui.warn(f'生成自动载入页失败，改开普通入口页：{e}')
-
-    uri = _uri_of(target)
-    if not uri:
-        ui.warn('找不到网页版，跳过打开浏览器')
-        ui.info(f'  期望位置：{paths.rel(web_index())}')
-        return False
-    ok = False
-    try:
-        ok = bool(webbrowser.open(uri))
-    except Exception as e:                             # pragma: no cover
-        ui.debug(f'webbrowser.open 失败: {e}')
-    if ok:
-        ui.ok('已用默认浏览器打开网页版模拟器')
-        if os.path.abspath(target) != os.path.abspath(web_index()):
-            ui.info('  存档已自动载入，进去就能直接用。')
-        else:
-            ui.info('  在网页里点「导入数据」，选上面的 dat.db。')
-    else:
-        ui.warn('没能自动打开浏览器，请手动打开这个文件：')
-        ui.info(f'  {paths.rel(target)}')
-    return ok
+def open_site(snapshot=None):
+    """打开网页版（webserve 自动拉起本地服务，存档自动载入）。"""
+    from . import webserve
+    return webserve.open_site(snapshot)
 
 
 def _copy_path(text):
@@ -214,7 +80,7 @@ def _fmt_stamp(snap):
 
 
 def list_snapshots(outdir=None):
-    """扫 `<output>/<平台-区服-用户名>/<时间戳>/`，按时间**倒序**返回。
+    """扫 `<output>/<平台><区服>区-<用户名>/<时间戳>/`，按时间**倒序**返回。
 
     每条是 dict，字段见下；只认里面有 dat.db 或 dat.json 的目录。
     """
@@ -263,13 +129,13 @@ def describe(row):
     server = meta.get('server')
     field = meta.get('field_count')
     bits = [f'{nick}']
-    loc = f'{runtime}' + (f'·s{server}' if server else '')
+    loc = f'{report.platform_tag(runtime)}{server}区' if server else f'{report.platform_tag(runtime)}'
     bits.append(loc)
     bits.append(_fmt_stamp(row['snap']))
     if field:
         bits.append(f'{field} 字段')
-    if not row['db']:
-        bits.append('无 dat.db')
+    if not row['db'] and not row['json']:
+        bits.append('无存档文件')
     return '　'.join(bits)
 
 
@@ -409,7 +275,7 @@ def _ensure_game_running(args):
 
 
 def _run_import(argv, args):
-    """跑 local / capture；如果报的是「更新了、密钥表过期」，就地问要不要挖一下。
+    """跑 capture；如果报的是「更新了、密钥表过期」，就地问要不要挖一下。
 
     用户的反馈很直白：这种情况重试多少遍都一样，不该让人白试。
     所以这里直接把「挖密钥 -> 重跑原命令」串起来。
@@ -472,28 +338,12 @@ def _run_import(argv, args):
 
 
 def _flow_import(args):
-    mode = ui.choose('请选择模式：', [
-        'local　　—— 本地存档（我有文件 / 从模拟器拉取）',
-        'capture —— 抓包导入（ProxyPin / mitmproxy 的 .har）',
-    ], default=0)
-
-    if mode == 1:
-        p = _ask_path('抓包文件路径（可直接把文件拖进来）: ',
-                      '路径不能为空；q + 回车 = 退出')
-        ui.info()
-        return _run_import(['capture', p] + _forward(args), args)
-
-    src = ui.choose('本地存档来源：', [
-        '我有存档文件，手动给路径',
-        '从模拟器 / 设备上拉取（游戏要在运行）',
-    ], default=0)
-    if src == 0:
-        p = _ask_path('存档文件路径（可直接把文件拖进来）: ',
-                      '路径不能为空；q + 回车 = 退出')
-        ui.info()
-        return _run_import(['local', p] + _forward(args), args)
+    # local（本地存档）模式已删掉，导入只保留抓包 capture
+    ui.step('导入新存档', '抓包导入（ProxyPin / mitmproxy 的 .har）')
+    p = _ask_path('抓包文件路径（可直接把文件拖进来）: ',
+                  '路径不能为空；q + 回车 = 退出')
     ui.info()
-    return _run_import(['local'] + _forward(args), args)
+    return _run_import(['capture', p] + _forward(args), args)
 
 
 def _confirm_open(row):
@@ -507,7 +357,7 @@ def _confirm_open(row):
         '不打开，直接退出',
     ], default=0)
     if pick == 0:
-        open_web(row)
+        open_site(row)
     else:
         ui.info('  已退出。下次直接跑 `python run.py` 就能再选这个存档。')
     return 0
@@ -528,7 +378,7 @@ def _wizard(args):
             if folder and _copy_path(folder):
                 ui.info('  存档目录已复制到剪贴板（要手动导入就粘到对话框地址栏）')
             ui.info()
-            open_web(picked)
+            open_site(picked)
             return 0
     else:
         ui.info('  （还没有导入过存档）')
@@ -601,7 +451,7 @@ def with_default_start(argv, parser):
 
 def add_parsers(sub):
     p = sub.add_parser('start', aliases=['guide'],
-                       help='★ 向导：选模式 → 导入存档 → 打开网页版')
+                       help='★ 向导：导入存档（抓包）→ 打开网页版')
     p.add_argument('--outdir', help='输出根目录（默认 tool_1.1/output）')
     p.add_argument('--runtime', choices=['android', 'ios'],
                    help='平台（一般不用给，自动判断）')

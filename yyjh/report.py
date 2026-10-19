@@ -2,13 +2,13 @@
 """输出生成：明文 JSON + 元信息 + 初版 dat.db。
 
 默认输出三个文件（都在 tool_1.1/output/）：
-    <平台>-<区服>-<用户名>-<时间戳>.json        解密后的完整存档
-    <平台>-<区服>-<用户名>-<时间戳>.meta.json   元信息（账号/版本/密钥/来源/时间）
-    <平台>-<区服>-<用户名>-<时间戳>.db          初版 dat.db
+    <平台><区服>区-<用户名>/<时间戳>/dat.json        解密后的完整存档
+    <平台><区服>区-<用户名>/<时间戳>/dat.meta.json   元信息（账号/版本/密钥/来源/时间）
+    <平台><区服>区-<用户名>/<时间戳>/dat.db          初版 dat.db
 
 例如:
-    ios-s3-示例角色-20261001-155901.db
-    android-s12-示例角色-20261001-155901.db
+    ios3区-示例角色
+    android12区-示例角色
 
 **账号不进文件名**（邮箱/QQ/微信号都是敏感信息），只写在 `.meta.json` 里。
 时间戳到秒，所以连续跑不会互相覆盖。
@@ -34,9 +34,18 @@ def _safe(s, limit=24):
 
 
 def server_tag(server):
-    """区服标识：`s12`。没读到服号退化到 `s0`（文档里说明了 0 = 未知）。"""
+    """区服标识：`25`（用于拼 `ios25区` 这类名字）。没读到服号退化到 `0`。"""
     s = _safe(server, 8) if server else ''
-    return f's{s}' if s else 's0'
+    return s or '0'
+
+
+def platform_tag(runtime=None):
+    """命名里的平台标识 —— 存档统一按 **ios** 命名。
+
+    （抓包/模拟器链路里 runtime 常被识别成 android，但账号是 iOS 的，
+    命名一律写 ios；runtime 本身仍按事实存进 meta，供解密逻辑用。）
+    """
+    return 'ios'
 
 
 # 兼容旧调用方（已不再用于文件名）
@@ -51,17 +60,14 @@ def account_tag(account, limit=20):
 
 
 def group_name(res, name=None):
-    """归档**目录名**：`<平台>-<区服>-<用户名>`。
+    """归档**目录名**：`<平台><区服>区-<用户名>`，如 `ios25区-示例角色`。
 
     不带时间戳 —— 时间那一段留给文件名，目录只回答"这是谁的"。
     """
     if name:
         return _safe(name, 80)
-    return '-'.join([
-        res.runtime or 'unknown',
-        server_tag(res.server),
-        _safe(res.nick, 20) or '未知',
-    ])
+    return f'{platform_tag(res.runtime)}{server_tag(res.server)}区-' \
+           f'{_safe(res.nick, 20) or "未知"}'
 
 
 def make_stem(res, name=None):
@@ -112,7 +118,7 @@ def render_markdown(res):
     A('| 项目 | 值 |')
     A('|---|---|')
     rows = [('来源', f'`{res.source}`'), ('类型', res.kind),
-            ('平台', res.runtime or '—'), ('账号', f'`{res.account or "—"}`'),
+            ('平台', platform_tag(res.runtime)), ('账号', f'`{res.account or "—"}`'),
             ('save.id', f'`{res.save_id or "—"}`'), ('服务器', res.server or '—'),
             ('存档版本', f'`{res.version or "—"}`')]
     if res.marker:
@@ -228,7 +234,7 @@ def print_result(res, outs):
     ui.info()
     ui.rule()
     ui.ok(f'完成：{res.nick or res.account}'
-          f'　平台 {res.runtime or "?"}　版本 {res.version or "?"}'
+          f'　平台 {platform_tag(res.runtime)}　版本 {res.version or "?"}'
           f'　{res.field_count} 个字段')
     ui.rule()
     labels = {'db': '存档文件', 'json': '明文数据', 'meta': '元信息',

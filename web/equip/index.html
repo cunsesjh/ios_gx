@@ -3,30 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>烟雨江湖 · 装备模拟器</title>
+    <title>烟雨江湖 · 锻造</title>
     <meta name="description" content="烟雨江湖装备打造/精炼/淬炼序列预测">
-    <link rel="stylesheet" href="../shared/simulator.css">
-    <link rel="stylesheet" href="./equip.css">
-    <link href="../fonts/google-fonts.css" rel="stylesheet">
-    <script src="../shared/page_bridge.js"></script>
+    <link rel="stylesheet" href="../shared/tool_page.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/automation_ui.css?v=1.4.38">
+    <link rel="stylesheet" href="./equip.css?v=1.4.38">
+    <link rel="stylesheet" href="./auto.css?v=1.4.38">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/theme-switch.css?v=1.4.38">
+    <link id="wuxiaThemeStylesheet" rel="stylesheet" href="../shared/wuxia-theme.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/wasm_loading.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/feature_shell.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/jianghu_companion.css?v=1.4.38">
+    <link rel="stylesheet" href="../shared/mobile.css?v=1.4.38">
+    <script src="../shared/opencc-js-cn2t.min.js?v=1.4.38"></script>
+    <script src="../shared/i18n.js?v=1.4.38"></script>
+    <script src="../shared/theme.js?v=1.4.38"></script>
 </head>
-<body>
+<body class="wuxia-simulator">
     <div class="app-container equip-app">
+        <div class="theme-switch" role="group" aria-label="界面与语言">
+            <button type="button" data-theme-choice="bright" aria-pressed="false">明亮</button>
+            <button type="button" data-theme-choice="care" aria-pressed="false">护眼</button>
+            <span class="preference-divider" aria-hidden="true"></span>
+            <button type="button" data-language-choice="zh-CN" aria-pressed="false">简体</button>
+            <button type="button" data-language-choice="zh-TW" aria-pressed="false">繁體</button>
+        </div>
         <header class="app-header">
-            <h1>装备模拟</h1>
-            <p class="subtitle">烟雨江湖 · 打造 / 升炼 / 精炼 / 淬炼 / 剑王阁 <span id="appVersion" class="app-version"></span></p>
-            <nav class="sim-nav">
-                <a href="../index.html">首页</a>
-                <span class="nav-sep">·</span>
-                <a href="../wash/index.html">洗髓模拟</a>
-                <span class="nav-sep">·</span>
-                <a href="../equip/index.html" class="active" aria-current="page">装备模拟</a>
-                <span class="nav-sep">·</span>
-                <a href="../role/index.html">角色面板</a>
-                <span class="nav-sep">·</span>
-                <span class="nav-sep">·</span>
-                <a href="../auto/index.html">自动模拟</a>
-            </nav>
+            <div class="app-title-row">
+                <h1 id="equipPageTitle">装备模拟</h1>
+                <span id="appVersion" class="app-version"></span>
+            </div>
+            <nav class="sim-nav" aria-label="收藏功能快捷入口"><a href="../index.html">首页</a></nav>
         </header>
 
         <section class="archive-summary" aria-label="存档信息">
@@ -43,25 +51,20 @@
             <div class="archive-summary-actions">
                 <a id="archiveImportButton" class="btn btn-archive-action" href="../index.html">导入数据</a>
                 <button id="btnExportTable" class="btn btn-archive-action" type="button">导出表格</button>
-                <button id="btnResetAll" class="btn btn-archive-action" type="button">重置状态</button>
-                <button id="btnResetWebsite" class="btn btn-archive-action" type="button" aria-live="polite">重置网页</button>
-                <label class="check-row archive-reset-check">
-                    <input type="checkbox" id="resetClearCrafted" checked>
-                    <span>是否同时清除模拟背包</span>
-                </label>
+                <button id="btnResetPage" class="btn btn-archive-action" type="button" aria-live="polite">重置本页</button>
             </div>
         </section>
 <section class="config-panel">
-            <div class="tab-bar" id="tabBar">
-                <button type="button" class="tab-btn active" data-tab="make">打造</button>
-                <button type="button" class="tab-btn" data-tab="shenglian">升炼</button>
-                <button type="button" class="tab-btn" data-tab="xilian">精炼</button>
-                <button type="button" class="tab-btn" data-tab="strong">淬炼</button>
-                <button type="button" class="tab-btn" data-tab="jianwang">剑王阁</button>
+            <div class="tab-bar" id="tabBar" role="tablist" aria-label="锻造小模块切换">
+                <button id="equipTabMake" type="button" class="tab-btn active" role="tab" data-tab="make" aria-controls="panelMake" aria-selected="true">装备模拟</button>
+                <button id="equipTabBag" type="button" class="tab-btn" role="tab" data-tab="bag" aria-controls="panelBag" aria-selected="false" tabindex="-1">装备背包</button>
+                <button id="equipTabJianwang" type="button" class="tab-btn" role="tab" data-tab="jianwang" aria-controls="panelJianwang" aria-selected="false" tabindex="-1">剑王阁</button>
+                <button id="equipTabAuto" type="button" class="tab-btn" role="tab" data-tab="auto" aria-controls="panelAuto" aria-selected="false" tabindex="-1">自动锻造</button>
+                <button id="equipTabJianwangAuto" type="button" class="tab-btn" role="tab" data-tab="jianwang-auto" aria-controls="panelJianwangAuto" aria-selected="false" tabindex="-1">剑王阁自动</button>
             </div>
         </section>
 
-        <section id="panelMake" class="tab-panel">
+        <section id="panelMake" class="tab-panel" role="tabpanel" aria-labelledby="equipTabMake">
             <section class="config-panel">
                 <div class="config-row">
                     <div class="config-group grow">
@@ -88,210 +91,194 @@
                         </select>
                     </div>
                 </div>
+                <div class="config-row" id="makePadGroup" hidden>
+                    <div class="config-group grow">
+                        <label>橙装序列垫装图纸</label>
+                        <select id="makePadPaperSelect"></select>
+                        <span class="meta-text">#N = 先真实打造所选可打造普通图纸 N−1 次，再打造一次目标橙装；保底由存档自动检测并续算。</span>
+                    </div>
+                </div>
                 <div class="config-row">
                     <div class="config-group grow">
                         <label>默认标记（加入背包时写入）</label>
                         <input type="text" id="makeDefaultMark" maxlength="40" placeholder="如：紫满攻 / 备选1" autocomplete="off">
-                        <label class="check-row" id="makeAutoShenglianRow" title="仅对预测结果中的“推进到此”生效">
-                            <input type="checkbox" id="makeAutoShenglian">
-                            <span>“推进到此”后自动升炼（90→100）</span>
-                        </label>
                     </div>
                 </div>
                 <div id="costHint" class="cost-hint">导入存档并选择目标后显示消耗提示</div>
                 <div id="luckyHint" class="lucky-hint"></div>
-                <div id="craftedBagHint" class="cost-hint">推进打造后装备会进入模拟背包，供升炼 / 精炼 / 淬炼选用</div>
+                <div id="makeCraftedBagHint" class="cost-hint">推进打造后装备会进入模拟背包，供升炼 / 精炼 / 淬炼 / 附加选用</div>
             </section>
             <section class="action-panel">
                 <div class="action-buttons">
                     <button id="btnPreview" class="btn btn-wash-gold" type="button">预测序列</button>
-                    <button id="btnMakeOnce" class="btn btn-wash" type="button">推进并加入背包</button>
                 </div>
-            </section>
-            <section class="config-panel">
-                <div class="panel-header">
-                    <h2>装备 · 特殊材料连续附加</h2>
-                    <span class="meta-text">读取或推导装备 MJSeed，只读预测，不消耗材料</span>
-                </div>
-                <div class="config-row">
-                    <div class="config-group grow">
-                        <label>目标装备</label>
-                        <select id="specialAttachEquipSelect"></select>
+                <div id="makePreviewProgress" class="ai-search-progress" hidden aria-live="polite">
+                    <div class="ai-progress-head">
+                        <span id="makePreviewProgressText">准备预测打造序列…</span>
+                        <b id="makePreviewProgressPercent">0%</b>
                     </div>
-                    <div class="config-group">
-                        <label>预测次数</label>
-                        <input type="number" id="specialAttachCount" min="1" max="5000" value="20">
-                    </div>
+                    <div class="ai-progress-track"><div id="makePreviewProgressFill" class="ai-progress-fill"></div></div>
                 </div>
-                <div class="config-row">
-                    <div class="config-group grow">
-                        <label>重复附加材料</label>
-                        <select id="specialAttachMaterialSelect"></select>
-                    </div>
-                </div>
-                <div id="specialAttachHint" class="cost-hint">选择已有或模拟打造装备和材料，预测连续覆盖红词条的结果</div>
-                <div class="action-buttons">
-                    <button id="btnSpecialAttachPreview" class="btn btn-wash-custom" type="button">预测连续附加</button>
-                </div>
-            </section>
-            <section class="manual-panel" id="craftedBagPanel">
-                <div class="panel-header">
-                    <h2>模拟背包</h2>
-                    <span class="meta-text">可改标记；预测表中可「推进到此」直达指定记录</span>
-                </div>
-                <div id="craftedBagList" class="crafted-bag-list empty">暂无模拟打造装备</div>
             </section>
         </section>
 
-        <section id="panelShenglian" class="tab-panel" hidden>
+        <section id="panelBag" class="tab-panel" role="tabpanel" aria-labelledby="equipTabBag" hidden>
             <section class="config-panel">
+                <div class="panel-header">
+                    <h2>装备背包</h2>
+                    <span class="meta-text">存档实物与模拟装备共用页面沙盒，不写回游戏</span>
+                </div>
                 <div class="config-row">
                     <div class="config-group grow">
-                        <label>可升炼装备</label>
-                        <select id="shenglianEquipSelect"></select>
+                        <label>当前装备</label>
+                        <select id="bagEquipSelect"></select>
                     </div>
                 </div>
                 <div class="config-row equip-filter-row">
                     <div class="config-group">
                         <label>来源</label>
-                        <select id="shenglianSourceFilter">
-                            <option value="all" selected>全部</option>
-                            <option value="equipped">仅已装备</option>
-                            <option value="crafted">仅模拟打造</option>
+                        <select id="bagSourceFilter">
+                            <option value="all" selected>全部装备</option>
+                            <option value="archive">背包装备</option>
+                            <option value="crafted">模拟装备</option>
+                        </select>
+                    </div>
+                    <div class="config-group">
+                        <label>部位</label>
+                        <select id="bagTypeFilter">
+                            <option value="" selected>全部部位</option>
+                            <option value="1">拳套</option>
+                            <option value="2">刀</option>
+                            <option value="3">剑</option>
+                            <option value="4">枪棍</option>
+                            <option value="5">腰带</option>
+                            <option value="6">护腕</option>
+                            <option value="7">内甲</option>
+                            <option value="8">戒指</option>
+                            <option value="9">挂坠</option>
+                            <option value="10">时装</option>
+                            <option value="11">头饰</option>
+                            <option value="12">配饰</option>
+                        </select>
+                    </div>
+                    <div class="config-group">
+                        <label>品质</label>
+                        <select id="bagColorFilter">
+                            <option value="" selected>全部品质</option>
+                            <option value="1">白</option>
+                            <option value="2">绿</option>
+                            <option value="3">蓝</option>
+                            <option value="4">紫</option>
+                            <option value="5">橙</option>
+                            <option value="6">红</option>
                         </select>
                     </div>
                     <div class="config-group grow">
                         <label>文本筛选</label>
-                        <input type="search" id="shenglianTextFilter" placeholder="名称 / 角色 / 标记 / 部位" autocomplete="off">
+                        <input type="search" id="bagTextFilter" placeholder="名称 / 标记" autocomplete="off">
                     </div>
                 </div>
-                <div id="shenglianHint" class="cost-hint">90 级非橙红装且存在下一档（equ_next）可升炼至 100 级，之后才能精炼</div>
-                <div id="shenglianPreview" class="manual-result empty">选择装备后显示 90→100 对照</div>
+                <div id="craftedBagHint" class="cost-hint">预测表选择“加入背包”后，序列会自动推进到目标位置</div>
+                <details class="crafted-bag-disclosure" id="craftedBagPanel" open>
+                    <summary>
+                        <span>装备列表</span>
+                        <span id="craftedBagCount" class="meta-text">0 件</span>
+                    </summary>
+                    <div class="crafted-bag-scroll">
+                        <div id="craftedBagList" class="crafted-bag-list empty">暂无可用装备</div>
+                    </div>
+                    <p class="crafted-bag-help">模拟装备可改标记或移除；存档装备保持只读来源</p>
+                </details>
             </section>
-            <section class="action-panel">
-                <div class="action-buttons">
-                    <button id="btnShenglianOnce" class="btn btn-wash-gold" type="button">执行升炼</button>
-                </div>
-            </section>
-        </section>
-
-        <section id="panelXilian" class="tab-panel" hidden>
             <section class="config-panel">
-                <div class="config-row">
-                    <div class="config-group grow">
-                        <label>可精炼装备</label>
-                        <select id="xilianEquipSelect"></select>
-                    </div>
-                    <div class="config-group">
-                        <label>预览次数</label>
-                        <input type="number" id="xilianCount" min="1" max="5000" value="20">
-                    </div>
+                <div class="bag-action-tabs" role="tablist" aria-label="装备培养操作">
+                    <button id="bagActionShenglian" class="btn bag-action-btn active" type="button" data-bag-action="shenglian" aria-selected="true">升炼</button>
+                    <button id="bagActionXilian" class="btn bag-action-btn" type="button" data-bag-action="xilian" aria-selected="false">精炼</button>
+                    <button id="bagActionStrong" class="btn bag-action-btn" type="button" data-bag-action="strong" aria-selected="false">淬炼</button>
+                    <button id="bagActionAttach" class="btn bag-action-btn" type="button" data-bag-action="attach" aria-selected="false">附加</button>
                 </div>
-                <div class="config-row equip-filter-row">
-                    <div class="config-group">
-                        <label>来源</label>
-                        <select id="xilianSourceFilter">
-                            <option value="all">全部</option>
-                            <option value="equipped" selected>仅已装备</option>
-                            <option value="crafted">仅模拟打造</option>
-                        </select>
-                    </div>
-                    <div class="config-group grow">
-                        <label>文本筛选</label>
-                        <input type="search" id="xilianTextFilter" placeholder="名称 / 角色 / 标记 / 品质" autocomplete="off">
+                <div id="panelShenglian" class="bag-action-panel">
+                    <div id="shenglianHint" class="cost-hint">90 级非橙红装且存在下一档可升炼至 100 级</div>
+                    <div id="shenglianPreview" class="manual-result empty">选择装备后显示 90→100 对照</div>
+                    <div class="action-buttons">
+                        <button id="btnShenglianOnce" class="btn btn-wash-gold" type="button">执行升炼</button>
                     </div>
                 </div>
-                <div id="xilianHint" class="cost-hint">仅 100 级绿/蓝/紫装可精炼（90 级需先升炼）</div>
-                <div id="xilianInitialExts" class="xilian-initial-exts empty">
-                    <span class="xilian-initial-label">打造时初始词条</span>
-                    <span class="xilian-initial-values">请选择装备</span>
+                <div id="panelXilian" class="bag-action-panel" hidden>
+                    <div class="config-row">
+                        <div class="config-group">
+                            <label>预览次数</label>
+                            <input type="number" id="xilianCount" min="1" max="1000" value="20">
+                        </div>
+                    </div>
+                    <div id="xilianHint" class="cost-hint">仅 100 级绿/蓝/紫装可精炼（90 级需先升炼）</div>
+                    <div class="action-buttons">
+                        <button id="btnXilianPreview" class="btn btn-wash-gold" type="button">预测序列</button>
+                    </div>
+                    <section class="manual-panel" id="xilianPlanPanel">
+                        <div class="panel-header">
+                            <h2>保留规划</h2>
+                            <span class="meta-text">勾选要保留的结果；每次精炼都消耗，接受才替换词条并标记翻倍</span>
+                        </div>
+                        <div id="xilianPlanSummary" class="manual-result empty">预测后勾选“保留”查看总花费与最终属性</div>
+                    </section>
                 </div>
-            </section>
-            <section class="action-panel">
-                <div class="action-buttons">
-                    <button id="btnXilianPreview" class="btn btn-wash-gold" type="button">预测序列</button>
+                <div id="panelStrong" class="bag-action-panel" hidden>
+                    <div class="config-row">
+                        <div class="config-group">
+                            <label>序列长度</label>
+                            <input type="number" id="strongCount" min="5" max="5000" value="60">
+                        </div>
+                        <div class="config-group">
+                            <label>期望淬炼层数</label>
+                            <select id="strongTargetLevel"></select>
+                        </div>
+                        <div class="config-group">
+                            <label>可接受最低档</label>
+                            <select id="strongMinGrade">
+                                <option value="4">完美</option>
+                                <option value="3" selected>优秀及以上</option>
+                                <option value="2">良好及以上</option>
+                                <option value="1">一般及以上</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="strongHint" class="cost-hint">仅武器可淬炼，在已知序列上规划“消耗最少”与“数值最优”</div>
+                    <div class="action-buttons">
+                        <button id="btnStrongPreview" class="btn btn-wash-gold" type="button">预测并生成建议</button>
+                        <button id="btnStrongShowMin" class="btn btn-wash" type="button">高亮·消耗最少</button>
+                        <button id="btnStrongShowBest" class="btn btn-wash" type="button">高亮·数值最优</button>
+                    </div>
+                    <div id="strongAdvice" class="advice-grid"></div>
                 </div>
-            </section>
-            <section class="manual-panel" id="xilianPlanPanel">
-                <div class="panel-header">
-                    <h2>保留规划</h2>
-                    <span class="meta-text">勾选要保留的结果；每次精炼都消耗，接受才替换词条并标记翻倍</span>
+                <div id="panelAttach" class="bag-action-panel" hidden>
+                    <div class="config-row">
+                        <div class="config-group grow">
+                            <label>重复附加材料</label>
+                            <select id="specialAttachMaterialSelect"></select>
+                        </div>
+                        <div class="config-group">
+                            <label>预测次数</label>
+                            <input type="number" id="specialAttachCount" min="1" max="5000" value="20">
+                        </div>
+                    </div>
+                    <div id="specialAttachHint" class="cost-hint">选择背包当前装备和材料，预测连续覆盖红词条的结果</div>
+                    <div class="action-buttons">
+                        <button id="btnSpecialAttachPreview" class="btn btn-wash-custom" type="button">预测连续附加</button>
+                    </div>
                 </div>
-                <div class="xilian-opt-controls">
-                    <label>目标属性
-                        <select id="xilianTargetProp" disabled>
-                            <option value="">请先预测序列</option>
-                        </select>
-                    </label>
-                    <button id="btnXilianOptimize" class="btn btn-wash" type="button" disabled>规划合计最大</button>
-                    <span class="meta-text">按最终三个词条的目标属性合计值规划；同值优先截止花费更少、完成更早、保留次数更少</span>
-                </div>
-                <div id="xilianPlanSummary" class="manual-result empty">预测后勾选「保留」查看总花费与最终属性</div>
             </section>
         </section>
 
-        <section id="panelStrong" class="tab-panel" hidden>
-            <section class="config-panel">
-                <div class="config-row">
-                    <div class="config-group grow">
-                        <label>可淬炼装备</label>
-                        <select id="strongEquipSelect"></select>
-                    </div>
-                    <div class="config-group">
-                        <label>序列长度</label>
-                        <input type="number" id="strongCount" min="5" max="5000" value="60">
-                    </div>
-                </div>
-                <div class="config-row equip-filter-row">
-                    <div class="config-group">
-                        <label>来源</label>
-                        <select id="strongSourceFilter">
-                            <option value="all">全部</option>
-                            <option value="equipped" selected>仅已装备</option>
-                            <option value="crafted">仅模拟打造</option>
-                        </select>
-                    </div>
-                    <div class="config-group grow">
-                        <label>文本筛选</label>
-                        <input type="search" id="strongTextFilter" placeholder="名称 / 角色 / 标记 / 部位" autocomplete="off">
-                    </div>
-                </div>
-                <div class="config-row" style="margin-top:0.65rem">
-                    <div class="config-group">
-                        <label>期望淬炼层数</label>
-                        <select id="strongTargetLevel"></select>
-                    </div>
-                    <div class="config-group">
-                        <label>可接受最低档</label>
-                        <select id="strongMinGrade">
-                            <option value="4">完美</option>
-                            <option value="3" selected>优秀及以上</option>
-                            <option value="2">良好及以上</option>
-                            <option value="1">一般及以上</option>
-                        </select>
-                    </div>
-                </div>
-                <div id="strongHint" class="cost-hint">对齐 Wiki 淬炼序列记录：在已知序列上规划「消耗最少」与「数值最优」。来源选「仅模拟打造」可专看打造武器。</div>
-            </section>
-            <section class="action-panel">
-                <div class="action-buttons">
-                    <button id="btnStrongPreview" class="btn btn-wash-gold" type="button">预测并生成建议</button>
-                    <button id="btnStrongShowMin" class="btn btn-wash" type="button">高亮·消耗最少</button>
-                    <button id="btnStrongShowBest" class="btn btn-wash" type="button">高亮·数值最优</button>
-                </div>
-            </section>
-            <div id="strongAdvice" class="advice-grid"></div>
-        </section>
-
-        <section id="panelJianwang" class="tab-panel" hidden>
+        <section id="panelJianwang" class="tab-panel" role="tabpanel" aria-labelledby="equipTabJianwang" hidden>
             <section class="config-panel jianwang-panel">
                 <div class="panel-header">
-                    <h2>剑王阁专武 · 存档实物序列</h2>
-                    <span class="meta-text">支持专武成长、重铸与碎剑循环预览</span>
+                    <h2>剑王阁专武 · 序列模拟</h2>
+                    <span class="meta-text">实物可直接操作；模拟剑胚道具需先执行领取，才会成为60级剑</span>
                 </div>
                 <div class="config-row">
                     <div class="config-group grow">
-                        <label>存档中的剑胚 / 专武</label>
+                        <label>剑胚 / 专武起点</label>
                         <select id="jianwangEquipSelect"></select>
                     </div>
                     <div class="config-group">
@@ -305,8 +292,33 @@
                         <select id="jianwangKeepSelect"></select>
                     </div>
                     <div class="config-group" id="jianwangCountGroup">
-                        <label>预览次数</label>
+                        <label id="jianwangCountLabel">预览次数</label>
                         <input type="number" id="jianwangCount" min="1" max="5000" value="1">
+                    </div>
+                </div>
+                <div class="config-row" id="jianwangStrongPlanGroup" hidden>
+                    <div class="config-group">
+                        <label>期望淬炼层数</label>
+                        <select id="jianwangStrongTargetLevel"></select>
+                    </div>
+                    <div class="config-group">
+                        <label>可接受最低档</label>
+                        <select id="jianwangStrongMinGrade">
+                            <option value="4">完美</option>
+                            <option value="3" selected>优秀及以上</option>
+                            <option value="2">良好及以上</option>
+                            <option value="1">一般及以上</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="config-row" id="jianwangStrongHighlightGroup" hidden>
+                    <div class="config-group grow">
+                        <label>结果高亮</label>
+                        <select id="jianwangStrongHighlightMode">
+                            <option value="" selected>关闭高亮</option>
+                            <option value="min">消耗最少</option>
+                            <option value="best">数值最优</option>
+                        </select>
                     </div>
                 </div>
                 <div class="config-row" id="jianwangMaterialGroup">
@@ -315,9 +327,9 @@
                         <select id="jianwangMaterialSelect"></select>
                     </div>
                 </div>
-                <div id="jianwangHint" class="cost-hint">导入存档后自动筛选剑王阁5707～5717实物</div>
+                <div id="jianwangHint" class="cost-hint">导入存档后会同时列出实物与模拟剑胚道具；道具需执行领取后才成为60级剑</div>
                 <div class="jianwang-rule-grid" aria-label="剑王阁专武规则摘要">
-                    <div><strong>实物范围</strong><span>主角、随从、离队角色、背包和仓库中的 5707～5717</span></div>
+                    <div><strong>起点范围</strong><span>主角、随从、离队角色、背包和仓库中的各阶段剑胚与专武；有后续状态时会追加模拟剑胚道具，需按「执行一次」领取</span></div>
                     <div><strong>成长 / 重铸</strong><span>沿当前专武状态继续推演；保留词条不改变随机推进</span></div>
                     <div><strong>碎剑循环</strong><span>当前剑未满90级时先推到所选90级路线；100级神兵直接碎后进入后续循环</span></div>
                 </div>
@@ -344,8 +356,150 @@
                     <button id="btnJianwangPreview" class="btn btn-wash-gold" type="button">预览当前流程</button>
                     <button id="btnJianwangApply" class="btn btn-wash" type="button">执行一次（仅网页）</button>
                 </div>
+                <div id="jianwangStrongAdvice" class="advice-grid" hidden></div>
             </section>
         </section>
+
+        <section id="panelAuto" class="tab-panel equip-auto-panel" role="tabpanel" aria-labelledby="equipTabAuto" hidden>
+                    <div class="equip-auto-snapshot-note">
+                        <strong>独立存档分支</strong>
+                        <span>每个“地点 × 图纸 × 首次材料”都从本次导入的原始打造状态开始；同一分支内才连续推进打造序列。</span>
+                    </div>
+
+                    <details class="equip-auto-section" open>
+                        <summary class="equip-auto-section-head">
+                            <div><span>01</span><strong>选择打造地点</strong></div>
+                            <span class="equip-auto-location-head-actions">
+                                <select id="autoEquipLocationMenu" aria-label="打造地点分类操作">
+                                    <option value="show-smith">只显示铁匠</option>
+                                    <option value="show-tailor">只显示绣庄</option>
+                                    <option value="show-all" selected>显示所有</option>
+                                </select>
+                                <span id="autoEquipLocationCount" class="ai-target-count" aria-live="polite">已选 0</span>
+                            </span>
+                        </summary>
+                        <div id="autoEquipLocationChoices" class="equip-auto-choice-grid" role="group" aria-label="选择打造地点">
+                            <span class="text-muted">装备表加载后显示打造地点</span>
+                        </div>
+                    </details>
+
+                    <details class="equip-auto-section" open>
+                        <summary class="equip-auto-section-head">
+                            <div><span>02</span><strong>选择图纸与附加材料</strong></div>
+                            <span id="autoEquipPaperCount" class="ai-target-count">已选 0</span>
+                        </summary>
+                        <div class="ai-target-toolbar equip-auto-paper-toolbar">
+                            <label for="autoEquipPaperSearch">筛选图纸</label>
+                            <input type="search" id="autoEquipPaperSearch" placeholder="输入装备或图纸名称" autocomplete="off">
+                        </div>
+                        <div id="autoEquipPaperChoices" class="equip-auto-paper-list" role="group" aria-label="选择图纸">
+                            <span class="text-muted">先选择至少一个打造地点</span>
+                        </div>
+                        <p class="equip-auto-help">每张图纸可多选首次打造材料；每种材料会形成一条独立打造分支，未选材料则按普通打造计算。</p>
+                    </details>
+
+                    <details class="equip-auto-section" open>
+                        <summary class="equip-auto-section-head">
+                            <div><span>03</span><strong>选择目标精炼属性</strong></div>
+                            <span id="autoEquipPropertyCount" class="ai-target-count">已选 0</span>
+                        </summary>
+                        <div id="autoEquipPropertyChoices" class="equip-auto-choice-grid equip-auto-property-grid" role="group" aria-label="选择精炼属性"></div>
+                    </details>
+
+                    <details class="equip-auto-section equip-auto-settings" open>
+                        <summary class="equip-auto-section-head">
+                            <div><span>04</span><strong>模拟次数</strong></div>
+                        </summary>
+                        <div class="ai-settings-grid">
+                            <label>每分支打造
+                                <input type="number" id="autoEquipCraftCount" min="1" max="5000" value="100">
+                                <span>次</span>
+                            </label>
+                            <label>每属性精炼
+                                <input type="number" id="autoEquipRefineCount" min="1" max="1000" value="200">
+                                <span>次</span>
+                            </label>
+                            <label>每附加次数
+                                <input type="number" id="autoEquipAttachCount" min="1" max="5000" value="20">
+                                <span>次</span>
+                            </label>
+                        </div>
+                        <label class="equip-auto-include-blue"><input type="checkbox" id="autoEquipIncludeBlue"> 包含蓝色装备</label>
+                        <p>默认只对紫装继续分析，勾选后同时分析蓝装；精炼和批量附加均使用升炼后的 100 级装备。每种已选附加材料从同一件装备的原始种子独立推进，并汇总首次附加和指定次数内的各属性最高值；候选详情仍可切换材料进行手动逐次模拟。多个目标属性各自从装备原始精炼状态独立分析，不能把不同属性方案串联执行。</p>
+                    </details>
+
+                    <div id="autoEquipSelectionMessage" class="ai-selection-message" aria-live="polite"></div>
+                    <div class="ai-search-actions">
+                        <button id="btnAutoEquipPredict" class="btn btn-ai-predict" type="button">开始装备自动模拟</button>
+                        <button id="btnAutoEquipCancel" class="btn btn-reset" type="button" hidden>取消计算</button>
+                    </div>
+                    <div id="autoEquipProgress" class="ai-search-progress" hidden aria-live="polite">
+                        <div class="ai-progress-head">
+                            <span id="autoEquipProgressText">准备计算…</span>
+                            <b id="autoEquipProgressPercent">0%</b>
+                        </div>
+                        <div class="ai-progress-track"><div id="autoEquipProgressFill" class="ai-progress-fill"></div></div>
+                    </div>
+                    <div id="autoEquipResults" class="ai-prediction-results equip-auto-results" aria-live="polite">
+                        <div class="ai-result-empty">选择地点、图纸和目标属性后开始本地计算。结果将按地点分组、按打造次数排列，并显示属性最高值和材料消耗。</div>
+                    </div>
+                </section>
+
+        <section id="panelJianwangAuto" class="tab-panel jianwang-auto-panel" role="tabpanel" aria-labelledby="equipTabJianwangAuto" hidden>
+                    <div class="equip-auto-snapshot-note">
+                        <strong>只读推演</strong>
+                        <span>可从选中的剑王阁实物或当前可领取的模拟新剑胚起跑。搜索只推进沙盒状态，不修改导入存档或装备页模拟背包。</span>
+                    </div>
+
+                    <div class="jianwang-auto-config-grid">
+                        <label>起始剑
+                            <select id="autoJianwangStartSword">
+                                <option value="">导入存档后显示</option>
+                            </select>
+                        </label>
+                        <label>90级镇派路线
+                            <select id="autoJianwangRoute">
+                                <option value="">请选择</option>
+                            </select>
+                        </label>
+                        <label>指定词条 1
+                            <select id="autoJianwangTargetProp">
+                                <option value="">先选择镇派路线</option>
+                            </select>
+                        </label>
+                        <label>指定词条 2（可选）
+                            <select id="autoJianwangTargetProp2">
+                                <option value="">不选择第二词条</option>
+                            </select>
+                        </label>
+                        <label>筛选目标
+                            <select id="autoJianwangTargetCount">
+                                <option value="3">三条指定词条</option>
+                                <option value="4" selected>四条指定词条</option>
+                            </select>
+                        </label>
+                        <label>最大模拟新剑把数
+                            <input type="number" id="autoJianwangMaxSwords" min="1" max="100000" value="500">
+                        </label>
+                    </div>
+
+                    <p id="autoJianwangStartHint" class="equip-auto-help">会按当前起始剑实际阶段进入流程：60～80级继续升阶，90级同路线先重铸到底、不同路线直接碎剑，100级直接碎神兵。</p>
+                    <div id="autoJianwangSelectionMessage" class="ai-selection-message" aria-live="polite"></div>
+                    <div class="ai-search-actions">
+                        <button id="btnAutoJianwangPredict" class="btn btn-ai-predict" type="button">开始剑王阁自动模拟</button>
+                        <button id="btnAutoJianwangCancel" class="btn btn-reset" type="button" hidden>取消计算</button>
+                    </div>
+                    <div id="autoJianwangProgress" class="ai-search-progress" hidden aria-live="polite">
+                        <div class="ai-progress-head">
+                            <span id="autoJianwangProgressText">准备计算…</span>
+                            <b id="autoJianwangProgressPercent">0%</b>
+                        </div>
+                        <div class="ai-progress-track"><div id="autoJianwangProgressFill" class="ai-progress-fill"></div></div>
+                    </div>
+                    <div id="autoJianwangResults" class="ai-prediction-results jianwang-auto-results" aria-live="polite">
+                        <div class="ai-result-empty">选择起始剑、镇派路线、1～2个指定词条、筛选目标和最大模拟次数后开始搜索。</div>
+                    </div>
+                </section>
 
         <section class="history-panel">
             <div class="panel-header">
@@ -360,10 +514,10 @@
                         <option value="1">白</option>
                         <option value="2">绿</option>
                         <option value="3">蓝</option>
-                        <option value="4" selected>紫</option>
+                        <option value="4">紫</option>
                     </select>
                 </label>
-                <label>种子
+                <label>结果类型
                     <select id="makeFilterSeed">
                         <option value="">全部</option>
                         <option value="normal">普通</option>
@@ -374,13 +528,6 @@
                 <label>词条
                     <select id="makeFilterProp">
                         <option value="">全部</option>
-                    </select>
-                </label>
-                <label>地区附加
-                    <select id="makeFilterRegion">
-                        <option value="">全部</option>
-                        <option value="has" selected>有</option>
-                        <option value="none">无</option>
                     </select>
                 </label>
                 <span id="makeFilterMeta" class="meta-text"></span>
@@ -441,16 +588,24 @@
         </footer>
     </div>
 
-    <script src="../shared/version.js"></script>
-    <script src="../shared/equip_data.js"></script>
-    <script src="../shared/wasm_data.js"></script>
-    <script src="../shared/sequence_rules.js"></script>
-    <script src="../shared/core_glue.js"></script>
-    <script src="../shared/pako.min.js"></script>
-    <script src="../shared/sql-wasm.js"></script>
-    <script src="../shared/sql-wasm-embed.js"></script>
-    <script src="../shared/save_decrypt.js?v=2.1.44-fork"></script>
-    <script src="../shared/archive_state.js"></script>
-    <script src="equip.js"></script>
-<script src="../mobile-capture.js"></script><script src="../mobile-bridge.js"></script></body>
+    <script src="../shared/version.js?v=1.4.38"></script>
+    <script src="../shared/equip_data.js?v=1.4.38"></script>
+    <script src="../shared/runtime_loader.js?v=1.4.38"></script>
+    <script src="../shared/algorithm_wasm_bridge.js?v=1.4.38"></script>
+    <script src="../shared/pako.min.js?v=1.4.38"></script>
+    <script src="../shared/save_decrypt.js?v=1.4.38"></script>
+    <script src="../shared/access_gate.js?v=1.4.38"></script>
+    <script src="../shared/wasm_algorithm_api.js?v=1.4.38" data-wasm-modules="equipment"></script>
+    <script src="../shared/calculation_worker_client.js?v=1.4.38"></script>
+    <script src="../shared/archive_state.js?v=1.4.38"></script>
+    <script src="../shared/table_export.js?v=1.4.38"></script>
+    <script src="equip.js?v=1.4.38"></script>
+    <script src="auto.js?v=1.4.38"></script>
+    <script src="jianwang_auto.js?v=1.4.38"></script>
+    <script src="../shared/feature_registry.js?v=1.4.38"></script>
+    <script src="../shared/feature_shell.js?v=1.4.38"></script>
+    <script src="../shared/site_cache.js?v=1.4.38"></script>
+    <script src="../shared/jianghu_companion.js?v=1.4.38"></script>
+    <script src="../shared/page_reset.js?v=1.4.38"></script>
+</body>
 </html>

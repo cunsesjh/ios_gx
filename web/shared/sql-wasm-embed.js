@@ -4,7 +4,7 @@ var SQLITE_WASM_B64 = "AGFzbQEAAAABoARFYAJ/fwF/YAF/AX9gA39/fwBgA39/fwF/YAF/AGACf
 
 /** 正确 base64 解码 → Uint8Array（结果缓存，只解码一次） */
 var _sqlWasmBytes = null;
-function _b64ToBytes(s) {
+function _sqliteEmbedB64ToBytes(s) {
     if (_sqlWasmBytes) return _sqlWasmBytes;
     if (typeof atob === "function") {
         var bin = atob(s);
@@ -23,7 +23,7 @@ window.initSqlJsEmbed = function () {
     if (_sqlReady) return _sqlReady; // 已初始化过，直接复用
     var p;
     try {
-        p = initSqlJs({ wasmBinary: _b64ToBytes(SQLITE_WASM_B64).buffer });
+        p = initSqlJs({ wasmBinary: _sqliteEmbedB64ToBytes(SQLITE_WASM_B64).buffer });
     } catch (e) { throw e; }
     // 失败时清掉缓存，允许下次重试
     p.catch(function () { _sqlReady = null; });
