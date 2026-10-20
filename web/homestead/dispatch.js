@@ -1,1 +1,510 @@
-function _0x4f2b(_0x42e7f0,_0x2c9adc){_0x42e7f0=_0x42e7f0-0xbf;var _0x5cb50c=_0x5cb5();var _0x4f2b7c=_0x5cb50c[_0x42e7f0];if(_0x4f2b['TRozQP']===undefined){var _0x1cc24e=function(_0x56cdd2){var _0x21feb1='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';var _0x339631='',_0x1f4065='';for(var _0x543292=0x0,_0x60cdb5,_0x21a92b,_0x5b7709=0x0;_0x21a92b=_0x56cdd2['charAt'](_0x5b7709++);~_0x21a92b&&(_0x60cdb5=_0x543292%0x4?_0x60cdb5*0x40+_0x21a92b:_0x21a92b,_0x543292++%0x4)?_0x339631+=String['fromCharCode'](0xff&_0x60cdb5>>(-0x2*_0x543292&0x6)):0x0){_0x21a92b=_0x21feb1['indexOf'](_0x21a92b);}for(var _0xa4d496=0x0,_0x5588ee=_0x339631['length'];_0xa4d496<_0x5588ee;_0xa4d496++){_0x1f4065+='%'+('00'+_0x339631['charCodeAt'](_0xa4d496)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x1f4065);};_0x4f2b['ssfETf']=_0x1cc24e,_0x4f2b['IjWkJK']={},_0x4f2b['TRozQP']=!![];}var _0x42e728=_0x5cb50c[0x0];_0x4f2b['vkrcWa']!==_0x42e728&&(_0x4f2b['IjWkJK']={},_0x4f2b['vkrcWa']=_0x42e728);var _0x4174cf=_0x4f2b['IjWkJK'][_0x42e7f0];return _0x4174cf===undefined?(_0x4f2b7c=_0x4f2b['ssfETf'](_0x4f2b7c),_0x4f2b['IjWkJK'][_0x42e7f0]=_0x4f2b7c):_0x4f2b7c=_0x4174cf,_0x4f2b7c;}(function(_0x53afa0,_0x2eb8a8){var _0x1a720a=_0x4f2b,_0x241e9a=_0x53afa0();while(!![]){try{var _0x572836=-parseInt(_0x1a720a(0x10d))/0x1+-parseInt(_0x1a720a(0xcd))/0x2*(-parseInt(_0x1a720a(0xdb))/0x3)+parseInt(_0x1a720a(0xed))/0x4+-parseInt(_0x1a720a(0xc6))/0x5*(-parseInt(_0x1a720a(0xc3))/0x6)+parseInt(_0x1a720a(0xeb))/0x7*(-parseInt(_0x1a720a(0xbf))/0x8)+-parseInt(_0x1a720a(0xe7))/0x9*(-parseInt(_0x1a720a(0x120))/0xa)+parseInt(_0x1a720a(0xd9))/0xb*(parseInt(_0x1a720a(0x105))/0xc);if(_0x572836===_0x2eb8a8)break;else _0x241e9a['push'](_0x241e9a['shift']());}catch(_0x745424){_0x241e9a['push'](_0x241e9a['shift']());}}}(_0x5cb5,0xd9b3e),!(function(){'use strict';var _0x7ad050=_0x4f2b;var _0x1f4065=null,_0x543292=[],_0x60cdb5=0x0,_0x21a92b=[_0x7ad050(0xe9),_0x7ad050(0xc1),'手记'],_0x5b7709={'木工手记':_0x7ad050(0xf2),'天工手记':_0x7ad050(0xd1),'鲁班手记':'book-red'};function _0xa4d496(_0x29417a){var _0x311722=_0x7ad050;return document[_0x311722(0x116)](_0x29417a);}function _0x5588ee(_0x427fa1){var _0x5a222e=_0x7ad050,_0x34b945=document[_0x5a222e(0xe5)]('span');return _0x34b945[_0x5a222e(0xea)]=_0x427fa1,_0x5b7709[_0x427fa1]&&(_0x34b945['className']='dispatch-book\x20'+_0x5b7709[_0x427fa1]),_0x34b945;}function _0x41395b(_0x2b5e4c){var _0x8818e1=_0x7ad050,_0x59a98e=document[_0x8818e1(0xe5)](_0x8818e1(0x100));return _0x59a98e[_0x8818e1(0x11b)](_0x5588ee(_0x2b5e4c[_0x8818e1(0xdd)])),null!=_0x2b5e4c[_0x8818e1(0x102)]&&_0x59a98e['appendChild'](document[_0x8818e1(0x11c)]('\x20×'+_0x2b5e4c[_0x8818e1(0x102)])),_0x59a98e;}function _0x515005(_0x3daa35){var _0x5e615c=_0x7ad050,_0x32a26f=_0x5e615c(0x10e)!=typeof ROLES&&ROLES[_0x3daa35['ID']];return _0x3daa35[_0x5e615c(0xfd)]||_0x3daa35['name']||_0x32a26f&&_0x32a26f['name']||_0x5e615c(0x106);}function _0x1079b6(_0x145075,_0x21bcdf){var _0x1d8e98=_0x7ad050,_0x49182d=document['createElement'](_0x1d8e98(0xd4));_0x49182d[_0x1d8e98(0xf5)]='prediction-stat';var _0x4fd4c8=document[_0x1d8e98(0xe5)]('h3');return _0x4fd4c8[_0x1d8e98(0x11b)]('string'==typeof _0x145075?document[_0x1d8e98(0x11c)](_0x145075):_0x145075),_0x49182d[_0x1d8e98(0x11b)](_0x4fd4c8),_0x21bcdf['forEach'](function(_0x3f145f){var _0x878e55=_0x1d8e98,_0xb97ba5=document[_0x878e55(0xe5)]('p');_0xb97ba5[_0x878e55(0x11b)]('string'==typeof _0x3f145f?document[_0x878e55(0x11c)](_0x3f145f):_0x3f145f),_0x49182d[_0x878e55(0x11b)](_0xb97ba5);}),_0x49182d;}function _0x2a54ef(_0xce9754,_0x51bca9){var _0x371cdf=_0x7ad050;_0xa4d496('homeExperience')['textContent']=_0x371cdf(0xee)+_0xce9754[_0x371cdf(0x113)]+_0x371cdf(0xf7)+_0xce9754[_0x371cdf(0xc5)]+_0x371cdf(0xe8)+(_0xce9754['nextLevelAt']?'\x20·\x20距下一阶段还需\x20'+(_0xce9754[_0x371cdf(0xc2)]-_0xce9754['experience'])+'\x20次':'\x20·\x20已达最高阶段'),_0xa4d496('homeBooks')[_0x371cdf(0x10a)](),_0xce9754[_0x371cdf(0xf4)][_0x371cdf(0xdc)](function(_0x25bdb7){var _0x257c3d=_0x371cdf;_0xa4d496('homeBooks')['appendChild'](_0x1079b6(_0x5588ee(_0x25bdb7['name']),[_0x257c3d(0x125)+(null==_0x25bdb7['acquired']?_0x257c3d(0xc0):_0x25bdb7[_0x257c3d(0xca)]+'\x20页'),_0x51bca9?_0x25bdb7[_0x257c3d(0x110)]?'后续第\x20'+_0x25bdb7['next']+_0x257c3d(0xcf):'本次范围内未确定下一次出现':'开始推演后查看下一次距离']));}),_0xa4d496(_0x371cdf(0xf1))[_0x371cdf(0x10a)](),_0xce9754[_0x371cdf(0xd6)][_0x371cdf(0xdc)](function(_0x1fcc37,_0x4108e6){var _0x411477=_0x371cdf;_0xa4d496(_0x411477(0xf1))[_0x411477(0x11b)](_0x1079b6('坐骑'+(_0x4108e6?'二':'一')+_0x411477(0xd2)+_0x1fcc37[_0x411477(0xe0)],_0x1fcc37[_0x411477(0x11a)][_0x411477(0xfe)]?_0x1fcc37[_0x411477(0x11a)][_0x411477(0xd7)](_0x41395b):['暂无已记录的待领取奖励']));});}function _0x6baf73(){var _0x28db15=_0x7ad050;_0x60cdb5+=0x1,_0xa4d496('homeResults')['replaceChildren'](),_0xa4d496(_0x28db15(0x118))['textContent']='',_0xa4d496('homeStatus')[_0x28db15(0xea)]=_0x543292['length']?'派遣顺序已更新，请开始推演。':'暂无已收录的派遣伙伴。',_0xa4d496('homePredict')[_0x28db15(0x111)]=!_0x543292[_0x28db15(0xfe)],_0xa4d496(_0x28db15(0x119))['querySelectorAll'](_0x28db15(0xdf))[_0x28db15(0xdc)](function(_0x589f9f){var _0x5e7e39=_0x28db15;_0x589f9f[_0x5e7e39(0xea)]=_0x5e7e39(0x10c);});}async function _0x517dfc(){var _0xa02d69=_0x7ad050,_0xd1cc5d=Number(_0xa4d496('homeCount')[_0xa02d69(0xe3)]);if(!Number[_0xa02d69(0xda)](_0xd1cc5d)||_0xd1cc5d<0x1||_0xd1cc5d>0x1f4)_0xa4d496(_0xa02d69(0xfb))['textContent']=_0xa02d69(0x115);else{var _0xf53e3=[_0x543292[Number(_0xa4d496(_0xa02d69(0x122))[_0xa02d69(0xe3)])]];if(''!==_0xa4d496(_0xa02d69(0x123))['value']&&_0xf53e3['push'](_0x543292[Number(_0xa4d496(_0xa02d69(0x123))[_0xa02d69(0xe3)])]),!_0xf53e3[_0xa02d69(0x104)](function(_0x25e436){return!_0x25e436;})){var _0x4177b0=++_0x60cdb5;_0xa4d496('homeResults')['replaceChildren'](),_0xa4d496('homeStatus')['textContent']=_0xa02d69(0x101),_0xa4d496(_0xa02d69(0xde))['disabled']=!0x0;try{var _0x3dea0c=await FixedSimulation[_0xa02d69(0xf6)](_0x1f4065,_0xf53e3,_0xd1cc5d);if(_0x4177b0!==_0x60cdb5)return;_0x2a54ef(_0x3dea0c,!0x0);var _0x18dce8=document[_0xa02d69(0xe5)]('table');_0x18dce8[_0xa02d69(0xf5)]=_0xa02d69(0xf3),_0x18dce8[_0xa02d69(0x11f)]=_0xa02d69(0xd0);var _0x480200=_0x18dce8['createTBody'](),_0x1b9f76=!0x1;_0x3dea0c[_0xa02d69(0xfa)]['forEach'](function(_0x1bc86f){var _0xb877df=_0xa02d69,_0x2a91f6=_0x480200[_0xb877df(0x109)]();[_0x1bc86f[_0xb877df(0x114)],_0x515005(_0xf53e3[_0x1bc86f['roleIndex']]),_0x1bc86f[_0xb877df(0xc5)]][_0xb877df(0xdc)](function(_0x3e7cb2){var _0x559f6c=_0xb877df;_0x2a91f6[_0x559f6c(0xe6)]()[_0x559f6c(0xea)]=_0x3e7cb2;});var _0x1ec5d3=document[_0xb877df(0xe5)]('ul');_0x1ec5d3['className']='dispatch-rewards',_0x1bc86f['rewards']['forEach'](function(_0x3bb0b9){var _0x53fd1d=_0xb877df;_0x3bb0b9['item']||(_0x1b9f76=!0x0);var _0x134b2e=document[_0x53fd1d(0xe5)]('li');_0x134b2e[_0x53fd1d(0x11b)](document[_0x53fd1d(0x11c)](_0x21a92b[_0x3bb0b9[_0x53fd1d(0xcc)]]+_0x53fd1d(0xd2))),_0x134b2e[_0x53fd1d(0x11b)](_0x3bb0b9[_0x53fd1d(0x117)]?_0x41395b(_0x3bb0b9[_0x53fd1d(0x117)]):document['createTextNode']('当前记录不足')),_0x1ec5d3[_0x53fd1d(0x11b)](_0x134b2e);}),_0x2a91f6['insertCell']()[_0xb877df(0x11b)](_0x1ec5d3);}),_0xa4d496(_0xa02d69(0xf8))[_0xa02d69(0x11b)](_0x18dce8),_0xa4d496(_0xa02d69(0x118))[_0xa02d69(0xea)]=_0x3dea0c['advances']['map'](function(_0x4a3fee,_0x1ffbc4){var _0x16ae19=_0xa02d69;return _0x21a92b[_0x1ffbc4]+_0x16ae19(0xec)+_0x4a3fee+'\x20次';})[_0xa02d69(0xc8)](_0xa02d69(0xd2)),_0xa4d496(_0xa02d69(0xfb))['textContent']=_0x1b9f76?_0xa02d69(0xef):_0xa02d69(0xd3)+_0x3dea0c[_0xa02d69(0xfa)][_0xa02d69(0xfe)]+_0xa02d69(0xd5);}catch(_0x1cd6e3){_0x4177b0===_0x60cdb5&&(_0xa4d496(_0xa02d69(0xfb))['textContent']='暂时无法推演，请确认存档完整后重试。');}finally{_0x4177b0===_0x60cdb5&&(_0xa4d496('homePredict')[_0xa02d69(0x111)]=!_0x543292[_0xa02d69(0xfe)]);}}}}async function _0x2ca2b2(){var _0x3ed868=_0x7ad050;_0xa4d496(_0x3ed868(0xde))[_0x3ed868(0x108)](_0x3ed868(0xfc),_0x517dfc),['homeRole',_0x3ed868(0x123),_0x3ed868(0x10f)]['forEach'](function(_0x491e3e){var _0x4b1f02=_0x3ed868;_0xa4d496(_0x491e3e)['addEventListener'](_0x4b1f02(0xff),_0x6baf73);});var _0x510349=_0x3ed868(0x103)==typeof loadShareStore?loadShareStore():null;if(_0x510349&&_0x510349[_0x3ed868(0x121)]){if(!_0x510349[_0x3ed868(0xc9)]||_0x3ed868(0xf0)!==_0x510349['meta'][_0x3ed868(0xce)]&&_0x3ed868(0x124)!==_0x510349[_0x3ed868(0xc9)]['channel']){_0x1f4065=Array[_0x3ed868(0xcb)](_0x510349[_0x3ed868(0x121)])?_0x510349[_0x3ed868(0x121)][0x0]:_0x510349[_0x3ed868(0x121)],renderArchiveState(_0x1f4065),_0xa4d496(_0x3ed868(0x11e))['textContent']='已导入',_0xa4d496(_0x3ed868(0xfb))[_0x3ed868(0xea)]=_0x3ed868(0x107);try{var _0x935ad0=Object[_0x3ed868(0xe4)](_0x1f4065['Roles']||{})[_0x3ed868(0xc7)](Object[_0x3ed868(0xe4)](_0x1f4065[_0x3ed868(0xe2)]||{}))[_0x3ed868(0x10b)](function(_0x4ef1aa,_0x4f5212,_0x601705){var _0x559752=_0x3ed868;return _0x4ef1aa&&null!=_0x4ef1aa['ID']&&_0x601705[_0x559752(0xf9)](function(_0x3ff80a){return _0x3ff80a&&_0x3ff80a['ID']===_0x4ef1aa['ID'];})===_0x4f5212;}),_0x2a4e18=await FixedSimulation[_0x3ed868(0x11d)](_0x935ad0);_0x543292=_0x935ad0[_0x3ed868(0x10b)](function(_0x319cbc,_0x549d7c){return null!=_0x2a4e18[_0x549d7c];}),_0xa4d496(_0x3ed868(0x122))['replaceChildren'](),_0x543292[_0x3ed868(0xdc)](function(_0x51a273,_0x58b248){var _0x35a5a6=_0x3ed868;_0xa4d496(_0x35a5a6(0x122))[_0x35a5a6(0xd8)](new Option(_0x515005(_0x51a273),String(_0x58b248))),_0xa4d496('homeSecondRole')[_0x35a5a6(0xd8)](new Option(_0x515005(_0x51a273),String(_0x58b248)));}),_0x2a54ef(await FixedSimulation[_0x3ed868(0xf6)](_0x1f4065,[],0x0),!0x1),_0x6baf73();}catch(_0x5ef485){_0xa4d496(_0x3ed868(0xfb))['textContent']=_0x3ed868(0x112);}}else _0xa4d496(_0x3ed868(0xfb))[_0x3ed868(0xea)]=_0x3ed868(0xc4);}}_0x7ad050(0xe1)===document['readyState']?document[_0x7ad050(0x108)]('DOMContentLoaded',_0x2ca2b2):_0x2ca2b2();}()));function _0x5cb5(){var _0x8d9697=['BgvUz3rO','Aw5WDxq','C3bHBG','5Q2J5zYO5O6O5RYu4OcM','CxvHBNrPDhK','zNvUy3rPB24','C29Tzq','ntG2mdu2swfVqvbe','5PYQ5zg95zcn5lYz5lY0','5Q2J5zYO6k+75y+w5Rs+6ygJ6l+B5BQM4OcM','ywrKrxzLBNrmAxn0zw5LCG','Aw5Zzxj0uM93','CMvWBgfJzunOAwXKCMvU','zMLSDgvY','5BYa5AEl5O6O5RYu5zco5P+L55Yl5lIl5lIa5QYH6lED56A7','mta5mZqYmMHkrvforq','Dw5KzwzPBMvK','Ag9TzunVDw50','BMv4Da','zgLZywjSzwq','5Rs+6ygJ6k6W5B2v6k+75y+w5AsX6lsL77Ym6k+36yEn5PAW5A+85ywL5A6m5Pw05A2y5QgJ5zco6yEn6k+v44cc','zxHWzxjPzw5Jzq','C3rLCa','6k+36l6t5ywLideG6iEZiduWmcdMRkhJGii','z2v0rwXLBwvUDej5swq','AxrLBq','Ag9TzufKDMfUy2vZ','Ag9TzujVB2TZ','CMv3yxjKCW','yxbWzw5Kq2HPBgq','y3jLyxrLvgv4De5Vzgu','CM9SzvbVB2XZ','C2f2zvn0yxr1CW','Aw5Uzxjive1m','mte1mdeWu3vOvuf2','zgf0yq','Ag9TzvjVBgu','Ag9TzvnLy29UzfjVBgu','5zU96zMf5PYn','57sV6k6H6i635y+wia','otzusgXLCMG','5B6f56gU6k6K','54+n5P2q5Qcr6iUx','BMv4DeXLDMvSqxq','nMXyCMTeBq','5Rs+6ygJ5O6O5RYu55UU5yMn5lUf5Qc46AQm5A6y5PYn54Mi5PYS44cc','Bgv2zwW','mtKZnZK3meHwvMjKAq','y29Uy2f0','AM9PBG','Bwv0yq','ywnXDwLYzwq','AxnbCNjHEq','Cg9VBa','ote4nLjSyw5mtq','CgXHDgzVCM0','ioASOEA0VUMbO+IoT+w+LW','phrOzwfKpJX0CJ48DgGGC2nVCgu9iMnVBci+5zco57UT5QYH5BQppc90Ad48DgGGC2nVCgu9iMnVBci+5lYz5lY0pc90Ad48DgGGC2nVCgu9iMnVBci+57Up6AQm6zI25Q61pc90Ad48DgGGC2nVCgu9iMnVBci+56gU5A6A5Aww5yQXpc90Ad48l3rYpJWVDgHLywq+','yM9VAY1IBhvL','imk3ia','5BEY5A6m5OIq5zco57UTia','yxj0AwnSzq','ioASOEA0VUMbO+AoQoA8LooaGG','Ag9YC2vZ','BwfW','ywrK','mtK4uKfmvu1O','AxnjBNrLz2vY','nte5EwXXu3rJ','zM9YrwfJAa','BMfTzq','Ag9TzvbYzwrPy3q','yxj0AwnSzsbWoMXHC3qTy2HPBgq','C3rHDhvZ','Bg9HzgLUzW','tgvHDMvYCW','DMfSDwu','DMfSDwvZ','y3jLyxrLrwXLBwvUDa','Aw5Zzxj0q2vSBa','nda1vxDXCNre','ioMyTUAUTq','6i2V5P2q5lI56i2V','Dgv4DenVBNrLBNq','otq3oti2y2Lsr2fU','5BEY5O6O5RYuia','ndeYntm0ngfyCeT1ua','5Rs+6ygJ57Up6AQmia','6yoO5yIg5Aww5yQX5RgG6k6W5B2v5lIn6lAZ44cc6k+35zYO5RI45OIp5lIT55sO5A+55BQu5lYz5lY05A6m5OIq5lIa5QYH5Rs+6ygJ5zco6yEn5PAW5A+85ywL77Ym5yAn5Qc45A+56l+z5lQB5Aww5yQX5RgG44cc','B3zLCNnLyq','Ag9TzuHVCNnLCW','yM9VAY1NCMvLBG','ChjLzgLJDgLVBI10ywjSzq','yM9VA3m','y2XHC3noyw1L','Ag9Tzq','imk3ioESRca','Ag9TzvjLC3vSDhm','zMLUzeLUzgv4','CM93CW','Ag9Tzvn0yxr1CW','y2XPy2S','tMfTzq'];_0x5cb5=function(){return _0x8d9697;};return _0x5cb5();}
+/* 家园派遣 页面逻辑（自研，第四版 · 按次数推演）
+ * 引擎实测结论（node 探针验证，勿改回旧假设）：
+ * - 拴马桩只有 2 个（home_youli_id01/02），且「哪个桩」不影响产出（对调实测完全相同）
+ * - 产出 = f(派谁, 第几次派遣)；每天最多 3 人次（home_majiu_day 为已派遣数）
+ * - 池 2（手记）只由「第几次」决定，与随从无关 → 手记不做选人打分，改为次数日历
+ * - 池 0/池 1 随随从不同，是选人唯一能影响的池；空抽（p0、p1 均空）不推进序号
+ * - roles 最多 2 个；roleIndex=(step-1)%roles.length 仅为轮转下标
+ */
+(function () {
+    'use strict';
+
+    var SAVE = null;
+    var ROLE_LIST = [];      // [{id,name}]
+    var ROLE_MAP = {};
+    var COUNT = 3;            // 推演的派遣次数（默认=今日剩余）
+    var MAX_STEPS = 20;       // 单条链条长度
+    var CHAIN = {};           // roleId -> [[p0,p1,p2], ...] 索引 0 = 从现在起第 1 次派遣
+    var NOTE_SEQ = [];        // 池2 手记序列（第 k 次 -> 手记名），与随从无关
+    var CATALOG = { 0: {}, 1: {} }; // pool -> {name:true}  其他物品（动态枚举）
+    var CACHE = {};           // "ids_count" -> value
+    var HORSES = [];          // 马厩游历收获 [{status, rewards:[{name,quantity}]}]，与随从无关
+    var RIDER_MAP = {};        // id -> name（含 Leavers 离队名单，拴马桩上游历的随从在这里）
+    var STEP_ITEMS = {};      // step(第几次) -> {name:true}  每次独立保存的目标物品（小保存，互不覆盖）
+    var CUR_STEP = 1;         // 当前正在编辑/查看的第几次（1..R）
+
+    var POOL_NAMES = ['药材丹药', '珍材树苗', '手记'];
+
+    var $ = function (id) { return document.getElementById(id); };
+
+    function gv(save, key) {
+        var P = save.globalVariable || save.GlobalVariable || save.P || {};
+        var v = (P && typeof P === 'object') ? (Array.isArray(P) ? (P.find ? P.find(function (x) { return x && String(x.ID) === String(key); }) : null) : P[key]) : null;
+        if (v == null) return null;
+        if (typeof v === 'object') { var w = v.value != null ? v.value : (v.Value != null ? v.Value : (v.val != null ? v.val : v.Val)); return w == null ? null : Number(w); }
+        return Number(v);
+    }
+    // 今天已派遣次数：主信号 home_majiu_day；兜底统计 2 个拴马桩（home_youli_id01/02，实测无 03）
+    function dispatchedToday() {
+        var s = Array.isArray(SAVE) ? SAVE[0] : SAVE;
+        if (!s) return 0;
+        var d = gv(s, 'home_majiu_day');
+        var n = (d == null ? 0 : Number(d)) || 0;
+        if (!(n > 0)) {
+            var rec = 0;
+            for (var i = 1; i <= 2; i++) { if (gv(s, 'home_youli_id0' + i)) rec++; }
+            n = rec;
+        }
+        return Math.max(0, Math.min(3, n));
+    }
+    function remainingToday() { return Math.max(0, 3 - dispatchedToday()); }
+    // 当前可查看的派遣次数上限 R（受次数输入框 COUNT 与链条长度 MAX_STEPS 约束）
+    function curR() { return Math.max(0, Math.min(COUNT, MAX_STEPS)); }
+    // 某手记在 20 次链条里出现的所有次数（用于「不可达」提示）
+    function noteAllSteps(name) {
+        var out = [];
+        NOTE_SEQ.forEach(function (n, i) { if (n === name) out.push(i + 1); });
+        return out;
+    }
+    function mainRoleName(save) {
+        var s = Array.isArray(save) ? save[0] : save;
+        var role = s && s.MainRole;
+        return (role && typeof role.Name === 'string' && role.Name.trim()) || '—';
+    }
+    function collectRoles(save) {
+        var s = Array.isArray(save) ? save[0] : save;
+        var list = [], seen = {};
+        ['Roles', 'linSui'].forEach(function (key) {
+            var obj = s[key];
+            if (!obj) return;
+            Object.keys(obj).forEach(function (k) {
+                var r = obj[k];
+                if (!r || r.ID == null) return;
+                if (seen[r.ID]) return;
+                seen[r.ID] = true;
+                list.push({ id: Number(r.ID), name: r.name || r.Name || ('随从' + r.ID) });
+            });
+        });
+        return list.sort(function (a, b) { return a.id - b.id; });
+    }
+    function setMessage(el, text, isError) {
+        if (!el) return;
+        el.textContent = text || '';
+        el.classList.toggle('is-error', !!isError);
+    }
+    function roleName(id) { return ROLE_MAP[id] || ('随从' + id); }
+
+    function buildInput(roleIds, count) {
+        var s = Array.isArray(SAVE) ? SAVE[0] : SAVE;
+        var Rnds = s.Rnds || {}, Sds = Rnds.Sds || {};
+        var seeds = {};
+        ['home_travel01_keyroll', 'home_travel02_keyroll', 'home_travel03_keyroll'].forEach(function (k) {
+            if (Sds[k] != null) seeds[k] = Number(Sds[k]);
+        });
+        return {
+            seeds: seeds,
+            defaultRand: Rnds.DefaultRand != null ? Number(Rnds.DefaultRand) : null,
+            experience: gv(s, 'home_majiu_lv'),
+            roles: roleIds,
+            count: count,
+            notebooks: [8270, 8271, 8272].map(function (id) { return gv(s, 'buyshop_' + id); }),
+            horses: ['one', 'two'].map(function (n, i) {
+                return {
+                    state: gv(s, 'horse_at_home0' + (i + 1)) || 0,
+                    rewards: [1, 2, 3].map(function (j) { return [gv(s, n + '_travel_reward0' + j) || 0, gv(s, n + '_travel_sl0' + j) || 0]; })
+                };
+            })
+        };
+    }
+
+    function predict(roleIds, count) {
+        var key = roleIds.join(',') + '_' + count;
+        if (CACHE[key]) return Promise.resolve(CACHE[key]);
+        return HomesteadEngine.homePredict(buildInput(roleIds, count)).then(function (res) {
+            if (!res || res.ok === false) throw new Error((res && res.error) || '引擎返回错误');
+            var val = res.value != null ? res.value : res;
+            CACHE[key] = val;
+            return val;
+        });
+    }
+
+    function onImport(e) {
+        var file = e.target.files && e.target.files[0];
+        if (!file) return;
+        if (typeof decryptSaveFile !== 'function') { setMessage($('importMessage'), '存档解密模块未加载', true); return; }
+        decryptSaveFile(file).then(function (data) {
+            SAVE = data;
+            if (typeof saveShareStore === 'function') saveShareStore(data, { source: file.name });
+            if (typeof renderArchiveState === 'function') renderArchiveState(data);
+            setMessage($('importMessage'), '已导入：' + mainRoleName(data) + '（' + file.name + '）', false);
+            prepare(data);
+        }).catch(function (err) {
+            setMessage($('importMessage'), '导入失败：' + (err && err.message ? err.message : err), true);
+        });
+    }
+
+    // 拴马桩上游历的随从可能不在 Roles/linSui，而在 Leavers（离队名单），单独收集 id->name
+    function collectRiders(save) {
+        var s = Array.isArray(save) ? save[0] : save;
+        var map = {};
+        ['Roles', 'linSui', 'Leavers'].forEach(function (key) {
+            var obj = s[key];
+            if (!obj) return;
+            var list = Array.isArray(obj) ? obj : Object.keys(obj).map(function (k) { return obj[k]; });
+            list.forEach(function (r) {
+                if (!r || r.ID == null) return;
+                var id = Number(r.ID);
+                if (!map[id]) map[id] = r.name || r.Name || ('随从' + id);
+            });
+        });
+        return map;
+    }
+
+    function prepare(data) {
+        ROLE_LIST = collectRoles(data);
+        ROLE_MAP = {};
+        RIDER_MAP = collectRiders(data);
+        ROLE_LIST.forEach(function (r) { ROLE_MAP[r.id] = r.name; });
+        if (!ROLE_LIST.length) { setMessage($('predictStatus'), '存档中未找到任何随从', true); }
+        $('configPanel').hidden = false;
+        $('dispatchEmpty').hidden = true;
+        populateSelect();
+        $('btnView').disabled = ROLE_LIST.length === 0;
+        // 次数默认值 = 今天剩余派遣次数（已派遣 0→3，2→1，全部→0）
+        var remain = remainingToday();
+        var ci = $('countInput'); if (ci) ci.value = String(remain);
+        COUNT = remain;
+        STEP_ITEMS = {};
+        CUR_STEP = 1;
+        setMessage($('predictStatus'), '正在推演各随从第 1~20 次派遣的产出链…', false);
+        HomesteadEngine.ensure().then(function () {
+            return buildChains();
+        }).then(function () {
+            renderItemPanel();
+            renderStepResults();
+            renderBookCalendar();
+            renderHorseCard();
+            setMessage($('predictStatus'), '就绪：上方选「第几次」，再点选目标物品，下方实时显示每次该派谁', false);
+        }).catch(function (err) {
+            setMessage($('predictStatus'), '引擎加载/计算失败：' + (err && err.message ? err.message : err) + '（建议经本地服务打开）', true);
+        });
+    }
+
+    function populateSelect() {
+        var sel = $('roleSelect');
+        sel.innerHTML = '';
+        ROLE_LIST.forEach(function (r) {
+            var o = document.createElement('option');
+            o.value = String(r.id);
+            o.textContent = r.name;
+            sel.appendChild(o);
+        });
+    }
+
+    // 每个随从一次 count=20 调用，得到「第 1~20 次派遣」的完整链条；同时汇总物品清单与手记日历
+    function buildChains() {
+        CHAIN = {};
+        NOTE_SEQ = [];
+        CATALOG = { 0: {}, 1: {}, 2: {} };
+        var seq = Promise.resolve();
+        ROLE_LIST.forEach(function (r) {
+            seq = seq.then(function () {
+                return predict([r.id], MAX_STEPS).then(function (val) {
+                    if (!HORSES.length) HORSES = val.horses || [];
+                    var rows = val.rows || [];
+                    CHAIN[r.id] = rows.map(function (row) {
+                        var out = [null, null, null];
+                        (row.rewards || []).forEach(function (rw) {
+                            var p = rw.pool != null ? rw.pool : 0;
+                            if (p >= 0 && p <= 2 && rw.item && rw.item.name) {
+                                out[p] = rw.item.name;
+                                CATALOG[p][rw.item.name] = true;
+                            }
+                        });
+                        return out;
+                    });
+                    // 手记序列与随从无关：用第一个成功随从的池 2 结果作为日历
+                    if (!NOTE_SEQ.length) {
+                        NOTE_SEQ = rows.map(function (row) {
+                            var hit = null;
+                            (row.rewards || []).forEach(function (rw) { if (rw.pool === 2 && rw.item && rw.item.name) hit = rw.item.name; });
+                            return hit;
+                        });
+                    }
+                }).catch(function () { CHAIN[r.id] = []; });
+            });
+        });
+        return seq;
+    }
+
+    // 目标物品筛选面板：顶部「第几次」次标签栏（切 CUR_STEP）+ 下方共享物品 chips（高亮读 STEP_ITEMS[CUR_STEP]）
+    function renderItemPanel() {
+        var box = $('itemPanel');
+        if (!box) return;
+        var R = curR();
+        // 次标签栏：第 1 … 第 R 次，当前次高亮；R<=0 时不显示
+        var tabs = '';
+        if (R > 0) {
+            var tabArr = [];
+            for (var s = 1; s <= R; s++) {
+                var on = (s === CUR_STEP) ? ' step-tab-on' : '';
+                tabArr.push('<span class="step-tab' + on + '" data-step="' + s + '" role="button" tabindex="0">第 ' + s + ' 次</span>');
+            }
+            tabs = '<div class="step-tabs"><span class="step-tabs-label">编辑：</span>' + tabArr.join('') + '</div>';
+        }
+        var groups = [
+            { title: '药材丹药', pool: 0 },
+            { title: '珍材树苗', pool: 1 }
+        ];
+        var curSel = STEP_ITEMS[CUR_STEP] || {};
+        var html = '<div class="item-panel-head">目标物品 · 给「第 ' + (R > 0 ? CUR_STEP : '?') + ' 次」选想带回的东西' +
+            '<span class="item-panel-hint">可多选，命中其一即可；切上方次数各自保存</span></div>' + tabs;
+        groups.forEach(function (g) {
+            var names = Object.keys(CATALOG[g.pool] || {}).sort();
+            var chips = names.map(function (n) {
+                var on = curSel[n] ? ' item-chip-on' : '';
+                return '<span class="item-chip' + on + '" data-name="' + n + '" role="button" tabindex="0">' + n + '</span>';
+            }).join('');
+            html += '<div class="item-group"><div class="item-group-title">' + g.title + '</div>' +
+                '<div class="item-list">' + (chips || '<span class="item-empty">—</span>') + '</div></div>';
+        });
+        box.innerHTML = html;
+        Array.prototype.forEach.call(box.querySelectorAll('.step-tab'), function (el) {
+            function go() {
+                CUR_STEP = Number(el.getAttribute('data-step'));
+                renderItemPanel();
+                renderStepResults();
+            }
+            el.addEventListener('click', go);
+            el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+        });
+        // 物品 chip 切换：只改当前次的选择，不影响其他次
+        Array.prototype.forEach.call(box.querySelectorAll('.item-chip'), function (el) {
+            function toggle() {
+                var n = el.getAttribute('data-name');
+                if (!STEP_ITEMS[CUR_STEP]) STEP_ITEMS[CUR_STEP] = {};
+                if (STEP_ITEMS[CUR_STEP][n]) delete STEP_ITEMS[CUR_STEP][n]; else STEP_ITEMS[CUR_STEP][n] = true;
+                el.classList.toggle('item-chip-on');
+                renderStepResults();
+            }
+            el.addEventListener('click', toggle);
+            el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+        });
+    }
+
+    // 实时渲染各次候选：第 1…R 次，每次列出「该次」能带回 STEP_ITEMS[step] 物品的随从；切筛选即刷新
+    function renderStepResults() {
+        var box = $('autoResult');
+        if (!box) return;
+        var R = curR();
+        if (R <= 0) {
+            box.innerHTML = '<div class="role-empty">今日派遣已全部完成（剩余 0 次）。把次数调到 1 以上可推演后续派遣</div>';
+            return;
+        }
+        var day = dispatchedToday();
+        var ids = ROLE_LIST.map(function (r) { return r.id; });
+        var blocks = [];
+        for (var step = 1; step <= R; step++) {
+            var sel = Object.keys(STEP_ITEMS[step] || {});
+            var k = day + step - 1;
+            var cands = [];
+            ids.forEach(function (rid) {
+                var cells = (CHAIN[rid] || [])[k] || [null, null, null];
+                var hits = [];
+                for (var p = 0; p < 3; p++) {
+                    var n = cells[p];
+                    if (n && sel.indexOf(n) >= 0) hits.push({ pool: p, name: n });
+                }
+                if (hits.length) cands.push({ rid: rid, hits: hits });
+            });
+            cands.sort(function (a, b) { return b.hits.length - a.hits.length; });
+            var crossDay = k > day + remainingToday() ? ' <span class="plan-cross">跨日推演 · 仅供参考</span>' : '';
+            var inner;
+            if (!sel.length) {
+                inner = '<div class="role-empty">未选目标物品（点上方「第 ' + step + ' 次」后选物品）</div>';
+            } else if (!cands.length) {
+                inner = '<div class="role-empty">无随从在该次命中所选目标</div>';
+            } else {
+                inner = cands.map(function (c) {
+                    var items = c.hits.map(function (h) { return POOL_NAMES[h.pool] + '：' + h.name; }).join(' · ');
+                    return '<div class="plan-row" data-k="' + k + '" data-rid="' + c.rid + '" role="button" tabindex="0"' +
+                        ' title="点击查看' + roleName(c.rid) + ' 第 ' + k + ' 次派遣的完整产出">' +
+                        '<span class="plan-role">' + roleName(c.rid) + '</span>' +
+                        '<span class="plan-items">' + items + '</span></div>';
+                }).join('');
+            }
+            blocks.push('<div class="plan-group"><div class="plan-group-head">第 ' + step + ' 次' + crossDay +
+                (sel.length ? ' <span class="plan-target">目标：' + sel.join('、') + '</span>' : '') + '</div>' + inner + '</div>');
+        }
+        box.innerHTML = blocks.join('');
+        Array.prototype.forEach.call(box.querySelectorAll('.plan-row[data-k]'), function (el) {
+            el.addEventListener('click', function () { showStepDetail(Number(el.dataset.k), Number(el.dataset.rid)); });
+            el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showStepDetail(Number(el.dataset.k), Number(el.dataset.rid)); } });
+        });
+    }
+
+    // 手记日历：从当前存档起、只显示「剩余几次」的格子（与派谁无关）；点击格子看该次派遣的完整产出
+    function renderBookCalendar() {
+        var box = $('bookCalendar');
+        if (!box) return;
+        if (!NOTE_SEQ.length) { box.innerHTML = ''; box.hidden = true; return; }
+        var start = dispatchedToday();
+        var windowSeq = NOTE_SEQ.slice(start, start + COUNT);
+        if (!windowSeq.length) { box.hidden = true; box.innerHTML = ''; return; }
+        box.hidden = false;
+        var cells = windowSeq.map(function (name, i) {
+            var k = start + i + 1;
+            var short = name ? name.replace('手记', '') : '—';
+            return '<div class="cal-cell cal-in-window" data-k="' + k + '" role="button" tabindex="0"' +
+                ' title="点击查看第 ' + k + ' 次派遣的产出">' +
+                '<span class="cal-step">第 ' + (k - start) + ' 次</span><span class="cal-name">' + short + '</span></div>';
+        }).join('');
+        box.innerHTML = '<div class="cal-head">每次派遣出的手记（<b>与派谁无关</b>，只由第几次决定）' +
+            '<span class="cal-legend">点次数看那次的完整产出；把「次数」调大可看后续跨日推演</span></div>' +
+            '<div class="cal-cells">' + cells + '</div>';
+        Array.prototype.forEach.call(box.querySelectorAll('.cal-cell'), function (el) {
+            el.addEventListener('click', function () { showStepDetail(Number(el.dataset.k)); });
+            el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showStepDetail(Number(el.dataset.k)); } });
+        });
+    }
+
+    // 点击日历格子/筛选结果：弹窗显示第 k 次派遣的三池产出（药材/珍材随随从，手记与派谁无关）
+    // rid 可选：筛选结果点击时直接指定随从；日历点击时用下拉框当前选中的
+    function showStepDetail(k, rid) {
+        var id = Number(rid || $('roleSelect').value);
+        var body = $('dispatchModalBody');
+        if (!id) { setMessage($('predictStatus'), '先在上方选择随从，再看该次派遣的药材/珍材产出', true); return; }
+        var cells = (CHAIN[id] || [])[k - 1];
+        if (!cells) {
+            body.innerHTML = '<div class="role-empty">推演不到第 ' + k + ' 次派遣（链条共 ' + MAX_STEPS + ' 次）</div>';
+        } else {
+            var lines = POOL_NAMES.map(function (pn, i) {
+                return poolLine(pn, i === 2, cells[i] || '', { isBook: i === 2 });
+            }).join('');
+            var crossDay = k > dispatchedToday() + remainingToday() ? '（跨日推演，种子可能重播，仅供参考）' : '';
+            body.innerHTML = '<div class="modal-sub">第 ' + k + ' 次派遣' + crossDay + '</div>' +
+                (lines || '<div class="role-empty">本次派遣无可推演的产出</div>');
+        }
+        $('dispatchModalRole').textContent = roleName(id) + ' · 第 ' + k + ' 次派遣产出';
+        $('dispatchModal').hidden = false;
+    }
+
+    // 单个池行的渲染；空池（itemsHtml 为空）直接返回 ''，让调用方不显示该行
+    function poolLine(pn, isBook, itemsHtml, opts) {
+        opts = opts || {};
+        if (itemsHtml == null || itemsHtml === '') return '';
+        var cls = 'pool-line' + (isBook ? ' pool-book' : '') +
+            (opts.mark ? ' ' + opts.mark : '') + (opts.focus ? ' cal-focus' : '');
+        return '<div class="' + cls + '">' +
+            '<span class="pool-tag">' + pn + '</span>' +
+            '<span class="pool-items">' + itemsHtml + '</span></div>';
+    }
+
+    // 马厩游历收获：读取引擎返回的 val.horses；每匹马都显示（无产出显示"空闲/为空"），不整卡隐藏
+    function renderHorseCard() {
+        var box = $('horseCard');
+        if (!box) {
+            // 兜底：旧缓存的 index.html 可能没有该容器，动态补插（避免卡片静默消失）
+            var anchor = $('bookCalendar');
+            if (!anchor || !anchor.parentNode) return;
+            box = document.createElement('div');
+            box.id = 'horseCard';
+            box.className = 'horse-card';
+            box.hidden = true;
+            anchor.parentNode.insertBefore(box, anchor.nextSibling);
+        }
+        if (!HORSES || !HORSES.length) {
+            box.hidden = false;
+            box.innerHTML = '<div class="horse-head">马厩游历收获</div><div class="role-empty">马厩为空（存档中无马匹数据）</div>';
+            return;
+        }
+        var lines = HORSES.map(function (h, idx) {
+            // 马 i ↔ 拴马桩 i：游历中的马由桩上随从带出，标注随从名
+            var rider = '';
+            var s = Array.isArray(SAVE) ? SAVE[0] : SAVE;
+            var rid = s ? gv(s, 'home_youli_id0' + (idx + 1)) : null;
+            if (rid) rider = RIDER_MAP[Number(rid)] || ('随从' + rid);
+            var items = (h.rewards || []).map(function (rw) {
+                return rw.name + (rw.quantity != null && rw.quantity > 1 ? '×' + rw.quantity : '');
+            }).join('、');
+            return '<div class="horse-line"><span class="horse-idx">马 ' + (idx + 1) + (rider ? '（' + rider + '）' : '') + '</span>' +
+                '<span class="horse-status">' + (h.status || '未知') + '</span>' +
+                '<span class="horse-items">' + (items || '<span class="horse-empty">为空（空闲，出发后才生成收获）</span>') + '</span></div>';
+        }).filter(Boolean);
+        box.hidden = false;
+        box.innerHTML = '<div class="horse-head">马厩游历收获（回厩即带回，<b>与派谁无关</b>，只由马自身状态决定）</div>' +
+            (lines.length ? lines.join('') : '<div class="role-empty">马厩为空（无马匹在栏）</div>');
+    }
+
+    // 调试接口：浏览器控制台诊断用（验证马匹游历收获数据、容器状态）
+    window.HomesteadDebug = {
+        state: function () {
+            var b = document.getElementById('horseCard');
+            return {
+                hasHorseCardDom: !!b,
+                horseCardHidden: b ? b.hidden : null,
+                horses: HORSES,
+                dispatchedToday: dispatchedToday(),
+                count: COUNT,
+                noteSeqLen: NOTE_SEQ.length
+            };
+        }
+    };
+
+    function closeDispatchModal() {
+        var m = $('dispatchModal');
+        if (m) m.hidden = true;
+    }
+
+    // 下次派遣奖励弹窗：只显示该随从下一次派遣（全局第 k 次）能推演出的产出，空池不显示
+    function onView() {
+        var id = Number($('roleSelect').value);
+        if (!id) { setMessage($('predictStatus'), '请先选择随从', true); return; }
+        var body = $('dispatchModalBody');
+        if (!body) return;
+        var day = dispatchedToday();
+        var k = day + 1;
+        var cells = (CHAIN[id] || [])[day];
+        if (!cells) {
+            body.innerHTML = '<div class="role-empty">推演不到第 ' + k + ' 次派遣（链条共 ' + MAX_STEPS + ' 次）</div>';
+        } else {
+            var lines = POOL_NAMES.map(function (pn, i) {
+                return poolLine(pn, i === 2, cells[i] || '', { isBook: i === 2 });
+            }).join('');
+            var crossDay = k > day + remainingToday() ? '（跨日推演，种子可能重播，仅供参考）' : '';
+            body.innerHTML = '<div class="modal-sub">第 ' + k + ' 次派遣' + crossDay + '</div>' +
+                (lines || '<div class="role-empty">本次派遣无可推演的产出</div>');
+        }
+        $('dispatchModalRole').textContent = roleName(id) + ' · 下次派遣奖励';
+        $('dispatchModal').hidden = false;
+    }
+
+    function init() {
+        var importBtn = $('archiveImportButton');
+        if (importBtn) importBtn.addEventListener('change', onImport); // 本页已移除导入按钮，判空兜底
+        $('btnView').addEventListener('click', onView);
+        $('dispatchModalClose').addEventListener('click', closeDispatchModal);
+        $('dispatchModal').addEventListener('click', function (e) { if (e.target === this) closeDispatchModal(); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDispatchModal(); });
+
+        var ci = $('countInput');
+        function clampCount() {
+            var n = parseInt(ci.value, 10);
+            if (isNaN(n)) n = remainingToday();
+            n = Math.max(0, Math.min(MAX_STEPS, n));
+            ci.value = String(n); COUNT = n;
+            // 次数变化后，当前编辑次不能超过新上限
+            if (CUR_STEP > curR()) CUR_STEP = Math.max(1, curR());
+            // 次标签栏、各次候选、日历窗口都随次数变化重算
+            renderItemPanel();
+            renderStepResults();
+            renderBookCalendar();
+        }
+        ci.addEventListener('change', clampCount);
+        $('countMinus').addEventListener('click', function () { ci.value = String(Math.max(0, (parseInt(ci.value, 10) || 0) - 1)); clampCount(); });
+        $('countPlus').addEventListener('click', function () { ci.value = String(Math.min(20, (parseInt(ci.value, 10) || 0) + 1)); clampCount(); });
+
+        if (typeof loadShareStore === 'function') {
+            var shared = loadShareStore();
+            if (shared && shared.data) {
+                SAVE = shared.data;
+                if (typeof renderArchiveState === 'function') renderArchiveState(SAVE);
+                setMessage($('importMessage'), '已载入上次导入的存档：' + mainRoleName(SAVE), false);
+                prepare(SAVE);
+            }
+        }
+    }
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+})();

@@ -180,11 +180,13 @@ def render_markdown(res):
 
 
 # ───────────────────────── 写盘 ─────────────────────────
-def write_all(res, outdir=None, name=None, write_db=True,
-              write_json=True, write_report=False, write_meta=True):
-    """写出结果文件。返回 {'json'|'db'|'report'|'meta': 路径}。
+def write_all(res, outdir=None, name=None, write_db=False,
+              write_json=True, write_report=False, write_meta=True,
+              write_yanyu=True):
+    """写出结果文件。返回 {'json'|'yanyu'|'db'|'report'|'meta': 路径}。
 
     结构见 `snapshot_dir()` —— 一次跑一个快照目录，里面文件名固定。
+    dat.yanyu = 转成网页（guanxing4.0）原生格式的**统一存档**。
     """
     root = paths.ensure_dir(outdir or paths.OUT_DIR)
     snap = snapshot_dir(res, root, name=name)
@@ -195,6 +197,16 @@ def write_all(res, outdir=None, name=None, write_db=True,
         with open(p, 'w', encoding='utf-8') as f:
             json.dump(res.data, f, ensure_ascii=False)
         out['json'] = p
+
+    if write_yanyu and res.data:
+        from .game import yanyu
+        p = os.path.join(snap, 'dat.yanyu')
+        try:
+            with open(p, 'wb') as f:
+                f.write(yanyu.pack(res.data))
+            out['yanyu'] = p
+        except Exception as e:                            # noqa: BLE001
+            res.warn(f'写 dat.yanyu 失败: {e}')
 
     if write_db and res.content and res.save_id:
         from .game import player as player_mod
@@ -237,13 +249,13 @@ def print_result(res, outs):
           f'　平台 {platform_tag(res.runtime)}　版本 {res.version or "?"}'
           f'　{res.field_count} 个字段')
     ui.rule()
-    labels = {'db': '存档文件', 'json': '明文数据', 'meta': '元信息',
+    labels = {'db': '存档文件', 'json': '明文数据', 'yanyu': '统一存档', 'meta': '元信息',
               'report': '流程报告'}
     # 几个文件都在同一个快照目录里，目录只打一遍，省得三行都超长
     dirs = {os.path.dirname(p) for p in outs.values()}
     if len(dirs) == 1:
         ui.info(f'  输出目录   {paths.rel(dirs.pop())}{os.sep}')
-    for k in ('db', 'json', 'meta', 'report'):
+    for k in ('yanyu', 'json', 'db', 'meta', 'report'):
         if k in outs:
             ui.info(f'  {labels.get(k, k):6} {os.path.basename(outs[k])}')
     for w in res.warnings:

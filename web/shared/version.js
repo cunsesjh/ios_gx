@@ -1,1 +1,13 @@
-var PROTOCOL_VERSION="3.1",WEB_VERSION="1.4.38",EXPORTER_VERSION="2.9.0",CORE_VERSION="3.1.6_s48";!function(){function t(){var t=document.getElementById("appVersion");t&&(t.textContent="v"+WEB_VERSION)}"loading"===document.readyState?document.addEventListener("DOMContentLoaded",t):t()}();
+var SIMULATOR_VERSION = "2.1.7";
+
+(function () {
+    function applyVersion() {
+        var el = document.getElementById("appVersion");
+        if (el) el.textContent = "v" + SIMULATOR_VERSION;
+    }
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", applyVersion);
+    } else {
+        applyVersion();
+    }
+})();

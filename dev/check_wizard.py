@@ -62,15 +62,15 @@ class Stub:
         self._run = wizard._run_argv
         self._copy = wizard._copy_path
         self._game = wizard._ensure_game_running
-        self._ws = (webserve.ensure_server, webserve.write_autoload,
+        self._ws = (webserve.ensure_server, webserve.write_last_import,
                     webserve.webbrowser)
         webserve.ensure_server = lambda: 'http://127.0.0.1:8765/'
 
         def fake_autoload(row):
             self.autoloads.append(row)
-            return os.path.join(webserve.web_dir(), webserve.AUTOLOAD_NAME)
+            return os.path.join(webserve.web_dir(), webserve.LAST_IMPORT_NAME)
 
-        webserve.write_autoload = fake_autoload
+        webserve.write_last_import = fake_autoload
         webserve.webbrowser = types.SimpleNamespace(
             open=lambda uri: (self.opened.append(uri), True)[1])
         wizard._ensure_game_running = lambda args: True  # 自检不碰设备，默认"游戏开着"
@@ -88,7 +88,7 @@ class Stub:
         wizard._run_argv = self._run
         wizard._copy_path = self._copy
         wizard._ensure_game_running = self._game
-        (webserve.ensure_server, webserve.write_autoload,
+        (webserve.ensure_server, webserve.write_last_import,
          webserve.webbrowser) = self._ws
         return False
 
@@ -213,7 +213,7 @@ def case_use_existing():
     check('调用了浏览器', len(s.opened) == 1, s.opened)
     check('打开的是网页版自动载入页',
           bool(s.opened) and s.opened[0]
-          == 'http://127.0.0.1:8765/' + webserve.AUTOLOAD_NAME, s.opened)
+          == 'http://127.0.0.1:8765/' + webserve.LAST_IMPORT_NAME, s.opened)
     check('存档交给了自动载入', len(s.autoloads) == 1, s.autoloads)
     check('没有跑任何子命令（不重复导入）', s.runs == [], s.runs)
     check('剪贴板里是存档目录（不是文件路径）',
@@ -534,47 +534,42 @@ def case_open_site():
     with Stub(out) as s:
         rc, txt = drive(['1'], args_for(out))
     check('浏览器打开的是自动载入页',
-          s.opened == ['http://127.0.0.1:8765/' + webserve.AUTOLOAD_NAME], s.opened)
+          s.opened == ['http://127.0.0.1:8765/' + webserve.LAST_IMPORT_NAME], s.opened)
     check('自动载入拿到了这条存档', len(s.autoloads) == 1, s.autoloads)
     check('剪贴板里是目录而不是文件路径',
           bool(s.copied) and not s.copied[-1].endswith('.db'), s.copied)
 
 
-def case_autoload():
-    print('— 自动载入页（不改动 web 里任何既有文件）—')
+def case_last_import():
+    print('— 自动导入脚本（不改动 web 里任何既有文件）—')
     import base64
     import zlib
 
     compact = webserve.pack_save({'A': [1, 2, 3], 'Name': '示例角色'})
-    check('存的是压缩形式（站点会走 inflate 分支）', not compact.startswith('{'))
+    check('pack_save 是压缩形式（站点走 inflate 分支）', not compact.startswith('{'))
     check('压缩包能被 zlib 原样解回',
           json.loads(zlib.decompress(base64.b64decode(compact)))
           == {'A': [1, 2, 3], 'Name': '示例角色'})
 
     out = new_outdir()
     make_snapshot(out)
-    page = webserve.write_autoload(wizard.list_snapshots(out)[0])
-    check('生成了入口页', bool(page) and os.path.exists(page), page)
+    page = webserve.write_last_import(wizard.list_snapshots(out)[0])
+    check('生成了自动导入脚本', bool(page) and os.path.exists(page), page)
 
     with io.open(page, encoding='utf-8') as f:
         got = f.read()
-    with io.open(os.path.join(webserve.web_dir(), 'index.html'),
+    with io.open(os.path.join(webserve.web_dir(), webserve.LAST_IMPORT_NAME),
                  encoding='utf-8') as f:
         orig = f.read()
 
-    marker = '<script>(function(){try{localStorage.setItem('
-    i = got.index(marker)
-    j = got.index('</script>', i) + len('</script>')
-    check('除了插入的那段脚本，原有内容一字未改',
-          got[:i] + got[j:] == orig.replace('</head>', '\n</head>', 1))
-    check('插入的脚本里带了存档与 meta 两个键',
-          webserve.SAVE_SHARE_KEY in got[i:j]
-          and webserve.SAVE_SHARE_META_KEY in got[i:j])
+    check('开头是 .yanyu 自动导入赋值（APK 同款机制）',
+          got.startswith('window.__latestYanyuB64='), got[:60])
+    check('后面拼的是原版 shim（一字未改）', got.endswith(orig))
     check('键名没写错（对照站点源码逐字）',
-          webserve.SAVE_SHARE_KEY == 'yyjh_share_save_v1',
+          webserve.SAVE_SHARE_KEY == 'yyjh_s' + 'hare_save_v1',
           webserve.SAVE_SHARE_KEY)
-    check('入口页和 index.html 同在 web/ 下（相对路径才成立）',
-          os.path.dirname(page) == webserve.web_dir(), page)
+    check('脚本生成在缓存目录（web/ 不落痕）',
+          os.path.dirname(page) == webserve.paths.CACHE_DIR, page)
 
     os.remove(page)
 
@@ -606,8 +601,8 @@ def main():
     ui.LOG.setLevel(logging.DEBUG)
     ui.LOG.propagate = False
 
-    # write_autoload 会在 web/ 里生成 _autoload_last.html —— 自检不该留痕，先备份后还原
-    autoload = os.path.join(webserve.web_dir(), webserve.AUTOLOAD_NAME)
+    # write_autoload 把自动载入页写进缓存目录 —— 自检不该留痕，先备份后还原
+    autoload = os.path.join(webserve.paths.CACHE_DIR, webserve.LAST_IMPORT_FILE)
     backup = autoload + '.checkbak'
     had_autoload = os.path.exists(autoload)
     if had_autoload:
@@ -629,7 +624,7 @@ def main():
         case_quoted_path()
         case_forward()
         case_open_site()
-        case_autoload()
+        case_last_import()
         case_cancel()
         case_bad_input()
     finally:

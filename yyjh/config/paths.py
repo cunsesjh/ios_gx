@@ -8,12 +8,19 @@
 """
 import os
 import re
+import sys
 
 # tool_1.1/yyjh/config/paths.py
 _THIS = os.path.abspath(__file__)
 YYJH_PKG = os.path.dirname(os.path.dirname(_THIS))      # .../tool_1.1/yyjh
-TOOL_DIR = os.path.dirname(YYJH_PKG)                    # .../tool_1.1
-WORKSPACE = os.environ.get('YYJH_WORKSPACE') or os.path.dirname(TOOL_DIR)
+if getattr(sys, 'frozen', False):
+    # exe 打包：网页资源在包内（webserve 走 sys._MEIPASS 找 web/），
+    # 但 output/keys.json 要落在 **exe 旁边**（可写、跨次运行不丢）
+    TOOL_DIR = os.path.dirname(os.path.abspath(sys.executable))
+else:
+    TOOL_DIR = os.path.dirname(YYJH_PKG)                # .../tool_1.1
+WORKSPACE = os.environ.get('YYJH_WORKSPACE') or (
+    TOOL_DIR if getattr(sys, 'frozen', False) else os.path.dirname(TOOL_DIR))
 
 DATA_DIR = os.path.join(WORKSPACE, 'data')
 OUT_DIR = os.path.join(TOOL_DIR, 'output')     # 所有生成物都落在这里
@@ -28,6 +35,15 @@ DOCS_DIR = os.path.join(WORKSPACE, 'docs')
 #   keys.local.json —— 本机信息（adb 路径/设备/包名）+ 外层密钥（跟账号绑），
 #                      属于"不该给别人"的东西，已加进 .gitignore。
 KEYS_FILE = os.path.join(TOOL_DIR, 'keys.json')
+if getattr(sys, 'frozen', False) and not os.path.exists(KEYS_FILE):
+    # 首次运行：把打包内置的 keys.json 释放到 exe 旁边（之后可自行更新/分享）
+    import shutil
+    _bundled_keys = os.path.join(getattr(sys, '_MEIPASS', ''), 'keys.json')
+    if os.path.exists(_bundled_keys):
+        try:
+            shutil.copy2(_bundled_keys, KEYS_FILE)
+        except OSError:
+            pass
 LOCAL_FILE = os.path.join(TOOL_DIR, 'keys.local.json')
 USER_KEYS = KEYS_FILE                 # 兼容旧名字
 # 早期把两样东西混在一个文件里，第一次运行会自动拆开（原文件改名保留）

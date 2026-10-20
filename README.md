@@ -46,3 +46,21 @@ python run.py
 4. 回到proxypin，停止抓包
 5. proxypin右上角三点 —— 视图导出 —— （新版本要选择HAR格式）
 6. 将导出的结果传输到电脑，然后启动程序`python run.py`进行解析
+
+## 存档与网页（guanxing4.0 整合版）
+
+- **统一存档 = `dat.yanyu`**（网页原生格式，YANYUPL1 本地加密容器）：
+  har 转存档后自动多产出一份 `output/<ios区-昵称>/<时间戳>/dat.yanyu`；
+  `dat.json` 仍保留作明文备份，网页「导入数据」两种都认。
+- **自动导入**：向导导入完自动拉起本地网页服务并把存档交给网页的
+  last-import 通道（与导出工具 App 同款机制），打开即「已导入」。
+- 网页在 `web/`（guanxing4.0 资源整站），本地服务用 Python 直接跑，
+  **不需要 Node**：`python run.py serve` / `python run.py serve --stop`。
+
+## 打包 Windows exe
+
+- 云端构建：推送 `v*` 标签到 GitHub，Actions 自动构建并挂到 Release
+  （`.github/workflows/build-exe.yml`；首次用去 Settings→Actions→Workflow
+  permissions 勾 Read and write）。
+- 本地构建：Windows 上双击 `build.bat`，产物在 `dist\yanyu-guanxing.exe`
+  （单文件，内含网页整站与 adb，输出/密钥文件生成在 exe 旁边）。

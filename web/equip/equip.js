@@ -1,1 +1,5221 @@
-const _0x442d85=_0x1a0a;(function(_0x170715,_0x6dd488){const _0x2b8ecd=_0x1a0a,_0x2e25c6=_0x170715();while(!![]){try{const _0x16d95d=-parseInt(_0x2b8ecd(0x472))/0x1+-parseInt(_0x2b8ecd(0x2d9))/0x2*(-parseInt(_0x2b8ecd(0x458))/0x3)+parseInt(_0x2b8ecd(0x377))/0x4+-parseInt(_0x2b8ecd(0x2f8))/0x5+parseInt(_0x2b8ecd(0x3ea))/0x6*(-parseInt(_0x2b8ecd(0x3a9))/0x7)+-parseInt(_0x2b8ecd(0x31b))/0x8*(-parseInt(_0x2b8ecd(0x279))/0x9)+-parseInt(_0x2b8ecd(0x27c))/0xa*(parseInt(_0x2b8ecd(0x1ab))/0xb);if(_0x16d95d===_0x6dd488)break;else _0x2e25c6['push'](_0x2e25c6['shift']());}catch(_0x1d5843){_0x2e25c6['push'](_0x2e25c6['shift']());}}}(_0x300f,0x96c27));const COLOR_NAMES=_0x442d85(0x235)!=typeof EQUIP_DATA&&EQUIP_DATA[_0x442d85(0x2a3)]||{0x1:'白',0x2:'绿',0x3:'蓝',0x4:'紫',0x5:'橙',0x6:'红'},PROP_NAMES=_0x442d85(0x235)!=typeof EQUIP_DATA&&EQUIP_DATA[_0x442d85(0x263)]||{},TYPE_NAMES=_0x442d85(0x235)!=typeof EQUIP_DATA&&EQUIP_DATA[_0x442d85(0x310)]||{};let makeRndSnapshot=null,saveLoaded=!0x1,logLines=[],saveMeta=null,equipSaveData=null,saveEquips=[],saveEquipsSnapshot=[],equipRuntime={},equipRuntimeSnapshot={},currentTab=_0x442d85(0x3e5),currentBagAction=_0x442d85(0x47d),craftedSeq=0x35a4e900,makeAdvanceNotice=null;const PREVIEW_MAX=0x1388,XILIAN_MAX=0x3e8,LOG_PAGE_SIZE=0x28,PATH_PAGE_SIZE=0xc,CRAFTED_MJ_SEED_PAPER_MULTIPLIER=0xc6,JIANWANG_SWORD_IDS=new Set([0x164b,0x164c,0x164d,0x164e,0x164f,0x1650,0x1651,0x1652,0x1653,0x1654,0x1655]),JIANWANG_LEVEL_100_IDS=new Set([0x1652,0x1653,0x1654,0x1655]),JIANWANG_LEVEL_90_IDS=new Set([0x164e,0x164f,0x1650,0x1651]),JIANWANG_GROW_TARGETS=Object[_0x442d85(0x38e)]({0x164b:Object[_0x442d85(0x38e)]([0x164c]),0x164c:Object['freeze']([0x164d]),0x164d:Object[_0x442d85(0x38e)]([0x164e,0x164f,0x1650,0x1651])}),JIANWANG_LEVEL_100_TARGETS=Object[_0x442d85(0x38e)]({0x164e:0x1652,0x164f:0x1653,0x1650:0x1654,0x1651:0x1655}),JIANWANG_REFORGE_COSTS=Object[_0x442d85(0x38e)]([Object[_0x442d85(0x38e)]([0x2,0x3]),Object[_0x442d85(0x38e)]([0x3,0x4]),Object['freeze']([0x4,0x4]),Object[_0x442d85(0x38e)]([0x6,0x5]),Object[_0x442d85(0x38e)]([0x6,0x6])]),JIANWANG_REFORGE_LIMIT=0xa,JIANWANG_BLANK_ID=0x164b,JIANWANG_SHATTER_ROUTE_IDS=Object['freeze']({0x164e:0x164e,0x164f:0x164f,0x1650:0x1650,0x1651:0x1651,0x1652:0x164e,0x1653:0x164f,0x1654:0x1650,0x1655:0x1651}),JIANWANG_SHATTER_90=_0x442d85(0x330),JIANWANG_SHATTER_100='shatter:100';let tablePager={'mode':null,'page':0x1,'makeItems':[],'specialAttachItems':[],'xilianEntries':[],'strongItems':[],'jianwangItems':[],'jianwangKind':'','jianwangCyclePages':[],'strongMinSet':null,'strongBestSet':null,'strongHighlightMode':''},jianwangReforgeCounts={},jianwangReforgeCountsSnapshot={},jianwangRedSeed=null,jianwangRedSeedSnapshot=null,jianwangSelectableBlank=null,jianwangGeneratedSwordCount=0x0,jianwangRuleDetection=Object[_0x442d85(0x38e)]({'rule':_0x442d85(0x3b0),'confidence':_0x442d85(0x2ee),'reason':_0x442d85(0x3bb)}),logPage=0x1,pathPages={'min':0x1,'max':0x1};function propLabel(_0xb16003){return PROP_NAMES[_0xb16003]||_0xb16003;}function formatPropValue(_0x569ab7,_0x49f6a0){const _0x366cf5=_0x442d85;return'number'!=typeof _0x49f6a0?String(_0x49f6a0):_0x49f6a0<0x1||'atk_extend'===_0x569ab7?_0x49f6a0<0.1?Math['floor'](0x3e8*_0x49f6a0+0.001)/0xa+'%':Math[_0x366cf5(0x21e)](0x64*_0x49f6a0+0.001)+'%':String(_0x49f6a0);}function formatProps(_0x544e1a){const _0x32963d=_0x442d85;return _0x544e1a&&_0x544e1a[_0x32963d(0x3d7)]?_0x544e1a[_0x32963d(0x194)](_0x2b2319=>{const _0x31c515=_0x32963d,_0x514262=formatPropValue(_0x2b2319['prop'],_0x2b2319[_0x31c515(0x272)]);return'<span\x20class=\x22prop-line\x22>'+propLabel(_0x2b2319[_0x31c515(0x18c)])+'+'+_0x514262+'</span>';})[_0x32963d(0x34e)](''):'—';}function formatPropsText(_0x52bf9e){const _0x327e34=_0x442d85;return _0x52bf9e&&_0x52bf9e[_0x327e34(0x3d7)]?_0x52bf9e['map'](_0x391136=>propLabel(_0x391136[_0x327e34(0x18c)])+'+'+formatPropValue(_0x391136[_0x327e34(0x18c)],_0x391136['value']))[_0x327e34(0x34e)]('、'):'无';}function formatBase(_0x24a894){const _0x372306=_0x442d85;if(!_0x24a894||!Object['keys'](_0x24a894)[_0x372306(0x3d7)])return'—';const _0x388734=[_0x372306(0x3ec),_0x372306(0x37e),'hit','hp',_0x372306(0x3a2),'dodge','parry'],_0x170332=[];for(const _0x2cc3b6 of _0x388734)null!=_0x24a894[_0x2cc3b6]&&_0x170332[_0x372306(0x3f0)](''+propLabel(_0x2cc3b6)+_0x24a894[_0x2cc3b6]);for(const [_0xb58eec,_0x454bd4]of Object['entries'](_0x24a894))_0x388734[_0x372306(0x460)](_0xb58eec)||_0x170332[_0x372306(0x3f0)](''+propLabel(_0xb58eec)+_0x454bd4);return _0x170332[_0x372306(0x34e)](_0x372306(0x191));}function escapeHtml(_0x1f3f42){const _0x13d1a3=_0x442d85;return String(_0x1f3f42)[_0x13d1a3(0x417)](/[&<>"']/g,_0x2dc027=>({'&':'&amp;','<':_0x13d1a3(0x418),'>':'&gt;','\x22':'&quot;','\x27':_0x13d1a3(0x1a7)}[_0x2dc027]));}function publicSimulationError(_0x4b76e4){const _0x29766c=_0x442d85,_0x11b8cc=_0x4b76e4 instanceof Error?_0x4b76e4[_0x29766c(0x23b)]:String(_0x4b76e4||'未知错误');return/(?:\bid\b|seed|种子|makernd|makelucky|onlyid|spdata|redseeds?|czseed|mjseed|存档路径|\$\.)/i[_0x29766c(0x268)](_0x11b8cc)?_0x29766c(0x2c5):_0x11b8cc;}function getPreviewPageSize(){const _0x136eec=_0x442d85;return Number(document[_0x136eec(0x1d4)](_0x136eec(0x1eb))?.[_0x136eec(0x272)])||0x14;}function updatePreviewPager(_0x287921){const _0xeec01d=_0x442d85,_0x30aa2c=document[_0xeec01d(0x1d4)]('previewPager'),_0x422f2d=document[_0xeec01d(0x1d4)](_0xeec01d(0x372));if(!_0x30aa2c||!_0x422f2d)return;const _0x384292=document[_0xeec01d(0x1d4)](_0xeec01d(0x443));_0x384292&&(_0x384292[_0xeec01d(0x19f)]=!0x1);const _0x5aa9c7=getPreviewPageSize(),_0x584702=Math['max'](0x1,Math[_0xeec01d(0x412)](_0x287921/_0x5aa9c7)||0x1);tablePager[_0xeec01d(0x247)]>_0x584702&&(tablePager[_0xeec01d(0x247)]=_0x584702),tablePager['page']<0x1&&(tablePager[_0xeec01d(0x247)]=0x1),_0x30aa2c[_0xeec01d(0x19f)]=_0x287921<=0x0,_0x422f2d[_0xeec01d(0x3dc)]=_0x287921?'第\x20'+tablePager['page']+'/'+_0x584702+_0xeec01d(0x41c)+_0x287921+'\x20条':'—';const _0x57f79a=document[_0xeec01d(0x1d4)](_0xeec01d(0x382)),_0x42789b=document[_0xeec01d(0x1d4)](_0xeec01d(0x339));_0x57f79a&&(_0x57f79a['disabled']=tablePager[_0xeec01d(0x247)]<=0x1),_0x42789b&&(_0x42789b[_0xeec01d(0x44a)]=tablePager[_0xeec01d(0x247)]>=_0x584702);}function updateJianwangCyclePager(_0x106de3,_0x576382){const _0x482f14=_0x442d85,_0x5ccf73=document[_0x482f14(0x1d4)](_0x482f14(0x309)),_0x26be25=document[_0x482f14(0x1d4)]('previewPagerInfo');if(!_0x5ccf73||!_0x26be25)return;const _0x52f745=Math[_0x482f14(0x23a)](0x1,Number(_0x106de3)||0x1);tablePager[_0x482f14(0x247)]>_0x52f745&&(tablePager[_0x482f14(0x247)]=_0x52f745),tablePager[_0x482f14(0x247)]<0x1&&(tablePager[_0x482f14(0x247)]=0x1),_0x5ccf73[_0x482f14(0x19f)]=_0x106de3<=0x0;const _0x56c6b6=document['getElementById'](_0x482f14(0x443));_0x56c6b6&&(_0x56c6b6[_0x482f14(0x19f)]=!0x0),_0x26be25[_0x482f14(0x3dc)]=_0x106de3?'第\x20'+tablePager['page']+'/'+_0x52f745+_0x482f14(0x46e)+(_0x576382||tablePager[_0x482f14(0x247)])+_0x482f14(0x24b):'—';const _0x30c865=document[_0x482f14(0x1d4)](_0x482f14(0x382)),_0x55908d=document[_0x482f14(0x1d4)](_0x482f14(0x339));_0x30c865&&(_0x30c865[_0x482f14(0x44a)]=tablePager[_0x482f14(0x247)]<=0x1),_0x55908d&&(_0x55908d[_0x482f14(0x44a)]=tablePager[_0x482f14(0x247)]>=_0x52f745);}function hidePreviewPager(){const _0x3ba4b7=_0x442d85,_0x1dd99d=document[_0x3ba4b7(0x1d4)](_0x3ba4b7(0x309));_0x1dd99d&&(_0x1dd99d[_0x3ba4b7(0x19f)]=!0x0),tablePager['mode']=null,tablePager[_0x3ba4b7(0x247)]=0x1;}function renderCurrentPreviewPage(){const _0x1a8124=_0x442d85;_0x1a8124(0x3e5)===tablePager[_0x1a8124(0x18d)]?renderMakePage():_0x1a8124(0x326)===tablePager[_0x1a8124(0x18d)]?renderSpecialAttachPage():'xilian'===tablePager[_0x1a8124(0x18d)]?renderXilianPage():'strong'===tablePager[_0x1a8124(0x18d)]?renderStrongPage():'jianwang'===tablePager[_0x1a8124(0x18d)]&&renderJianwangPage();}function _0x1a0a(_0x4e7532,_0x3753c7){_0x4e7532=_0x4e7532-0x14d;const _0x300f38=_0x300f();let _0x1a0add=_0x300f38[_0x4e7532];if(_0x1a0a['xvQgpY']===undefined){var _0x1fdad5=function(_0x1ad8b0){const _0x32dbc6='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x3bb552='',_0xb16003='';for(let _0x569ab7=0x0,_0x49f6a0,_0x544e1a,_0x2b2319=0x0;_0x544e1a=_0x1ad8b0['charAt'](_0x2b2319++);~_0x544e1a&&(_0x49f6a0=_0x569ab7%0x4?_0x49f6a0*0x40+_0x544e1a:_0x544e1a,_0x569ab7++%0x4)?_0x3bb552+=String['fromCharCode'](0xff&_0x49f6a0>>(-0x2*_0x569ab7&0x6)):0x0){_0x544e1a=_0x32dbc6['indexOf'](_0x544e1a);}for(let _0x514262=0x0,_0x52bf9e=_0x3bb552['length'];_0x514262<_0x52bf9e;_0x514262++){_0xb16003+='%'+('00'+_0x3bb552['charCodeAt'](_0x514262)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0xb16003);};_0x1a0a['RlFboK']=_0x1fdad5,_0x1a0a['kTUGlb']={},_0x1a0a['xvQgpY']=!![];}const _0x1adab6=_0x300f38[0x0];_0x1a0a['QvuDCg']!==_0x1adab6&&(_0x1a0a['kTUGlb']={},_0x1a0a['QvuDCg']=_0x1adab6);const _0x7262b9=_0x1a0a['kTUGlb'][_0x4e7532];return _0x7262b9===undefined?(_0x1a0add=_0x1a0a['RlFboK'](_0x1a0add),_0x1a0a['kTUGlb'][_0x4e7532]=_0x1a0add):_0x1a0add=_0x7262b9,_0x1a0add;}function updateLogPager(){const _0x26ab85=_0x442d85,_0xe019ef=document[_0x26ab85(0x1d4)](_0x26ab85(0x269)),_0x2a12f3=document['getElementById'](_0x26ab85(0x1f8));if(!_0xe019ef||!_0x2a12f3)return;const _0x431fed=logLines[_0x26ab85(0x3d7)],_0x5273ef=Math[_0x26ab85(0x23a)](0x1,Math[_0x26ab85(0x412)](_0x431fed/0x28)||0x1);logPage>_0x5273ef&&(logPage=_0x5273ef),logPage<0x1&&(logPage=0x1),_0xe019ef['hidden']=_0x431fed<=0x28,_0x2a12f3[_0x26ab85(0x3dc)]=_0x431fed?'第\x20'+logPage+'/'+_0x5273ef+_0x26ab85(0x41c)+_0x431fed+'\x20条':'—';const _0x59798f=document['getElementById'](_0x26ab85(0x17a)),_0xcb72f6=document[_0x26ab85(0x1d4)](_0x26ab85(0x3f2));_0x59798f&&(_0x59798f[_0x26ab85(0x44a)]=logPage<=0x1),_0xcb72f6&&(_0xcb72f6['disabled']=logPage>=_0x5273ef);}function renderLogPage(){const _0x567eeb=_0x442d85,_0x397fe4=document[_0x567eeb(0x1d4)](_0x567eeb(0x15e));if(!_0x397fe4)return;if(!logLines[_0x567eeb(0x3d7)])return _0x397fe4[_0x567eeb(0x3dc)]='',void updateLogPager();const _0x1d4c87=0x28*(logPage-0x1);_0x397fe4['textContent']=logLines[_0x567eeb(0x212)](_0x1d4c87,_0x1d4c87+0x28)['join']('\x0a'),updateLogPager();}function appendLog(_0xc5283f){const _0x4df6a6=_0x442d85;logLines[_0x4df6a6(0x3f0)](_0xc5283f),logLines[_0x4df6a6(0x3d7)]>0x4e20&&logLines[_0x4df6a6(0x371)](0x0,logLines[_0x4df6a6(0x3d7)]-0x4e20),logPage=Math[_0x4df6a6(0x23a)](0x1,Math[_0x4df6a6(0x412)](logLines['length']/0x28)),renderLogPage();}function normalizeExts(_0x28e3f9){const _0x1832e3=_0x442d85;return _0x28e3f9&&Array['isArray'](_0x28e3f9)?_0x28e3f9[_0x1832e3(0x431)](Boolean)[_0x1832e3(0x194)](_0x5d8546=>({'prop':_0x5d8546[_0x1832e3(0x342)]||_0x5d8546[_0x1832e3(0x18c)]||_0x5d8546[_0x1832e3(0x1a3)],'value':null!=_0x5d8546[_0x1832e3(0x3d9)]?_0x5d8546[_0x1832e3(0x3d9)]:_0x5d8546[_0x1832e3(0x272)]}))[_0x1832e3(0x431)](_0x221a39=>_0x221a39[_0x1832e3(0x18c)]):[];}function normalizeJianwangExts(_0x486d70){const _0x228e35=_0x442d85;return _0x486d70&&Array[_0x228e35(0x3f4)](_0x486d70)?_0x486d70['filter'](Boolean)[_0x228e35(0x194)](_0x2a5b5f=>({'prop':_0x2a5b5f[_0x228e35(0x342)]||_0x2a5b5f[_0x228e35(0x18c)]||_0x2a5b5f['key'],'value':null!=_0x2a5b5f[_0x228e35(0x3d9)]?_0x2a5b5f['Value']:_0x2a5b5f[_0x228e35(0x272)],'S':null!=_0x2a5b5f['S']?_0x2a5b5f['S']:_0x2a5b5f['s']||0x0,'propCheck':_0x2a5b5f['PropCheck']||_0x2a5b5f[_0x228e35(0x3ac)]||''}))['filter'](_0xbb6001=>_0xbb6001[_0x228e35(0x18c)]):[];}function parseXilianMarks(_0x33e2eb){const _0x12bf37=_0x442d85,_0x17fc3d=_0x33e2eb?.[_0x12bf37(0x2bf)];return _0x17fc3d&&_0x12bf37(0x237)==typeof _0x17fc3d?Object[_0x12bf37(0x159)](_0x17fc3d)['filter'](_0x4865ea=>_0x17fc3d[_0x4865ea])['map'](Number)[_0x12bf37(0x431)](_0x2dd6a7=>_0x2dd6a7>=0x1&&_0x2dd6a7<=0x3)[_0x12bf37(0x21c)]((_0x2089df,_0xee1dd6)=>_0x2089df-_0xee1dd6):[];}function toEquipInstance(_0x44b857,_0x1499e1,_0x217edd){const _0x5cf635=_0x442d85,_0x4dac42=_0x44b857['ID']||_0x44b857['id'],_0x3a59cf=EQUIP_DATA[_0x5cf635(0x2be)][String(_0x4dac42)]||{},_0x33996=parseXilianMarks(_0x44b857);return{'id':_0x4dac42,'only_id':_0x44b857[_0x5cf635(0x360)]||_0x44b857[_0x5cf635(0x1a4)]||0x0,'name':_0x3a59cf[_0x5cf635(0x186)]||String(_0x4dac42),'need_lv':_0x3a59cf['lv']||0x0,'typ':_0x3a59cf[_0x5cf635(0x362)]||0x0,'color':null!=_0x44b857['Color']?_0x44b857['Color']:_0x44b857[_0x5cf635(0x3c6)]||0x1,'level':null!=_0x44b857[_0x5cf635(0x384)]?_0x44b857[_0x5cf635(0x384)]:_0x44b857[_0x5cf635(0x2f9)]||0x0,'lv_prop':null!=_0x44b857[_0x5cf635(0x368)]?_0x44b857[_0x5cf635(0x368)]:_0x44b857['lv_prop']||0x0,'S':null!=_0x44b857['S']?_0x44b857['S']:_0x44b857['s']||0x0,'MJSeed':null!=_0x44b857[_0x5cf635(0x262)]?_0x44b857[_0x5cf635(0x262)]:_0x44b857['mj_seed']||0x0,'CZSeed':null!=_0x44b857[_0x5cf635(0x36f)]?_0x44b857['CZSeed']:_0x44b857['cz_seed']||0x0,'XLLevel':null!=_0x44b857[_0x5cf635(0x20c)]?_0x44b857['XLLevel']:_0x44b857[_0x5cf635(0x228)]||0x0,'XLNumber':null!=_0x44b857['XLNumber']?_0x44b857[_0x5cf635(0x395)]:_0x44b857[_0x5cf635(0x363)]||0x0,'exp':null!=_0x44b857[_0x5cf635(0x305)]?_0x44b857[_0x5cf635(0x305)]:_0x44b857[_0x5cf635(0x46f)]||0x0,'base':{'atk':null!=_0x44b857['Atk']?_0x44b857[_0x5cf635(0x328)]:_0x44b857[_0x5cf635(0x3ec)]||0x0,'def':null!=_0x44b857['Def']?_0x44b857[_0x5cf635(0x480)]:_0x44b857[_0x5cf635(0x37e)]||0x0,'hit':null!=_0x44b857[_0x5cf635(0x2c1)]?_0x44b857['Hit']:_0x44b857[_0x5cf635(0x169)]||0x0,'hp':null!=_0x44b857['Hp']?_0x44b857['Hp']:_0x44b857['hp']||0x0,'speed':null!=_0x44b857[_0x5cf635(0x356)]?_0x44b857[_0x5cf635(0x356)]:_0x44b857[_0x5cf635(0x3a2)]||0x0,'dodge':null!=_0x44b857[_0x5cf635(0x38f)]?_0x44b857[_0x5cf635(0x38f)]:_0x44b857[_0x5cf635(0x1b1)]||0x0,'parry':null!=_0x44b857[_0x5cf635(0x45b)]?_0x44b857['Parry']:_0x44b857[_0x5cf635(0x254)]||0x0,'neijin':null!=_0x44b857[_0x5cf635(0x3c7)]?_0x44b857[_0x5cf635(0x3c7)]:_0x44b857[_0x5cf635(0x32d)]||0x0,'gq_base':null!=_0x44b857[_0x5cf635(0x409)]?_0x44b857['Gangqi']:_0x44b857[_0x5cf635(0x2d0)]||0x0},'exts':JIANWANG_SWORD_IDS[_0x5cf635(0x3fb)](Number(_0x4dac42))?normalizeJianwangExts(_0x44b857[_0x5cf635(0x1f4)]||_0x44b857[_0x5cf635(0x3d3)]):normalizeExts(_0x44b857[_0x5cf635(0x1f4)]||_0x44b857['exts']),'specials':normalizeExts(_0x44b857['EnSpecials']||_0x44b857[_0x5cf635(0x244)]),'xilian_marks':_0x33996,'xilian_accepted':_0x33996['length'],'_source':_0x1499e1,'_equipped':!!_0x217edd,'_crafted':!0x1,'_mark':''};}function canXilian(_0x32678f){const _0x112c1c=_0x442d85;return!!_0x32678f&&_0x32678f[_0x112c1c(0x206)]>0x5a&&_0x32678f[_0x112c1c(0x3c6)]>0x1&&_0x32678f[_0x112c1c(0x3c6)]<0x5&&_0x32678f[_0x112c1c(0x3d3)][_0x112c1c(0x3d7)]>0x0;}function canStrong(_0x2629a3){const _0x56a33e=_0x442d85;return!!_0x2629a3&&_0x2629a3[_0x56a33e(0x393)]>=0x1&&_0x2629a3[_0x56a33e(0x393)]<=0x4&&_0x2629a3[_0x56a33e(0x2f9)]<0xf;}function _0x300f(){const _0x20d277=['44cnW5CX','AgfZt3DUuhjVCgvYDhK','nMXlv0LxyG','otdNUQFKUjpMRAyGWRCG','yxrR','ywn0Aw9U','pgfYDgLJBguGy2XHC3m9iMfKDMLJzs1JyxjKiIbKyxrHlxbSyw49iG','44cb5yMr6iQVnJuXn8ox','ChvZAa','C3bLy2LHBc1HDhrHy2GTyMvZDa','yNrUtg9NtMv4Da','pc9KAxy+cIaGicaGicaGpgrPDIbJBgfZCZ0IBwfRzs1HzhzHBMnLlw5VDgLJzs1KzxrHAwWIpJXZDhjVBMC+6joDl+E0Q+IVJEADOtWVC3rYB25NpG','AxnbCNjHEq','BwfRzurLzMf1BhrnyxjR','phrYpJX0zcbJB2XZCgfUpsi','y2HLy2TLza','55YF5RcuW5C1mddJGihLIzhOIQ82nte2W5C','imk3ioACRoMHTEwqQZyW4OAsotdKUi4XmoASOEs4JEs/NEEvMEMhJEMtUcdcTYdPOOtOP4JKUi3MJQJOV5VNIRBMGie','77Yi5B2t5yMn562B6ycj5lIl5PEG5y+V55sO6kof5Ash77Yj','AgfZ','C2vHCMnO','6Akg5y+w5PAW5yMr6ioAiokgKIdPLlVPGkdMIja2moE6P+wjKq','BwLUq29SB3i','iJ4kicaGicaGica8Dgq+','pc9KAxy+cIaGicaGicaG','pc9ZCgfUpJXKAxyGy2XHC3m9iMPPyw53yw5NlxrVA2vUlwXPC3qGAMLHBNDHBMCTy29ZDc1SAxn0iJ4','6k+36ycj5OUP5RI45OIp5lIT5A6E6zMf6zo46l+B55Qe5P2q5PAz','5QIH5OUF5yMr6ioA6ygt5yw3imk3iow3SUMIHoEuN+AiKowVUEw6LoEAHdyW57QN5yMr77YB54k55yE744cm5OMN6kgm5lIa5QYH44cn6Akg5y+w5zco5OMn5lYA5Q2J5BYp5OIq5lI66kof5Ashimk3ia','pc9KAxy+pc90zd4kicaGicaGicaGicaGicaGidX0zd48C3bHBIbJBgfZCZ0IAMLHBNDHBMCTA2vLCci+','pg9WDgLVBIb2ywX1zt0IiJ7LHAJPG6G8l29WDgLVBJ4','zxf1Axa','imk3iowUJoE+JIa','cIaGicaGicaGpgrPDJ7OV57PH5hMS6xLKiJORQeG','r2fUz3fP','zg93BMXVywq','ios7TU+8Iow3SUAGH+IUSca','DgfI','CgfUzwXbDhrHy2G','5A+85ywL5A2y5QgJ5zco6iEQ5yQO5OMR5O+p5yMr546l6zIb5A6E54MP77Ym5BM25zYO5PYj5zco57UT54Q25Ocb5PE25yIx5yE65QIH5OUF5PAW5yMr6ioA','yxjJAgL2zq','CM93','C3bLy2LHBa','y2vPBa','CgL0Eq','yNrUu3bLy2LHBef0DgfJAfbYzxzPzxC','C2vLzc10ywCGBhvJA3K','6k+36ycj5OUP5yMr546l6zIb5A6E54MP5OIw5QIH5OUF5PAW5yMr6ioA','CMvWBgfJzq','jMX0oW','ywn0','pc9ZCgfUpJXZCgfUignSyxnZpsjRiJ7LSj3OR5xMRkhMLBa8l3nWyw4+pc9KAxy+cIaGicaGicaGicaGidXKAxyGy2XHC3m9iMfKDMLJzs1TzxrYAwmIpJXZCgfUignSyxnZpsj2iJ4R','pc9KAxy+cIaGicaGicaGpgrPDIbJBgfZCZ0IC3DHCc1SAw5LiJ48C3rYB25NpUACGoE7IoMzHowkOdWVC3rYB25NpU+8MG','ioMHTsdcTYdLHBeG','pc9ZDhjVBMC+phnWyw4Gy2XHC3m9iMPPyw53yw5NlxnLzwqIpG','57Y65Bcr5PYj5PwiifmG5OIw5lIl5lIa5Bgc5RES54k85RAi6icx6kgO','pc9KAxy+pc90zd4kicaGicaGicaGicaGpc90CJ4','A2vWDa','6k+35ywi5A+85ywL5A2y5QgJ','BwfRzuzPBhrLCKjHCG','6Ake5Rwl5zco5yU+6ycj44cm5l+D55wz44cn5P+L55Yl5Oc76iQX6ls55lIo5PYa57Ui5BgE5OcN','ioASOE+8JowqQ+ATPowjJEwfSsa','BwfRzuzPBhrLCLbYB3a','5lYA5ywi5PEG5l+D55wz5O6O5yIW5OMa6ycjotdNUQFOT6/NUR/LHO3NOO7LIzhVVjVKUyVLKi7MR4/MIORMLRdLIzhNI6ZNQ4VKUidPOBu','EgLSAwfUugXHBLn1Bw1HCNK','iow3SUwiL+whUU+8Jos9HUE8UUwWKEI/NUE7REMIHoA1I+EkTUAaGEAiLUw3SUMtUoI/M+EjUEAUIUIVJEADOE+8JoAxOoAZLEEuN+AiKoIkKUAzTUw6J+wiLW','ywn0AxzL','y3jHzNrLzejHz0XPC3q','BgfIzwW','5RES54k86Ake5Rwl5AsX6lsL77YA','y2XHC3nPzNLfEhrtzwvKqMf0y2G','wvLksfDVCMTLCLbVB2W','Bg9JyxrPB24','5B2t5yMn6kof5Ash5lIn5y+V5RES54k877YB5lUf5PYQ5RUHide1iowXGUEAHoATPUwzQowpR+EuQa','zMLSDgvY','CgfUzwXcywC','5PI+56s6ia','5yMr546l6zIb6lw354k55BEY5y+y5PU077Ym6k+354k55yE744cm6Ake6kEi5B2t5yMn5Rwb56Il44cn','yMfZzq','AxngAw5PDgu','phrYpGOGicaGicaGidX0Ad4Jpc90Ad48DgG+6kof5Ashpc90Ad48DgG+5P2q5PAzpc90Ad48DgG+6Ake5Rwl57QI6k+n5P2Hpc90Ad48DgG+5PwW5yc85ycn546hpc90Ad4kicaGidWVDhi+','Aw5WDxq','zxjYB3i','BwLUr3jHzgvtzwXLy3rjza','6AAw5QYH5P2q5PAz6zMe5yQG','C3bLy2LHBe1HDgvYAwfSC0zVCKvXDwLW','CgfUzwXnywTL','D2LKDgG','Bwf4x2nVBg9Y','otdNUQFNOO7LIze','yMXHBMS','CMvHzhLtDgf0zq','ChjLDMLLD1bHz2vtAxPLv3jHCa','C3rYB25NqMvZDfnLDa','AMLHBNDHBMDdB3vUDa','C3bLy2LHBf9Pza','5QIH5OUF5yMr6ioA6ygt5yw3imk3iow+HEAjP+IHJoMIHUwpLG','5OMt6ycG6Ake5Rwl5AsX6lsL77YA','imk3ios4I+IHQos7JUAoQoI/M+wqJUEAHos4I+s4Gos7TUMhJEAwSoE8LUwpTW','zgLZywjSzwq','pc9KAxy+pc90zd4kicaGicaGicaGicaGphrKignSyxnZpsjQAwfUD2fUzY1Yzxn1BhqTy2vSBci+pgrPDIbJBgfZCZ0IAMLHBNDHBMCTDg9Rzw4TBgLZDcbQAwfUD2fUzY1JB3n0lwXPC3qIpG','ywr2AwnLswq','pgrPDIbJBgfZCZ0ICgf0Ac1WywDLCIiGzgf0ys13AgLJAd0I','C2v0','y2fSBa','C3rHCNrZv2L0Aa','54M55Q6k5P2q5PAz44cm','C3bSAxq','EgLSAwfUsgLUDa','w+AjK+MaOmk35O6O6l+B5yIW56YSia','5A2y5QgJ57Y65Bcr5zco57UT5O6O5RYu54Q25Ocb77Ym5PEG5Rov6l+B6kgm56ko5yMr6Ake6kEi','y3jLyxrLrwXLBwvUDa','y2XVC2vZDa','mtvkBKLzB0S','B3b0Aw9U','CgfKx3jLCxvLC3q','ugfYCNK','EgLSAwfUrMLSDgvYqMfY','pc90zd4kicaGicaGicaGicaGicaGidX0zcbJBgfZCZ0IAMLHBNDHBMCTCMvZDwX0lwnLBgWIpJXZDhjVBMC+','AMLHBNDHBMDtDhjVBMDqBgfUr3jVDxa','w+wjKEEoI+MyGCk3','Aw5JBhvKzxm','imk3ioESRca','AMLHBNDHBMCTy3LJBguTChjLDMLLDW','5BEY6ycj5OUP','iJ4kicaGicaGicaGicaGpgrPDIbJBgfZCZ0IyMfNlw1LDgeIpJXZDhjVBMC+','BwfRzvbYzxzPzxDqCM9NCMvZC1rLEhq','mZiXoda','6k+36ycj5OUP5y+V5y2h54k86kof5Ash','AMLHBNDHBMDlzwvWr3jVDxa','phnWyw4Gy2XHC3m9iMnVC3qTy2HPCci+6zo25lIK','5zU+57Q444cm','AMLHBNDHBMCTyxv0BW','BM9YBwfS','C2HHDhrLCJOXmda','ioMHTsdcTYdNRkWG','zxHW','6iQs5PM2W5CXmcaVioASOq','cIaGicaGicaGicaGidXKAxyGy2XHC3m9iMjHzY1Hy3rPB25ZiJ4kicaGicaGicaGicaGicaGidXIDxr0B24GDhLWzt0IyNv0Dg9UiIbJBgfZCZ0IyNrUigj0BI13yxnOigj0BI1YB3CTywn0Aw9UiIbKyxrHlwfJDd0IC2vSzwn0iJ7PGiNMI6K8l2j1DhrVBJ4kicaGicaGicaGicaGicaGia','mJa2nZvbBLrxuKe','C2HHDhrLCKXHyMvS','twfPBLjVBgu','CMvNAw9U','lZeWioASOE+8JowjQEs9Msa','5QIH5OUF5yMr6ioA6ygt5yw3','imk3ioACGoE7IcbyteXLDMvSpq','imk3ioAGH+IUSoANVEAvSca','zgf0yxnLDa','5yMr546l6zIb5lIt5Q2M5BQp5yIx6Ake5Rwl5AsX6lsL77YA','C2XVDa','C2HLBMDSAwfU','imk3ioMIHoA1I+s4JEs8MUs/RUAuUEwTMoAHO+AiLUwqJUE7REE7K+AENa','77Yi5lUf5O+q56s677Ym5lIn5OMJ6iom5yYf77Yj','rgvM','pg9WDgLVBIb2ywX1zt0Imci+5lIn5yQG54M55Q6k5P2q5PAzpc9VChrPB24+','AMLHBNDHBMDdEwnSzvjVDxrLu2vSzwn0','77Ym5BEY5l+D5OYb5B2t5yMn6kof5Ash5BM25yIh5yIW57k+54k8','x2PPyw53yw5Nu2vSzwn0ywjSzujSyw5R','C2HHDhrLCG','C3r5Bgu','yMvZDa','iIbKyxrHlwvXDwLWlwTLEt0I','pc90zd4kicaGicaGicaGicaGicaGidX0zd7dLW','pc90zd4kicaGicaGicaGicaGphrKignSyxnZpsjZCgvJAwfSlwf0DgfJAc12ywX1zsi+','Bwv0yq','C3rYB25NtwLUr3jHzgu','44cb6zo25lIK','5BcA5PYQ5A+85ywL5A2y5QgJ','pc9KAxy+','C29Tzq','zxf1AxbTzw50lxn0CM9UzY1WCMv2Awv3','A2v5CW','AxrLBu5HBwvZ','pc90zd4kicaGicaGicaGicaGphrKignSyxnZpsjQAwfUD2fUzY1Yzxn1BhqTy2vSBci+phn0CM9UzZ4','zxf1AxbTzw50lNnWzwnPywXbDhrHy2G','CMvHC29U','BwfRzuXVzW','pc9KAxy+pc90zd4kicaGicaGica8l3rYpG','zMfJDg9Y','pc90zd4kicaGidWVDhi+','C2vLzf9RAw5K','6kof5Ash6iom5yYf','imk3ia','pc9ZCgfUpGOGicaGicaGidWVC3bHBJ4','ioASOEEYVUEcVo+8Jos/NEEvMsa','ywnJzxb0CW','6yEn6zo4ia','AgL0','otdNUQFNOO7LIzhLKi7PH43MLRdPLlVPGka2moE6P+wjKEIdMG','yNrUrxHWB3j0vgfIBgu','zxf1Axbjza','77YjWRCG5y+V5y2h54k8ia','zg9Uzq','yNrUu3rYB25Nu2HVD0jLC3q','C3bLy2LHBe1HDgvYAwfSu3vWCg9YDhnfCxvPCa','5Q2J5zYO6Ake5Rwl5OMt6ycG5BQp5yIx4OcM','ChjLDMLLD0jVzhK','AMLHBNDHBMCUC2HHDhrLCKn5y2XL','5BEY5A6m5OIq5O6O6l+B','mtaW57QN56ko56wE5yw15zco6yEn5PAW6zs76ycGnJdNUQFLIzhOG5O','zxf1Axboyw1L','CMvKu2vLzefMDgvY','BwLUx2nVBg9Y','phrYpGOGicaGicaGidX0Ad4Jpc90Ad48DgG+57Ut5P6Cpc90Ad48DgG+5yMV5BgE5OcNpc90Ad48DgG+6ycj5OUP5lIo5RAi6icxpc90Ad4kicaGidWVDhi+','yNrUtg9NuhjLDG','zNjVBu5HBwu','u2vLzhm','AMLHBNDHBMDdEwnSzvbHz2vZ','zgvJB3jHDgvxB3jRzxjvCMW','ihnLBgvJDgvK','x2PPyw53yw5Nq2XHAw1Lza','5PEG572H5Rcul+wgHEwkSG','y2HHBMDL','C3rYB25NsgLNAgXPz2H0tw9Kzq','6zo46l+B5P2q5PAz5BEY5y+y5PU077Ym6k+354k55yE744cm5P+L55Yl5lIt5Q2M5BQp5yIx44cn','uM9Szxm','BMfTzq','pg9WDgLVBIb2ywX1zt0IiJ7LT7lMU6eGkZe1pc9VChrPB24+','5B2t5yMn5Bcp5QIH5z2x5RkH5PYj6kgO5Qc85A+85yE6','lZeW','x2PPyw53yw5NuMvIDwLSDa','nJdNUQFLIzhOG5O','ChjVCa','Bw9Kzq','5PEG572H5Rcul+wgHEwkSUwFUUEHGa','imk3ieX2uhjVCd0','CM93lwTLzxa','ic8G','6k+36ycj5OUP5y+V57k+54k855QeideWmcdNUQFNU78V6joDl+E0Q+IJHq','EgLSAwfUx2fJy2vWDgvK','BwfW','ioEAHowUIEwfQoAvToAvSo+8JowUNUMzHEs4UIa','x2PPyw53yw5Nu3DVCMrjBMrLEa','6Ake6kEi5QYH5PwW','imk3iow3SUEuN+AiKos4I+s4GoAkIJyW57QN5yMr6ioAimk3ios7HEE9KEMHTEAOOEAlNW','pc9ZCgfUpGOGicaGicaGidWVzgL2pGOGicaGicaGidXKAxyGy2XHC3m9iMfKDMLJzs1TzxrYAwnZiJ4kicaGicaGicaGicaGpgrPDIbJBgfZCZ0Iywr2AwnLlw1LDhjPyYi+phnWyw4Gy2XHC3m9iNyIpG','pc90zd4kicaGicaGicaGicaGphrKpG','57QNimk3ia','pg9WDgLVBIb2ywX1zt0I','BwfRzunYywz0zwrcywDiAw50','pc90zd4kicaGicaGica8Dgq+','AgLKzgvU','cIaGicaGicaGicaGidWVzgL2pGOGicaGicaGidWVzgL2pG','44cn5lIn6ycc55sO5lQo6kof5Ash44cm','5RES54k85BQp5yIx5y+Q6k+777YB5O6L5y+x5OIw5y+w5RAi6yo95BQu55sX546P5A625zYO5RI45OIp5yAf5yAZ5A6A','A2v5','B25SEv9Pza','DMfSDwvZ','C2v0qxr0CMLIDxrL','jImZotS','57QNpc9KAxy+cIaGicaGicaGicaGidXKAxyGy2XHC3m9iNDHCM4IpUIVJEADOEoaGEA3RoEcVoETIEE6P+wsJoAGH+IUSos8MUs/NEEvME+8M+wnH+EcVowqJUs8MUs/NEAmGEw9K+wjJEIJHEwKH+w5TUwiH+wiSoEYVUEcVdWVzgL2pGOGicaGicaGia','Dg9VBa','yxjPys1SywjLBa','nZaYodm0uLjzqNLO','x21HA2vFC3bLy2LHBa','6k+36ycj5OUP6kAb6yEn5Asn6zMe5yQG55Qe54M55Q6k5P2q5PAz','AMLHBNDHBMDtDhjVBMDiAwDOBgLNAhrnB2rL','lM1HA2uTCM93lw1HCMS','x25HBwvZ','zg9Kz2u','BwfUz2PPBMC','5QYHimk3ia','ANnVBG','otaG57QN6z2E5QMz57QI6kof5lIu5A2y5zYO5lIl5lIa5QgJ77Yizxf1x25LEhtVViNLJ6/LJyFNGRZOH7mGmtaWioE6P++8Jos5I+wqJUAjJEIdVEEYVUEcVa','pc9KAxy+cIaGicaGicaGpgrPDIbJBgfZCZ0ID2fYBIi+4Oc7ioAVJ+ASOEEYVUEcVowDH+A2IoIaL++8M+s7HEwlVUMaIEoaJos/NEEvMEoaJEEAHoE7K+AENos8MUABV+AnOUwVUEw6LoANVEw5TUAGH+IUSo+8IowqJUE7REA2IoIaL+E/U+waJE+8IEoaGUwlVUMaIEwqJUoaJoAiQUATOUIkSEI0UEoaJEAmIEACGowqJUs4GoADOEs/NEEvMEIUSow9LEE7N+IUOEoaGJWVzgL2pGOGicaG','6ycj5OUP6iom5yYf6kof5Ash5zco77Ym5y+V5zYO5zcm6Ag16l+B6kgm5y2h54k844cb57k+54k844cb5RES54k85OIw6zMe5yQG','zxf1AxbFAwq','5A2y5QgJ5O6O5RYu6lw354k5','imk3ioIVJEADOq','pc90zd4kicaGicaGicaGicaGphrKpJXKAxyGy2XHC3m9iMPPyw53yw5NlxrVA2vUlwXPC3qIpG','phrYpJX0zcbJB2XZCgfUpsi1iIbJBgfZCZ0Izw1WDhKTCM93iJ7ML6dMLBdMJA48l3rKpJWVDhi+','5zYO6kof5Ash5QIH5OUF57Ut5P6C5lIT6ycj5OUP4OcC5yQG5ywL6iom5yYf4OcD77Ym5BQp5yIx5lYA6iEQ5yQO5O6O6l+B5yIW55UU5Qch5l2n572U','ioASOsdcTYdLI77PGiNJGiZKV53NLzNJGi3LKi7OH6RLIQJNU5/ORQhOIRhOTlNKUi7MNidNU4JLSz7MGkC','5A+85yE66iEQ5yQO6zs76ycG57sR6kof6kgO5Qc8','C3rYB25NtwLUu2v0','x2PPyw53yw5NuMvKu2vLzejLzM9Yzq','EgLSAwfUrMLSDgvYu2XVDa','BwfRzuzPBhrLCKnVBg9Y','pgj1DhrVBIb0ExbLpsjIDxr0B24IignSyxnZpsjIDg4GyNrUlxjLC2v0igj0BI1YB3CTywn0Aw9UiIbKyxrHlwfJDd0ICMvTB3zLiJ7NP7VPMAq8l2j1DhrVBJ4','sxrLBxm','pg9WDgLVBIb2ywX1zt0IiJ7VViJLVzpLIy3OTBFNGRNMSQhMNiNLJ6/NLkJMTyhNQiVVViK8l29WDgLVBJ4','ioASOEwKSEI0PE+8MG','5O6O6l+B6iEZ56YSia','BNbJu2vSzwn0','5A+85yE66kof5Ash6iom5yYf6kgO5Qc8','zgf0yq','pc9KAxy+pc90zd4kicaGicaGicaGicaGicaGidX0zcbJBgfZCZ0IAMLHBNDHBMCTCMvZDwX0lwnLBgWIpJXKAxyGy2XHC3m9iMPPyw53yw5NlxrVA2vUlwXPC3qGAMLHBNDHBMCTy29ZDc1SAxn0iJ4','4OctntaWmcdNMOtMLBtMLBa','ChjVDg90ExbL','yxbWzw5Kq2HPBgq','pg9WDgLVBIb2ywX1zt0IiJ7VViJML6dLIzhNJOVPMihLRP7NIANVViZKUjtNVlRLSjhLJ6/POOBLJ5BMLRdLIzhOG5RNMOtLKi7NU63NIRBMGihVViK8l29WDgLVBJ4','yxr0ywnO','lMjHzY1Hy3rPB24TyNrU','ioAkIIdcTYdMJiNLRzJMOApLKi7NU63NIRBMGihPOBRLUO/MJQJMVjqGWRCG6Ake6kEi5lIn5O6O6l+B6Ag16z2I5yAf54Q25Ocb','z2v0rwXLBwvUDej5swq','AhjLzG','pJWVDgq+cIaGicaGicaGicaGicaGica8Dgq+','5lUo5OMa6ycj5yMr546l6zIb6lw354k56lw35Q2Limk3ia','y2XPy2S','pc90zd4kicaGicaGicaGicaGicaGidX0zd7MP70G','zxHWB3j0rxf1AxbbDxrVvgfIBgu','x2vXDwLWCgvK','xsdcTYdKUiVMRkhMTOJOGjCG','pgfYDgLJBguGy2XHC3m9iMfKDMLJzs1JyxjKigzHAwWIpGOGicaGicaGicaGica8zgL2ignSyxnZpsjHzhzPy2uTy2fYzc1OzwfKiJ48Adm+','oddNUQFLIzhOG5O','CxvLCNLtzwXLy3rVCG','iIbWBgfJzwHVBgrLCJ0I6l6t5ywL5Qch6k6WiJ4','phrYpJX0zcbJB2XZCgfUpsi2iIbJBgfZCZ0Izw1WDhKTCM93iJ7OR7FPGiNMI6NOO4xLPiC8l3rKpJWVDhi+','Dg90ywW','AMLHBNDHBMDtDhjVBMDiAwDOBgLNAhrhCM91Ca','phnWyw4Gy2XHC3m9iNbHDgGTy2HPCci+cIaGicaGicaGicaGidXZCgfUignSyxnZpsjSDIi+kW','C3rYB25Nqwr2AwnL','5PQc5PEG5OMl5yQO6zs76ycG57Ut5P6C77Ym6k+35ywi6Ake5Rwl5OMt6ycG5BQp5yIx','5z+656ga5BgE5OcN','re9nq29UDgvUDeXVywrLza','5Rwb56Il5BEY5y+y5PU077Ym6k+354k55yE744cm6Ake6kEi5B2t5yMn5Rwb56Il44cn','yxr0zw1WDhm','ChjLDMLLD1bHz2vtAxPL','zNvUy3rPB24','5RAi6icx5O+q56s677YA','yxnJzw5KoG','B25SEuLK','y29ZDeHPBNq','phrYpGOGicaGicaGidX0Ad4Jpc90Ad48DgG+57Ut5P6Cpc90Ad48DgG+5z+656ga5BgE5OcNpc90Ad48DgG+5yMV5BgE5OcNpc90Ad48DgG+6lwe5RQqpc90Ad4kicaGidWVDhi+','imk3iow3SUwkOowfPEAOOEAlN+IdJowmHq','54k55yE76Ake5Rwl5P+L55Yl57Ut5P6C','rw5fEhrZ','phnWyw4Gy2XHC3m9iM11DgvKiJ7ML6a8l3nWyw4+','Dg9gAxHLza','zhPFBwf0','Bg9NugfNzxjjBMzV','yxv0BW','pgrPDIbJBgfZCZ0Iywr2AwnLlxbHDgGIpG','pc9ZDhjVBMC+pc90zd4kicaGicaGicaGicaGicaGidX0zd48zgL2ignSyxnZpsjQAwfUD2fUzY10B2TLBI1SAxn0iJ4','zNjVBuLK','zgv0zwn0uNvSzuzYB21tD29Yzhm','lNbHDgGTChjLDG','5PIg5zc+55+ZW5CXmddJGihPMAJPK4hdLZlJGihOV57PH5hMS6xdLZeW44cb5yAf5yQBW5CXmdaW44cb6zo454k86l+B5BQMW5CXma','pc90zd4kicaGicaGicaGicaGpc90CJ4','phrYpGOGicaGicaGicaGica8Dgq+','pc90zd4kicaGicaGicaGicaGicaGidX0zd4','zMfJDg9Ytwf4','Bg9HzgLUzW','zxf1AxbTzw50lNn0CM9Uz1bYzxzPzxC','BMvLzf9SDG','Awr4','6Ake5Rwl5QYH5PwW5B+f6Ag75PIVidhIGjm1mdaWioEAHoAvToAvSa','yMfNq29SB3jgAwX0zxi','C3bLy2LHBef0DgfJAe1HDgvYAwfSu2vSzwn0','AMLHBNDHBMCTChjLDMLLDW','weXmzxzLBa','y29ZDf9TDwX0','CNvU','imk3iow9K+wjJsaR','phrYpJX0zcbJB2XZCgfUpsi1iIbJBgfZCZ0Izw1WDhKTCM93iJ4','BwfRzvbYzxzPzxDqCM9NCMvZCW','C2XPy2u','imk3ioAGH+IUSooaJa','C2L6zq','mZiYnty','y2HHBM5LBa','pc9KAxy+cIaGicaGicaGpgrPDJ4','57QN6yEn6zo4imk3ia','x2PPyw53yw5NtMv4DfjLzfnLzwq','iokgKIdMNj/MNjSGkW','5l+D55wz5QE95l2n5BEY5y+y5PU077Ym6k+36yEn5PAW6Ake6kEi','C29YDa','pgLUChv0ihr5Cgu9iNrLEhqIignSyxnZpsjJCMfMDgvKlw1HCMSTAw5WDxqIig1HEgXLBMD0Ad0IndaIihzHBhvLpsi','zMXVB3i','wvLksfbLCMzVCM1HBMnLvhjHy2u','z3jHzgvFBMfTzq','CgfUzwXkAwfUD2fUzW','BwfRzuzPBhrLCLnLzwq','77Yi5PEG5yY56ywn55Qe6iom5yYf6kof5Ash77YB5y+V6lcd5Pw06yoO5l2n5OIw5zob6lsO77Yj','5A2y5QgJ5lIT57Y65Bcr6kof5Ash5OMt6ycG54Q25Ocb','AMLHBNDHBMCTC3rHDgu','B3jHBMDLugfKu2vXDwvUy2u','C3bLy2LHBc1HDhrHy2G','EgXFBgv2zwW','6k+36ycj5OUP5y+V5RES54k855Qe5Q2M5zMO','C3rYB25Nq291BNq','Aw5Uzxjive1m','55UU5Qch5BQp5y+35PEG5Pwi77YimEkaKZuWmddVViK','AMLHBNDHBMC','yNrUsMLHBNDHBMDqCMv2Awv3','44cb5PYa5l2oia','CMvHzhK','5QIH5OUF6kof5Ashia','5BcA5PYQ5yIWotdNUQFVViZOR7FLHyJPGiNMI6NMNidNU4G5moE6P+s4K+ATPUI3R+E6VW','phrYignSyxnZpsi','imk3iow3SUMhJEMtUca','Dw5KzwzPBMvK','5A+85ywL5A2y5QgJ5zco6ycj5OUP5zcm5lIa5lU26kof5Ash5zkm5P2q5PAz77Ym6Ake5Rwl6l+E57UT6kAg55Uw57QI6k+n5P2H55Qe57Ut5P6C','B2jQzwn0','imk3ieX2uhjVCa','5A2y5QgJ5BEY5PU05PAW77Ym6k+36yEn5PAW5BYa5AEl6kof5Ash6iEQ5yQO5QIH5OUF44cc','Bwf4','BwvZC2fNzq','zxf1AxbTzw50lNHPBgLHBLbSyw4','C3rYB25NsxrLBxm','6Akg5y+w5zco5OIq5lI65y+V5OIq6zw/6kof5Ash','DhjPBq','CMvTB3zL','ywr2AwnLlxLLCW','5zco57UTnJdNUQFLIzhOG5OG','rw5JCNLWDerLCg90CW','C3bLy2LHBhm','5BEY5yQG5ywL5QIH5OUF6iom5yYficm','phrYpJX0zcbJB2XZCgfUpsi2iIbJBgfZCZ0Izw1WDhKTCM93iJ7ML6dLJlNPHy3ORRdLVzu8l3rKpJWVDhi+','CgfNzq','ios7TUwpQUAoQoI/M+oaGEACQUwkOowfPEIdJowmHE+8MW','5B2t5yMn5BEY5RUHicSXnq','y3jHzNrLzejHz0HPBNq','ioAkIUwjKq','y2XHC3nmAxn0','q29SB3i','5yMr546l6zIb5BQp5yIx','ywrKrxzLBNrmAxn0zw5LCG','pg9WDgLVBIb2ywX1zt0IiJ7VViJOR7FLHyJPGiNMI6NLJ6/POOtMTyVOO4xLPiFVViK8l29WDgLVBJ4','5P2q5PAz5BEY5y+y5PU077Ym6k+354k55yE744cm6Ake5Rwl5BQp5yIx44cn','iokgKIa','DgL0Bgu','CgfYCNK','C2HHDhrLCLjLyNvPBgq','lMfKDMLJzs1WyxrOlxDYyxa','5y+V5PU05O2I6kof5Ash77Ym5OIw6ycj5OUP57k+54k8l+A3RoEcVoAtJEs9Na','5zcm57QN5zcm57g75PMU6ycA6kof','jtWVC3bHBJ48C3bHBIbJBgfZCZ0IAYi+5RES54k85BQMpc9ZCgfUpJWVzgL2pGOGicaGicaGicaGica8zgL2ignSyxnZpsjHzhzPy2uTBwv0CMLJiJ48C3bHBIbJBgfZCZ0IDIi+kW','5BQp5yIx6zw/5BQM','5lI76kEs6kof5Ash','phrYpGOGicaGicaGicaGicaGicaGphrKpG','5A2y5QgJ57Y65Bcr5PYj5Pwiie1HA2vsBMqUuMvKu2vLzhnBntCWn10','x21HA2vFyMfZzq','zw1WDhK','BNbJx2LK','v0fttsdLIQdOVB3LPlhOTkxVVjROO4xLPiFMQkhMI5/KUi3LJ6/NLkJVViJLRzJMOApLR7ZLHAxKUi7OP6pLR4BKUi3LJ5FLVBhLK43VViK','tuPtzwvK','ChjVCe5HBwvZ','zxf1AxbTzw50lxHPBgLHBI1WBgfU','zMLUza','AxntywzLsw50zwDLCG','6kof5Ash6kgO5RoO5ywL5AsX6lsL','DgvZDa','Bg9NugfNzxi','6k+36ycj5OUP55UU5Qch6kof5Ash','6zMe5yQG5P2q5PAz5BEY5y+y5PU077Ym6k+354k55yE744cm6Ake5Rwl6l+E57UT6zMe5yQG44cn','5P+L55Yl5RES54k85BQp5yIx','AMLHBNDHBMDdB3vUDeDYB3vW','iIbKyxrHlwLKEd0I','Bg9JywXLq29TCgfYzq','pc90zd4kicaGicaGicaGicaGicaGidX0zcbJBgfZCZ0I','AMLHBNDHBMDdEwnSzunVDw50','DMfSDwu','pc90zd48l3rYpG','57Y65Bcr5lIl5lIa5Bgc5RES54k85RAi6icx6kgO','5lUo5QIH5OUF6iom5yYf56E76zMK6k+L5OMt6ycG6kof5Ash77YF','C3rVBMvZ','5P2H5lU25BEY5y+y5PU077Ym6k+36yEn5PAW54k55yE744cm6Ake5Rwl5BM255sF5OIq5BU66k6U44cn','77YB5lIl6kgO5lUo5lIl5lIa5lU26yEn5PAW57Yw5y+3pc9ZCgfUpGOGicaGpc9KAxy+cIaGica8zgL2ignSyxnZpsjTywTLlwfKDMfUy2uTBM90AwnLlwrLDgfPBhmIpGOGicaGicaGidXKAxyGy2XHC3m9iM1HA2uTywr2yw5Jzs1UB3rPy2uTzgv0ywLSiJ48C3rYB25NpUwFUUEHGowXNUAaPZWVC3rYB25NpG','mtGXohDuBhjUrq','x2fJy2vWDfn0zxbZ','pc90zd4kicaGicaGicaGicaGicaGidX0zd48zgL2ignSyxnZpsjQAwfUD2fUzY10B2TLBI1SAxn0iJ4','mtCWzevIvfjl','AMLHBNDHBMDfCxvPCfnLBgvJDa','Bwf4vMfSDwu','mZeYmZa','EgLSAwfUx21HCMTZ','CgfUzwXtDhjVBMC','C3bLy2LHBef0DgfJAenVDw50','otdNUQFNOO7LIzeG4OAsioMhJEMtUos4I+s4GoAkIJyW57QN5yMr6ioA','pc90zd4kicaGicaGicaGicaGphrKpJXZCgfUignSyxnZpsi','imk3ioMaIEAlQEkaNowkOowfPEIdJowmHEkaNEwqJUIhQUwkQoAoQoI/M+wiSoIVPEs9JEE9RG','5A2y5QgJ6kEJ5P6q5AsX6lsLoIa','C3rYB25NvgfYz2v0tgv2zwW','56ko5yMr6Ake6kEi5AsX6lsL77YA','ywr2AwnLlw5V','yMfNvgv4DezPBhrLCG','5PYQ5OM+5yIW6kof5Ash','yMfNu291CMnLrMLSDgvY','C2LSDMvY','DgLTzxn0yw1W','zxf1AxbTzw50lxnWzwnPywWTChjLDMLLDW','5yMr6ioAnJuXomoxmEoaGEMBQUMtTJmWmJtdLZiWmooaGEMDKUMhKEEFSZiWmdddLZeW44cb6lsH54YUW5C1mda','AMLHBNDHBMCUC2HHDhrLCLjLyNvPBgq','6z2s6j2j57+8','ChjLDMLLD01LDge','y29ZDa','6k+L6kof5Ash5lIn5y+V5y2h54k877Yi6zYaidKWioE6P+s4LoACIEs4I+s4GoAHO++8Iq','yNrUuhjLDMLLDW','ioASOsdcTYdLJ6ROR7VPOOtMTyVVViZKUi3MLlNLJ5JLKi7NU63NU5pMNPW','twfRzvjUza','pgrPDIbJBgfZCZ0Iywr2AwnLlw5VDguIpUkaUYdLJ5BMTOJKUz/OGjFNGRZNN7pVVjVLKiZNU5pMNPZLSl3PH4/MIORLSj3OR5xNLzNLNkJMM7tKVR/LRPZNMOtLSylJGilNQidMNiNLUQBVVjRNTkVVVj7OK53VVj7NU7/VVj7NMB3JGilLJ6/KVB/NLkJKUiRMLRNIGjZNU5pMNPZPQ5JKUQ7IGj3PGiNMI6NMOyBMOiFORRdLR7NLUPtMJQxLJ5FOOyZJGii8l2rPDJ4','imk3ioACGoMRMa','BhvJA3K','Dg9oyw1L','AMLHBNDHBMDtDhjVBMDnAw5hCMfKzq','phnWyw4Gy2XHC3m9iMnVC3qTy2HPCci+4Ocupc9ZCgfUpG','lMfKDMLJzs1JyxjKw2rHDgeTCgXHBJ0I','pc9ZDhjVBMC+pc90zd4kicaGicaGicaGicaGphrKpG','pc90zd4kicaGicaGicaGicaGicaGidX0zd4R','pc9ZCgfUpJWVDgq+cIaGicaGicaGicaGicaGica8Dgq+','y29SB3joyw1LCW','5QIH5OUF5OMt6ycG','C3bLy2LHBfnLBgvJDa','5yMr5OspmtuW44cb6zUQ6zo2W5C0mddJGihPNzlPH5hNN7pdLZiW44cb6lsH54YUW5CXmJaW','5PMU6ycA5z6R6kof5zU+57Q45BEY5y+y5PU077Ym6k+354k55yE744cm6Ake5Rwl5BQp5yIx44cn','BwLUq29ZDa','5Bcg6l+E57UT5O6O6l+Bia','CM91Dgvjza','CgfWzxi','BhzFChjVCa','CM91BMq','phrYpJX0zcbJB2XZCgfUpsi5iIbJBgfZCZ0Izw1WDhKTCM93iJ7ML6dLJlNPHy3ORRdLVzu8l3rKpJWVDhi+','C3rYAw5N','BwfRzvbHzfbHCgvYu2vSzwn0','5zU96zMf5PYn','imk3ioACGos9JIa','CgfWzxjZrM9Yq3jHzNrZBwfU','AMLHBNDHBMDlzwvWu2vSzwn0','CgXHBLn0CM9Uz1bHDgG','ChjLzgLJDfnWzwnPywXbDhrHy2Htzxf1zw5Jzq','yMfNqwn0Aw9U','ioASOEEYVUEcVo+8IE+8MG','zMfJDg9YtwLU','5l+D5BQv5BEY6kEM5y+r77YA5lIl5lIa5QYH5BY65yI257sR6kof','w+wjKEEoI+MyGCk36Akg5y+w5PAW5yMr6ioAxsdMQkhMI5/LIzhOG5RPGzpLHBCG4OAsia','pc9OmZ48l2rPDJ4kicaGicaGicaGicaGpgrPDJ4','pgrPDJ48C3rYB25NpUAiQUATOUIkSEI0UtWVC3rYB25NpU+8IoIhS+ESRca','zxf1AxbTzw50','rxH0C1HPBgLHBKrHDge','y3jHzNrZBwfU','sgL0','ioASOE+8IE+8MG','iJ4kicaGicaGicaGicaGphrKpG','CgfYC2u','5zco57UT5O6O5RYu54Q25Ocb5PEG5Pwi77Ym5PEG5Rov57UN57UT6Ake5Rwl','D2fYBG','AMLHBNDHBMDlAw5K','pc9ZCgfUpG','x21HCMS','nZdNUQFLIzhOG5O','77Yi5PEG5yY56ywn55Qe5QIH5OUF6kof5Ash77YB5y+V6lcd5Pw05P2L5RQq44cb6yoO5l2n5OIw5zob6lsO77Yj','5QIH5OUF6iom5yYfimk3ia','C2vSzwn0x2LK','BNvTyMvY','ios4JEwTMowCQa','z3fFyMfZzq','y29SDw1UCW','pc9VChrPB24+','C2vXDwvUy2vFBw9Kzq','57QN6yEn6zo4ioESRa','C3bLy2LHBef0DgfJAeHPBNq','yNrUu3rYB25Nu2HVD01PBG','z3jHzgu','y2XHAw0','mJKYmJaYs3L4zLvY','ChjLDMLLD0HLywq','5OMt6ycG5zU+57Q4ieLeiow/HEMHU+AyR+ATO+wUIEwfQoAvToAvSo+8JowUNUMzHEs4UIa','phrYpGOGicaGicaGidX0Ad4Jpc90Ad48DgG+57Ut5P6Cpc90Ad48DgG+5z+656ga5BgE5OcNpc90Ad48DgG+5yMV5BgE5OcNpc90Ad48DgG+5RAi6icxpc90Ad4kicaGidWVDhi+','CMvZB2X2zq','x3nVDxjJzq','CxvLCNLtzwXLy3rVCKfSBa','C3rYB25Nqxr0zw1WDenVC3q','5A2y5QgJ6kof5Ash','CMvMB3jNzq','zxf1AxblzxK','mtaW57QN56wE5yw1imk3ia','phrYpJX0zcbJBgfZCZ0Izw1WDhKTCM93iJ4','5zYW5yY66zMe5yQG','zhPFzxf1Axa','5lYy5ywi6AUy5RES54k85BQM','5ywn5zU+57Q4','EgLSAwfUq291BNq','y3LJBgu','5B2t5yMn5QMz6kof5OM+5lIn5yIW5zcm562j57QN44cb5zcm57g75z6l55Qe5PMU6ycA6kof5Ash55sO5lQo5z6R6kof','6ycj5OUP6kof5Ash5zco5PI+56s6idKW4OAsmtaWiowVUEEfPW','zMfSBgjHy2S','y3jHzNrLza','C2HHDhrLCKn5y2XL','CgfUzwXbDxrV','pc9ZCgfUpGOGicaGicaGicaGica8C3bHBIbJBgfZCZ0Iz3jHzguT','CgfUzwXkAwfUD2fUz0f1Dg8','iJ4kicaGicaGicaGicaGicaGidX0zd4','tMfTzq','lZe1imk3ioINHowiKUIhSYaR','yMfNvhLWzuzPBhrLCG','nJa0ndG1BefSv0fY','Bgv2zwW','yNrUq2XLyxjmB2C','AxrLBxm','DgfYz2v0','iokgKIa2moE6P+wjKEIdMG','zw50CMLLCW','lNbHDgGTCgfNzxi','lMnYywz0zwqTBwfYAY1PBNb1Da','CMvKu2vLzejLzM9Yzq','Bwf0zxjPywXoyw1L','C3rHBMrHCMq','6k2M5zgk77YA5A2y5QgJ57Y65Bcr6k+L6kof5Ash55Qe5zco57UT6Ake5Rwl54Q25Ocb77Ym5PEG5Rov6Ake5Rwl','rxHW','DMvYC2LVBG','55UU5Qch5BEY5y+y5PU077Ym6k+354k55yE744cm6Ake5Rwl5BQp5yIx44cn','6Ake5Rwl5BQp5yIx','ChjLDMLLD1bHz2vY','AMLHBNDHBMDiAw50','77Ym5PEG5Rov55sF5OIq5RES54k85BQp5yIx','C2vLzc10ywC','pc9KAxy+cIaGica8l2fYDgLJBgu+','w2rHDgeTzxf1AxaTA2v5xq','pc9OmZ4kicaGicaGicaGicaGphnWyw4Gy2XHC3m9iNrHzYi+','DhLWzu5HBwvZ','BwfRzufKDMfUy2voB3rPy2u','phnWyw4Gy2XHC3m9iMPPyw53yw5NlxbYB3aTDg9Rzw4IpG','ChjLD2fYBq','C3rHDgu','AMLHBNDHBMCTyMvZDa','4Ocuiow3SUMhJEE9RUs4UUwVVowfPEAxTUEkTUAaGE+8IoAOOEAlN+IdJowmHEw3SUA4HEEPUU+8JownH+EcVc/NSR7NGRWV5RES54k86l+B5BQM5BEY5zUE5RUA77Yj4Ocu','BNvT','Dg9jza','5OMt6ycG57Ut5P6CienAu2vLzcdLV4xPOBVMMk/LPkFKUO7LM77NURJLGy/NP7SG','pgrPDIbJBgfZCZ0Iy3jHzNrLzc1IywCTCM93','mty1mdrHtK1TsKu','5Q2J5zYO6Ake5Rwl4OcM','zM9YrwfJAa','BwfRzvbYzxzPzxDqCM9NCMvZC1bLCMnLBNq','pgrPDIbJBgfZCZ0IBwfRzs1HzhzHBMnLlw5VDgLJzs1OzwfKiJ4kicaGicaGica8C3bHBIbJBgfZCZ0IBwfRzs1HzhzHBMnLlw5VDgLJzs10AxrSzsi+5PYS5QYH5O6O6l+B57Ut5P6C77YA','Dg9mB3DLCKnHC2u','EgLSAwfU','CM93CW','iJ4kicaGicaGicaGicaGicaGidX0zd48Aw5WDxqGDhLWzt0Iy2HLy2TIB3GIignSyxnZpsj4Bc1RzwvWiIbKyxrHlwLKEd0I','C3bLy2LHBef0DgfJAeL0zw1Z','6zo45lI6mtaW57QN56wE5yw177Yi5zU65A6A5l+D55wz5ywT5P2H77Yj','C3bLy2LHBef0DgfJAa','tNvTyMvY','qxrR','BhvJA3LiAw50','6l+E6yEr5RoL','Bw9KDwXLCW','5lUf5Q2M5zMO5y+V5RES54k8','BMvPAMLU','x2nYywz0zwq','Bwf0','C2HHDhrLCJO5ma','iIbWBgfJzwHVBgrLCJ0I5Qch6k6WiJ48l3rKpGOGicaGicaGicaGica8Dgq+pgj1DhrVBIb0ExbLpsjIDxr0B24IignSyxnZpsjIDg4GyNrUlxDHC2GGyNrUlxjVDY1Hy3rPB24GyNrUlw1HA2uTywr2yw5JzsiGzgf0ys1PBMrLEd0I','5B2t5yMn6kof5Ash6iom5yYf562B6ycj6iYd5zU05yAf5RkH5PYj5y+V5A+85yE655Qe6kof5Ash','AMLHBNDHBMDtDhjVBMDuyxjNzxrmzxzLBa','y3jLyxrLqMXHBMTgCM9TuMvKu2vLza','5B2t5yMn57QI6k+n5P2H77YA','5lYy5ywi55Yb56Ia5PYj54k855+Z','zhPFBNvT','phnWyw4Gy2XHC3m9iMPPyw53yw5NlwnVC3qTDg9Rzw4IpG','yNrUuhjLDMLLD05LEhq','iow3SUwiL+whUU+8Jos9HUE8UUwWKEwqJUE7REAoQoA8LoEkTUAaGE+8Jos4JEIdVEEuN+AiKoABV+s7O+w6J+wiLW','DgfIqMfY','5QIH5OUF5PAW5yMr6ioA54Q25Ocb5BEY5y+y5yYw77Ym6k+36yEn572U5OIw6yEn5PAW6ycj5OUP','pc9ZCgfUpGOGicaGicaGidXZCgfUignSyxnZpsjTywTLlwfKDMfUy2uTBM90AwnLlxnLCxvLBMnLiJ4','5RAi6icx5PYa5Bcr','pc90zd4kicaGicaGicaGicaGphrKignSyxnZpsjJB2XVCI0','Bwf4q29SB3i','5lUfideWmcdNUQFNU78V6joDl+E0Q+IJHEwpR+EYVUEcVo+8MZKWioE6P+IVT+wfIownH+EcVa','s2v5','C2vHCMnOugfYyw1Z','57U/54k855+Z','imk3iowpR+A3RoEcVca','5RAi6icx5PYQ55+L','yNrUsMLHBNDHBMDbChbSEq','5PIg5zc+55+Z','EgLSAwfUrMLSDgvYuhjVCa','CgXHDgzVCM0','6iEQ5yQO5yQG6l295ywX5lQR5A2y5QgJ5AsX6lsLoG','5y2h54k85A6m5OIq77YA','phrYpJX0zcbJB2XZCgfUpsi5iIbJBgfZCZ0Izw1WDhKTCM93iJ4','AM9PBG','AMLHBNDHBMDtDhjVBMDbzhzPy2u','6kof5Ash6iom5yYfxW','AMLHBNDHBMDjDgvTCW','77Yi5lUf5O+q56s677Yj','5B2t5yMnmtaW57QN56wE5yw15lYA55U05O6L56ko56wE5yw16l+B5ywL56YSmEI9RU+8M+s5I+wqJUAVJ+AkIUAwSowjKEAmItyW4OAsnZdIHPi4mokgKJKW4OAsmtdMRkhPH43PK7JLVQRNJQ8','6zo25lIK57QMia','C3rYB25N','u3bLzwq','phnWyw4Gy2XHC3m9iMjHzY1ZB3vYy2uIpG','BwfPBLbYB3bLCNr5rgLZCgXHEq','5lIn5y+V55sO','C2HLBMDSAwfUsgLUDa','iIbJBgfZCZ0Izw1WDhKTCM93iJ7ML6dKUjpMRABLUO/LIjFORRdLVzu8l3rKpJWVDhi+','phrYigrHDgeTAwr4psi','yNrUu2HLBMDSAwfUt25Jzq','imk3iowEQ+IJHE+8MG','zM9YBwf0','t25SEuLe','ywnJzxb0zwq','DhLWzq','EgXFBNvTyMvY','Axnczxn0','DgfIsw5KzxG','ywXS','6k+36ycj5OUPotdNUQFKUjpMRABOT6/NUR8','thzqCM9W','thvJA3LtzwvKCW','Bwf0CW','5OMl5yQO6zs76ycGxW','zxf1x25LEhq','pg9WDgLVBIb2ywX1zt0IiJ7VViJOR7FLHyJPGiNMI6NLIzhNJOVPMihOTBFNGRNVViK8l29WDgLVBJ4','6kof5Ash5QIH5OUF','q1PtzwvK','ChjLDMLLD1rHyMXL','C3bSAwnL','ChjLDMLLD1bHz2vYsw5MBW','cIaGicaGicaGpgrPDJ48C3rYB25NpUAaU+IkSEI0UtWVC3rYB25NpU+8IowUJoAvTow6J+wiL+wfSsa','twfRzuX1y2T5','C3rLChm','jE+8IowqJowXGUwpGUIaG++8ItWVDgq+cIaGicaGicaGicaGicaGica8DgqGy2XHC3m9iG','mZG5nteYogDNy0Dovq','5PYQ6kof5Ash','6k+36ycj5OUP5RI45OIp5lIT5A6E6zMf6zo46l+B55Qe54M55Q6k5P2q5PAz','5BEY6yEn572U77Ym6k+36yEn5PAW54k55yE76Ake5Rwl','6kof5Ash5OMt6ycG54Q25Ocb6k+75y+w5AsX6lsL','tgvHDMvYCW','uMvKu2vLzhm','zgvM','ioASOEwnH+wXGU+8ItWVzgL2pGOGicaGicaGidXKAxyGy2XHC3m9iMfKDMLJzs1WyxrOlxDYyxaIpG','zMLSBa','yNrUu3rYB25NuhjLDMLLDW','yNrUuhjLDMLLD1bYzxy','yxjPys1ZzwXLy3rLza','tgv2zwW','55UU5Qch6kof5Ashia','rgvWB3rZ','CgfWzxjZ','D2HPy2G','ChjPy2u','55M954k855+Z','jsdcTYdLJlRPL7qG','5A+85ywL5OIq5yQF','6ycj5OUP5yMr546l6zIb5A6E54MP5OIw5QIH5OUF5PAW5yMr6ioA5zkm5Rwb56Il5zco77Ym54k55yE744cm6Ake6kEi5B2t5yMn5Rwb56Il44cn','zNjLzxPL','rg9Kz2u','5B2t5yMn5A2y5QgJ5PEI5RkH5PYj5yMr546l6zIb5A6E54MP77Ym5lMF5RkH5PYj5y+V55sO5lQo6AAw5yMr5O6O5RYu55Qe5zco57UT54Q25Ocb','imk3iow3SUAGH+IUSoANVvS','zMLUzeLUzgv4','DhLW','surtzwvKCW','weXoDw1Izxi','iIbKyxrHlw9UBhKTAwq9iG','phrYpJX0zcbJB2XZCgfUpsi2iIbJBgfZCZ0Izw1WDhKTCM93iJ4','rxf1AxbZ','5B2t5yMn5A2y5QgJ5RkH5PYj5yMr546l6zIb5A6E54MP77Ym5lIu57Y65Bcr5y+V6Akg5y+w5PAW5yMr6ioA55Qe5zco57UT54Q25Ocb','yMfN','pc9KAxy+cIaGicaGicaGpc9HCNrPy2XLpG','5yMr5OspnJaW44cb57sR6yErW5C0mddJGihPMAJPK4hdLZlJGihOTkhNJk7dLZqWmda','EgLSAwfUrMLSDgvYtwv0yq','z3jVDZO1nZa4','AMLHBNDHBMDnyxrLCMLHBfnLBgvJDa','CNvSzq','CgfWzxjgAwX0zxi','C3bLzwq','lZe1imk3ios4I+s4GoE6P+A2IoIaLYa','CgfWzxjtzwXLy3q','57Y65Bcr5lIl5lIa5QgJ6kof5Ashia','zxf1AxbTzw50lxHPBgLHBI1WCMv2Awv3','AgLNAgXPz2H0u2vSzwn0swq','y2fUy2vSBgvK','mtKZmdeYnhfAqLbTCW','mtaW57QN56ko56wE5yw1iokgKIdPH43PK7JKUiVKUidMIOO2moE6P+wjKEIdMG','imk3idXZCgfUignSyxnZpsjJB2XVCI0','ChjVCenOzwnR','BwfRzufSBeL0zw1Z','AMLHBNDHBMCTC3rHDguTDgfIBgu','pc9KAxy+cIaGicaGicaGpgrPDIbJBgfZCZ0IBwfRzs1HzhzHBMnLlw5VDgLJzs1KzxrHAwWIpJXZDhjVBMC+54M55Q6k5P2q5PAzpc9ZDhjVBMC+','Cgf0y2HLza','zNjLzq','EgLSAwfUrw50CMLLCW','Dg90ywXFBgLHBMPPBG','5A+85yE66kgO5Qc8','ioAkIUwqJUE7RtyW57QN5yMr6ioA','pg9WDgLVBIb2ywX1zt0IiJ7VViJOR7FLHyJPGiNMI6NLT7lPK7JOV5VKUjpMRABVViK8l29WDgLVBJ4','yNrUwgLSAwfUuhjLDMLLDW','ic8G5QYH','pg9WDgLVBIb2ywX1zt0IiJ4','5B2t5yMn5l+D5BQv6l+B5BQMia','5RkH5PYj6lAZ5AsF55Qe5A6E54MP5OM55QYHifmG5y+V5yIK5PAT77Ym5l+D5OYb5lQm5y+36kgL5lIb6kEe5yIz','5OMa6ycjmtaW57QN5A6E54MP57Y65Bcr5PYj5Pwiie1ku2vLzcdMIjBLT7lPK7JOV5VNIBNMROROR43MNAe','phrYpGOGicaGicaGidX0Ad4Jpc90Ad48DgG+5zob6lsOpc90Ad48DgG+5z+656gapc90Ad48DgG+6joD6k+n5P2Hpc90Ad48DgG+5zYW5yY66zMe5yQGpc90Ad48DgG+57QI6k+n5P2Hpc90Ad48DgG+57g75z6lpc90Ad48DgG+5Qch6k6Wpc90Ad48DgG+5Pon5l2Cpc90Ad4kicaGidWVDhi+','z3jVDZO','5RES54k8562j57QNia','phrYpJX0zcbJB2XZCgfUpsi1iIbJBgfZCZ0Izw1WDhKTCM93iJ7ML6dNOO7LIzhLVQRNJQ/ORRdLVzu8l3rKpJWVDhi+','6joD57sR6k+n5P2H','6Akg5y+w5yMr6ioA6ygt5yw3iokgKIa','yNrUsMLHBNDHBMDdEwnSzvbYzxzPzxC','ioASOsdcTYdMNidPQ5JLGlZKVy3KUO7NRkWG','ios7TUwkOowfPEAOOEAlN+IdJowmHE+8NWRVViJKUk3PL7tNU5pMNPZLJ6RMJQJOV5VMQkhMI5/NIRBMGihVViZKUi3LHAxLJixVViK','y29SB3i','tMvPAMLU','5BQp5yIxia','Dg9Nz2XL','y3PFC2vLza','pc9KAxy+cIaGica8l2rPDJ4','C2vSzwn0swq','B3b0Aw9UCW','546P5A625Qch6k6W','ios7TIdcTYdNTkVOO4uG','5QIH5OUF6iom5yYf','pc9ZCgfUpJWVDgq+cIaGicaGicaGicaGidX0zd48Aw5WDxqGDhLWzt0IDgv4DciGy2XHC3m9iM1HCMSTAw5WDxqGBwfRzs1YB3CTBwfYAYiGBwf4BgvUz3rOpsi0mciGDMfSDwu9iG','AMLHBNDHBMCUC3rHDgvtzxf1zw5Jzq','zxH0CW','5OMa6ycj5yMr546l6zIb6kof5Ash57Y65Bcr5PYj5PwiifpJGihLT7lMU6eGkZe1ioAiLUE8UUwWKEs4I+s4GowXGUA3RoEcVoA2IoIaL+IHQa','AMLHBNDHBMDby3rPB25tzwXLy3q','Aw5KzxG','BgvUz3rO','zw50CNLoB3rL','vMfSDwu','lNrHyI1IDg4','ioASOsdcTYdMR4/MRkhOIPlMMBBdLZeWimk3iowpQUIVU+MIHoA1IW','Dgv4DenVBNrLBNq','BwLU','yMXHBMTZ','C3rYAw5NAwz5','phrYigrHDgeTBwfRzs1PBMrLEd0I','ywrK','zMvUz3POAq','5BEY6kof5Ash','B2XKx3bYB3a','BwfRzq','yMfNrxf1AxbtzwXLy3q','imk3ifm9'];_0x300f=function(){return _0x20d277;};return _0x300f();}function canShengLian(_0x3c19e6){const _0x4c658c=_0x442d85;if(!_0x3c19e6||0x5a!==_0x3c19e6['need_lv']||_0x3c19e6[_0x4c658c(0x3c6)]>=0x5)return!0x1;const _0x26baa4=(EQUIP_DATA[_0x4c658c(0x2be)][String(_0x3c19e6['id'])]||{})[_0x4c658c(0x36c)]||0x0;return _0x26baa4>0x0&&!!EQUIP_DATA[_0x4c658c(0x2be)][String(_0x26baa4)];}function nextCraftedOnlyId(){return craftedSeq+=0x1,craftedSeq;}function getSourceFilter(_0x518cab){const _0x378ea7=_0x442d85;return document[_0x378ea7(0x1d4)]('bagSourceFilter')?.['value']||_0x378ea7(0x366);}function getTextFilter(_0x346cee){const _0x44ade9=_0x442d85;return(document[_0x44ade9(0x1d4)](_0x44ade9(0x28a))?.['value']||'')[_0x44ade9(0x23f)]()[_0x44ade9(0x320)]();}function isSimulatedEquip(_0xe60816){const _0x46173e=_0x442d85;return!!_0xe60816&&(_0xe60816[_0x46173e(0x32e)]||String(_0xe60816[_0x46173e(0x2de)]||'')['startsWith']('模拟')||_0xe60816[_0x46173e(0x18a)]||_0xe60816[_0x46173e(0x484)]);}function passEquipListFilter(_0x4cfb8e,_0x3dcf4b){const _0x26a7dc=_0x442d85,_0x171091=getSourceFilter(_0x3dcf4b);if(_0x26a7dc(0x40f)===_0x171091&&isSimulatedEquip(_0x4cfb8e))return!0x1;if('crafted'===_0x171091&&!isSimulatedEquip(_0x4cfb8e))return!0x1;const _0xad7821=document[_0x26a7dc(0x1d4)](_0x26a7dc(0x2f7))?.['value']||'';if(_0xad7821&&String(_0x4cfb8e[_0x26a7dc(0x393)])!==_0xad7821)return!0x1;const _0x3cf72f=document[_0x26a7dc(0x1d4)]('bagColorFilter')?.['value']||'';if(_0x3cf72f&&String(_0x4cfb8e[_0x26a7dc(0x3c6)])!==_0x3cf72f)return!0x1;const _0x55c340=getTextFilter(_0x3dcf4b);return!_0x55c340||[_0x4cfb8e['name'],_0x4cfb8e[_0x26a7dc(0x2c9)],_0x4cfb8e[_0x26a7dc(0x2de)],String(_0x4cfb8e[_0x26a7dc(0x1a4)]||''),COLOR_NAMES[_0x4cfb8e[_0x26a7dc(0x3c6)]]||_0x4cfb8e[_0x26a7dc(0x3c6)],TYPE_NAMES[_0x4cfb8e[_0x26a7dc(0x393)]]||_0x4cfb8e[_0x26a7dc(0x393)],_0x4cfb8e[_0x26a7dc(0x206)]+'级',_0x4cfb8e['_crafted']?_0x26a7dc(0x2a4):'',_0x4cfb8e[_0x26a7dc(0x1db)]?'已装备':_0x26a7dc(0x378)][_0x26a7dc(0x34e)]('\x20')[_0x26a7dc(0x320)]()['includes'](_0x55c340);}function getDefaultMakeMark(){const _0x2d8535=_0x442d85;return(document[_0x2d8535(0x1d4)](_0x2d8535(0x3f5))?.[_0x2d8535(0x272)]||'')[_0x2d8535(0x23f)]();}function craftedMJSeedFromMakeResult(_0x54b76d,_0x376436){const _0x18d67a=_0x442d85,_0x4ae124=null!=_0x54b76d?.[_0x18d67a(0x36f)]?_0x54b76d[_0x18d67a(0x36f)]:_0x54b76d?.[_0x18d67a(0x3ca)];if(!Number[_0x18d67a(0x266)](_0x376436)||_0x376436<=0x0)throw new TypeError(_0x18d67a(0x2db)+String(_0x376436));const _0x2d61ca=0xc6*_0x376436;if(!Number[_0x18d67a(0x266)](_0x4ae124)||_0x4ae124<=_0x2d61ca)throw new TypeError(_0x18d67a(0x319)+_0x2d61ca+_0x18d67a(0x195)+String(_0x4ae124));return _0x4ae124-_0x2d61ca;}function addCraftedFromMakeResult(_0x4adec0,_0x1d3ed2,_0x264961){const _0x303436=_0x442d85;if(!_0x4adec0||_0x4adec0[_0x303436(0x439)]||!_0x4adec0['equip_id'])return null;const _0x17077c=EQUIP_DATA[_0x303436(0x2be)][String(_0x4adec0['equip_id'])]||{},_0x53ff78=nextCraftedOnlyId(),_0x3d285e=(null!=_0x1d3ed2?String(_0x1d3ed2):getDefaultMakeMark())[_0x303436(0x23f)](),_0x97a452=null!=_0x4adec0['CZSeed']?_0x4adec0['CZSeed']:_0x4adec0['cz_seed'],_0x304725={'id':_0x4adec0[_0x303436(0x1b8)],'only_id':_0x53ff78,'name':_0x4adec0['name']||_0x17077c['name']||String(_0x4adec0[_0x303436(0x1b8)]),'need_lv':_0x17077c['lv']||0x0,'typ':_0x17077c[_0x303436(0x362)]||0x0,'color':_0x4adec0[_0x303436(0x3c6)]||0x1,'level':0x0,'lv_prop':0x0,'S':null!=_0x4adec0['S']?_0x4adec0['S']:_0x4adec0['s']||0x0,'MJSeed':craftedMJSeedFromMakeResult(_0x4adec0,_0x264961),'CZSeed':_0x97a452,'XLLevel':0x0,'XLNumber':0x0,'exts':(_0x4adec0[_0x303436(0x3d3)]||[])[_0x303436(0x194)](_0x56ce34=>({'prop':_0x56ce34[_0x303436(0x18c)],'value':_0x56ce34[_0x303436(0x272)]})),'specials':(_0x4adec0[_0x303436(0x411)]||[])['map'](_0x15359e=>({'prop':_0x15359e[_0x303436(0x18c)],'value':_0x15359e[_0x303436(0x272)]})),'xilian_marks':[],'xilian_accepted':0x0,'_source':_0x303436(0x2a4),'_equipped':!0x1,'_crafted':!0x0,'_mark':_0x3d285e,'_make_base':_0x4adec0[_0x303436(0x435)]||{},'_make_region':_0x4adec0[_0x303436(0x475)]||[],'_make_special':_0x4adec0[_0x303436(0x411)]||[],'_make_index':_0x4adec0['index']||0x0};saveEquips[_0x303436(0x3f0)](_0x304725);const _0x4b5121=runtimeKey(_0x304725),_0x551f6e={..._0x304725,...toWasmEquip(_0x304725),'xilian_marks':[]};return equipRuntime[_0x4b5121]=JSON['parse'](JSON[_0x303436(0x3df)](_0x551f6e)),updateCraftedBagHint(),renderCraftedBagList(),_0x304725;}function setCraftedMark(_0x2c5c96,_0x3543d6){const _0x12c264=_0x442d85,_0x41aa0b=String(_0x3543d6||'')[_0x12c264(0x23f)]()['slice'](0x0,0x28),_0x781bbc=saveEquips[_0x12c264(0x265)](_0x37fe6e=>_0x37fe6e[_0x12c264(0x1a4)]===_0x2c5c96);if(_0x781bbc){_0x781bbc[_0x12c264(0x2c9)]=_0x41aa0b;const _0x5b56e0=runtimeKey(_0x781bbc);equipRuntime[_0x5b56e0]&&(equipRuntime[_0x5b56e0]['_mark']=_0x41aa0b);}fillEquipSelects(),renderCraftedBagList();}function removeCraftedEquip(_0x2a29ab){const _0x79f1e7=_0x442d85,_0x3c4fb1=saveEquips['findIndex'](_0x5e28bc=>_0x5e28bc[_0x79f1e7(0x1a4)]===_0x2a29ab&&_0x5e28bc[_0x79f1e7(0x32e)]);if(_0x3c4fb1<0x0)return;const _0x4d9cd2=runtimeKey(saveEquips[_0x3c4fb1]);saveEquips[_0x79f1e7(0x371)](_0x3c4fb1,0x1),delete equipRuntime[_0x4d9cd2],updateCraftedBagHint(),renderCraftedBagList(),fillEquipSelects();}function renderCraftedBagList(){const _0x6ddf48=_0x442d85,_0x5ebfc4=document['getElementById'](_0x6ddf48(0x42a));if(!_0x5ebfc4)return;const _0x34e5ba=document[_0x6ddf48(0x1d4)]('bagEquipSelect')?.[_0x6ddf48(0x272)]||'',_0xf8c004=saveEquips[_0x6ddf48(0x431)](_0x5ca64b=>passEquipListFilter(_0x5ca64b,_0x6ddf48(0x39a))),_0x205843=document['getElementById']('craftedBagCount');if(_0x205843&&(_0x205843[_0x6ddf48(0x3dc)]=_0xf8c004[_0x6ddf48(0x3d7)]+'\x20件'),!_0xf8c004['length'])return _0x5ebfc4['classList'][_0x6ddf48(0x3e1)]('empty'),void(_0x5ebfc4[_0x6ddf48(0x3dc)]='当前筛选下暂无可用装备');_0x5ebfc4[_0x6ddf48(0x24c)]['remove']('empty'),_0x5ebfc4[_0x6ddf48(0x22b)]=_0xf8c004[_0x6ddf48(0x194)](_0x1afa6f=>{const _0x2dd85e=_0x6ddf48,_0x4341a5=runtimeKey(_0x1afa6f),_0x1315e3=COLOR_NAMES[_0x1afa6f[_0x2dd85e(0x3c6)]]||_0x1afa6f['color'],_0x39a858=TYPE_NAMES[_0x1afa6f[_0x2dd85e(0x393)]]||_0x1afa6f[_0x2dd85e(0x393)],_0x41b95f=_0x1afa6f[_0x2dd85e(0x2c9)]||'',_0x31d0d2=_0x1afa6f[_0x2dd85e(0x32e)]?_0x2dd85e(0x2a4):_0x1afa6f['_source']||(_0x1afa6f[_0x2dd85e(0x1db)]?'已装备':'存档装备'),_0x739fd3=_0x1afa6f[_0x2dd85e(0x32e)]?_0x2dd85e(0x21d)+escapeHtml(_0x41b95f)+_0x2dd85e(0x1e0):_0x2dd85e(0x357)+escapeHtml(_0x31d0d2)+'</span>',_0x1a1ad2=_0x1afa6f['_crafted']?_0x2dd85e(0x1c4):'';return _0x2dd85e(0x31a)+(_0x4341a5===_0x34e5ba?_0x2dd85e(0x17f):'')+_0x2dd85e(0x396)+_0x1afa6f[_0x2dd85e(0x1a4)]+_0x2dd85e(0x14f)+escapeHtml(_0x4341a5)+_0x2dd85e(0x464)+escapeHtml(_0x1afa6f[_0x2dd85e(0x186)])+'</strong><span>'+_0x1afa6f[_0x2dd85e(0x206)]+_0x2dd85e(0x19b)+escapeHtml(String(_0x1315e3))+_0x2dd85e(0x164)+escapeHtml(String(_0x39a858))+_0x2dd85e(0x164)+escapeHtml(_0x31d0d2)+'</span></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+_0x739fd3+_0x2dd85e(0x471)+_0x1a1ad2+_0x2dd85e(0x1a0);})[_0x6ddf48(0x34e)]('');}function calcShengLianCost(_0x11e699){const _0x2bff36=_0x442d85,_0x3a704b=EQUIP_DATA['equipment'][String(_0x11e699['id'])]||{},_0x2142f8=EQUIP_DATA[_0x2bff36(0x2be)][String(_0x3a704b['equ_next'])]||{},_0x2ab728=_0x11e699[_0x2bff36(0x393)]>=0x5&&_0x11e699['typ']<=0x7,_0x4bdec2=_0x2ab728?0xbdc:0xbd2,_0x5a71c7=_0x2ab728?_0x2bff36(0x292):'昆吾石',_0x5d7708=_0x2142f8[_0x2bff36(0x389)]>0x0?_0x2142f8['price']:_0x3a704b[_0x2bff36(0x389)]||0x2710;return[{'id':0x2261,'name':'连金泥','n':0xa},{'id':_0x4bdec2,'name':_0x5a71c7,'n':0x78},{'id':0xbb9,'name':'银两','n':Math['floor'](0x6*_0x5d7708)}];}function applyShengLian(_0x7b89fb){const _0x3945d4=_0x442d85,_0x51dfb7=saveEquips[_0x3945d4(0x392)](_0x6a4c91=>runtimeKey(_0x6a4c91)===_0x7b89fb);if(_0x51dfb7<0x0)return{'error':_0x3945d4(0x28b)};const _0x41143b=saveEquips[_0x51dfb7];if(!canShengLian(_0x41143b))return{'error':_0x3945d4(0x295)};const _0x3eb550=(EQUIP_DATA['equipment'][String(_0x41143b['id'])]||{})[_0x3945d4(0x36c)],_0x3a0ec7=EQUIP_DATA[_0x3945d4(0x2be)][String(_0x3eb550)];if(!_0x3a0ec7)return{'error':_0x3945d4(0x3a5)+_0x3eb550};_0x41143b['only_id']||(_0x41143b['only_id']=nextCraftedOnlyId());const _0x1163ac=runtimeKey(_0x41143b),_0x4cfcf7=getRuntimeEquip(_0x1163ac)||getRuntimeEquip(_0x7b89fb),_0x56e055=_0x41143b[_0x3945d4(0x186)],_0x4f4790=_0x41143b[_0x3945d4(0x206)];if(_0x41143b['id']=_0x3eb550,_0x41143b[_0x3945d4(0x186)]=_0x3a0ec7[_0x3945d4(0x186)]||String(_0x3eb550),_0x41143b['need_lv']=_0x3a0ec7['lv']||0x64,_0x41143b[_0x3945d4(0x393)]=_0x3a0ec7[_0x3945d4(0x362)]||_0x41143b[_0x3945d4(0x393)],_0x4cfcf7){_0x4cfcf7['id']=_0x41143b['id'],_0x4cfcf7[_0x3945d4(0x186)]=_0x41143b[_0x3945d4(0x186)],_0x4cfcf7[_0x3945d4(0x206)]=_0x41143b[_0x3945d4(0x206)],_0x4cfcf7[_0x3945d4(0x393)]=_0x41143b[_0x3945d4(0x393)],_0x4cfcf7['only_id']=_0x41143b[_0x3945d4(0x1a4)];const _0x1b91c2=runtimeKey(_0x41143b);_0x7b89fb!==_0x1b91c2&&delete equipRuntime[_0x7b89fb],_0x1163ac!==_0x1b91c2&&delete equipRuntime[_0x1163ac],equipRuntime[_0x1b91c2]={..._0x4cfcf7,...toWasmEquip(_0x4cfcf7),'xilian_marks':[..._0x4cfcf7[_0x3945d4(0x280)]||[]]};}return{'ok':!0x0,'key':runtimeKey(_0x41143b),'from':_0x56e055+'('+_0x4f4790+')','to':_0x41143b[_0x3945d4(0x186)]+'('+_0x41143b['need_lv']+')','equip':_0x41143b};}function updateCraftedBagHint(){const _0x5ef0e9=_0x442d85,_0x3cb4fd=saveEquips['filter'](isSimulatedEquip),_0xa14da0=_0x3cb4fd[_0x5ef0e9(0x3d7)],_0x22be58=_0x3cb4fd[_0x5ef0e9(0x431)](_0xf2543a=>_0xf2543a[_0x5ef0e9(0x2c9)])[_0x5ef0e9(0x3d7)],_0x5f2f81=_0x3cb4fd['filter'](canShengLian)[_0x5ef0e9(0x3d7)],_0x1745dc=_0x3cb4fd[_0x5ef0e9(0x431)](canXilian)['length'],_0x1894f0=_0x3cb4fd['filter'](canStrong)[_0x5ef0e9(0x3d7)],_0x2fe2fa=_0xa14da0?_0x5ef0e9(0x231)+_0xa14da0+_0x5ef0e9(0x40b)+_0x22be58+_0x5ef0e9(0x16d)+_0x5f2f81+'\x20·\x20可精炼\x20'+_0x1745dc+_0x5ef0e9(0x345)+_0x1894f0:_0x5ef0e9(0x1bd),_0x324fe0=document['getElementById'](_0x5ef0e9(0x24a)),_0x323c17=document[_0x5ef0e9(0x1d4)](_0x5ef0e9(0x19d));_0x324fe0&&(_0x324fe0[_0x5ef0e9(0x3dc)]=_0x2fe2fa),_0x323c17&&(_0x323c17[_0x5ef0e9(0x3dc)]=_0x2fe2fa);}function toWasmEquip(_0x1f3531){const _0x26a903=_0x442d85,_0x202947=_0x1f3531['xilian_marks']||[];return{'id':_0x1f3531['id'],'only_id':_0x1f3531[_0x26a903(0x1a4)],'name':_0x1f3531[_0x26a903(0x186)],'color':_0x1f3531[_0x26a903(0x3c6)],'level':_0x1f3531[_0x26a903(0x2f9)],'lv_prop':_0x1f3531[_0x26a903(0x2ac)],'S':_0x1f3531['S'],'CZSeed':_0x1f3531['CZSeed'],'MJSeed':_0x1f3531['MJSeed'],'XLLevel':_0x1f3531[_0x26a903(0x20c)],'XLNumber':_0x1f3531[_0x26a903(0x395)],'exp':_0x1f3531['exp']||0x0,'base':_0x1f3531[_0x26a903(0x435)]||{},'exts':_0x1f3531[_0x26a903(0x3d3)],'xilian_accepted':_0x202947[_0x26a903(0x3d7)]||_0x1f3531[_0x26a903(0x193)]||0x0,'xilian_marks':_0x202947,'need_lv':_0x1f3531[_0x26a903(0x206)]||0x0,'typ':_0x1f3531['typ']||0x0};}function formatSilver(_0x4fff7e){const _0x52f896=Math['floor'](_0x4fff7e/0x3e8),_0x389db2=_0x4fff7e%0x3e8;let _0x3b8bf6='';return _0x52f896>0x0&&(_0x3b8bf6+=_0x52f896+'两'),(_0x389db2>0x0||!_0x3b8bf6)&&(_0x3b8bf6+=_0x389db2+'文'),_0x3b8bf6;}function calcXilianCost(_0x1d2586){return EquipmentAutoOptimizer['xilianCost'](EQUIP_DATA,_0x1d2586);}function formatCostList(_0x4f04fa){const _0xb9a79=_0x442d85;return _0x4f04fa[_0xb9a79(0x194)](_0x12d617=>0xbb9===_0x12d617['id']?''+_0x12d617[_0xb9a79(0x186)]+formatSilver(_0x12d617['n']):_0x12d617['name']+'×'+_0x12d617['n'])['join'](_0xb9a79(0x164));}function mainPropDisplay(_0x1daf69,_0x5ba621){const _0x43455f=_0x442d85;return EquipmentAutoOptimizer[_0x43455f(0x358)](EQUIP_DATA,_0x1daf69,_0x5ba621);}let xilianAcceptFlags=[],xilianPlanEquipKey=null,xilianPlanItems=[],strongPlanCache=null;const STONE_NAMES={0xbd3:_0x442d85(0x38a),0xbd4:_0x442d85(0x344),0xbd5:'蓝炼石',0xbd6:'紫炼石'};function resetXilianSession(){const _0x167796=_0x442d85;xilianAcceptFlags=[],xilianPlanEquipKey=null,xilianPlanItems=[];const _0x4014b6=document['getElementById'](_0x167796(0x427));_0x4014b6&&(_0x4014b6[_0x167796(0x24c)][_0x167796(0x3e1)](_0x167796(0x25f)),_0x4014b6[_0x167796(0x22b)]=_0x167796(0x423));const _0x188756=document[_0x167796(0x1d4)](_0x167796(0x45c));_0x188756&&(_0x188756[_0x167796(0x19f)]=!0x0);}function strongAttemptCost(_0x2017bc,_0x2adefe){const _0x2af6a5=_0x442d85;return EquipmentAutoOptimizer[_0x2af6a5(0x2e0)](EQUIP_DATA,_0x2017bc,_0x2adefe);}function formatStoneBag(_0x2e4a25){const _0x231099=_0x442d85,_0x4be2b4=[];for(const _0x4cf866 of[0xbd3,0xbd4,0xbd5,0xbd6]){const _0x1903ff=_0x2e4a25[_0x231099(0x276)]?.[_0x4cf866]||0x0;_0x1903ff&&_0x4be2b4['push'](STONE_NAMES[_0x4cf866]+'×'+_0x1903ff);}return _0x2e4a25[_0x231099(0x28d)]&&_0x4be2b4['push']('银两'+formatSilver(_0x2e4a25[_0x231099(0x28d)])),_0x4be2b4['join'](_0x231099(0x164))||'—';}function planStrongPath(_0x5a8c27,_0x2a76cb,_0x560eac,_0x29f0af,_0x23a215){const _0x5ec8b5=_0x442d85;return EquipmentAutoOptimizer[_0x5ec8b5(0x2b5)](EQUIP_DATA,_0x5a8c27,_0x2a76cb,_0x560eac,_0x29f0af,_0x23a215);}function collectEquipsFromSave(_0x27ed17){const _0x4dbcd1=_0x442d85,_0x3cd5ac=Array[_0x4dbcd1(0x3f4)](_0x27ed17)?_0x27ed17[0x0]:_0x27ed17,_0x2e998d=[],_0x541cd0=new Set(),_0x160e02=(_0x24bfb0,_0xf1b7b1,_0xde47e1)=>{const _0x270ffc=_0x4dbcd1;if(!_0x24bfb0)return;const _0x120b2b=Array[_0x270ffc(0x3f4)](_0x24bfb0)?_0x24bfb0:Object[_0x270ffc(0x1a5)](_0x24bfb0);for(const _0x561875 of _0x120b2b){if(!_0x561875||null==_0x561875['ID']&&null==_0x561875['id'])continue;const _0x4270ca=_0x561875['ID']??_0x561875['id'];if(!EQUIP_DATA[_0x270ffc(0x2be)][String(_0x4270ca)])continue;if(null==_0x561875[_0x270ffc(0x36f)]&&null==_0x561875['S']&&!_0x561875[_0x270ffc(0x1f4)]&&null==_0x561875[_0x270ffc(0x24d)])continue;const _0x183c1f=toEquipInstance(_0x561875,_0xf1b7b1,_0xde47e1),_0x237e69=_0x183c1f[_0x270ffc(0x1a4)]||_0xf1b7b1+':'+_0x183c1f['id']+':'+_0x183c1f[_0x270ffc(0x36f)];_0x541cd0['has'](_0x237e69)||(_0x541cd0[_0x270ffc(0x3e1)](_0x237e69),_0x2e998d[_0x270ffc(0x3f0)](_0x183c1f));}},_0x470b42=_0x39647b=>_0x39647b?Array[_0x4dbcd1(0x3f4)](_0x39647b)?_0x39647b:_0x4dbcd1(0x237)==typeof _0x39647b?Object[_0x4dbcd1(0x1a5)](_0x39647b):[]:[];_0x160e02(_0x3cd5ac[_0x4dbcd1(0x474)]?.[_0x4dbcd1(0x398)],_0x4dbcd1(0x25b),!0x0),_0x470b42(_0x3cd5ac[_0x4dbcd1(0x185)])['forEach']((_0x49c35,_0x47933c)=>{const _0x18dd65=_0x4dbcd1,_0x465a4a=_0x49c35[_0x18dd65(0x2f5)]||_0x49c35[_0x18dd65(0x186)]||'随从'+(_0x47933c+0x1);_0x160e02(_0x49c35[_0x18dd65(0x398)],_0x465a4a,!0x0);}),_0x470b42(_0x3cd5ac[_0x4dbcd1(0x37c)])[_0x4dbcd1(0x31d)]((_0x500570,_0x56fe51)=>{const _0xe52543=_0x4dbcd1,_0x497a4c=_0x500570['Name']||_0x500570[_0xe52543(0x186)]||'离队'+(_0x56fe51+0x1);_0x160e02(_0x500570[_0xe52543(0x398)],_0x497a4c,!0x0);}),_0x160e02(_0x3cd5ac[_0x4dbcd1(0x398)],'背包',!0x1);const _0x331e44=_0x3cd5ac[_0x4dbcd1(0x243)]||_0x3cd5ac[_0x4dbcd1(0x386)]||{};for(const _0x1680e9 of Object[_0x4dbcd1(0x1a5)](_0x331e44))_0x160e02(_0x1680e9?.[_0x4dbcd1(0x386)]||_0x1680e9?.[_0x4dbcd1(0x1c5)]||_0x1680e9,'仓库',!0x1);return _0x2e998d;}function runtimeKey(_0xa6ee45){const _0x2cb8e5=_0x442d85;return String(_0xa6ee45[_0x2cb8e5(0x1a4)]||_0xa6ee45['id']+'_'+_0xa6ee45[_0x2cb8e5(0x36f)]+'_'+_0xa6ee45['S']);}function findEquipByRuntimeKey(_0x1aaed3){const _0x1f62ce=_0x442d85;return saveEquips[_0x1f62ce(0x265)](_0x39dc0d=>runtimeKey(_0x39dc0d)===_0x1aaed3)||(jianwangSelectableBlank&&runtimeKey(jianwangSelectableBlank)===_0x1aaed3?jianwangSelectableBlank:null);}function getRuntimeEquip(_0x4e0fa0){const _0x536fa0=_0x442d85,_0x21b832=findEquipByRuntimeKey(_0x4e0fa0);return _0x21b832?equipRuntime[_0x4e0fa0]||JSON[_0x536fa0(0x2c4)](JSON[_0x536fa0(0x3df)](toWasmEquip(_0x21b832))):null;}function setRuntimeEquip(_0x30119e,_0x4176a6){equipRuntime[_0x30119e]=_0x4176a6;}function sortedCraftsmen(){return EquipmentAutoOptimizer['sortedCraftsmen'](EQUIP_DATA);}function papersForNpc(_0x29088b){const _0x13d473=_0x442d85;return EquipmentAutoOptimizer[_0x13d473(0x2b3)](EQUIP_DATA,_0x29088b)[_0x13d473(0x194)](_0x295e08=>({'selectId':_0x295e08[_0x13d473(0x2ab)]['id'],'equipId':_0x295e08[_0x13d473(0x2ab)][_0x13d473(0x2e7)],'label':_0x295e08[_0x13d473(0x406)][_0x13d473(0x186)]+'（'+(_0x295e08[_0x13d473(0x3b1)]?_0x13d473(0x2e9):_0x295e08[_0x13d473(0x2ab)][_0x13d473(0x186)])+'·'+_0x295e08[_0x13d473(0x406)]['lv']+'级）','paper':_0x295e08['paper'],'equip':_0x295e08[_0x13d473(0x406)]}));}function fillNpcSelect(){const _0x578ff3=_0x442d85,_0x13d42d=document[_0x578ff3(0x1d4)](_0x578ff3(0x1c9));_0x13d42d[_0x578ff3(0x22b)]='';for(const _0x370094 of sortedCraftsmen()){const _0x38144d=document[_0x578ff3(0x456)](_0x578ff3(0x459));_0x38144d[_0x578ff3(0x272)]=_0x370094['id'],_0x38144d[_0x578ff3(0x3dc)]=(_0x370094['place']||_0x370094[_0x578ff3(0x186)])+_0x578ff3(0x164)+_0x370094[_0x578ff3(0x186)]+'（'+(_0x578ff3(0x3e2)===_0x370094['zhi']?'绣':'铁')+'）',_0x13d42d[_0x578ff3(0x1cf)](_0x38144d);}for(const _0xaa0e1f of['40520',_0x578ff3(0x466),_0x578ff3(0x27f),_0x578ff3(0x215)])if(EQUIP_DATA[_0x578ff3(0x2c0)][_0xaa0e1f]){_0x13d42d[_0x578ff3(0x272)]=_0xaa0e1f;break;}}function fillPaperSelect(){const _0x448123=_0x442d85,_0x4c1a6f=Number(document[_0x448123(0x1d4)](_0x448123(0x1c9))[_0x448123(0x272)]),_0x4f738e=document[_0x448123(0x1d4)](_0x448123(0x3a4)),_0xcd54a=(document[_0x448123(0x1d4)](_0x448123(0x3a1))?.[_0x448123(0x272)]||'')[_0x448123(0x23f)]()['toLowerCase'](),_0x2f08ea=_0x4f738e[_0x448123(0x272)];_0x4f738e[_0x448123(0x22b)]='';let _0x18d331=0x0;for(const _0x3e3d24 of papersForNpc(_0x4c1a6f)){if(_0xcd54a&&!(_0x3e3d24[_0x448123(0x42b)]+'\x20'+(_0x3e3d24[_0x448123(0x406)]?.['name']||''))[_0x448123(0x320)]()[_0x448123(0x460)](_0xcd54a))continue;const _0x33cc76=document[_0x448123(0x456)](_0x448123(0x459));_0x33cc76[_0x448123(0x272)]=JSON[_0x448123(0x3df)]({'selectId':_0x3e3d24[_0x448123(0x3cc)],'equipId':_0x3e3d24[_0x448123(0x16c)],'minColor':_0x3e3d24[_0x448123(0x2ab)]['min_color'],'maxColor':_0x3e3d24[_0x448123(0x2ab)][_0x448123(0x43f)]}),_0x33cc76[_0x448123(0x3dc)]=_0x3e3d24[_0x448123(0x42b)],_0x4f738e[_0x448123(0x1cf)](_0x33cc76),_0x18d331++;}_0x18d331?_0x2f08ea&&[..._0x4f738e['options']][_0x448123(0x157)](_0x3ffb37=>_0x3ffb37[_0x448123(0x272)]===_0x2f08ea)&&(_0x4f738e['value']=_0x2f08ea):_0x4f738e['innerHTML']='<option\x20value=\x22\x22>（无匹配装备）</option>',fillSpecialSelect(),fillMakePadSelect(!0x0),updateMakeHints();}function fillSpecialSelect(){const _0x3fc662=_0x442d85,_0xd6ba8f=document[_0x3fc662(0x1d4)](_0x3fc662(0x2a5));if(!_0xd6ba8f)return;const _0x3ef4fe=_0xd6ba8f['value'];let _0x538ea9=null;try{_0x538ea9=JSON[_0x3fc662(0x2c4)](document[_0x3fc662(0x1d4)]('paperSelect')?.['value']||'');}catch{}const _0x1605c1=_0x538ea9?EQUIP_DATA[_0x3fc662(0x2be)][String(_0x538ea9[_0x3fc662(0x16c)])]:null;_0xd6ba8f['innerHTML']=_0x3fc662(0x481);const _0x280544=_0x1605c1?specialMaterialsForEquip(_0x1605c1):[];for(const _0x3ab95d of _0x280544){const _0x5536f2=document['createElement'](_0x3fc662(0x459));_0x5536f2[_0x3fc662(0x272)]=_0x3ab95d['id'],_0x5536f2[_0x3fc662(0x3dc)]=_0x3ab95d['name']||String(_0x3ab95d['id']),_0xd6ba8f[_0x3fc662(0x1cf)](_0x5536f2);}_0x3ef4fe&&[..._0xd6ba8f[_0x3fc662(0x3cd)]][_0x3fc662(0x157)](_0x214e1e=>_0x214e1e[_0x3fc662(0x272)]===_0x3ef4fe)&&(_0xd6ba8f[_0x3fc662(0x272)]=_0x3ef4fe);}function currentMakeRequest(){const _0x56b1bb=_0x442d85,_0x63d26d=Number(document[_0x56b1bb(0x1d4)](_0x56b1bb(0x1c9))[_0x56b1bb(0x272)]);let _0x1f12e8;try{_0x1f12e8=JSON[_0x56b1bb(0x2c4)](document[_0x56b1bb(0x1d4)](_0x56b1bb(0x3a4))['value']);}catch{return null;}return{'npc_id':_0x63d26d,'select_id':_0x1f12e8[_0x56b1bb(0x3cc)],'equip_id':_0x1f12e8['equipId'],'special_id':Number(document['getElementById'](_0x56b1bb(0x2a5))['value'])||0x0,'min_color':_0x1f12e8[_0x56b1bb(0x3fe)],'max_color':_0x1f12e8[_0x56b1bb(0x340)]};}function makeRequestValidationError(_0x4af937){const _0x3b0199=_0x442d85;if(!_0x4af937)return _0x3b0199(0x26a);const _0x2dda24=EQUIP_DATA[_0x3b0199(0x2be)][String(_0x4af937[_0x3b0199(0x1b8)])];if(!_0x2dda24)return _0x3b0199(0x385)+_0x4af937['equip_id']+_0x3b0199(0x2cf);if(!_0x4af937[_0x3b0199(0x446)])return'';const _0x452878=EQUIP_DATA[_0x3b0199(0x411)][String(_0x4af937[_0x3b0199(0x446)])];return _0x452878?specialMaterialSupportsEquip(_0x452878,_0x2dda24)?'':_0x3b0199(0x451)+(_0x452878['name']||_0x452878['id'])+_0x3b0199(0x1a1)+(_0x2dda24[_0x3b0199(0x186)]||_0x2dda24['id'])+'」':'特殊材料\x20'+_0x4af937['special_id']+_0x3b0199(0x2cf);}function requireCurrentMakeRequest(){const _0x13814f=currentMakeRequest(),_0x4f2e83=makeRequestValidationError(_0x13814f);return _0x4f2e83?(alert(_0x4f2e83),null):_0x13814f;}function isFixedOrangeMakeRequest(_0x102019){const _0x2a33af=_0x442d85;return!!_0x102019&&0x5===Number(_0x102019[_0x2a33af(0x178)])&&0x5===Number(_0x102019[_0x2a33af(0x43f)]);}function isFreePaperMakeRequest(_0x33626f){const _0x3df95a=_0x442d85;if(!_0x33626f)return!0x1;const _0x4e43e1=EQUIP_DATA[_0x3df95a(0x2c0)][String(_0x33626f[_0x3df95a(0x260)])];return!!_0x4e43e1&&(_0x4e43e1['pf']||[])[_0x3df95a(0x194)](Number)[_0x3df95a(0x460)](Number(_0x33626f['select_id']));}function usesOrangePadSequence(_0x3d3fd2){return isFixedOrangeMakeRequest(_0x3d3fd2)&&!isFreePaperMakeRequest(_0x3d3fd2);}function isCraftableOrdinaryPadPaper(_0x4a2661){const _0x5c5871=_0x442d85,_0x1012fd=_0x4a2661?.[_0x5c5871(0x2ab)],_0x384dc0=_0x4a2661?.[_0x5c5871(0x406)];return!(!_0x1012fd||!_0x384dc0||Number(_0x1012fd[_0x5c5871(0x43f)])>0x4);}function makePadCandidatesFor(_0x409920){const _0x5ec442=_0x442d85;if(!usesOrangePadSequence(_0x409920))return[];const _0x1f29c0=EQUIP_DATA[_0x5ec442(0x2be)][String(_0x409920['equip_id'])];return!_0x1f29c0||Number(_0x1f29c0['lv'])>=0x64?[]:papersForNpc(Number(_0x409920[_0x5ec442(0x260)]))[_0x5ec442(0x431)](_0x10e3ba=>{const _0x56702d=_0x5ec442,_0x2489e9=_0x10e3ba[_0x56702d(0x406)];return isCraftableOrdinaryPadPaper(_0x10e3ba)&&Number(_0x2489e9['id'])!==Number(_0x409920[_0x56702d(0x1b8)])&&Number(_0x2489e9[_0x56702d(0x362)])===Number(_0x1f29c0[_0x56702d(0x362)])&&Number(_0x2489e9['lv'])===Number(_0x1f29c0['lv']);});}function fillMakePadSelect(_0x11845b=!0x0){const _0x2a04e4=_0x442d85,_0x22e392=document['getElementById']('makePadGroup'),_0xad06f7=document[_0x2a04e4(0x1d4)](_0x2a04e4(0x2b0));if(!_0xad06f7)return;const _0x3e0c2d=_0x11845b?_0xad06f7[_0x2a04e4(0x272)]:'',_0x373ff4=makePadCandidatesFor(currentMakeRequest());if(_0xad06f7[_0x2a04e4(0x22b)]='',_0x373ff4[_0x2a04e4(0x3d7)]){for(const _0x167264 of _0x373ff4){const _0xecc2bc=document[_0x2a04e4(0x456)]('option');_0xecc2bc[_0x2a04e4(0x272)]=String(_0x167264[_0x2a04e4(0x3cc)]),_0xecc2bc[_0x2a04e4(0x3dc)]=_0x167264[_0x2a04e4(0x2ab)][_0x2a04e4(0x186)]||_0x167264[_0x2a04e4(0x406)]['name']||String(_0x167264['selectId']),_0xad06f7[_0x2a04e4(0x1cf)](_0xecc2bc);}_0x3e0c2d&&[..._0xad06f7['options']]['some'](_0x13c557=>_0x13c557[_0x2a04e4(0x272)]===_0x3e0c2d)&&(_0xad06f7[_0x2a04e4(0x272)]=_0x3e0c2d),_0x22e392&&(_0x22e392[_0x2a04e4(0x19f)]=!0x1);}else _0x22e392&&(_0x22e392[_0x2a04e4(0x19f)]=!0x0);}function makePadCandidateFor(_0x3965b7){const _0x3a6f27=_0x442d85,_0x2a7f32=makePadCandidatesFor(_0x3965b7);if(!_0x2a7f32[_0x3a6f27(0x3d7)])return null;const _0x32ee17=Number(document[_0x3a6f27(0x1d4)]('makePadPaperSelect')?.[_0x3a6f27(0x272)]||0x0),_0x54cf20=_0x2a7f32[_0x3a6f27(0x265)](_0x33e3f8=>Number(_0x33e3f8[_0x3a6f27(0x3cc)])===_0x32ee17)||_0x2a7f32[0x0];return{'npc_id':Number(_0x3965b7[_0x3a6f27(0x260)]),'select_id':Number(_0x54cf20[_0x3a6f27(0x3cc)]),'equip_id':Number(_0x54cf20[_0x3a6f27(0x16c)]),'special_id':0x0,'min_color':Number(_0x54cf20[_0x3a6f27(0x2ab)][_0x3a6f27(0x178)]),'max_color':Number(_0x54cf20[_0x3a6f27(0x2ab)][_0x3a6f27(0x43f)])};}function predictFixedOrangeByOrdinaryPads(_0x51c231,_0x31e0d8){const _0x430287=_0x442d85,_0xce2c85=Number(_0x31e0d8);if(!Number['isSafeInteger'](_0xce2c85)||_0xce2c85<0x1||_0xce2c85>0x1388)return{'items':[],'error':_0x430287(0x208)};if(!usesOrangePadSequence(_0x51c231))return wasmMakePreview(_0x51c231,_0xce2c85);const _0x4689f6=EQUIP_DATA[_0x430287(0x2be)][String(_0x51c231[_0x430287(0x1b8)])];if(Number(_0x4689f6?.['lv'])>=0x64)return wasmMakePreview(_0x51c231,_0xce2c85);const _0x1aa0df=makePadCandidateFor(_0x51c231);return _0x1aa0df?EquipmentAutoOptimizer[_0x430287(0x226)](_0x51c231,_0x1aa0df,_0xce2c85,!0x0):{'items':[],'error':_0x430287(0x2ec)};}function predictFixedOrangeByOrdinaryPadsAsync(_0x133f1a,_0x24084d,_0x39476d){const _0x5e72a7=_0x442d85,_0x39b290=Number(_0x24084d);if(!Number[_0x5e72a7(0x266)](_0x39b290)||_0x39b290<0x1||_0x39b290>0x1388)return Promise[_0x5e72a7(0x2dd)]({'items':[],'error':_0x5e72a7(0x208)});let _0x37f2d6=null;return usesOrangePadSequence(_0x133f1a)&&Number(EQUIP_DATA[_0x5e72a7(0x2be)][String(_0x133f1a['equip_id'])]?.['lv'])<0x64&&(_0x37f2d6=makePadCandidateFor(_0x133f1a),!_0x37f2d6)?Promise[_0x5e72a7(0x2dd)]({'items':[],'error':_0x5e72a7(0x2ec)}):YYJHCalculation[_0x5e72a7(0x20e)]('equipment.makePreview',{'state':wasmMakeGetState(),'request':_0x133f1a,'padRequest':_0x37f2d6,'count':_0x39b290},{'scope':'equipment-make-preview','onProgress':_0x39476d});}function renderMakePreviewProgress(_0x192faa){const _0x15b307=_0x442d85,_0x334e19=document[_0x15b307(0x1d4)](_0x15b307(0x211)),_0x595b08=document[_0x15b307(0x1d4)]('makePreviewProgressText'),_0x121ba1=document['getElementById'](_0x15b307(0x31e)),_0x4efc74=document['getElementById']('makePreviewProgressFill');if(!_0x334e19)return;const _0x4afd57=_0x192faa&&_0x192faa['total']>0x0?Math[_0x15b307(0x23a)](0x0,Math[_0x15b307(0x3dd)](0x1,Number(_0x192faa[_0x15b307(0x16e)])/Number(_0x192faa[_0x15b307(0x1e2)]))):0x0,_0x2525fc=Math[_0x15b307(0x2ad)](0x64*_0x4afd57);_0x334e19['hidden']=!0x1,_0x595b08&&(_0x595b08[_0x15b307(0x3dc)]=_0x192faa&&_0x192faa[_0x15b307(0x23b)]||_0x15b307(0x171)),_0x121ba1&&(_0x121ba1['textContent']=_0x2525fc+'%'),_0x4efc74&&(_0x4efc74[_0x15b307(0x14d)][_0x15b307(0x43e)]=_0x2525fc+'%');}function advanceFixedOrangeByOrdinaryPads(_0x4e139d,_0x90c3f5){const _0x9b827b=_0x442d85,_0x56de8d=Number(_0x90c3f5);if(!Number['isSafeInteger'](_0x56de8d)||_0x56de8d<0x1||_0x56de8d>0x1388)return{'error':'目标序号无效（1–5000）'};const _0x19270f=EQUIP_DATA[_0x9b827b(0x2be)][String(_0x4e139d?.[_0x9b827b(0x1b8)])];if(!usesOrangePadSequence(_0x4e139d)||Number(_0x19270f?.['lv'])>=0x64)return null;const _0x4c920b=makePadCandidateFor(_0x4e139d);if(!_0x4c920b)return{'error':_0x9b827b(0x2ec)};const _0x5f1c2e=EquipmentAutoOptimizer['orangePadSequence'](_0x4e139d,_0x4c920b,_0x56de8d,!0x1);return _0x5f1c2e['error']?_0x5f1c2e:_0x5f1c2e['item'];}function updateMakeHints(){const _0x56ad2b=_0x442d85,_0x551e29=currentMakeRequest(),_0x1b2a79=document[_0x56ad2b(0x1d4)](_0x56ad2b(0x1f0)),_0x1a9b16=document[_0x56ad2b(0x1d4)](_0x56ad2b(0x329));if(!_0x551e29)return _0x1b2a79[_0x56ad2b(0x3dc)]=_0x56ad2b(0x26a),void(_0x1a9b16['textContent']='');const _0x25a3a3=EQUIP_DATA[_0x56ad2b(0x387)][String(_0x551e29['select_id'])],_0x1fa59f=EQUIP_DATA[_0x56ad2b(0x2c0)][String(_0x551e29[_0x56ad2b(0x260)])],_0x5990dc=EQUIP_DATA[_0x56ad2b(0x2be)][String(_0x551e29[_0x56ad2b(0x1b8)])],_0xa2a761=_0x25a3a3&&EQUIP_DATA[_0x56ad2b(0x15a)][String(_0x25a3a3['dz_mat'])]?EQUIP_DATA[_0x56ad2b(0x15a)][String(_0x25a3a3[_0x56ad2b(0x1f7)])]:_0x25a3a3?'材料'+_0x25a3a3[_0x56ad2b(0x1f7)]:'',_0x44d679=(_0x1fa59f?.[_0x56ad2b(0x294)]||0x0)+(_0x25a3a3?.[_0x56ad2b(0x294)]||0x0),_0xfe60a5=!(!_0x1fa59f||!(_0x1fa59f['pf']||[])[_0x56ad2b(0x194)](Number)[_0x56ad2b(0x460)](Number(_0x551e29[_0x56ad2b(0x2cd)])));if(_0x25a3a3){const _0xfa47b9=[];_0xfe60a5||_0xfa47b9['push'](_0x56ad2b(0x46a)+_0x25a3a3[_0x56ad2b(0x186)]+_0x56ad2b(0x3e8)),_0xfa47b9['push'](_0xa2a761+'×'+_0x25a3a3[_0x56ad2b(0x337)]);const _0x185a10=_0x551e29[_0x56ad2b(0x446)]?EQUIP_DATA[_0x56ad2b(0x411)][String(_0x551e29[_0x56ad2b(0x446)])]:null;_0x185a10&&_0xfa47b9['push']('特殊材料「'+(_0x185a10[_0x56ad2b(0x186)]||_0x185a10['id'])+_0x56ad2b(0x3e8)),_0xfa47b9['push'](_0x56ad2b(0x354)+_0x44d679),_0x1b2a79[_0x56ad2b(0x3dc)]='若执行将消耗：'+_0xfa47b9[_0x56ad2b(0x34e)]('、')+_0x56ad2b(0x352);}else _0x1b2a79[_0x56ad2b(0x3dc)]=_0x56ad2b(0x346);if(!saveLoaded)return _0x1a9b16[_0x56ad2b(0x3dc)]=_0x56ad2b(0x155),void _0x1a9b16['classList']['remove'](_0x56ad2b(0x413));const _0x413378=wasmMakeGetState(),_0x3e1648=_0x413378?.['MakeLucky']?.[String(_0x551e29['equip_id'])]?.[_0x56ad2b(0x272)]??0x0,_0x1a881f=Math['floor']((_0x5990dc?.['lv']||0x0)/0xa),_0x514794=_0x413378?.['Seeds']?.[String(_0x5990dc?.[_0x56ad2b(0x362)])];(!_0x514794||'object'!=typeof _0x514794||null==_0x514794[String(_0x1a881f)])&&(_0x5990dc?.['lv']||0x0)<0x64?(_0x1a9b16['textContent']=_0x56ad2b(0x304),_0x1a9b16[_0x56ad2b(0x24c)][_0x56ad2b(0x3e1)]('pity')):_0x3e1648>=0xa?(_0x1a9b16['textContent']=_0x56ad2b(0x2ba),_0x1a9b16[_0x56ad2b(0x24c)]['add'](_0x56ad2b(0x413))):(_0x1a9b16[_0x56ad2b(0x3dc)]=_0x56ad2b(0x3ba)+_0x3e1648+_0x56ad2b(0x189),_0x1a9b16[_0x56ad2b(0x24c)][_0x56ad2b(0x240)](_0x56ad2b(0x413)));}function setMakeHead(){const _0x2029f0=_0x442d85;setPreviewTableKind('make'),document[_0x2029f0(0x1d4)](_0x2029f0(0x2da))[_0x2029f0(0x22b)]=_0x2029f0(0x3bd);}function setSpecialAttachHead(){const _0x52c6ec=_0x442d85;setPreviewTableKind(_0x52c6ec(0x227)),document[_0x52c6ec(0x1d4)](_0x52c6ec(0x2da))[_0x52c6ec(0x22b)]=_0x52c6ec(0x437);}function setPreviewTableKind(_0x1de430){const _0x43b0fc=_0x442d85,_0x477d06=document[_0x43b0fc(0x1d4)](_0x43b0fc(0x370));_0x477d06&&_0x477d06[_0x43b0fc(0x24c)][_0x43b0fc(0x3c9)](_0x43b0fc(0x3ae),_0x43b0fc(0x225)===_0x1de430);}function makeSeedKind(_0x5cde8f){const _0x1db13b=_0x442d85;return _0x5cde8f[_0x1db13b(0x413)]?_0x1db13b(0x413):_0x1db13b(0x29b)===_0x5cde8f[_0x1db13b(0x162)]?_0x1db13b(0x29b):_0x1db13b(0x46c);}function fillMakePropFilter(_0x38cbb7){const _0x2f92a2=_0x442d85,_0x4b0adb=document['getElementById'](_0x2f92a2(0x425));if(!_0x4b0adb)return;const _0x36d984=_0x4b0adb[_0x2f92a2(0x272)],_0x8bb7fe=new Set();for(const _0x3b0a45 of _0x38cbb7||[])for(const _0x2fd71a of[_0x3b0a45[_0x2f92a2(0x3d3)],_0x3b0a45[_0x2f92a2(0x475)],_0x3b0a45[_0x2f92a2(0x411)]])for(const _0x5649b2 of _0x2fd71a||[])_0x5649b2?.[_0x2f92a2(0x18c)]&&_0x8bb7fe['add'](_0x5649b2['prop']);const _0x2eb0ec=[..._0x8bb7fe][_0x2f92a2(0x21c)]((_0x357412,_0x8cc540)=>propLabel(_0x357412)[_0x2f92a2(0x26f)](propLabel(_0x8cc540),'zh'));_0x4b0adb[_0x2f92a2(0x22b)]='<option\x20value=\x22\x22>全部</option>'+_0x2eb0ec[_0x2f92a2(0x194)](_0x38c175=>_0x2f92a2(0x19c)+escapeHtml(_0x38c175)+'\x22>'+escapeHtml(propLabel(_0x38c175))+_0x2f92a2(0x2d2))[_0x2f92a2(0x34e)](''),_0x36d984&&_0x8bb7fe['has'](_0x36d984)&&(_0x4b0adb[_0x2f92a2(0x272)]=_0x36d984);}function makeFilterMatch(_0x38d252){const _0xa4f5de=_0x442d85,_0x147baf=document['getElementById'](_0xa4f5de(0x1c3))?.[_0xa4f5de(0x272)]||'',_0x143319=document[_0xa4f5de(0x1d4)](_0xa4f5de(0x222))?.[_0xa4f5de(0x272)]||'',_0x292b2e=document['getElementById'](_0xa4f5de(0x425))?.[_0xa4f5de(0x272)]||'';return(!_0x147baf||String(_0x38d252['color'])===_0x147baf)&&((!_0x143319||makeSeedKind(_0x38d252)===_0x143319)&&!(_0x292b2e&&![..._0x38d252['exts']||[],..._0x38d252[_0xa4f5de(0x475)]||[],..._0x38d252['special']||[]][_0xa4f5de(0x157)](_0x571b0=>_0x571b0?.[_0xa4f5de(0x18c)]===_0x292b2e)));}function applyMakeFilter(_0x2f454f=!0x1){const _0x100701=_0x442d85,_0x3ffb04=tablePager[_0x100701(0x3ad)]||[];tablePager['makeItems']=_0x3ffb04[_0x100701(0x431)](makeFilterMatch),_0x2f454f&&(tablePager['page']=0x1);const _0x4c1a49=document[_0x100701(0x1d4)]('makeFilterMeta');_0x4c1a49&&(_0x4c1a49['textContent']=_0x100701(0x433)+tablePager['makeItems'][_0x100701(0x3d7)]+_0x100701(0x191)+_0x3ffb04[_0x100701(0x3d7)]+'\x20条'),renderMakePage();}function renderMakePage(){const _0x18704c=_0x442d85,_0x4b3cd9=document[_0x18704c(0x1d4)]('previewBody');if(!_0x4b3cd9)return;const _0x4c9b85=tablePager['makeItems']||[],_0x3a3fc2=getPreviewPageSize(),_0x540190=(tablePager[_0x18704c(0x247)]-0x1)*_0x3a3fc2,_0x17befa=_0x4c9b85['slice'](_0x540190,_0x540190+_0x3a3fc2),_0x153111=escapeHtml(getDefaultMakeMark());if(!_0x17befa[_0x18704c(0x3d7)])return _0x4b3cd9['innerHTML']=_0x18704c(0x2ae),void updatePreviewPager(_0x4c9b85['length']);_0x4b3cd9[_0x18704c(0x22b)]=_0x17befa[_0x18704c(0x194)](_0x21d82a=>{const _0x2a6460=_0x18704c,_0x2700e5=_0x21d82a[_0x2a6460(0x413)]?'保底':'lucky'===_0x21d82a[_0x2a6460(0x162)]?'幸运':'普通',_0x209ca6=_0x2a6460(0x29b)===_0x21d82a['seed_kind']||_0x21d82a[_0x2a6460(0x413)]?_0x2a6460(0x415):_0x2a6460(0x30c);return _0x2a6460(0x3e0)+_0x21d82a[_0x2a6460(0x3d6)]+_0x2a6460(0x2c3)+_0x21d82a[_0x2a6460(0x3d6)]+_0x2a6460(0x33f)+_0x21d82a[_0x2a6460(0x3c6)]+'\x22>'+(COLOR_NAMES[_0x21d82a[_0x2a6460(0x3c6)]]||_0x21d82a[_0x2a6460(0x3c6)])+_0x2a6460(0x19a)+formatBase(_0x21d82a[_0x2a6460(0x435)])+_0x2a6460(0x19a)+formatProps(_0x21d82a[_0x2a6460(0x3d3)])+_0x2a6460(0x19a)+formatProps(_0x21d82a[_0x2a6460(0x475)])+_0x2a6460(0x19a)+formatProps(_0x21d82a[_0x2a6460(0x411)])+_0x2a6460(0x284)+_0x209ca6+'\x22>'+_0x2700e5+_0x2a6460(0x3d1)+_0x153111+_0x2a6460(0x331)+_0x21d82a['index']+'\x22>加入背包</button></td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</tr>';})['join'](''),updatePreviewPager(_0x4c9b85['length']);}function renderMakePreview(_0x4f0676){const _0x5df68c=_0x442d85;setMakeHead();const _0x5763a8=document[_0x5df68c(0x1d4)]('previewBody'),_0x19993c=document[_0x5df68c(0x1d4)]('previewMeta'),_0x342e31=document[_0x5df68c(0x1d4)](_0x5df68c(0x422)),_0x5d8bea=document[_0x5df68c(0x1d4)](_0x5df68c(0x45c));if(_0x5d8bea&&(_0x5d8bea[_0x5df68c(0x19f)]=!0x0),renderMakeAdvanceNotice(),_0x4f0676['error']&&(!_0x4f0676[_0x5df68c(0x2fb)]||!_0x4f0676[_0x5df68c(0x2fb)][_0x5df68c(0x3d7)]))return _0x5763a8[_0x5df68c(0x22b)]=_0x5df68c(0x34d)+escapeHtml(_0x4f0676[_0x5df68c(0x439)])+'</td></tr>',_0x19993c[_0x5df68c(0x3dc)]='',_0x342e31&&(_0x342e31['hidden']=!0x0),void hidePreviewPager();const _0x17d770=_0x4f0676[_0x5df68c(0x2fb)]||[],_0x55980b=_0x17d770[_0x5df68c(0x431)](_0x162361=>0x4===_0x162361[_0x5df68c(0x3c6)])['length'],_0x23ddcd=makeAdvanceNotice?_0x5df68c(0x449):'',_0x3a9c9f=_0x4f0676[_0x5df68c(0x45a)]?EQUIP_DATA[_0x5df68c(0x387)][String(_0x4f0676[_0x5df68c(0x45a)][_0x5df68c(0x2cd)])]:null,_0x5b880c='ordinary-pad-orange-pity'===_0x4f0676[_0x5df68c(0x2d3)]?_0x5df68c(0x35e)+(_0x3a9c9f?.['name']||_0x4f0676[_0x5df68c(0x45a)]?.[_0x5df68c(0x2cd)]||_0x5df68c(0x258))+'（保留保底）':'';_0x19993c['textContent']='共\x20'+_0x17d770[_0x5df68c(0x3d7)]+_0x5df68c(0x3cf)+_0x55980b+_0x5df68c(0x285)+_0x5b880c+_0x23ddcd+(_0x4f0676['error']?_0x5df68c(0x164)+_0x4f0676[_0x5df68c(0x439)]:''),tablePager[_0x5df68c(0x18d)]=_0x5df68c(0x3e5),tablePager['page']=0x1,tablePager[_0x5df68c(0x3ad)]=_0x17d770,_0x342e31&&(_0x342e31[_0x5df68c(0x19f)]=!0x1,document[_0x5df68c(0x1d4)]('makeFilterColor')[_0x5df68c(0x272)]='',document[_0x5df68c(0x1d4)]('makeFilterSeed')[_0x5df68c(0x272)]='',fillMakePropFilter(_0x17d770),document[_0x5df68c(0x1d4)]('makeFilterProp')[_0x5df68c(0x272)]=''),applyMakeFilter(!0x0);}const JIANWANG_RULE_PATCHED='patched',JIANWANG_RULE_STANDARD=_0x442d85(0x303);function classifyJianwangExtSeedBatch(_0x443215){const _0x365540=_0x442d85;return JianwangAutoOptimizer[_0x365540(0x42d)](_0x443215);}function detectJianwangRuleFromEquips(_0x2eae85){const _0x18f1a3=_0x442d85;return JianwangAutoOptimizer[_0x18f1a3(0x1fd)](Array[_0x18f1a3(0x3f4)](_0x2eae85)?_0x2eae85:[]);}function currentJianwangRule(){const _0x391c80=_0x442d85;return _0x391c80(0x303)===jianwangRuleDetection?.[_0x391c80(0x3a0)]?_0x391c80(0x303):'patched';}function validJianwangRedSeed(_0x2476b){const _0x223c9c=Number(_0x2476b);return Number['isSafeInteger'](_0x223c9c)&&_0x223c9c>0x0;}function createJianwangBlankFromRedSeed(_0x5205df,_0x164240=null){const _0x4cc453=_0x442d85;return JianwangAutoOptimizer[_0x4cc453(0x334)](EQUIP_DATA,_0x5205df,_0x164240);}function createJianwangSelectableBlank(_0x26c713,_0x4b4f04=!0x1){const _0x5afc78=_0x442d85,_0x52e6cd=createJianwangBlankFromRedSeed(_0x26c713,jianwangGeneratedSwordCount+0x1);return{..._0x52e6cd,'equip':{..._0x52e6cd['equip'],'_source':_0x5afc78(0x477),'_jianwangRebuilt':!0x1,'_jianwangVirtualFirst':_0x4b4f04,'_jianwangSelectableBlank':!0x0,'_jianwangBlankItem':!0x0,'_jianwangClaimed':!0x1,'_jianwangSwordIndex':0x1,'_jianwangRedSeedBefore':_0x52e6cd[_0x5afc78(0x301)],'_jianwangNextRedSeed':_0x52e6cd[_0x5afc78(0x177)]}};}function refreshJianwangSelectableBlank(){const _0x4e2768=_0x442d85;if(jianwangSelectableBlank&&delete equipRuntime[runtimeKey(jianwangSelectableBlank)],jianwangSelectableBlank=null,!validJianwangRedSeed(jianwangRedSeed))return;const _0x5c6ff8=createJianwangSelectableBlank(jianwangRedSeed,!saveEquips[_0x4e2768(0x157)](isJianwangSword));jianwangSelectableBlank=_0x5c6ff8[_0x4e2768(0x406)];const _0x30191b=runtimeKey(jianwangSelectableBlank),_0x3c291f={...jianwangSelectableBlank,...toWasmEquip(jianwangSelectableBlank),'xilian_marks':[...jianwangSelectableBlank[_0x4e2768(0x280)]||[]]};equipRuntime[_0x30191b]=JSON[_0x4e2768(0x2c4)](JSON[_0x4e2768(0x3df)](_0x3c291f));}function claimJianwangSelectableBlank(_0xf1af02,_0x10ab5b){const _0xde1b60=_0x442d85;if(!_0xf1af02?.[_0xde1b60(0x484)]||_0xf1af02['_jianwangClaimed'])return _0x10ab5b;const _0x2d9239=Number(_0xf1af02[_0xde1b60(0x1c1)]);if(!validJianwangRedSeed(_0x2d9239)||_0x2d9239!==Number(jianwangRedSeed))throw new TypeError(_0xde1b60(0x33c));const _0x5688e0=Number(_0xf1af02[_0xde1b60(0x219)]);if(!validJianwangRedSeed(_0x5688e0))throw new TypeError('模拟新剑胚缺少下一段推演状态');return jianwangRedSeed=_0x5688e0,jianwangGeneratedSwordCount=Math['max'](jianwangGeneratedSwordCount,Math[_0xde1b60(0x21e)](Number(_0xf1af02[_0xde1b60(0x196)])||0x1)),{..._0x10ab5b,'_source':_0xde1b60(0x3d0),'_jianwangBlankItem':!0x1,'_jianwangClaimed':!0x0};}function previewJianwangBlankClaim(_0x5ece61){const _0x2c0f15=_0x442d85;if(!_0x5ece61?.['_jianwangSelectableBlank']||_0x5ece61[_0x2c0f15(0x180)])throw new TypeError('当前起点不是待领取的模拟剑胚道具');return{'index':0x1,'action':_0x2c0f15(0x2d8),'fromId':0x0,'toId':Number(_0x5ece61['id']),'fromName':_0x2c0f15(0x477),'toName':_0x5ece61['name']||EQUIP_DATA[_0x2c0f15(0x2be)][String(_0x5ece61['id'])]?.['name']||_0x2c0f15(0x18b),'base':{..._0x5ece61[_0x2c0f15(0x435)]||{}},'exts':[..._0x5ece61[_0x2c0f15(0x3d3)]||[]],'kept':null,'cost':_0x2c0f15(0x290),'equip':{..._0x5ece61}};}function discardMatchingUnclaimedJianwangBlank(_0x47af98){const _0x142829=_0x442d85;if(!jianwangSelectableBlank)return;const _0x5f238f=runtimeKey(jianwangSelectableBlank),_0x1403e7=getRuntimeEquip(_0x5f238f)||jianwangSelectableBlank;_0x1403e7[_0x142829(0x484)]&&!_0x1403e7[_0x142829(0x180)]&&Number(_0x1403e7[_0x142829(0x1c1)])===Number(_0x47af98)&&(delete equipRuntime[_0x5f238f],jianwangSelectableBlank=null);}function jianwangNextRedSeedForEquip(_0x9686ca){const _0x384b7d=_0x442d85,_0x173e54=Number(_0x9686ca?.[_0x384b7d(0x219)]);return validJianwangRedSeed(_0x173e54)?_0x173e54:jianwangRedSeed;}function nextJianwangSwordIndex(_0x1e4b59){const _0x4619b5=_0x442d85;return Math[_0x4619b5(0x23a)](jianwangGeneratedSwordCount,Math['floor'](Number(_0x1e4b59?.[_0x4619b5(0x196)])||0x0))+0x1;}function predictJianwangShatterRebuild(_0x498bcf,_0x13670d,_0x5c0646,_0x2d00cb=nextJianwangSwordIndex(_0x498bcf)){const _0x105e6e=_0x442d85;return JianwangAutoOptimizer[_0x105e6e(0x255)](EQUIP_DATA,_0x498bcf,_0x13670d,_0x5c0646,_0x2d00cb);}function predictJianwangShatterCycle(_0x36f445,_0x1f5c78,_0x5af2d4=0x1,_0x409cff=currentJianwangRule(),_0x4c2b22=null){const _0x262934=_0x442d85;return JianwangAutoOptimizer[_0x262934(0x2f0)](EQUIP_DATA,_0x36f445,_0x1f5c78,_0x5af2d4,_0x409cff,_0x4c2b22);}function predictJianwangStateSequence(_0x2c9ebf,_0x4b6d65,_0x29ed55=0x1,_0xc381c7=0x0,_0x4dbe79=0x0,_0x5c065d=currentJianwangRule()){return JianwangAutoOptimizer['stateSequence'](EQUIP_DATA,_0x2c9ebf,_0x4b6d65,_0x29ed55,_0xc381c7,_0x4dbe79,_0x5c065d);}function specialMaterialSupportsEquip(_0x2e9cea,_0x5c08f3){const _0x56b6b8=_0x442d85;return EquipmentAutoOptimizer[_0x56b6b8(0x170)](_0x2e9cea,_0x5c08f3);}function clearMakeAdvanceNotice(){makeAdvanceNotice=null,renderMakeAdvanceNotice();}function setMakeAdvanceNotice(_0x19350b,_0x5b9cf9,_0x3bf993){const _0x3f814c=_0x442d85,_0x57e6d1=Math[_0x3f814c(0x23a)](0x1,Math[_0x3f814c(0x21e)](Number(_0x3bf993)||0x1)),_0x16af6b=Number(_0x19350b?.[_0x3f814c(0x3c6)]),_0x312543=Number[_0x3f814c(0x266)](_0x16af6b)&&_0x16af6b>=0x1&&_0x16af6b<=0x6?_0x16af6b:0x1,_0x26b3ca=Number(_0x5b9cf9?.[_0x3f814c(0x1a4)]);makeAdvanceNotice={'advancedCount':_0x57e6d1,'result':{'name':_0x19350b?.['name']||String(_0x19350b?.[_0x3f814c(0x1b8)]||'装备'),'color':_0x312543,'base':_0x19350b?.[_0x3f814c(0x435)]||{},'exts':_0x19350b?.[_0x3f814c(0x3d3)]||[],'region':_0x19350b?.[_0x3f814c(0x475)]||[],'special':_0x19350b?.[_0x3f814c(0x411)]||[],'seed_kind':_0x19350b?.[_0x3f814c(0x162)]||'normal','pity':!!_0x19350b?.['pity']},'onlyId':Number[_0x3f814c(0x266)](_0x26b3ca)&&_0x26b3ca>0x0?_0x26b3ca:null,'mark':_0x5b9cf9?.[_0x3f814c(0x2c9)]||''},renderMakeAdvanceNotice();}function renderMakeAdvanceNotice(){const _0x37a6d4=_0x442d85,_0x334060=document[_0x37a6d4(0x1d4)](_0x37a6d4(0x311));if(!_0x334060)return;if(!makeAdvanceNotice||'make'!==currentTab)return _0x334060[_0x37a6d4(0x19f)]=!0x0,void(_0x334060[_0x37a6d4(0x22b)]='');const {advancedCount:_0x373473,result:_0x4b0c,onlyId:_0x274736,mark:_0x30e931}=makeAdvanceNotice,_0x15a9f1=COLOR_NAMES[_0x4b0c[_0x37a6d4(0x3c6)]]||_0x4b0c['color'],_0x1a6ea0=_0x4b0c[_0x37a6d4(0x413)]?'保底':_0x37a6d4(0x29b)===_0x4b0c[_0x37a6d4(0x162)]?'幸运':'普通',_0x3afb37=_0x373473>0x1?'前\x20'+(_0x373473-0x1)+_0x37a6d4(0x248):'',_0x4e4398=_0x274736?_0x37a6d4(0x245)+_0x274736:_0x37a6d4(0x174),_0x3ec707=_0x30e931?_0x37a6d4(0x213)+escapeHtml(_0x30e931)+'」':'';_0x334060['innerHTML']=_0x37a6d4(0x31f)+escapeHtml(_0x4b0c[_0x37a6d4(0x186)])+_0x37a6d4(0x3ab)+_0x4b0c[_0x37a6d4(0x3c6)]+'\x22>'+escapeHtml(String(_0x15a9f1))+'</span>\x20·\x20'+escapeHtml(_0x1a6ea0)+_0x3ec707+_0x37a6d4(0x33d)+_0x3afb37+'第\x20'+_0x373473+'\x20件'+_0x4e4398+_0x37a6d4(0x278)+formatBase(_0x4b0c[_0x37a6d4(0x435)])+_0x37a6d4(0x3f3)+formatProps(_0x4b0c['exts'])+'</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22make-advance-notice-detail\x22><strong>地区附加</strong>'+formatProps(_0x4b0c['region'])+_0x37a6d4(0x3af)+formatProps(_0x4b0c['special'])+_0x37a6d4(0x3cb),_0x334060[_0x37a6d4(0x19f)]=!0x1;}function predictSpecialAttachSequence(_0xf36f5a,_0x1abafa,_0x17d9c8){const _0x1ec7d2=_0x442d85;return EquipmentAutoOptimizer[_0x1ec7d2(0x2b6)](_0xf36f5a,_0x1abafa,_0x17d9c8)[_0x1ec7d2(0x2fb)];}function renderSpecialAttachPage(){const _0x68b132=_0x442d85,_0x214365=document[_0x68b132(0x1d4)](_0x68b132(0x172));if(!_0x214365)return;const _0x5d3949=tablePager['specialAttachItems']||[],_0x4b1805=getPreviewPageSize(),_0x392bd2=(tablePager['page']-0x1)*_0x4b1805,_0x51bdb0=_0x5d3949['slice'](_0x392bd2,_0x392bd2+_0x4b1805);if(!_0x51bdb0['length'])return _0x214365[_0x68b132(0x22b)]='<tr><td\x20colspan=\x225\x22\x20class=\x22empty-row\x22>无预测记录</td></tr>',void updatePreviewPager(_0x5d3949[_0x68b132(0x3d7)]);_0x214365[_0x68b132(0x22b)]=_0x51bdb0[_0x68b132(0x194)](_0x468d1e=>_0x68b132(0x233)+(_0x468d1e['isBest']?_0x68b132(0x3f1):'')+_0x68b132(0x3ff)+_0x468d1e['index']+_0x68b132(0x19e)+escapeHtml(_0x468d1e[_0x68b132(0x176)])+_0x68b132(0x19e)+escapeHtml(_0x468d1e[_0x68b132(0x302)])+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22special-attach-value\x22>'+escapeHtml(propLabel(_0x468d1e[_0x68b132(0x18c)]))+'+'+formatPropValue(_0x468d1e['prop'],_0x468d1e['value'])+_0x68b132(0x19e)+_0x468d1e['factor']+_0x68b132(0x38b)+_0x468d1e[_0x68b132(0x2b9)]+'–'+_0x468d1e[_0x68b132(0x203)]+'%'+(_0x468d1e[_0x68b132(0x364)]?'\x20·\x20最高':'')+_0x68b132(0x161))[_0x68b132(0x34e)](''),updatePreviewPager(_0x5d3949[_0x68b132(0x3d7)]);}function renderSpecialAttachPreview(_0x5da4d3){const _0x2b601a=_0x442d85;setSpecialAttachHead();const _0x34cb51=document[_0x2b601a(0x1d4)]('previewMeta'),_0x163159=document[_0x2b601a(0x1d4)](_0x2b601a(0x422)),_0x5d1bfd=document[_0x2b601a(0x1d4)](_0x2b601a(0x45c));_0x163159&&(_0x163159[_0x2b601a(0x19f)]=!0x0),_0x5d1bfd&&(_0x5d1bfd[_0x2b601a(0x19f)]=!0x0);const _0x5f425f=_0x5da4d3[_0x2b601a(0x431)](_0x8d3d8c=>_0x8d3d8c[_0x2b601a(0x364)])['map'](_0x541548=>_0x541548[_0x2b601a(0x3d6)])[_0x2b601a(0x34e)]('、');tablePager[_0x2b601a(0x18d)]=_0x2b601a(0x326),tablePager[_0x2b601a(0x247)]=0x1,tablePager[_0x2b601a(0x324)]=_0x5da4d3,_0x34cb51&&(_0x34cb51[_0x2b601a(0x3dc)]='连续附加\x20'+_0x5da4d3[_0x2b601a(0x3d7)]+_0x2b601a(0x3c4)+_0x5f425f+_0x2b601a(0x297)),renderSpecialAttachPage();}function setJianwangCycleHead(){const _0x4d83de=_0x442d85;setPreviewTableKind(_0x4d83de(0x225)),document[_0x4d83de(0x1d4)](_0x4d83de(0x2da))[_0x4d83de(0x22b)]=_0x4d83de(0x2dc);}function renderJianwangCyclePage(){const _0x37f8c4=_0x442d85,_0xfac6f6=document[_0x37f8c4(0x1d4)](_0x37f8c4(0x172)),_0x21e2de=document[_0x37f8c4(0x1d4)](_0x37f8c4(0x293)),_0x27bcd3=tablePager['jianwangCyclePages']||[];if(!_0xfac6f6)return;const _0x3a201f=_0x27bcd3[tablePager[_0x37f8c4(0x247)]-0x1];if(!_0x3a201f)return _0xfac6f6[_0x37f8c4(0x22b)]=_0x37f8c4(0x3c0),_0x21e2de&&(_0x21e2de[_0x37f8c4(0x3dc)]=''),void updateJianwangCyclePager(0x0,0x0);setJianwangCycleHead();const _0x3517b7=_0x3a201f[_0x37f8c4(0x441)]?.[_0x37f8c4(0x186)]||'剑胚';if(_0x21e2de){const _0x379651=_0x3a201f[_0x37f8c4(0x3d8)]?_0x37f8c4(0x164)+_0x3a201f[_0x37f8c4(0x3d8)]:'';_0x21e2de[_0x37f8c4(0x3dc)]=_0x37f8c4(0x2cc)+_0x3517b7+'\x20·\x20第\x20'+_0x3a201f['swordIndex']+'\x20把剑\x20·\x20碎剑预览'+_0x379651+_0x37f8c4(0x3f9);}_0xfac6f6[_0x37f8c4(0x22b)]=_0x3a201f[_0x37f8c4(0x322)][_0x37f8c4(0x194)]((_0x3aa76a,_0x7c4a96)=>{const _0x20026a=_0x37f8c4,_0x1d194b=_0x20026a(0x441)===_0x3aa76a[_0x20026a(0x3ed)],_0x23ab8b=EQUIP_DATA[_0x20026a(0x2be)][String(_0x3aa76a[_0x20026a(0x1fc)])]||{},_0x226d55=EQUIP_DATA[_0x20026a(0x2be)][String(_0x3aa76a['toId'])]||{},_0x256841=Number(_0x23ab8b['lv'])||'?',_0x2b66b4=Number(_0x226d55['lv'])||'?',_0x176d16=escapeHtml(_0x226d55['name']||_0x3aa76a[_0x20026a(0x29c)]||_0x3aa76a[_0x20026a(0x406)]?.[_0x20026a(0x186)]||'剑胚');let _0x4dfa93;_0x4dfa93=_0x1d194b?(_0x3aa76a[_0x20026a(0x473)]||'碎剑')+_0x20026a(0x252)+_0x2b66b4+_0x20026a(0x19b)+_0x176d16:_0x20026a(0x2e2)===_0x3aa76a[_0x20026a(0x3ed)]?_0x2b66b4+_0x20026a(0x2d4)+(_0x7c4a96-0x3)+_0x20026a(0x1b3)+_0x176d16:_0x256841+'→'+_0x2b66b4+_0x20026a(0x164)+_0x176d16;const _0x1b4da5=escapeHtml(formatBase(_0x3aa76a[_0x20026a(0x435)]||_0x3aa76a[_0x20026a(0x406)]?.[_0x20026a(0x435)]||{})),_0xb17fc0=(_0x3aa76a[_0x20026a(0x3d3)]||_0x3aa76a[_0x20026a(0x406)]?.[_0x20026a(0x3d3)]||[])[_0x20026a(0x3d7)]?(_0x3aa76a['exts']||_0x3aa76a[_0x20026a(0x406)][_0x20026a(0x3d3)])[_0x20026a(0x194)](_0x3cce11=>_0x20026a(0x312)+escapeHtml(propLabel(_0x3cce11[_0x20026a(0x18c)]))+'+'+formatPropValue(_0x3cce11[_0x20026a(0x18c)],_0x3cce11[_0x20026a(0x272)])+'</span>')['join'](''):_0x20026a(0x1f5),_0x1b91b5=String(_0x3aa76a[_0x20026a(0x294)]||'—')[_0x20026a(0x452)](/[、；]/)[_0x20026a(0x431)](Boolean)[_0x20026a(0x194)](_0x4da5f1=>_0x20026a(0x338)+escapeHtml(_0x4da5f1)+'</span>')['join']('');return _0x20026a(0x201)+_0x3aa76a[_0x20026a(0x3d6)]+_0x20026a(0x15b)+_0x4dfa93+_0x20026a(0x2a0)+_0x1b4da5+_0x20026a(0x1bb)+_0xb17fc0+_0x20026a(0x44b)+_0x1b91b5+_0x20026a(0x15f);})[_0x37f8c4(0x34e)](''),updateJianwangCyclePager(_0x27bcd3['length'],_0x3a201f['swordIndex']);}function renderJianwangCyclePreview(_0x292ff6){const _0x2d15e8=_0x442d85,_0x25b830=document[_0x2d15e8(0x1d4)](_0x2d15e8(0x422)),_0x3b4cb2=document[_0x2d15e8(0x1d4)](_0x2d15e8(0x45c));_0x25b830&&(_0x25b830['hidden']=!0x0),_0x3b4cb2&&(_0x3b4cb2[_0x2d15e8(0x19f)]=!0x0),tablePager['mode']=_0x2d15e8(0x22d),tablePager[_0x2d15e8(0x247)]=0x1,tablePager['jianwangKind']=_0x2d15e8(0x2eb),tablePager[_0x2d15e8(0x351)]=[],tablePager['jianwangCyclePages']=Array[_0x2d15e8(0x3f4)](_0x292ff6)?_0x292ff6:[],renderJianwangCyclePage();}function renderJianwangPage(){const _0xde351a=_0x442d85;if(_0xde351a(0x2eb)===tablePager[_0xde351a(0x2c7)])return void renderJianwangCyclePage();const _0x1c1675=document[_0xde351a(0x1d4)](_0xde351a(0x172));if(!_0x1c1675)return;const _0x26222d=tablePager['jianwangItems']||[],_0x42c962=getPreviewPageSize(),_0x3be13b=(tablePager[_0xde351a(0x247)]-0x1)*_0x42c962,_0x2207f5=_0x26222d[_0xde351a(0x212)](_0x3be13b,_0x3be13b+_0x42c962),_0x423966=_0xde351a(0x3de)===tablePager['jianwangKind']||'shatter'===tablePager[_0xde351a(0x2c7)];if(!_0x2207f5['length']){const _0x40cba5=_0xde351a(0x1b2)===tablePager[_0xde351a(0x2c7)]||_0x423966?0x5:0x4;return _0x1c1675[_0xde351a(0x22b)]=_0xde351a(0x3f6)+_0x40cba5+_0xde351a(0x35b),void updatePreviewPager(_0x26222d[_0xde351a(0x3d7)]);}_0xde351a(0x1b2)===tablePager[_0xde351a(0x2c7)]?_0x1c1675[_0xde351a(0x22b)]=_0x2207f5[_0xde351a(0x194)](_0xda8c40=>_0xde351a(0x233)+(_0xda8c40[_0xde351a(0x364)]?_0xde351a(0x315):'')+_0xde351a(0x2c3)+_0xda8c40['index']+_0xde351a(0x19a)+escapeHtml(_0xda8c40[_0xde351a(0x176)])+_0xde351a(0x19a)+escapeHtml(_0xda8c40[_0xde351a(0x302)])+_0xde351a(0x151)+escapeHtml(propLabel(_0xda8c40[_0xde351a(0x18c)]))+'+'+formatPropValue(_0xda8c40['prop'],_0xda8c40[_0xde351a(0x272)])+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0xda8c40[_0xde351a(0x160)]+_0xde351a(0x38b)+_0xda8c40[_0xde351a(0x2b9)]+'–'+_0xda8c40[_0xde351a(0x203)]+'%'+(_0xda8c40[_0xde351a(0x364)]?_0xde351a(0x29a):'')+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</tr>')['join'](''):_0x1c1675[_0xde351a(0x22b)]=_0x423966?_0x2207f5[_0xde351a(0x194)](_0x40cf7f=>{const _0x193fe5=_0xde351a,_0x438aed=_0x40cf7f[_0x193fe5(0x473)]?escapeHtml(_0x40cf7f['shatterLabel'])+_0x193fe5(0x2fd):'第\x20'+_0x40cf7f[_0x193fe5(0x3d6)]+_0x193fe5(0x3b5),_0x3624f5=escapeHtml(formatBase(_0x40cf7f[_0x193fe5(0x435)])),_0x40197=(_0x40cf7f[_0x193fe5(0x3d3)]||[])[_0x193fe5(0x3d7)]?_0x40cf7f[_0x193fe5(0x3d3)][_0x193fe5(0x194)](_0x3de1e6=>_0x193fe5(0x312)+escapeHtml(propLabel(_0x3de1e6[_0x193fe5(0x18c)]))+'+'+formatPropValue(_0x3de1e6[_0x193fe5(0x18c)],_0x3de1e6[_0x193fe5(0x272)])+'</span>')[_0x193fe5(0x34e)](''):'<span\x20class=\x22muted\x22>无</span>',_0x531894=_0x40cf7f[_0x193fe5(0x294)]?String(_0x40cf7f[_0x193fe5(0x294)])[_0x193fe5(0x452)]('；')['map'](_0x418473=>'<span\x20class=\x22jianwang-cost-token\x22>'+escapeHtml(_0x418473)+_0x193fe5(0x2c8))['join'](''):'<span\x20class=\x22muted\x22>只读预览</span>';return'<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x40cf7f[_0x193fe5(0x3d6)]+_0x193fe5(0x45d)+_0x438aed+_0x193fe5(0x41d)+(_0x40cf7f['shatterLabel']?escapeHtml(_0x40cf7f[_0x193fe5(0x17b)]):_0x193fe5(0x1b9))+_0x193fe5(0x2a2)+_0x3624f5+_0x193fe5(0x27b)+_0x40197+_0x193fe5(0x1cc)+_0x531894+'</div></td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>';})[_0xde351a(0x34e)](''):_0x2207f5[_0xde351a(0x194)](_0x1473ee=>{const _0x24eb90=_0xde351a,_0x5f29d9=_0x24eb90(0x2d8)===_0x1473ee[_0x24eb90(0x3ed)]?_0x24eb90(0x23e):_0x1473ee[_0x24eb90(0x420)]?'保留\x20'+propLabel(_0x1473ee[_0x24eb90(0x420)][_0x24eb90(0x18c)])+'+'+formatPropValue(_0x1473ee['kept']['prop'],_0x1473ee[_0x24eb90(0x420)][_0x24eb90(0x272)]):_0x1473ee[_0x24eb90(0x3ed)][_0x24eb90(0x450)](_0x24eb90(0x1ee))?'固定保留现有六条':'不保留旧词条',_0x11cd6c=EQUIP_DATA[_0x24eb90(0x2be)][String(_0x1473ee[_0x24eb90(0x1fc)])]||{},_0x278a61=EQUIP_DATA['equipment'][String(_0x1473ee[_0x24eb90(0x318)])]||{},_0x25b54d=Number(_0x11cd6c['lv'])||'?',_0x131812=Number(_0x278a61['lv'])||'?',_0xcc8cb3=escapeHtml(_0x278a61['name']||_0x1473ee[_0x24eb90(0x29c)]),_0x59a051=_0x24eb90(0x2d8)===_0x1473ee[_0x24eb90(0x3ed)]?_0x24eb90(0x3c2)+_0x131812+_0x24eb90(0x19b)+_0xcc8cb3:_0x24eb90(0x2e2)===_0x1473ee['action']?_0x131812+_0x24eb90(0x218)+_0xcc8cb3:_0x25b54d+'→'+_0x131812+_0x24eb90(0x164)+_0xcc8cb3,_0x465b44=(_0x1473ee['exts']||[])[_0x24eb90(0x3d7)]?_0x1473ee[_0x24eb90(0x3d3)][_0x24eb90(0x194)](_0x59ef3c=>_0x24eb90(0x312)+escapeHtml(propLabel(_0x59ef3c[_0x24eb90(0x18c)]))+'+'+formatPropValue(_0x59ef3c[_0x24eb90(0x18c)],_0x59ef3c['value'])+_0x24eb90(0x2c8))[_0x24eb90(0x34e)](''):_0x24eb90(0x1f5),_0xcaac59=String(_0x1473ee['cost']||'—')[_0x24eb90(0x452)]('、')[_0x24eb90(0x194)](_0x14474b=>'<span\x20class=\x22jianwang-cost-token\x22>'+escapeHtml(_0x14474b)+'</span>')[_0x24eb90(0x34e)]('');return _0x24eb90(0x25c)+_0x1473ee['index']+_0x24eb90(0x45d)+_0x59a051+_0x24eb90(0x1fb)+_0x465b44+_0x24eb90(0x404)+escapeHtml(_0x5f29d9)+_0x24eb90(0x401)+_0xcaac59+_0x24eb90(0x41f);})[_0xde351a(0x34e)](''),updatePreviewPager(_0x26222d[_0xde351a(0x3d7)]);}function setJianwangStateHead(){const _0x3436d5=_0x442d85;setPreviewTableKind(_0x3436d5(0x225)),document[_0x3436d5(0x1d4)](_0x3436d5(0x2da))[_0x3436d5(0x22b)]=_0x3436d5(0x179);}function setJianwangBlankHead(){const _0x143dbc=_0x442d85;setPreviewTableKind('jianwang-state'),document[_0x143dbc(0x1d4)](_0x143dbc(0x2da))['innerHTML']=_0x143dbc(0x1f1);}function renderJianwangPreview(_0x1a0911,_0x49270b=_0x442d85(0x314)){const _0x4b458e=_0x442d85;_0x4b458e(0x1b2)===_0x49270b?setSpecialAttachHead():_0x4b458e(0x3de)===_0x49270b||'shatter'===_0x49270b?setJianwangBlankHead():setJianwangStateHead();const _0x4a218d=document['getElementById'](_0x4b458e(0x293)),_0x260163=document[_0x4b458e(0x1d4)](_0x4b458e(0x422)),_0x2489ca=document[_0x4b458e(0x1d4)](_0x4b458e(0x45c));if(_0x260163&&(_0x260163['hidden']=!0x0),_0x2489ca&&(_0x2489ca[_0x4b458e(0x19f)]=!0x0),tablePager['mode']=_0x4b458e(0x22d),tablePager[_0x4b458e(0x247)]=0x1,tablePager[_0x4b458e(0x351)]=_0x1a0911,tablePager[_0x4b458e(0x2c7)]=_0x49270b,_0x4a218d){if(_0x4b458e(0x1b2)===_0x49270b){const _0x2c8221=_0x1a0911[_0x4b458e(0x431)](_0x35d0a9=>_0x35d0a9[_0x4b458e(0x364)])[_0x4b458e(0x194)](_0x401087=>_0x401087['index'])['join']('、');_0x4a218d['textContent']='剑王阁芒晶洗练\x20'+_0x1a0911[_0x4b458e(0x3d7)]+_0x4b458e(0x3c4)+_0x2c8221+_0x4b458e(0x3db);}else _0x4a218d['textContent']=_0x4b458e(0x3de)===_0x49270b?_0x4b458e(0x242)+_0x1a0911[_0x4b458e(0x3d7)]+_0x4b458e(0x1d3):_0x4b458e(0x485)===_0x49270b?(_0x1a0911[0x0]?.[_0x4b458e(0x473)]||'碎剑')+'\x20→\x20重铸下一把60级剑胚\x20·\x20预览不推进页面内状态':_0x4b458e(0x1d7)+_0x1a0911[_0x4b458e(0x3d7)]+'\x20步\x20·\x20预览不推进页面内状态';}renderJianwangPage();}function equipOptionLabel(_0x5887a1,_0x11fafd){const _0x40df78=_0x442d85,_0x5ba463=_0x5887a1[_0x40df78(0x32e)]?_0x40df78(0x2a4):_0x5887a1[_0x40df78(0x1db)]?_0x40df78(0x3e3):_0x40df78(0x378),_0x5c3862=COLOR_NAMES[_0x5887a1['color']]||_0x5887a1[_0x40df78(0x3c6)],_0x32a7fc=_0x5887a1[_0x40df78(0x2c9)]?'「'+_0x5887a1[_0x40df78(0x2c9)]+'」':'';if(_0x40df78(0x355)===_0x11fafd)return''+_0x32a7fc+_0x5887a1[_0x40df78(0x186)]+'\x20·\x20淬炼'+_0x5887a1['level']+_0x40df78(0x238)+_0x5887a1[_0x40df78(0x2ac)]+_0x40df78(0x164)+_0x5ba463;if(_0x40df78(0x47d)===_0x11fafd){const _0x19ef10=EQUIP_DATA[_0x40df78(0x2be)][String(_0x5887a1['id'])]||{},_0x2d6653=EQUIP_DATA[_0x40df78(0x2be)][String(_0x19ef10['equ_next'])]||{},_0x1ecc54=TYPE_NAMES[_0x5887a1['typ']]||_0x5887a1[_0x40df78(0x393)];return''+_0x32a7fc+_0x5887a1[_0x40df78(0x186)]+_0x40df78(0x164)+_0x5887a1[_0x40df78(0x206)]+'→'+(_0x2d6653['lv']||0x64)+_0x40df78(0x164)+_0x5c3862+'\x20·\x20'+_0x1ecc54+_0x40df78(0x164)+_0x5ba463;}return''+_0x32a7fc+_0x5887a1['name']+_0x40df78(0x164)+_0x5887a1[_0x40df78(0x206)]+_0x40df78(0x19b)+_0x5c3862+_0x40df78(0x1ba)+_0x5887a1[_0x40df78(0x3d3)]['length']+_0x40df78(0x164)+_0x5ba463;}function canPredictSpecialAttach(_0x14a29b){const _0x2ea3f6=_0x442d85;return!!_0x14a29b&&Number['isSafeInteger'](_0x14a29b[_0x2ea3f6(0x262)])&&_0x14a29b['MJSeed']>0x0&&Object[_0x2ea3f6(0x1a5)](EQUIP_DATA[_0x2ea3f6(0x411)])[_0x2ea3f6(0x157)](_0x10eddc=>specialMaterialSupportsEquip(_0x10eddc,_0x14a29b));}function specialMaterialsForEquip(_0x3c9e88){const _0x3fc8f9=_0x442d85;return EquipmentAutoOptimizer[_0x3fc8f9(0x43c)](EQUIP_DATA,_0x3c9e88);}function fillSpecialAttachMaterialSelect(_0x2cd950){const _0x23080a=_0x442d85,_0x41eda3=document[_0x23080a(0x1d4)](_0x23080a(0x3e6)),_0x55ca79=document[_0x23080a(0x1d4)](_0x23080a(0x20a));if(!_0x41eda3||!_0x55ca79)return;const _0x3f4aaa=_0x2cd950?_0x55ca79[_0x23080a(0x272)]:'',_0x3132fe=saveEquips[_0x23080a(0x265)](_0x302fa9=>runtimeKey(_0x302fa9)===_0x41eda3['value']);if(_0x55ca79[_0x23080a(0x22b)]='',!_0x3132fe)return void(_0x55ca79[_0x23080a(0x22b)]=_0x23080a(0x250));const _0x2dfc0a=specialMaterialsForEquip(_0x3132fe);for(const _0x495fef of _0x2dfc0a){const _0xcd640f=document[_0x23080a(0x456)](_0x23080a(0x459));_0xcd640f[_0x23080a(0x272)]=String(_0x495fef['id']),_0xcd640f['textContent']=_0x495fef[_0x23080a(0x186)],_0x55ca79[_0x23080a(0x1cf)](_0xcd640f);}_0x3f4aaa&&[..._0x55ca79[_0x23080a(0x3cd)]]['some'](_0x1451c5=>_0x1451c5[_0x23080a(0x272)]===_0x3f4aaa)&&(_0x55ca79[_0x23080a(0x272)]=_0x3f4aaa);}function updateSpecialAttachHint(){const _0x4ad7fc=_0x442d85,_0x315c19=document['getElementById'](_0x4ad7fc(0x2d5)),_0x2301b2=document[_0x4ad7fc(0x1d4)](_0x4ad7fc(0x3e6)),_0x5d08a2=document['getElementById'](_0x4ad7fc(0x20a));if(!_0x315c19||!_0x2301b2||!_0x5d08a2)return;const _0x599e68=saveEquips[_0x4ad7fc(0x265)](_0x1b8f20=>runtimeKey(_0x1b8f20)===_0x2301b2[_0x4ad7fc(0x272)]),_0x2cbe9f=EQUIP_DATA[_0x4ad7fc(0x411)][String(_0x5d08a2[_0x4ad7fc(0x272)])];if(!_0x599e68||!_0x2cbe9f)return void(_0x315c19[_0x4ad7fc(0x3dc)]=_0x4ad7fc(0x236));const _0x5cdedd=_0x599e68[_0x4ad7fc(0x244)][_0x4ad7fc(0x3d7)]?_0x599e68[_0x4ad7fc(0x244)][_0x4ad7fc(0x194)](_0x441b68=>propLabel(_0x441b68[_0x4ad7fc(0x18c)])+'+'+formatPropValue(_0x441b68[_0x4ad7fc(0x18c)],_0x441b68['value']))[_0x4ad7fc(0x34e)]('\x20/\x20'):'无';_0x315c19[_0x4ad7fc(0x3dc)]=_0x4ad7fc(0x335)+_0x5cdedd+_0x4ad7fc(0x47e);}function isJianwangSword(_0x28d158){const _0x17fbf3=_0x442d85;return!!_0x28d158&&JIANWANG_SWORD_IDS[_0x17fbf3(0x3fb)](Number(_0x28d158['id']));}function collectJianwangSwords(){const _0x21c76a=_0x442d85;return saveEquips[_0x21c76a(0x431)](isJianwangSword)[_0x21c76a(0x21c)]((_0xf4196b,_0x32a52a)=>Number(_0xf4196b['id'])-Number(_0x32a52a['id'])||String(_0xf4196b[_0x21c76a(0x2de)])[_0x21c76a(0x26f)](String(_0x32a52a[_0x21c76a(0x2de)]),'zh'));}function validJianwangCZSeed(_0x25cad2){const _0x301905=_0x442d85;return isJianwangSword(_0x25cad2)&&Number[_0x301905(0x266)](Number(_0x25cad2[_0x301905(0x36f)]))&&Number(_0x25cad2[_0x301905(0x36f)])>0x0;}function canPredictJianwangMangjing(_0x583012){const _0x5cfa01=_0x442d85;return isJianwangSword(_0x583012)&&JIANWANG_LEVEL_100_IDS['has'](Number(_0x583012['id']))&&0x6===Number(_0x583012['color'])&&Array[_0x5cfa01(0x3f4)](_0x583012[_0x5cfa01(0x244)])&&_0x583012[_0x5cfa01(0x244)]['length']>0x0&&Number[_0x5cfa01(0x266)](_0x583012[_0x5cfa01(0x262)])&&_0x583012[_0x5cfa01(0x262)]>0x0;}function canPredictJianwangStrong(_0x4beb14){const _0x4f8683=_0x442d85;return isJianwangSword(_0x4beb14)&&!(_0x4beb14[_0x4f8683(0x484)]&&!_0x4beb14[_0x4f8683(0x180)])&&canStrong(_0x4beb14)&&Number[_0x4f8683(0x266)](Number(_0x4beb14['S']))&&Number(_0x4beb14['S'])>0x0&&!!strongAttemptCost(Number(_0x4beb14[_0x4f8683(0x206)])||0x5a,Number(_0x4beb14[_0x4f8683(0x2f9)])||0x0);}function jianwangStageName(_0x44f555){const _0x579d2f=_0x442d85,_0x59408d=EQUIP_DATA[_0x579d2f(0x2be)][String(_0x44f555?.['id'])]||{},_0x3bab81=Number(_0x59408d['lv'])||Number(_0x44f555?.[_0x579d2f(0x206)])||0x0;return 0x164b===Number(_0x44f555?.['id'])?_0x579d2f(0x18b):0x164c===Number(_0x44f555?.['id'])?_0x579d2f(0x2ca):0x164d===Number(_0x44f555?.['id'])?_0x579d2f(0x1de):JIANWANG_LEVEL_90_IDS[_0x579d2f(0x3fb)](Number(_0x44f555?.['id']))?_0x579d2f(0x3eb)+(_0x59408d['name']||_0x44f555['name']):JIANWANG_LEVEL_100_IDS[_0x579d2f(0x3fb)](Number(_0x44f555?.['id']))?_0x579d2f(0x2e4)+(_0x59408d[_0x579d2f(0x186)]||_0x44f555[_0x579d2f(0x186)]):_0x3bab81+'级';}function jianwangSwordLabel(_0x36dcf6){const _0x1c7b14=_0x442d85,_0x180950=getRuntimeEquip(runtimeKey(_0x36dcf6))||_0x36dcf6;if(_0x180950[_0x1c7b14(0x484)]&&!_0x180950['_jianwangClaimed'])return _0x1c7b14(0x447);if(_0x180950[_0x1c7b14(0x18a)]){const _0x3ee99c=Math['max'](0x1,Math[_0x1c7b14(0x21e)](Number(_0x180950[_0x1c7b14(0x196)])||0x1));return _0x1c7b14(0x2cc)+(_0x180950[_0x1c7b14(0x186)]||EQUIP_DATA[_0x1c7b14(0x2be)][String(_0x180950['id'])]?.[_0x1c7b14(0x186)]||jianwangStageName(_0x180950))+_0x1c7b14(0x461)+_0x3ee99c+'\x20把剑';}return(_0x180950[_0x1c7b14(0x2de)]||_0x36dcf6[_0x1c7b14(0x2de)]||'未知来源')+'\x20·\x20'+jianwangStageName(_0x180950);}function jianwangActionOptions(_0x59b9c3){const _0x4cc133=_0x442d85;if(!_0x59b9c3)return[];if(_0x59b9c3[_0x4cc133(0x484)]&&!_0x59b9c3[_0x4cc133(0x180)])return[{'value':_0x4cc133(0x2d8),'label':_0x4cc133(0x3fd)}];const _0x5da463=Number(_0x59b9c3['id']);return JIANWANG_GROW_TARGETS[_0x5da463]?[...JIANWANG_GROW_TARGETS[_0x5da463][_0x4cc133(0x194)](_0x228b0e=>({'value':_0x4cc133(0x3be)+_0x228b0e,'label':jianwangStageName(_0x59b9c3)+'\x20→\x20'+jianwangStageName({'id':_0x228b0e})})),{'value':_0x4cc133(0x355),'label':_0x4cc133(0x26c)}]:JIANWANG_LEVEL_90_IDS[_0x4cc133(0x3fb)](_0x5da463)?[{'value':_0x4cc133(0x2e2),'label':_0x4cc133(0x168)+jianwangStageName(_0x59b9c3)},{'value':_0x4cc133(0x1ee)+JIANWANG_LEVEL_100_TARGETS[_0x5da463],'label':_0x4cc133(0x325)},{'value':'strong','label':_0x4cc133(0x26c)},{'value':_0x4cc133(0x330),'label':_0x4cc133(0x283)}]:JIANWANG_LEVEL_100_IDS[_0x4cc133(0x3fb)](_0x5da463)?[{'value':_0x4cc133(0x1b2),'label':'查看芒晶洗练序列'},{'value':_0x4cc133(0x355),'label':'查看淬炼序列'},{'value':_0x4cc133(0x46d),'label':_0x4cc133(0x3aa)}]:[];}function jianwangKeepLimit(_0x5a5326,_0x134cff){const _0xb1b85=_0x442d85;if(!_0x5a5326||!_0x134cff)return 0x0;if(_0xb1b85(0x2e2)===_0x134cff)return Math[_0xb1b85(0x3dd)](0x4,_0x5a5326[_0xb1b85(0x3d3)]?.[_0xb1b85(0x3d7)]||0x0);if(_0x134cff['startsWith'](_0xb1b85(0x3be))){const _0x4630e7={0x164b:0x1,0x164c:0x2,0x164d:0x3};return Math[_0xb1b85(0x3dd)](_0x4630e7[Number(_0x5a5326['id'])]||0x0,_0x5a5326['exts']?.['length']||0x0);}return 0x0;}function fillJianwangActionSelect(_0x2b8954=!0x0){const _0x2d070e=_0x442d85,_0x2c25cb=document[_0x2d070e(0x1d4)]('jianwangEquipSelect'),_0x302c56=document['getElementById']('jianwangActionSelect');if(!_0x2c25cb||!_0x302c56)return;const _0x42c0e7=_0x2b8954?_0x302c56[_0x2d070e(0x272)]:'',_0x26dd91=findEquipByRuntimeKey(_0x2c25cb[_0x2d070e(0x272)]),_0x40d583=jianwangActionOptions(_0x26dd91?getRuntimeEquip(runtimeKey(_0x26dd91))||_0x26dd91:null);if(_0x302c56['innerHTML']='',_0x40d583[_0x2d070e(0x3d7)]){for(const _0x39f08d of _0x40d583){const _0x41a2f7=document[_0x2d070e(0x456)](_0x2d070e(0x459));_0x41a2f7[_0x2d070e(0x272)]=_0x39f08d[_0x2d070e(0x272)],_0x41a2f7[_0x2d070e(0x3dc)]=_0x39f08d[_0x2d070e(0x42b)],_0x302c56['appendChild'](_0x41a2f7);}_0x42c0e7&&[..._0x302c56['options']][_0x2d070e(0x157)](_0x415063=>_0x415063[_0x2d070e(0x272)]===_0x42c0e7)&&(_0x302c56[_0x2d070e(0x272)]=_0x42c0e7);}else _0x302c56[_0x2d070e(0x22b)]=_0x2d070e(0x1c6);fillJianwangKeepSelect(_0x2b8954),fillJianwangMaterialSelect(_0x2b8954),updateJianwangControls();}function fillJianwangCycleRouteSelect(_0x806301=!0x0){const _0xee284e=_0x442d85,_0x54f1b5=document[_0xee284e(0x1d4)](_0xee284e(0x482)),_0x28a3d3=document[_0xee284e(0x1d4)]('jianwangEquipSelect');if(!_0x54f1b5||!_0x28a3d3)return;const _0x6f8124=_0x806301?_0x54f1b5[_0xee284e(0x272)]:'',_0xf04dd=findEquipByRuntimeKey(_0x28a3d3[_0xee284e(0x272)]),_0x2693fe=_0xf04dd?getRuntimeEquip(runtimeKey(_0xf04dd))||_0xf04dd:null,_0x313883=_0x2693fe?JIANWANG_SHATTER_ROUTE_IDS[Number(_0x2693fe['id'])]:null;if(_0x54f1b5['innerHTML']='',!_0x2693fe)return _0x54f1b5[_0xee284e(0x22b)]=_0xee284e(0x36d),void(_0x54f1b5[_0xee284e(0x44a)]=!0x0);if(_0x313883){const _0x3f2e04=document[_0xee284e(0x456)](_0xee284e(0x459));return _0x3f2e04[_0xee284e(0x272)]=String(_0x313883),_0x3f2e04[_0xee284e(0x3dc)]=jianwangStageName({'id':_0x313883}),_0x54f1b5['appendChild'](_0x3f2e04),void(_0x54f1b5[_0xee284e(0x44a)]=!0x0);}const _0x5c808a=document[_0xee284e(0x456)]('option');_0x5c808a[_0xee284e(0x272)]='',_0x5c808a[_0xee284e(0x3dc)]=_0xee284e(0x367),_0x54f1b5[_0xee284e(0x1cf)](_0x5c808a);for(const _0x10d458 of JIANWANG_GROW_TARGETS[0x164d]){const _0x104211=document[_0xee284e(0x456)](_0xee284e(0x459));_0x104211['value']=String(_0x10d458),_0x104211[_0xee284e(0x3dc)]=jianwangStageName({'id':_0x10d458}),_0x54f1b5[_0xee284e(0x1cf)](_0x104211);}_0x54f1b5[_0xee284e(0x44a)]=!0x1,_0x6f8124&&[..._0x54f1b5[_0xee284e(0x3cd)]][_0xee284e(0x157)](_0x17514f=>_0x17514f['value']===_0x6f8124)&&(_0x54f1b5['value']=_0x6f8124);}function fillJianwangKeepSelect(_0x1d6e19=!0x0){const _0x49d121=_0x442d85,_0x5d4d8e=document[_0x49d121(0x1d4)](_0x49d121(0x27d)),_0x255589=document[_0x49d121(0x1d4)]('jianwangActionSelect'),_0x1032dc=document[_0x49d121(0x1d4)]('jianwangKeepSelect');if(!_0x5d4d8e||!_0x255589||!_0x1032dc)return;const _0x1892de=_0x1d6e19?_0x1032dc[_0x49d121(0x272)]:'',_0x27632b=findEquipByRuntimeKey(_0x5d4d8e[_0x49d121(0x272)]),_0x40bfa9=_0x27632b?getRuntimeEquip(runtimeKey(_0x27632b))||_0x27632b:null,_0x18800c=jianwangKeepLimit(_0x40bfa9,_0x255589[_0x49d121(0x272)]);_0x1032dc['innerHTML']='<option\x20value=\x220\x22>不保留</option>';for(let _0x240eeb=0x0;_0x240eeb<_0x18800c;_0x240eeb++){const _0x439551=_0x40bfa9[_0x49d121(0x3d3)][_0x240eeb],_0x12de29=document[_0x49d121(0x456)](_0x49d121(0x459));_0x12de29[_0x49d121(0x272)]=String(_0x240eeb+0x1),_0x12de29[_0x49d121(0x3dc)]='槽\x20'+(_0x240eeb+0x1)+_0x49d121(0x164)+propLabel(_0x439551[_0x49d121(0x18c)])+'+'+formatPropValue(_0x439551[_0x49d121(0x18c)],_0x439551[_0x49d121(0x272)]),_0x1032dc[_0x49d121(0x1cf)](_0x12de29);}_0x1892de&&[..._0x1032dc['options']][_0x49d121(0x157)](_0x24e25c=>_0x24e25c[_0x49d121(0x272)]===_0x1892de)&&(_0x1032dc[_0x49d121(0x272)]=_0x1892de);}function jianwangMaterialsForEquip(_0x5d4f66){const _0x4e8143=_0x442d85,_0x59d1d4=specialMaterialsForEquip(_0x5d4f66),_0xebdb7c=new Set((_0x5d4f66?.[_0x4e8143(0x244)]||[])[_0x4e8143(0x194)](_0x586033=>_0x586033[_0x4e8143(0x18c)])),_0x63c5de=_0x59d1d4[_0x4e8143(0x431)](_0x1a084d=>_0x1a084d[_0x4e8143(0x18c)][_0x4e8143(0x157)](_0x3d8db9=>_0xebdb7c[_0x4e8143(0x3fb)](_0x3d8db9[0x0])));return _0x63c5de['length']?_0x63c5de:_0x59d1d4;}function fillJianwangMaterialSelect(_0x4c2dae=!0x0){const _0x135018=_0x442d85,_0x28c793=document[_0x135018(0x1d4)](_0x135018(0x27d)),_0x151930=document[_0x135018(0x1d4)](_0x135018(0x39f));if(!_0x28c793||!_0x151930)return;const _0x4962fb=_0x4c2dae?_0x151930[_0x135018(0x272)]:'',_0x40d131=findEquipByRuntimeKey(_0x28c793[_0x135018(0x272)]),_0x232403=_0x40d131?getRuntimeEquip(runtimeKey(_0x40d131))||_0x40d131:null;if(_0x151930[_0x135018(0x22b)]='',_0x232403){for(const _0x3b2d9d of jianwangMaterialsForEquip(_0x232403)){const _0x284da5=document['createElement'](_0x135018(0x459));_0x284da5['value']=String(_0x3b2d9d['id']),_0x284da5[_0x135018(0x3dc)]=_0x3b2d9d[_0x135018(0x186)]+_0x135018(0x164)+_0x3b2d9d[_0x135018(0x18c)][_0x135018(0x194)](_0xdc7750=>propLabel(_0xdc7750[0x0]))[_0x135018(0x34e)]('/'),_0x151930[_0x135018(0x1cf)](_0x284da5);}_0x4962fb&&[..._0x151930[_0x135018(0x3cd)]][_0x135018(0x157)](_0xde40e3=>_0xde40e3[_0x135018(0x272)]===_0x4962fb)&&(_0x151930[_0x135018(0x272)]=_0x4962fb);}else _0x151930[_0x135018(0x22b)]=_0x135018(0x3b6);}function fillJianwangEquipSelect(_0x59717d=!0x0){const _0x58f300=_0x442d85,_0x3d72e3=document['getElementById'](_0x58f300(0x27d));if(!_0x3d72e3)return;const _0x3f86b9=_0x59717d?_0x3d72e3['value']:'',_0x1c1ab3=collectJianwangSwords(),_0x49b034=jianwangSelectableBlank?[..._0x1c1ab3,jianwangSelectableBlank]:_0x1c1ab3;if(_0x3d72e3[_0x58f300(0x22b)]='',_0x49b034[_0x58f300(0x3d7)]){for(const _0x30d715 of _0x49b034){const _0x11a864=document['createElement'](_0x58f300(0x459));_0x11a864['value']=runtimeKey(_0x30d715),_0x11a864[_0x58f300(0x3dc)]=jianwangSwordLabel(_0x30d715),_0x3d72e3[_0x58f300(0x1cf)](_0x11a864);}_0x3f86b9&&[..._0x3d72e3[_0x58f300(0x3cd)]][_0x58f300(0x157)](_0x417f16=>_0x417f16['value']===_0x3f86b9)&&(_0x3d72e3[_0x58f300(0x272)]=_0x3f86b9);}else _0x3d72e3[_0x58f300(0x22b)]=_0x58f300(0x1d0);fillJianwangActionSelect(_0x59717d),fillJianwangCycleRouteSelect(_0x59717d),updateJianwangHint(),updateJianwangCycleHint();}function updateJianwangControls(){const _0x1286f1=_0x442d85,_0x485170=document[_0x1286f1(0x1d4)]('jianwangEquipSelect'),_0x36f8a7=document[_0x1286f1(0x1d4)](_0x1286f1(0x3d5))?.[_0x1286f1(0x272)]||'',_0x31ea67=findEquipByRuntimeKey(_0x485170?.['value']),_0x2f70dc=_0x31ea67?getRuntimeEquip(runtimeKey(_0x31ea67))||_0x31ea67:null,_0x217831=jianwangNextRedSeedForEquip(_0x2f70dc),_0x179716=document['getElementById'](_0x1286f1(0x468)),_0x22ee47=document[_0x1286f1(0x1d4)](_0x1286f1(0x26d)),_0x3bb646=document['getElementById']('jianwangMaterialGroup'),_0xf07354=document[_0x1286f1(0x1d4)](_0x1286f1(0x45e)),_0x214b04=document['getElementById'](_0x1286f1(0x1e3)),_0x58b44e=document['getElementById'](_0x1286f1(0x1ae)),_0x512360=document[_0x1286f1(0x1d4)]('jianwangStrongAdvice'),_0x53c630=document[_0x1286f1(0x1d4)]('jianwangCountLabel'),_0x59f174=document[_0x1286f1(0x1d4)]('jianwangCount'),_0x5e9143=_0x1286f1(0x355)===_0x36f8a7;_0x179716&&(_0x179716[_0x1286f1(0x19f)]=!(_0x1286f1(0x2e2)===_0x36f8a7||_0x36f8a7[_0x1286f1(0x450)]('grow:'))),_0x22ee47&&(_0x22ee47['hidden']=!(_0x1286f1(0x2e2)===_0x36f8a7||_0x1286f1(0x1b2)===_0x36f8a7||_0x5e9143)),_0x3bb646&&(_0x3bb646[_0x1286f1(0x19f)]=_0x1286f1(0x1b2)!==_0x36f8a7),_0xf07354&&(_0xf07354['hidden']=!_0x5e9143),_0x214b04&&(_0x214b04[_0x1286f1(0x19f)]=!_0x5e9143),_0x512360&&(_0x512360[_0x1286f1(0x19f)]=!_0x5e9143),!_0x5e9143&&_0x58b44e&&(_0x58b44e[_0x1286f1(0x272)]=''),_0x53c630&&(_0x53c630[_0x1286f1(0x3dc)]=_0x5e9143?_0x1286f1(0x25a):_0x1286f1(0x197)),_0x5e9143&&fillStrongTargetLevels(_0x2f70dc,_0x1286f1(0x333));const _0x9342ff=Math[_0x1286f1(0x23a)](0x0,Math[_0x1286f1(0x21e)](Number(jianwangReforgeCounts[String(Number(_0x2f70dc?.['id']))])||0x0)),_0x3268b0=Math['max'](0x0,0xa-_0x9342ff),_0x24e918=_0x1286f1(0x2e2)===_0x36f8a7&&0x0===_0x3268b0;if(_0x59f174){if(_0x59f174[_0x1286f1(0x44a)]=_0x24e918,_0x59f174['min']=_0x5e9143?'5':'1',_0x59f174['max']=String(_0x1286f1(0x2e2)===_0x36f8a7?_0x3268b0:0x1388),_0x5e9143){const _0x2d7c05=Number(_0x59f174[_0x1286f1(0x272)]);(!Number[_0x1286f1(0x266)](_0x2d7c05)||_0x2d7c05<0x5||_0x2d7c05>0x1388)&&(_0x59f174['value']='60');}else{if(_0x1286f1(0x2e2)===_0x36f8a7){const _0x392dec=Number(_0x59f174[_0x1286f1(0x272)]);(!Number[_0x1286f1(0x266)](_0x392dec)||_0x392dec<0x1||_0x392dec>_0x3268b0)&&(_0x59f174[_0x1286f1(0x272)]='1');}}}const _0x457e2a=document[_0x1286f1(0x1d4)](_0x1286f1(0x22e));if(_0x457e2a){_0x457e2a[_0x1286f1(0x3dc)]=_0x5e9143?'预测并生成建议':'预览当前流程';const _0x2e90f2=_0x1286f1(0x330)===_0x36f8a7||_0x1286f1(0x46d)===_0x36f8a7;_0x457e2a[_0x1286f1(0x44a)]=_0x24e918||_0x2e90f2&&!validJianwangRedSeed(_0x217831)||_0x1286f1(0x355)===_0x36f8a7&&!canPredictJianwangStrong(_0x2f70dc);}const _0xc56315=document[_0x1286f1(0x1d4)](_0x1286f1(0x347));if(_0xc56315){const _0x3f2135=_0x1286f1(0x330)===_0x36f8a7||_0x1286f1(0x46d)===_0x36f8a7,_0x40c43e=_0x1286f1(0x2d8)===_0x36f8a7||_0x1286f1(0x2e2)===_0x36f8a7||_0x36f8a7[_0x1286f1(0x450)]('grow:')||_0x36f8a7[_0x1286f1(0x450)](_0x1286f1(0x1ee))||_0x3f2135;_0xc56315[_0x1286f1(0x44a)]=!_0x2f70dc||!_0x40c43e||_0x24e918||(_0x3f2135?!validJianwangRedSeed(_0x217831):''!==_0x36f8a7&&_0x1286f1(0x2d8)!==_0x36f8a7&&!_0x36f8a7[_0x1286f1(0x450)](_0x1286f1(0x1ee))&&!validJianwangCZSeed(_0x2f70dc));}}function findSaveScalar(_0x53f729,_0x5c85ac){const _0x5ae7d=new Set(),_0x4af26c=_0x416059=>{const _0x1cab62=_0x1a0a;if(_0x1cab62(0x2ce)==typeof _0x416059&&Number[_0x1cab62(0x436)](_0x416059))return _0x416059;if(_0x1cab62(0x2af)==typeof _0x416059&&''!==_0x416059['trim']()&&Number[_0x1cab62(0x436)](Number(_0x416059)))return Number(_0x416059);if(_0x416059&&_0x1cab62(0x237)==typeof _0x416059){for(const _0x32e499 of['Value',_0x1cab62(0x272),'V','v',_0x1cab62(0x327),_0x1cab62(0x2ce)])if(Object[_0x1cab62(0x1ce)][_0x1cab62(0x3e9)][_0x1cab62(0x44f)](_0x416059,_0x32e499)){const _0x8e7edf=_0x4af26c(_0x416059[_0x32e499]);if(null!=_0x8e7edf)return _0x8e7edf;}}return null;},_0x39551a=_0x386055=>{const _0x3661a1=_0x1a0a;if(!_0x386055||'object'!=typeof _0x386055||_0x5ae7d[_0x3661a1(0x3fb)](_0x386055))return null;if(_0x5ae7d[_0x3661a1(0x3e1)](_0x386055),Object[_0x3661a1(0x1ce)][_0x3661a1(0x3e9)]['call'](_0x386055,_0x5c85ac)){const _0xee8e1e=_0x4af26c(_0x386055[_0x5c85ac]);if(null!=_0xee8e1e)return _0xee8e1e;}for(const _0x40466a of Object[_0x3661a1(0x1a5)](_0x386055)){const _0x206540=_0x39551a(_0x40466a);if(null!=_0x206540)return _0x206540;}return null;};return _0x39551a(_0x53f729);}function jianwangReforgeCost(_0x5c5a06){const _0x5a982b=_0x442d85,_0x56cc88=Math[_0x5a982b(0x3dd)](JIANWANG_REFORGE_COSTS['length']-0x1,Math[_0x5a982b(0x23a)](0x0,Number(_0x5c5a06)-0x1)),[_0x394935,_0x43d3d6]=JIANWANG_REFORGE_COSTS[_0x56cc88];return _0x5a982b(0x3f8)+_0x394935+_0x5a982b(0x3ef)+_0x43d3d6;}function jianwangCostText(_0x37c48b,_0x194e26,_0x48bd9c=0x1){const _0x5a7b82=_0x442d85;if(!_0x37c48b)return'';const _0x5cbcc4=Number(_0x37c48b['id']);if(_0x5a7b82(0x2d8)===_0x194e26)return _0x5a7b82(0x290);if(_0x5a7b82(0x2e2)===_0x194e26)return jianwangReforgeCost((Number(jianwangReforgeCounts[String(Number(_0x37c48b['id']))])||0x0)+_0x48bd9c);if(_0x5a7b82(0x39e)===_0x194e26)return _0x5a7b82(0x2a6);if('grow:5709'===_0x194e26)return'剑意300、紫金×200、陨铁×1、贡献×2000';if(_0x194e26['startsWith'](_0x5a7b82(0x3be))&&0x164d===_0x5cbcc4)return _0x5a7b82(0x39c);if(_0x194e26[_0x5a7b82(0x450)]('ascend:'))return _0x5a7b82(0x1ff);if('mangjing'===_0x194e26)return _0x5a7b82(0x470);if('strong'===_0x194e26){const _0x296581=strongAttemptCost(Number(_0x37c48b['need_lv'])||0x5a,Number(_0x37c48b[_0x5a7b82(0x2f9)])||0x0);return _0x296581?(STONE_NAMES[_0x296581[_0x5a7b82(0x32f)]]||_0x296581[_0x5a7b82(0x32f)])+'×'+_0x296581[_0x5a7b82(0x317)]+_0x5a7b82(0x154)+formatSilver(_0x296581[_0x5a7b82(0x28d)])+_0x5a7b82(0x3b8):_0x5a7b82(0x274);}return _0x5a7b82(0x330)===_0x194e26?_0x5a7b82(0x16a):_0x5a7b82(0x46d)===_0x194e26?_0x5a7b82(0x175):'';}function updateJianwangHint(){const _0x4e23d1=_0x442d85,_0x27db91=document[_0x4e23d1(0x1d4)](_0x4e23d1(0x30a)),_0x75a1ef=document[_0x4e23d1(0x1d4)](_0x4e23d1(0x27d)),_0x21d1cd=document[_0x4e23d1(0x1d4)](_0x4e23d1(0x39f));if(!_0x27db91||!_0x75a1ef||!_0x21d1cd)return;const _0x108814=findEquipByRuntimeKey(_0x75a1ef[_0x4e23d1(0x272)]),_0xf96c40=_0x108814?getRuntimeEquip(runtimeKey(_0x108814))||_0x108814:null,_0x139092=jianwangNextRedSeedForEquip(_0xf96c40),_0x38718a=document[_0x4e23d1(0x1d4)](_0x4e23d1(0x3d5))?.[_0x4e23d1(0x272)]||'',_0x584cb=EQUIP_DATA['special'][String(_0x21d1cd['value'])];if(_0xf96c40){if(_0x4e23d1(0x2d8)!==_0x38718a){if(_0x4e23d1(0x355)===_0x38718a){if(!canPredictJianwangStrong(_0xf96c40)){const _0x351548=Number(_0xf96c40[_0x4e23d1(0x2f9)])>=0xf?_0x4e23d1(0x249):_0x4e23d1(0x41e);return void(_0x27db91['textContent']=(_0xf96c40['_source']||_0x108814?.[_0x4e23d1(0x2de)]||'存档')+'\x20·\x20'+jianwangStageName(_0xf96c40)+'\x20·\x20'+_0x351548+_0x4e23d1(0x30b));}const _0x421c70=Number(document['getElementById']('jianwangStrongTargetLevel')?.['value'])||Math[_0x4e23d1(0x3dd)](0xf,(Number(_0xf96c40[_0x4e23d1(0x2f9)])||0x0)+0x3),_0x3a5388={0x1:'一般',0x2:'良好',0x3:'优秀',0x4:'完美'}[strongMinGrade('jianwangStrongMinGrade')];return void(_0x27db91[_0x4e23d1(0x3dc)]=(_0xf96c40[_0x4e23d1(0x2de)]||_0x108814?.['_source']||'存档')+_0x4e23d1(0x164)+jianwangStageName(_0xf96c40)+_0x4e23d1(0x3e7)+_0xf96c40['S']+_0x4e23d1(0x20f)+(Number(_0xf96c40[_0x4e23d1(0x2f9)])||0x0)+_0x4e23d1(0x2f6)+_0x421c70+_0x4e23d1(0x22f)+_0x3a5388+_0x4e23d1(0x164)+jianwangCostText(_0xf96c40,_0x38718a)+'\x20·\x20接受或取消都推进一次');}if(_0x4e23d1(0x1b2)===_0x38718a){if(!canPredictJianwangMangjing(_0xf96c40))return void(_0x27db91['textContent']=(_0xf96c40[_0x4e23d1(0x2de)]||_0x108814?.[_0x4e23d1(0x2de)]||'存档')+_0x4e23d1(0x164)+jianwangStageName(_0xf96c40)+_0x4e23d1(0x428));const _0x538fae=_0x584cb?'按「'+_0x584cb[_0x4e23d1(0x186)]+'」属性池':_0x4e23d1(0x402);return void(_0x27db91[_0x4e23d1(0x3dc)]=(_0xf96c40[_0x4e23d1(0x2de)]||_0x108814?.[_0x4e23d1(0x2de)]||'存档')+_0x4e23d1(0x164)+_0x538fae+_0x4e23d1(0x164)+jianwangCostText(_0xf96c40,_0x38718a));}if(_0x4e23d1(0x330)===_0x38718a||'shatter:100'===_0x38718a){if(!validJianwangRedSeed(_0x139092))return void(_0x27db91[_0x4e23d1(0x3dc)]=jianwangStageName(_0xf96c40)+'\x20·\x20存档缺少后续推演状态，不能预测下一把60级剑胚');createJianwangBlankFromRedSeed(_0x139092);const _0x310fa4='shatter:90'===_0x38718a?_0x4e23d1(0x440):'100级碎神兵';return void(_0x27db91[_0x4e23d1(0x3dc)]=_0x310fa4+_0x4e23d1(0x198));}if(_0x4e23d1(0x2e2)!==_0x38718a&&!_0x38718a[_0x4e23d1(0x450)]('grow:')||validJianwangCZSeed(_0xf96c40)){if(_0x4e23d1(0x2e2)===_0x38718a){const _0x385469=Math[_0x4e23d1(0x23a)](0x0,Math['floor'](Number(jianwangReforgeCounts[String(Number(_0xf96c40['id']))])||0x0)),_0x3f7b4a=Math[_0x4e23d1(0x23a)](0x0,0xa-_0x385469);return 0x0===_0x3f7b4a?void(_0x27db91[_0x4e23d1(0x3dc)]=(_0x108814?.['_source']||'存档')+_0x4e23d1(0x164)+jianwangStageName(_0xf96c40)+'\x20·\x20已重铸\x20'+_0x385469+'\x20次，已达\x2010\x20次上限'):void(_0x27db91[_0x4e23d1(0x3dc)]=(_0x108814?.[_0x4e23d1(0x2de)]||'存档')+_0x4e23d1(0x164)+jianwangStageName(_0xf96c40)+_0x4e23d1(0x234)+_0x385469+_0x4e23d1(0x476)+_0x3f7b4a+'\x20次\x20·\x20'+jianwangCostText(_0xf96c40,_0x38718a));}_0x27db91[_0x4e23d1(0x3dc)]=(_0x108814?.[_0x4e23d1(0x2de)]||'存档')+_0x4e23d1(0x164)+jianwangStageName(_0xf96c40)+_0x4e23d1(0x164)+jianwangCostText(_0xf96c40,_0x38718a);}else _0x27db91[_0x4e23d1(0x3dc)]=(_0x108814?.['_source']||'存档')+_0x4e23d1(0x164)+jianwangStageName(_0xf96c40)+_0x4e23d1(0x33a);}else _0x27db91['textContent']=_0x4e23d1(0x403)+jianwangCostText(_0xf96c40,_0x38718a);}else _0x27db91[_0x4e23d1(0x3dc)]=saveLoaded?_0x4e23d1(0x399):_0x4e23d1(0x40e);}function updateJianwangCycleHint(){const _0x552693=_0x442d85,_0x549f35=document[_0x552693(0x1d4)]('jianwangCycleHint'),_0x460174=document[_0x552693(0x1d4)](_0x552693(0x3c3)),_0x17f3db=document[_0x552693(0x1d4)]('jianwangEquipSelect'),_0x1f591b=document[_0x552693(0x1d4)](_0x552693(0x482)),_0xcc0e9c=findEquipByRuntimeKey(_0x17f3db?.[_0x552693(0x272)]),_0x582365=_0xcc0e9c?getRuntimeEquip(runtimeKey(_0xcc0e9c))||_0xcc0e9c:null,_0x56de5d=jianwangNextRedSeedForEquip(_0x582365);if(!_0x549f35)return;const _0xe72cca=Number(_0x582365?.['id']),_0x3117c3=[0x164b,0x164c,0x164d][_0x552693(0x460)](_0xe72cca),_0x2971ae=Number(_0x1f591b?.[_0x552693(0x272)]),_0x288ab6=!_0x3117c3||JIANWANG_LEVEL_90_IDS[_0x552693(0x3fb)](_0x2971ae),_0x43a424=!_0x3117c3||validJianwangCZSeed(_0x582365),_0x25a4d8=!!_0x582365?.[_0x552693(0x484)]&&!_0x582365[_0x552693(0x180)],_0x3cd0a8=saveLoaded&&!!_0x582365&&isJianwangSword(_0x582365)&&!_0x25a4d8&&_0x288ab6&&_0x43a424&&validJianwangRedSeed(_0x56de5d);_0x460174&&(_0x460174[_0x552693(0x44a)]=!_0x3cd0a8),saveLoaded?_0x582365&&isJianwangSword(_0x582365)?_0x25a4d8?_0x549f35['textContent']='当前仍是模拟剑胚道具；请先在上方选择「领取新剑胚」并点击「执行一次」，成为60级剑后才能预览碎剑循环':validJianwangRedSeed(_0x56de5d)?_0x3117c3&&!validJianwangCZSeed(_0x582365)?_0x549f35[_0x552693(0x3dc)]=jianwangStageName(_0x582365)+'缺少后续推演状态，无法先推到90级':_0x3117c3&&!_0x288ab6?_0x549f35['textContent']=jianwangStageName(_0x582365)+_0x552693(0x232):JIANWANG_LEVEL_100_IDS[_0x552693(0x3fb)](_0xe72cca)?_0x549f35[_0x552693(0x3dc)]=_0x552693(0x353):_0x549f35[_0x552693(0x3dc)]=_0x3117c3?jianwangStageName(_0x582365)+_0x552693(0x426):'当前90级专武直接碎剑进入第1轮；每把新剑独立一页并预览60→90与10次不保留重铸':_0x549f35[_0x552693(0x3dc)]=_0x552693(0x455):_0x549f35[_0x552693(0x3dc)]=_0x552693(0x390):_0x549f35[_0x552693(0x3dc)]='导入存档后可从实物或模拟新剑胚起跑，按每把新剑一页预览完整循环';}function emptyEquipTip(){const _0x179f84=_0x442d85,_0x30ffd6=getSourceFilter(_0x179f84(0x39a));return _0x179f84(0x2ef)===_0x30ffd6?_0x179f84(0x2cb):_0x179f84(0x40f)===_0x30ffd6?_0x179f84(0x223):_0x179f84(0x3fa);}function fillEquipSelects(_0x1b04bc=!0x0){const _0x4b1af2=_0x442d85,_0x524dcc=document['getElementById']('bagEquipSelect');if(_0x524dcc){const _0x3a7b2a=_0x1b04bc?_0x524dcc[_0x4b1af2(0x272)]:'',_0xca3309=saveEquips['filter'](_0x2efbc5=>passEquipListFilter(_0x2efbc5,_0x4b1af2(0x39a)));if(_0x524dcc[_0x4b1af2(0x22b)]='',_0xca3309[_0x4b1af2(0x3d7)]){for(const _0x1c2ae5 of _0xca3309){const _0x47d69a=document[_0x4b1af2(0x456)](_0x4b1af2(0x459));_0x47d69a['value']=runtimeKey(_0x1c2ae5),_0x47d69a[_0x4b1af2(0x3dc)]=equipOptionLabel(_0x1c2ae5,_0x4b1af2(0x39a)),_0x524dcc[_0x4b1af2(0x1cf)](_0x47d69a);}if(_0x3a7b2a&&[..._0x524dcc[_0x4b1af2(0x3cd)]][_0x4b1af2(0x157)](_0x17e501=>_0x17e501[_0x4b1af2(0x272)]===_0x3a7b2a))_0x524dcc[_0x4b1af2(0x272)]=_0x3a7b2a;else{const _0x7d530f=_0xca3309[_0x4b1af2(0x265)](_0x55f76a=>_0x4b1af2(0x47d)===currentBagAction?canShengLian(_0x55f76a):_0x4b1af2(0x321)===currentBagAction?canXilian(_0x55f76a):_0x4b1af2(0x355)===currentBagAction?canStrong(_0x55f76a):canPredictSpecialAttach(_0x55f76a));_0x7d530f&&(_0x524dcc['value']=runtimeKey(_0x7d530f));}}else _0x524dcc[_0x4b1af2(0x22b)]=_0x4b1af2(0x3b9)+emptyEquipTip()+_0x4b1af2(0x2d2);}fillSpecialAttachMaterialSelect(_0x1b04bc),updateSpecialAttachHint(),fillJianwangEquipSelect(_0x1b04bc),updateXilianHint(),updateStrongHint(),updateShenglianHint(),updateJianwangHint(),updateCraftedBagHint(),updateBagActionState(),renderCraftedBagList();}function updateShenglianHint(){const _0x35188e=_0x442d85,_0x4680d1=document[_0x35188e(0x1d4)](_0x35188e(0x35a)),_0x41747b=document[_0x35188e(0x1d4)]('shenglianPreview'),_0x70bc7e=document[_0x35188e(0x1d4)]('bagEquipSelect');if(!_0x4680d1||!_0x70bc7e)return;const _0xb6979d=_0x70bc7e[_0x35188e(0x272)],_0x1fe418=_0xb6979d?saveEquips[_0x35188e(0x265)](_0x316aed=>runtimeKey(_0x316aed)===_0xb6979d):null;if(!_0x1fe418)return _0x4680d1['textContent']=_0x35188e(0x1b5),void(_0x41747b&&(_0x41747b['classList'][_0x35188e(0x3e1)](_0x35188e(0x25f)),_0x41747b[_0x35188e(0x3dc)]=_0x35188e(0x2ed)));if(!canShengLian(_0x1fe418))return _0x4680d1[_0x35188e(0x3dc)]='当前装备不可升炼；需为\x2090\x20级非橙红装且存在下一档',void(_0x41747b&&(_0x41747b[_0x35188e(0x24c)]['add'](_0x35188e(0x25f)),_0x41747b[_0x35188e(0x3dc)]=_0x35188e(0x257)));const _0x1412be=EQUIP_DATA[_0x35188e(0x2be)][String(_0x1fe418['id'])]||{},_0x2c380f=EQUIP_DATA[_0x35188e(0x2be)][String(_0x1412be['equ_next'])]||{},_0x395100=calcShengLianCost(_0x1fe418);if(_0x4680d1[_0x35188e(0x3dc)]=_0x35188e(0x1ed)+formatCostList(_0x395100)+_0x35188e(0x47f),_0x41747b){_0x41747b['classList']['remove']('empty');const _0x37268f=TYPE_NAMES[_0x1fe418['typ']]||_0x1fe418[_0x35188e(0x393)],_0x33580a=_0x1fe418[_0x35188e(0x2c9)]?_0x35188e(0x213)+escapeHtml(_0x1fe418['_mark'])+'」':'';_0x41747b[_0x35188e(0x22b)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div><strong>当前</strong>：'+escapeHtml(_0x1fe418[_0x35188e(0x186)])+_0x35188e(0x164)+_0x1fe418[_0x35188e(0x206)]+_0x35188e(0x19b)+(COLOR_NAMES[_0x1fe418[_0x35188e(0x3c6)]]||_0x1fe418[_0x35188e(0x3c6)])+_0x35188e(0x164)+escapeHtml(String(_0x37268f))+_0x35188e(0x1ba)+_0x1fe418[_0x35188e(0x3d3)]['length']+_0x33580a+'</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div><strong>升炼后</strong>：'+escapeHtml(_0x2c380f['name']||'?')+'\x20·\x20'+(_0x2c380f['lv']||0x64)+_0x35188e(0x1a8);}}function updateXilianHint(){const _0x400cf1=_0x442d85,_0x3c6973=document[_0x400cf1(0x1d4)](_0x400cf1(0x453)),_0x3b27c0=document[_0x400cf1(0x1d4)](_0x400cf1(0x3e6))?.[_0x400cf1(0x272)]||'',_0x4622c3=_0x3b27c0?getRuntimeEquip(_0x3b27c0):null;if(!_0x4622c3||!canXilian(_0x4622c3))return void(_0x3c6973['textContent']=_0x4622c3?'当前装备不可精炼；仅\x20100\x20级绿/蓝/紫装可精炼，90\x20级请先升炼':_0x400cf1(0x341));const _0x27d162=_0x4622c3[_0x400cf1(0x280)]||[],_0x4e25bc=calcXilianCost(_0x4622c3),_0x40453b=(_0x4622c3[_0x400cf1(0x3d3)]||[])['map']((_0x295223,_0x48f1d9)=>{const _0x3f17eb=_0x400cf1,_0x129fbc=_0x27d162[_0x3f17eb(0x460)](_0x48f1d9+0x1)?'🔒':'';return _0x48f1d9+0x1+':'+propLabel(_0x295223[_0x3f17eb(0x18c)])+_0x129fbc;})[_0x400cf1(0x34e)]('\x20·\x20'),_0x3566dd=mainPropDisplay(_0x4622c3,_0x4622c3[_0x400cf1(0x20c)]||0x0)[_0x400cf1(0x194)](_0x472342=>''+_0x472342['label']+_0x472342[_0x400cf1(0x272)])[_0x400cf1(0x34e)]('\x20·\x20'),_0x391d86=saveEquips['find'](_0x4b29d0=>runtimeKey(_0x4b29d0)===_0x3b27c0),_0x1c3508=_0x391d86?.[_0x400cf1(0x2c9)]?_0x400cf1(0x213)+_0x391d86['_mark']+'」':'';_0x3c6973['textContent']=_0x400cf1(0x3bf)+_0x4622c3[_0x400cf1(0x20c)]+_0x400cf1(0x391)+(_0x27d162[_0x400cf1(0x34e)](',')||'无')+_0x400cf1(0x1dc)+formatCostList(_0x4e25bc[_0x400cf1(0x36a)])+_0x400cf1(0x164)+(_0x3566dd||_0x400cf1(0x181))+'\x20·\x20词条\x20'+(_0x40453b||'—')+_0x1c3508;}function updateStrongHint(){const _0x7c0553=_0x442d85,_0x214c94=document['getElementById']('strongHint'),_0x521457=document[_0x7c0553(0x1d4)]('bagEquipSelect')?.[_0x7c0553(0x272)]||'',_0x1cc844=_0x521457?getRuntimeEquip(_0x521457):null;if(!_0x1cc844||!canStrong(_0x1cc844))return void(_0x214c94[_0x7c0553(0x3dc)]=_0x1cc844?_0x7c0553(0x430):_0x7c0553(0x32c));fillStrongTargetLevels(_0x1cc844),_0x1cc844[_0x7c0553(0x2f9)];const _0x4fe83c=strongAttemptCost(_0x1cc844[_0x7c0553(0x206)]||0x5a,_0x1cc844['level']),_0x1d417e=_0x4fe83c?(STONE_NAMES[_0x4fe83c[_0x7c0553(0x32f)]]||_0x4fe83c[_0x7c0553(0x32f)])+'×'+_0x4fe83c['num']:'?',_0x3421e9=saveEquips[_0x7c0553(0x265)](_0x1a9a62=>runtimeKey(_0x1a9a62)===_0x521457),_0x2e4dca=_0x3421e9?.[_0x7c0553(0x2c9)]?_0x7c0553(0x213)+_0x3421e9['_mark']+'」':'';_0x214c94[_0x7c0553(0x3dc)]='S='+_0x1cc844['S']+_0x7c0553(0x20f)+_0x1cc844[_0x7c0553(0x2f9)]+_0x7c0553(0x3a3)+_0x1d417e+_0x7c0553(0x18f)+_0x1cc844[_0x7c0553(0x2ac)]+_0x2e4dca;}function updateBagActionState(){const _0x474b36=_0x442d85,_0xef23e7=document[_0x474b36(0x1d4)](_0x474b36(0x3e6))?.[_0x474b36(0x272)]||'',_0x5d1ae1=_0xef23e7?getRuntimeEquip(_0xef23e7):null,_0x2f731b={'shenglian':canShengLian(_0x5d1ae1),'xilian':canXilian(_0x5d1ae1),'strong':canStrong(_0x5d1ae1),'attach':canPredictSpecialAttach(_0x5d1ae1)},_0x531586={'shenglian':'升炼','xilian':'精炼','strong':'淬炼','attach':'附加'};document['querySelectorAll'](_0x474b36(0x1d2))[_0x474b36(0x31d)](_0x2ae5b5=>{const _0x389b25=_0x474b36,_0x283377=_0x2ae5b5['dataset']['bagAction'];_0x2ae5b5['disabled']=!_0x2f731b[_0x283377],_0x2ae5b5[_0x389b25(0x253)]=_0x2f731b[_0x283377]?'':'当前装备不可'+(_0x531586[_0x283377]||'操作');});const _0x982ea0=document[_0x474b36(0x1d4)](_0x474b36(0x35d)),_0x2a3bed=document[_0x474b36(0x1d4)](_0x474b36(0x3b7)),_0x35795f=document[_0x474b36(0x1d4)](_0x474b36(0x381)),_0x336eea=document[_0x474b36(0x1d4)](_0x474b36(0x414));_0x982ea0&&(_0x982ea0[_0x474b36(0x44a)]=!_0x2f731b[_0x474b36(0x47d)]),_0x2a3bed&&(_0x2a3bed[_0x474b36(0x44a)]=!_0x2f731b['xilian']),_0x35795f&&(_0x35795f[_0x474b36(0x44a)]=!_0x2f731b[_0x474b36(0x355)]),_0x336eea&&(_0x336eea['disabled']=!_0x2f731b[_0x474b36(0x1d1)]);}function switchBagAction(_0x1cc67b,_0x4fdb39=!0x0){const _0x503579=_0x442d85;if(!['shenglian','xilian',_0x503579(0x355),_0x503579(0x1d1)][_0x503579(0x460)](_0x1cc67b))return;currentBagAction=_0x1cc67b,document[_0x503579(0x2df)]('.bag-action-btn')[_0x503579(0x31d)](_0x582acf=>{const _0x49ba8b=_0x503579,_0xad8f30=_0x582acf[_0x49ba8b(0x47a)][_0x49ba8b(0x2b7)]===_0x1cc67b;_0x582acf[_0x49ba8b(0x24c)]['toggle'](_0x49ba8b(0x429),_0xad8f30),_0x582acf[_0x49ba8b(0x1a6)](_0x49ba8b(0x383),String(_0xad8f30));});const _0x4d6fa3=document[_0x503579(0x1d4)]('panelShenglian'),_0x6d455d=document[_0x503579(0x1d4)]('panelXilian'),_0x2f7e31=document['getElementById'](_0x503579(0x281)),_0x417bf0=document[_0x503579(0x1d4)](_0x503579(0x40d));_0x4d6fa3&&(_0x4d6fa3[_0x503579(0x19f)]=_0x503579(0x47d)!==_0x1cc67b),_0x6d455d&&(_0x6d455d['hidden']=_0x503579(0x321)!==_0x1cc67b),_0x2f7e31&&(_0x2f7e31['hidden']=_0x503579(0x355)!==_0x1cc67b),_0x417bf0&&(_0x417bf0[_0x503579(0x19f)]='attach'!==_0x1cc67b),updateShenglianHint(),updateXilianHint(),updateStrongHint(),fillSpecialAttachMaterialSelect(!0x0),updateSpecialAttachHint(),updateBagActionState(),_0x4fdb39&&clearPreview(_0x503579(0x463)+(_0x503579(0x47d)===_0x1cc67b?'升炼':_0x503579(0x321)===_0x1cc67b?'精炼':_0x503579(0x355)===_0x1cc67b?'淬炼':'附加')+'，请查看当前装备操作区');}function handleBagEquipChange(_0x528bfe=!0x0){resetXilianSession(),strongPlanCache=null,updateShenglianHint(),updateXilianHint(),updateStrongHint(),fillSpecialAttachMaterialSelect(!0x1),updateSpecialAttachHint(),updateBagActionState(),renderCraftedBagList(),_0x528bfe&&clearPreview('装备已变更，请选择可用的培养操作');}function setXilianHead(){const _0x2e86d5=_0x442d85;setPreviewTableKind(_0x2e86d5(0x321)),document[_0x2e86d5(0x1d4)]('previewHead')[_0x2e86d5(0x22b)]='<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<th>保留</th><th>#</th><th>槽</th><th>原→新</th><th>倍率</th><th>XLLevel</th>\x0a\x20\x20\x20\x20</tr>';}function fillXilianPropFilter(_0x14ddde){const _0x20d8a5=_0x442d85,_0x4f14b4=document[_0x20d8a5(0x1d4)](_0x20d8a5(0x349));if(!_0x4f14b4)return;const _0x14f8fe=_0x4f14b4['value'],_0x12ebbc=[...new Set((_0x14ddde||[])['map'](_0x26b2c4=>_0x26b2c4[_0x20d8a5(0x18c)]?.[_0x20d8a5(0x18c)])[_0x20d8a5(0x431)](Boolean))][_0x20d8a5(0x21c)]((_0x2c7573,_0x50e6a3)=>propLabel(_0x2c7573)[_0x20d8a5(0x26f)](propLabel(_0x50e6a3),'zh'));_0x4f14b4['innerHTML']=_0x20d8a5(0x405)+_0x12ebbc[_0x20d8a5(0x194)](_0x1f45d5=>_0x20d8a5(0x19c)+escapeHtml(_0x1f45d5)+'\x22>'+escapeHtml(propLabel(_0x1f45d5))+_0x20d8a5(0x2d2))[_0x20d8a5(0x34e)](''),_0x14f8fe&&_0x12ebbc['includes'](_0x14f8fe)&&(_0x4f14b4['value']=_0x14f8fe);}function xilianFilterMatch(_0x23e3ab){const _0x40daf8=_0x442d85,_0x2b73e1=document['getElementById'](_0x40daf8(0x1c2))?.[_0x40daf8(0x272)]||'',_0x279cee=document[_0x40daf8(0x1d4)](_0x40daf8(0x349))?.[_0x40daf8(0x272)]||'';return!(_0x2b73e1&&String(_0x23e3ab[_0x40daf8(0x47c)])!==_0x2b73e1||_0x279cee&&_0x23e3ab[_0x40daf8(0x18c)]?.['prop']!==_0x279cee);}function bindXilianKeepChecks(){const _0x485a69=_0x442d85;document[_0x485a69(0x2df)]('#previewBody\x20input.xl-keep')['forEach'](_0x545f91=>{const _0x580a37=_0x485a69;_0x545f91[_0x580a37(0x24f)](_0x580a37(0x182),()=>{const _0x44c0fc=_0x580a37,_0x36e73e=Number(_0x545f91[_0x44c0fc(0x47a)][_0x44c0fc(0x207)]);Number[_0x44c0fc(0x436)](_0x36e73e)&&(xilianAcceptFlags[_0x36e73e]=_0x545f91['checked']),refreshXilianPlan();});});}function buildXilianEntries(_0x22c405){const _0x7215b3=[];return(_0x22c405||[])['forEach']((_0x264a02,_0x219489)=>{const _0x1036b4=_0x1a0a;xilianFilterMatch(_0x264a02)&&_0x7215b3[_0x1036b4(0x3f0)]({'it':_0x264a02,'idx':_0x219489});}),_0x7215b3;}function renderXilianPage(){const _0xe0a557=_0x442d85,_0xbbf8d7=document[_0xe0a557(0x1d4)](_0xe0a557(0x172)),_0x155022=document[_0xe0a557(0x1d4)](_0xe0a557(0x39d));if(!_0xbbf8d7)return;const _0x37d60f=tablePager[_0xe0a557(0x3b2)]||[],_0x1c2ad0=xilianAcceptFlags,_0x410038=getPreviewPageSize(),_0xb745df=(tablePager[_0xe0a557(0x247)]-0x1)*_0x410038,_0x2ecaa4=_0x37d60f[_0xe0a557(0x212)](_0xb745df,_0xb745df+_0x410038);_0x2ecaa4[_0xe0a557(0x3d7)]?(_0xbbf8d7[_0xe0a557(0x22b)]=_0x2ecaa4[_0xe0a557(0x194)](({it:_0x4c43a5,idx:_0x2d1c5c})=>{const _0x1ebfc5=_0xe0a557,_0x111ff0=_0x4c43a5['old_prop']?propLabel(_0x4c43a5['old_prop'][_0x1ebfc5(0x18c)])+'+'+formatPropValue(_0x4c43a5[_0x1ebfc5(0x3e4)][_0x1ebfc5(0x18c)],_0x4c43a5[_0x1ebfc5(0x3e4)][_0x1ebfc5(0x272)]):'—',_0x2a5fe6=propLabel(_0x4c43a5[_0x1ebfc5(0x18c)][_0x1ebfc5(0x18c)])+'+'+formatPropValue(_0x4c43a5[_0x1ebfc5(0x18c)][_0x1ebfc5(0x18c)],_0x4c43a5[_0x1ebfc5(0x18c)][_0x1ebfc5(0x272)]),_0x17ef09=!!_0x1c2ad0[_0x2d1c5c];return'<tr\x20class=\x22'+(_0x17ef09?_0x1ebfc5(0x190):'')+_0x1ebfc5(0x26e)+_0x2d1c5c+_0x1ebfc5(0x323)+_0x2d1c5c+'\x22\x20'+(_0x17ef09?_0x1ebfc5(0x3f7):'')+_0x1ebfc5(0x1d6)+_0x4c43a5[_0x1ebfc5(0x3d6)]+_0x1ebfc5(0x1d9)+_0x4c43a5[_0x1ebfc5(0x47c)]+_0x1ebfc5(0x202)+_0x111ff0+_0x1ebfc5(0x252)+_0x2a5fe6+_0x1ebfc5(0x150)+_0x4c43a5['cost_mult']+_0x1ebfc5(0x202)+_0x4c43a5['xl_level_before']+'→'+_0x4c43a5[_0x1ebfc5(0x228)]+_0x1ebfc5(0x200);})[_0xe0a557(0x34e)](''),bindXilianKeepChecks()):_0xbbf8d7['innerHTML']=_0xe0a557(0x246),_0x155022&&(_0x155022[_0xe0a557(0x3dc)]=_0xe0a557(0x433)+_0x37d60f['length']+_0xe0a557(0x191)+(xilianPlanItems||[])[_0xe0a557(0x3d7)]+'\x20条'),updatePreviewPager(_0x37d60f[_0xe0a557(0x3d7)]);}function renderXilianRows(_0x29f0f7,_0x1b1202,_0x5aa8f4=!0x1){const _0x337176=_0x442d85;tablePager[_0x337176(0x18d)]=_0x337176(0x321),_0x5aa8f4&&(tablePager['page']=0x1),tablePager[_0x337176(0x3b2)]=buildXilianEntries(_0x29f0f7),renderXilianPage();}function sumXilianCosts(_0x4134cd,_0x48e446,_0x2f1110){const _0x41b5af=_0x442d85,_0x39a750=null==_0x2f1110?_0x48e446['length']-0x1:_0x2f1110,_0x32a2ed={},_0x2e459b=_0x4134cd['typ']>=0x5&&_0x4134cd[_0x41b5af(0x393)]<=0x7?_0x41b5af(0x292):_0x41b5af(0x348),_0x33f94d=EQUIP_DATA['equipment'][String(_0x4134cd['id'])]?.[_0x41b5af(0x389)]||0x2710,_0x1cb16d=Math[_0x41b5af(0x21e)](1.5*_0x33f94d);for(let _0x3ca0f3=0x0;_0x3ca0f3<=_0x39a750&&_0x3ca0f3<_0x48e446['length'];_0x3ca0f3++){const _0x2383cb=_0x48e446[_0x3ca0f3][_0x41b5af(0x20d)];_0x32a2ed[_0x2e459b]=(_0x32a2ed[_0x2e459b]||0x0)+0x5*_0x2383cb,_0x32a2ed[_0x41b5af(0x32a)]=(_0x32a2ed[_0x41b5af(0x32a)]||0x0)+_0x2383cb,_0x32a2ed['银两']=(_0x32a2ed['银两']||0x0)+_0x1cb16d;}return _0x32a2ed;}function formatXilianCostText(_0x40082b){const _0x5f3a12=_0x442d85;return Object[_0x5f3a12(0x2fe)](_0x40082b)['map'](([_0x210c06,_0x4d11f8])=>'银两'===_0x210c06?''+_0x210c06+formatSilver(_0x4d11f8):_0x210c06+'×'+_0x4d11f8)['join'](_0x5f3a12(0x164))||'—';}async function refreshXilianPlan(_0x44de30){const _0xafb4b=_0x442d85,_0x7a50b3=getRuntimeEquip(document['getElementById']('bagEquipSelect')?.[_0xafb4b(0x272)]||''),_0x14d18a=document[_0xafb4b(0x1d4)](_0xafb4b(0x427));if(!_0x7a50b3||!xilianAcceptFlags[_0xafb4b(0x3d7)])return void(_0x14d18a&&(_0x14d18a[_0xafb4b(0x24c)][_0xafb4b(0x3e1)]('empty'),_0x14d18a[_0xafb4b(0x22b)]=_0xafb4b(0x423)));const _0x22d282=xilianAcceptFlags['slice'](),_0x2c110b=_0x44de30||await YYJHCalculation[_0xafb4b(0x20e)](_0xafb4b(0x23c),{'equip':toWasmEquip(_0x7a50b3),'accepts':_0x22d282},{'scope':_0xafb4b(0x264)});if(_0x2c110b[_0xafb4b(0x3a8)]||_0x22d282[_0xafb4b(0x157)]((_0xbb061d,_0xc63923)=>_0xbb061d!==xilianAcceptFlags[_0xc63923]))return;if(_0x2c110b[_0xafb4b(0x439)]&&!_0x2c110b[_0xafb4b(0x2fb)]?.[_0xafb4b(0x3d7)])return _0x14d18a['classList'][_0xafb4b(0x240)](_0xafb4b(0x25f)),void(_0x14d18a[_0xafb4b(0x3dc)]=_0x2c110b[_0xafb4b(0x439)]);xilianPlanItems=_0x2c110b[_0xafb4b(0x2fb)]||[];let _0x25a61a=new Set(_0x7a50b3[_0xafb4b(0x280)]||[]),_0x6d90a7=_0x25a61a[_0xafb4b(0x214)];for(const _0x44b79a of xilianPlanItems)_0x44b79a[_0xafb4b(0x361)]&&(_0x25a61a[_0xafb4b(0x3e1)](_0x44b79a[_0xafb4b(0x47c)]),_0x6d90a7=_0x25a61a[_0xafb4b(0x214)]);const _0x599c19=sumXilianCosts(_0x7a50b3,xilianPlanItems),_0x2c8f84=_0x22d282[_0xafb4b(0x431)](Boolean)[_0xafb4b(0x3d7)];let _0x408f5b=-0x1;for(let _0x208be8=_0x22d282[_0xafb4b(0x3d7)]-0x1;_0x208be8>=0x0;_0x208be8--)if(_0x22d282[_0x208be8]){_0x408f5b=_0x208be8;break;}const _0x4d15bf=_0x408f5b>=0x0?sumXilianCosts(_0x7a50b3,xilianPlanItems,_0x408f5b):null,_0x27f284=_0x408f5b>=0x0?xilianPlanItems[_0x408f5b]?.[_0xafb4b(0x3d6)]??_0x408f5b+0x1:0x0,_0x31bf08=_0x2c110b['equip']||_0x7a50b3,_0x49b745=_0x31bf08[_0xafb4b(0x20c)]??_0x31bf08[_0xafb4b(0x228)]??0x0,_0x595c89=mainPropDisplay(_0x7a50b3,_0x49b745),_0x50b7ec=_0x31bf08[_0xafb4b(0x3d3)]||[],_0x5b2866=formatXilianCostText(_0x599c19),_0x30f8cc=_0x4d15bf?formatXilianCostText(_0x4d15bf):'',_0x19998e=_0x50b7ec['length']?_0x50b7ec[_0xafb4b(0x194)]((_0x33563f,_0x5b2402)=>{const _0x34eb6c=_0xafb4b,_0x4852ce=(_0x31bf08[_0x34eb6c(0x280)]||[])['includes'](_0x5b2402+0x1)||(_0x31bf08[_0x34eb6c(0x280)]||[])[_0x34eb6c(0x460)](String(_0x5b2402+0x1));return _0x5b2402+0x1+'.'+propLabel(_0x33563f['prop'])+'+'+formatPropValue(_0x33563f[_0x34eb6c(0x18c)],_0x33563f[_0x34eb6c(0x272)])+(_0x4852ce?'🔒':'');})[_0xafb4b(0x34e)](_0xafb4b(0x164)):'—',_0x490b8d=null!=_0x2c110b[_0xafb4b(0x3b3)]?_0x2c110b[_0xafb4b(0x3b3)]:_0x599c19['连金泥']||0x0,_0x3cba50=_0x595c89[_0xafb4b(0x194)](_0x4d6a71=>_0x4d6a71[_0xafb4b(0x42b)]+_0x4d6a71[_0xafb4b(0x272)])['join']('\x20·\x20')||_0xafb4b(0x18e),_0x5e55a7=_0x4d15bf?_0xafb4b(0x2bd)+_0x27f284+_0xafb4b(0x424)+(_0x408f5b+0x1)+_0xafb4b(0x166)+_0x2c8f84+_0xafb4b(0x2c2)+_0x30f8cc+'</div>':'';_0x14d18a[_0xafb4b(0x24c)][_0xafb4b(0x240)](_0xafb4b(0x25f)),_0x14d18a[_0xafb4b(0x22b)]=_0xafb4b(0x373)+_0x22d282[_0xafb4b(0x3d7)]+_0xafb4b(0x2b8)+_0x5b2866+_0xafb4b(0x400)+_0x5e55a7+_0xafb4b(0x408)+_0x490b8d+_0xafb4b(0x478)+_0x49b745+_0xafb4b(0x479)+_0x6d90a7+_0xafb4b(0x217)+_0x3cba50+_0xafb4b(0x41b)+_0x19998e+_0xafb4b(0x1b6),fillXilianPropFilter(xilianPlanItems),renderXilianRows(xilianPlanItems,_0x22d282,!0x1);}function renderXilianPreview(_0x214f05,_0x2f57be){const _0x1d48dd=_0x442d85;setXilianHead();const _0x426a4d=document[_0x1d48dd(0x1d4)](_0x1d48dd(0x172)),_0x40a414=document[_0x1d48dd(0x1d4)]('previewMeta'),_0x3f6706=document[_0x1d48dd(0x1d4)]('bagEquipSelect')?.['value']||'',_0x57d7c1=getRuntimeEquip(_0x3f6706),_0xb84ba2=document['getElementById'](_0x1d48dd(0x45c)),_0x1f4e7e=document[_0x1d48dd(0x1d4)](_0x1d48dd(0x422));if(_0x1f4e7e&&(_0x1f4e7e[_0x1d48dd(0x19f)]=!0x0),!_0x57d7c1)return _0x426a4d[_0x1d48dd(0x22b)]=_0x1d48dd(0x1e1),_0xb84ba2&&(_0xb84ba2['hidden']=!0x0),void hidePreviewPager();xilianPlanEquipKey=_0x3f6706,xilianAcceptFlags=Array(_0x214f05)[_0x1d48dd(0x380)](!0x1);const _0x2c820e=_0x2f57be;if(_0x2c820e[_0x1d48dd(0x439)]&&!_0x2c820e[_0x1d48dd(0x2fb)]?.['length'])return _0x426a4d[_0x1d48dd(0x22b)]=_0x1d48dd(0x397)+escapeHtml(_0x2c820e[_0x1d48dd(0x439)])+'</td></tr>',_0x40a414[_0x1d48dd(0x3dc)]='',_0xb84ba2&&(_0xb84ba2['hidden']=!0x0),void hidePreviewPager();xilianPlanItems=_0x2c820e['items']||[],_0x40a414['textContent']='共\x20'+xilianPlanItems[_0x1d48dd(0x3d7)]+_0x1d48dd(0x1be),_0xb84ba2&&(_0xb84ba2[_0x1d48dd(0x19f)]=!0x1,document[_0x1d48dd(0x1d4)](_0x1d48dd(0x1c2))[_0x1d48dd(0x272)]='',fillXilianPropFilter(xilianPlanItems),document['getElementById'](_0x1d48dd(0x349))[_0x1d48dd(0x272)]=''),tablePager[_0x1d48dd(0x247)]=0x1,refreshXilianPlan(_0x2c820e);}function setStrongHead(){const _0x65afc4=_0x442d85;setPreviewTableKind(_0x65afc4(0x355)),document[_0x65afc4(0x1d4)](_0x65afc4(0x2da))[_0x65afc4(0x22b)]='<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<th>#</th><th>档位</th><th>淬炼度</th><th>消耗最少</th><th>数值最优</th>\x0a\x20\x20\x20\x20</tr>';}function strongMinGrade(_0x20cf47=_0x442d85(0x153)){const _0x45fd60=_0x442d85;return Number(document[_0x45fd60(0x1d4)](_0x20cf47)?.[_0x45fd60(0x272)])||0x3;}function fillStrongTargetLevels(_0x1f56fb,_0x27fea7=_0x442d85(0x287)){const _0x540a1e=_0x442d85,_0x5b715a=document[_0x540a1e(0x1d4)](_0x27fea7);if(!_0x5b715a)return;const _0x33c589=_0x1f56fb?.[_0x540a1e(0x2f9)]||0x0,_0x586b69=Number(_0x5b715a['value'])||0x0;_0x5b715a[_0x540a1e(0x22b)]='';for(let _0x7f1aaf=_0x33c589+0x1;_0x7f1aaf<=0xf;_0x7f1aaf++){const _0x2cc683=document[_0x540a1e(0x456)]('option');_0x2cc683[_0x540a1e(0x272)]=_0x7f1aaf,_0x2cc683[_0x540a1e(0x3dc)]='+'+_0x7f1aaf,_0x5b715a['appendChild'](_0x2cc683);}if(!_0x5b715a[_0x540a1e(0x3cd)][_0x540a1e(0x3d7)])return void(_0x5b715a['innerHTML']=_0x540a1e(0x187));const _0x5fcee3=_0x586b69>_0x33c589?_0x586b69:Math['min'](0xf,_0x33c589+0x3);_0x5b715a[_0x540a1e(0x272)]=String(_0x5fcee3);}function formatCostChips(_0xd64a0f){const _0x419760=_0x442d85,_0x359d5b=[];for(const _0x718b25 of[0xbd3,0xbd4,0xbd5,0xbd6]){const _0x58ab67=_0xd64a0f?.['stones']?.[_0x718b25]||0x0;_0x58ab67&&_0x359d5b['push']('<span\x20class=\x22cost-chip\x22>'+STONE_NAMES[_0x718b25]+'×'+_0x58ab67+'</span>');}return _0xd64a0f?.[_0x419760(0x28d)]&&_0x359d5b['push'](_0x419760(0x469)+formatSilver(_0xd64a0f[_0x419760(0x28d)])+_0x419760(0x2c8)),_0x359d5b[_0x419760(0x34e)]('')||_0x419760(0x29e);}function renderPathChipsHtml(_0x736cf0,_0x14949d,_0x5ba82c){const _0x578441=_0x442d85,_0x41fd12=_0x736cf0['length'];if(!_0x41fd12)return'<div\x20class=\x22advice-path\x22>—</div>';const _0x4d9112=Math[_0x578441(0x23a)](0x1,Math['ceil'](_0x41fd12/0xc));let _0x15cd84=pathPages[_0x5ba82c]||0x1;_0x15cd84>_0x4d9112&&(_0x15cd84=_0x4d9112),_0x15cd84<0x1&&(_0x15cd84=0x1),pathPages[_0x5ba82c]=_0x15cd84;const _0x3d88d1=0xc*(_0x15cd84-0x1);return _0x578441(0x1fa)+_0x736cf0[_0x578441(0x212)](_0x3d88d1,_0x3d88d1+0xc)[_0x578441(0x194)](_0x339d8b=>{const _0x3f8ba8=_0x578441,_0x1e590a=(_0x339d8b[_0x3f8ba8(0x2f9)]||0x0)+0x1;return _0x3f8ba8(0x1e4)+_0x339d8b['level']+'→+'+_0x1e590a+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22idx\x22>#'+_0x339d8b[_0x3f8ba8(0x3d6)]+_0x3f8ba8(0x2f2)+_0x339d8b['grade']+'\x22>'+(_0x14949d[_0x339d8b[_0x3f8ba8(0x2d7)]]||'')+_0x3f8ba8(0x165);})[_0x578441(0x34e)]('')+_0x578441(0x156)+(_0x41fd12>0xc?_0x578441(0x44d)+_0x5ba82c+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20type=\x22button\x22\x20class=\x22btn\x20btn-reset\x20path-prev\x22\x20'+(_0x15cd84<=0x1?'disabled':'')+'>上一页</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>第\x20'+_0x15cd84+'/'+_0x4d9112+_0x578441(0x41c)+_0x41fd12+'\x20次</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20type=\x22button\x22\x20class=\x22btn\x20btn-reset\x20path-next\x22\x20'+(_0x15cd84>=_0x4d9112?'disabled':'')+'>下一页</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>':'');}function formatPlanCard(_0x52626e,_0x5efad8,_0x230e07,_0x456ce2,_0x57a32b){const _0x1e2cc3=_0x442d85;if(!_0x5efad8?.['ok'])return _0x1e2cc3(0x1dd)+_0x52626e+_0x1e2cc3(0x2bc)+escapeHtml(_0x5efad8?.[_0x1e2cc3(0x15d)]||_0x1e2cc3(0x359))+_0x1e2cc3(0x39b);const _0x2e7915=_0x5efad8[_0x1e2cc3(0x272)]/0x2,_0x392538=(_0x5efad8[_0x1e2cc3(0x272)]/0xa)[_0x1e2cc3(0x1f6)](0x1),_0x57b811=_0x5efad8[_0x1e2cc3(0x375)][_0x1e2cc3(0x431)](_0x1931a5=>'接受'===_0x1931a5[_0x1e2cc3(0x3ed)]);return _0x5efad8['_acceptSteps']=_0x57b811,_0x5efad8[_0x1e2cc3(0x1b0)]=_0x230e07,_0x1e2cc3(0x3ee)+_0x57a32b+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22advice-card-head\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h3>'+_0x52626e+_0x1e2cc3(0x30f)+_0x456ce2+_0x1e2cc3(0x199)+_0x5efad8[_0x1e2cc3(0x1ea)]+_0x1e2cc3(0x41a)+_0x2e7915+_0x1e2cc3(0x259)+_0x392538+'%</span><span\x20class=\x22k\x22>约属性</span></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22advice-costs\x22>'+formatCostChips(_0x5efad8['bag'])+'</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22advice-path-label\x22>接受路径（共\x20'+_0x57b811[_0x1e2cc3(0x3d7)]+_0x1e2cc3(0x37f)+renderPathChipsHtml(_0x57b811,_0x230e07,_0x57a32b)+_0x1e2cc3(0x30d);}function bindPathPagers(_0x2cf73f=strongPlanCache?.[_0x442d85(0x44c)]||_0x442d85(0x1e5)){const _0x5f0bee=_0x442d85;document[_0x5f0bee(0x1d4)](_0x2cf73f)?.[_0x5f0bee(0x2df)](_0x5f0bee(0x2ff))[_0x5f0bee(0x31d)](_0x3c602c=>{const _0x145ded=_0x5f0bee,_0x3b1f9e=_0x3c602c[_0x145ded(0x47a)][_0x145ded(0x388)];_0x3c602c[_0x145ded(0x1df)](_0x145ded(0x1fe))?.['addEventListener'](_0x145ded(0x1d8),()=>{pathPages[_0x3b1f9e]=(pathPages[_0x3b1f9e]||0x1)-0x1,refreshPathSection(_0x3b1f9e);}),_0x3c602c['querySelector']('.path-next')?.[_0x145ded(0x24f)]('click',()=>{pathPages[_0x3b1f9e]=(pathPages[_0x3b1f9e]||0x1)+0x1,refreshPathSection(_0x3b1f9e);});});}function refreshPathSection(_0x34f588){const _0xa561e1=_0x442d85;if(!strongPlanCache)return;const _0x26591b=_0xa561e1(0x3dd)===_0x34f588?strongPlanCache[_0xa561e1(0x2a8)]:strongPlanCache[_0xa561e1(0x27e)],_0x5d666e=document[_0xa561e1(0x1d4)](strongPlanCache['adviceId']||'strongAdvice'),_0x4c41cf=_0x5d666e?.['querySelector'](_0xa561e1(0x29f)+_0x34f588+'\x22]'),_0x505113=_0x4c41cf?.[_0xa561e1(0x1df)](_0xa561e1(0x256));_0x505113&&_0x26591b?.['_acceptSteps']&&(_0x505113[_0xa561e1(0x22b)]=renderPathChipsHtml(_0x26591b[_0xa561e1(0x27a)],_0x26591b['_names']||{},_0x34f588),bindPathPagers(strongPlanCache[_0xa561e1(0x44c)]));}function highlightStrongPlan(_0xeccb93){const _0x32846c=_0x442d85;tablePager[_0x32846c(0x183)]=_0x32846c(0x3dd)===_0xeccb93||_0x32846c(0x14e)===_0xeccb93?_0xeccb93:'','strong'===tablePager[_0x32846c(0x18d)]&&renderStrongPage();}function renderStrongPage(){const _0x1369a3=_0x442d85,_0x1fb228=document[_0x1369a3(0x1d4)]('previewBody');if(!_0x1fb228)return;const _0x224111=tablePager[_0x1369a3(0x23d)]||[],_0x3d5937=tablePager[_0x1369a3(0x1c0)]||new Set(),_0x12e2c2=tablePager[_0x1369a3(0x444)]||new Set(),_0xd7810d=_0x1369a3(0x3dd)===tablePager[_0x1369a3(0x183)]?_0x3d5937:_0x1369a3(0x14e)===tablePager['strongHighlightMode']?_0x12e2c2:new Set(),_0x4e4f91=getPreviewPageSize(),_0x3170ae=(tablePager[_0x1369a3(0x247)]-0x1)*_0x4e4f91,_0x195552=_0x224111['slice'](_0x3170ae,_0x3170ae+_0x4e4f91);_0x195552[_0x1369a3(0x3d7)]?_0x1fb228[_0x1369a3(0x22b)]=_0x195552[_0x1369a3(0x194)](_0x4a0c97=>{const _0x5a292f=_0x1369a3,_0x2914d4=_0x4a0c97['add_lv_prop']/0x2;return _0x5a292f(0x35c)+_0x4a0c97[_0x5a292f(0x3d6)]+'\x22\x20class=\x22'+(_0xd7810d[_0x5a292f(0x3fb)](_0x4a0c97[_0x5a292f(0x3d6)])?_0x5a292f(0x190):'')+_0x5a292f(0x2f4)+_0x4a0c97[_0x5a292f(0x3d6)]+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22grade-'+_0x4a0c97[_0x5a292f(0x2d7)]+'\x22>'+_0x4a0c97[_0x5a292f(0x220)]+_0x5a292f(0x2a1)+_0x2914d4+_0x5a292f(0x376)+(_0x3d5937[_0x5a292f(0x3fb)](_0x4a0c97['index'])?_0x5a292f(0x241):_0x5a292f(0x289))+'\x22>'+(_0x3d5937[_0x5a292f(0x3fb)](_0x4a0c97['index'])?'接受':'—')+_0x5a292f(0x270)+(_0x12e2c2[_0x5a292f(0x3fb)](_0x4a0c97[_0x5a292f(0x3d6)])?_0x5a292f(0x241):_0x5a292f(0x289))+'\x22>'+(_0x12e2c2['has'](_0x4a0c97[_0x5a292f(0x3d6)])?'接受':'—')+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>';})[_0x1369a3(0x34e)](''):_0x1fb228['innerHTML']=_0x1369a3(0x1bc),updatePreviewPager(_0x224111[_0x1369a3(0x3d7)]);}function renderStrongPreview(_0x184cf6,_0x3e8d88,_0x2b2a0a={}){const _0x1b9874=_0x442d85,_0x32e919=_0x2b2a0a['targetSelectId']||_0x1b9874(0x287),_0x32888b=_0x2b2a0a[_0x1b9874(0x43a)]||_0x1b9874(0x153),_0x3b3849=_0x2b2a0a[_0x1b9874(0x44c)]||_0x1b9874(0x1e5),_0x868d06=_0x2b2a0a[_0x1b9874(0x3a7)]||'';setStrongHead();const _0x3a913d=document['getElementById'](_0x1b9874(0x172)),_0x19be76=document['getElementById'](_0x1b9874(0x293)),_0x76c594=document[_0x1b9874(0x1d4)](_0x3b3849),_0x124fcf=document['getElementById'](_0x1b9874(0x45c));_0x124fcf&&(_0x124fcf[_0x1b9874(0x19f)]=!0x0);const _0x425658=document[_0x1b9874(0x1d4)]('makeFilterBar');if(_0x425658&&(_0x425658[_0x1b9874(0x19f)]=!0x0),_0x184cf6['error']&&(!_0x184cf6['items']||!_0x184cf6['items'][_0x1b9874(0x3d7)]))return _0x3a913d[_0x1b9874(0x22b)]=_0x1b9874(0x210)+escapeHtml(_0x184cf6[_0x1b9874(0x439)])+_0x1b9874(0x273),_0x19be76[_0x1b9874(0x3dc)]='',_0x76c594&&(_0x76c594[_0x1b9874(0x22b)]=''),strongPlanCache=null,void hidePreviewPager();const _0x14d9a1=_0x184cf6[_0x1b9874(0x2fb)]||[],_0x5c518d=_0x14d9a1['map'](_0xb01816=>_0xb01816['grade']),_0x122ccd=_0x3e8d88[_0x1b9874(0x2f9)]||0x0,_0x125423=Number(document['getElementById'](_0x32e919)?.['value'])||Math[_0x1b9874(0x3dd)](0xf,_0x122ccd+0x3),_0x117d75=strongMinGrade(_0x32888b),_0xdbf915={0x1:'一般',0x2:'良好',0x3:'优秀',0x4:'完美'},_0x24a227=planStrongPath(_0x5c518d,_0x122ccd,_0x125423,_0x117d75,_0x3e8d88[_0x1b9874(0x206)]||0x5a);strongPlanCache=_0x24a227,strongPlanCache[_0x1b9874(0x2fb)]=_0x14d9a1,strongPlanCache['adviceId']=_0x3b3849,pathPages={'min':0x1,'max':0x1};const _0x42af2a=_0x14d9a1[_0x1b9874(0x431)](_0x3a493e=>0x4===_0x3a493e[_0x1b9874(0x2d7)])[_0x1b9874(0x3d7)];_0x19be76['textContent']=_0x1b9874(0x3c8)+_0x14d9a1[_0x1b9874(0x3d7)]+_0x1b9874(0x407)+_0x42af2a+_0x1b9874(0x20f)+_0x122ccd+_0x1b9874(0x21a)+_0x125423+_0x1b9874(0x2b2)+_0xdbf915[_0x117d75],_0x76c594['innerHTML']=[formatPlanCard(_0x1b9874(0x33e),_0x24a227['minCost'],_0xdbf915,_0x1b9874(0x336),'min'),formatPlanCard('数值最优',_0x24a227[_0x1b9874(0x27e)],_0xdbf915,_0x1b9874(0x2e8),_0x1b9874(0x23a)),_0x1b9874(0x299)]['join'](''),bindPathPagers(_0x3b3849);const _0x2b36e1=_0x24a227['minCost']?.['ok']?_0x24a227[_0x1b9874(0x2a8)][_0x1b9874(0x167)]:new Set(),_0x242ef3=_0x24a227[_0x1b9874(0x27e)]?.['ok']?_0x24a227[_0x1b9874(0x27e)]['accepts']:new Set();tablePager[_0x1b9874(0x18d)]=_0x1b9874(0x355),tablePager['page']=0x1,tablePager[_0x1b9874(0x23d)]=_0x14d9a1,tablePager[_0x1b9874(0x1c0)]=_0x2b36e1,tablePager[_0x1b9874(0x444)]=_0x242ef3,tablePager[_0x1b9874(0x183)]=_0x868d06&&document['getElementById'](_0x868d06)?.[_0x1b9874(0x272)]||'',renderStrongPage();}function extractMakeRnd(_0x5b620e){const _0x22a2ab=_0x442d85;return _0x5b620e?_0x5b620e[_0x22a2ab(0x298)]?_0x5b620e['MakeRnd']:Array[_0x22a2ab(0x3f4)](_0x5b620e)&&_0x5b620e[0x0]?.[_0x22a2ab(0x298)]?_0x5b620e[0x0][_0x22a2ab(0x298)]:_0x5b620e[_0x22a2ab(0x17c)]||_0x5b620e[_0x22a2ab(0x369)]?_0x5b620e:null:null;}function loadSaveData(_0x5c310d){const _0x522243=_0x442d85;equipSaveData=_0x5c310d;const _0x378308=extractMakeRnd(_0x5c310d);if(!_0x378308)throw new Error(_0x522243(0x224));const _0x13d19b={'Seeds':_0x378308['Seeds']||{},'LuckySeeds':_0x378308[_0x522243(0x369)]||{},'IDSeeds':_0x378308[_0x522243(0x394)]||{},'MakeLucky':_0x378308[_0x522243(0x374)]||{}};if(!wasmMakeSetState(_0x13d19b))throw new Error(_0x522243(0x37b));makeRndSnapshot=JSON[_0x522243(0x2c4)](JSON[_0x522243(0x3df)](_0x13d19b)),saveEquips=collectEquipsFromSave(_0x5c310d),saveEquipsSnapshot=JSON[_0x522243(0x2c4)](JSON[_0x522243(0x3df)](saveEquips)),equipRuntime={},equipRuntimeSnapshot={},jianwangRuleDetection=detectJianwangRuleFromEquips(saveEquips),jianwangRedSeed=validJianwangRedSeed(_0x378308[_0x522243(0x37d)]?.[String(0x164b)])?Number(_0x378308[_0x522243(0x37d)][String(0x164b)]):null,jianwangRedSeedSnapshot=jianwangRedSeed,jianwangGeneratedSwordCount=0x0,jianwangReforgeCounts={};const _0x506934=Array[_0x522243(0x3f4)](_0x5c310d)?_0x5c310d[0x0]:_0x5c310d;for(const _0xbed5b8 of JIANWANG_LEVEL_90_IDS){const _0xb231f3=findSaveScalar(_0x506934,'again_'+_0xbed5b8);jianwangReforgeCounts[String(_0xbed5b8)]=Math[_0x522243(0x23a)](0x0,Math[_0x522243(0x21e)](Number(_0xb231f3)||0x0));}for(const _0x262cc7 of saveEquips){const _0x3678dd=runtimeKey(_0x262cc7),_0x169db9={..._0x262cc7,...toWasmEquip(_0x262cc7),'xilian_marks':[..._0x262cc7[_0x522243(0x280)]||[]]};equipRuntime[_0x3678dd]=JSON[_0x522243(0x2c4)](JSON[_0x522243(0x3df)](_0x169db9)),equipRuntimeSnapshot[_0x3678dd]=JSON['parse'](JSON[_0x522243(0x3df)](_0x169db9));}refreshJianwangSelectableBlank(),jianwangReforgeCountsSnapshot={...jianwangReforgeCounts},saveLoaded=!0x0,fillMakePadSelect(!0x0),clearMakeAdvanceNotice(),resetXilianSession(),document[_0x522243(0x1d4)]('saveStatus')[_0x522243(0x3dc)]=_0x522243(0x38c),'function'==typeof renderArchiveState&&renderArchiveState(_0x5c310d),fillEquipSelects(),renderCraftedBagList(),updateMakeHints(),updateCraftedBagHint(),updateJianwangCycleHint(),_0x522243(0x1ec)==typeof invalidateEquipAutoPrediction&&invalidateEquipAutoPrediction(_0x522243(0x239)),'function'==typeof refreshJianwangAutoSwords&&refreshJianwangAutoSwords(!0x1);}async function handleSaveFile(_0x42bce6){const _0x49e36b=_0x442d85;let _0x559da6;'function'==typeof _importFeedback&&_importFeedback(!0x0);try{if(_0x49e36b(0x1ec)!=typeof decryptSaveFile)throw new Error('v3.1\x20存档解析器未加载');const _0x358ffd=await decryptSaveFile(_0x42bce6);_0x559da6=_0x358ffd[_0x49e36b(0x1cb)],saveMeta={'version':_0x358ffd[_0x49e36b(0x306)]||'','platform':_0x358ffd['platform']||'','columns':_0x358ffd[_0x49e36b(0x2d1)]||null,'row':_0x358ffd['row']||null},'function'==typeof saveShareStore&&saveShareStore(_0x559da6,{'version':_0x358ffd[_0x49e36b(0x306)],'platform':_0x358ffd[_0x49e36b(0x34a)],'channel':_0x358ffd[_0x49e36b(0x216)]||('oversea'===String(_0x358ffd[_0x49e36b(0x34a)]||'')[_0x49e36b(0x320)]()?_0x49e36b(0x2b1):''),'format':_0x358ffd[_0x49e36b(0x35f)]||_0x49e36b(0x1b4),'columns':_0x358ffd[_0x49e36b(0x2d1)]||null,'row':_0x358ffd[_0x49e36b(0x410)]||null});}catch(_0x476583){throw _0x49e36b(0x1ec)==typeof _importFeedback&&_importFeedback(!0x1),new Error(_0x49e36b(0x286)+_0x476583[_0x49e36b(0x23b)]);}_0x49e36b(0x1ec)==typeof _importFeedback&&_importFeedback(!0x1),loadSaveData(_0x559da6);}function renderEquipTabChrome(_0x501111){const _0x12e6ac=_0x442d85;currentTab=_0x501111;const _0x47be17=document['getElementById']('equipPageTitle');_0x47be17&&(_0x47be17[_0x12e6ac(0x3dc)]={'make':_0x12e6ac(0x36e),'bag':_0x12e6ac(0x163),'jianwang':_0x12e6ac(0x24e),'auto':'自动锻造','jianwang-auto':'剑王阁自动'}[_0x501111]||_0x12e6ac(0x36e)),document['querySelectorAll'](_0x12e6ac(0x3da))['forEach'](_0x22959b=>{const _0x360aca=_0x12e6ac,_0x44c1ab=_0x22959b[_0x360aca(0x47a)][_0x360aca(0x40c)]===_0x501111;_0x22959b[_0x360aca(0x24c)][_0x360aca(0x3c9)](_0x360aca(0x429),_0x44c1ab),_0x22959b[_0x360aca(0x1a6)](_0x360aca(0x383),String(_0x44c1ab)),_0x22959b[_0x360aca(0x365)]=_0x44c1ab?0x0:-0x1;});const _0x41eac1=document['getElementById'](_0x12e6ac(0x43d));_0x41eac1&&(_0x41eac1[_0x12e6ac(0x19f)]=_0x12e6ac(0x3e5)!==_0x501111);const _0x32d24e=document[_0x12e6ac(0x1d4)](_0x12e6ac(0x432));_0x32d24e&&(_0x32d24e['hidden']=_0x12e6ac(0x39a)!==_0x501111);const _0x6303b0=document['getElementById'](_0x12e6ac(0x221));_0x6303b0&&(_0x6303b0[_0x12e6ac(0x19f)]=_0x12e6ac(0x22d)!==_0x501111);const _0x572190=document['getElementById'](_0x12e6ac(0x2f1));_0x572190&&(_0x572190[_0x12e6ac(0x19f)]=_0x12e6ac(0x1f9)!==_0x501111);const _0x22cd3b=document['getElementById'](_0x12e6ac(0x2f3));_0x22cd3b&&(_0x22cd3b[_0x12e6ac(0x19f)]='jianwang-auto'!==_0x501111);const _0x15b397=document[_0x12e6ac(0x1d4)]('btnExportTable');if(_0x15b397){_0x15b397['hidden']=![_0x12e6ac(0x3e5),_0x12e6ac(0x39a),_0x12e6ac(0x1f9)][_0x12e6ac(0x460)](_0x501111);const _0x1b070b={'make':'导出手动锻造结果表格','bag':_0x12e6ac(0x1ca),'auto':_0x12e6ac(0x1bf)};_0x15b397['setAttribute'](_0x12e6ac(0x1aa),_0x1b070b[_0x501111]||_0x12e6ac(0x3b4));}}function exportManualEquipTable(){const _0x48c1c4=_0x442d85,_0x1c28a5=(tablePager[_0x48c1c4(0x3ad)]||[])[_0x48c1c4(0x194)](_0x4a3933=>[_0x4a3933['index'],COLOR_NAMES[_0x4a3933[_0x48c1c4(0x3c6)]]||_0x4a3933[_0x48c1c4(0x3c6)],formatBase(_0x4a3933[_0x48c1c4(0x435)]),formatPropsText(_0x4a3933[_0x48c1c4(0x3d3)]),formatPropsText(_0x4a3933['region']),formatPropsText(_0x4a3933[_0x48c1c4(0x411)]),_0x4a3933[_0x48c1c4(0x413)]?'保底':_0x48c1c4(0x29b)===_0x4a3933[_0x48c1c4(0x162)]?'幸运':'普通']);YYJHTableExport['download']({'headers':['序号','品质',_0x48c1c4(0x1e7),_0x48c1c4(0x3c1),_0x48c1c4(0x2e6),_0x48c1c4(0x43b),'结果类型'],'rows':_0x1c28a5,'filename':_0x48c1c4(0x36b)+YYJHTableExport[_0x48c1c4(0x28e)](),'emptyMessage':_0x48c1c4(0x1e6)});}function exportEquipmentBagTable(){const _0x3e6bd6=_0x442d85,_0x19df3a=saveEquips[_0x3e6bd6(0x431)](_0x5dffd4=>passEquipListFilter(_0x5dffd4,_0x3e6bd6(0x39a)))['map'](_0x4804cb=>{const _0x50a578=_0x3e6bd6,_0x308fd2=getRuntimeEquip(runtimeKey(_0x4804cb))||_0x4804cb,_0x2f8c89=_0x4804cb[_0x50a578(0x32e)]?_0x50a578(0x2a4):_0x4804cb[_0x50a578(0x2de)]||(_0x4804cb['_equipped']?'已装备':_0x50a578(0x2e1));return[_0x4804cb[_0x50a578(0x186)],_0x4804cb[_0x50a578(0x206)],COLOR_NAMES[_0x4804cb[_0x50a578(0x3c6)]]||_0x4804cb[_0x50a578(0x3c6)],TYPE_NAMES[_0x4804cb[_0x50a578(0x393)]]||_0x4804cb['typ'],_0x2f8c89,_0x4804cb[_0x50a578(0x2c9)]||'',formatBase(_0x308fd2[_0x50a578(0x435)]||_0x4804cb[_0x50a578(0x25e)]||{}),formatPropsText(_0x308fd2[_0x50a578(0x3d3)]||_0x4804cb[_0x50a578(0x3d3)]),formatPropsText(_0x4804cb['_make_region']||[]),formatPropsText(_0x308fd2[_0x50a578(0x244)]||_0x4804cb['specials']||_0x4804cb[_0x50a578(0x1ac)]||[])];});YYJHTableExport[_0x3e6bd6(0x40a)]({'headers':['装备','等级','品质','部位','来源',_0x3e6bd6(0x3ce),'基础属性','蓝紫词条',_0x3e6bd6(0x2e6),'材料附加'],'rows':_0x19df3a,'filename':_0x3e6bd6(0x350)+YYJHTableExport[_0x3e6bd6(0x28e)](),'emptyMessage':_0x3e6bd6(0x332)});}function exportEquipTable(){const _0x7f2117=_0x442d85;_0x7f2117(0x3e5)===currentTab?exportManualEquipTable():_0x7f2117(0x39a)===currentTab?exportEquipmentBagTable():_0x7f2117(0x1f9)===currentTab&&'function'==typeof window[_0x7f2117(0x1da)]?window[_0x7f2117(0x1da)]():alert(_0x7f2117(0x188));}function switchTab(_0x5f7346,_0x3e58fe=''){const _0x57394b=_0x442d85;[_0x57394b(0x47d),_0x57394b(0x321),_0x57394b(0x355)][_0x57394b(0x460)](_0x5f7346)&&(_0x3e58fe=_0x5f7346,_0x5f7346='bag'),renderEquipTabChrome(_0x5f7346),renderMakeAdvanceNotice(),_0x57394b(0x39a)===_0x5f7346?(_0x3e58fe&&(currentBagAction=_0x3e58fe),fillEquipSelects(),switchBagAction(currentBagAction,!0x1),clearPreview(_0x57394b(0x1b7))):_0x57394b(0x22d)===_0x5f7346?(fillJianwangEquipSelect(!0x0),updateJianwangHint(),clearPreview(_0x57394b(0x38d))):clearPreview(_0x57394b(0x1f3));}async function doMakePreview(){const _0x3e8fd6=_0x442d85;if(!saveLoaded)return void alert(_0x3e8fd6(0x421));const _0x6fdf3e=requireCurrentMakeRequest();if(!_0x6fdf3e)return;const _0x103b29=Math[_0x3e8fd6(0x23a)](0x1,Math[_0x3e8fd6(0x3dd)](0x1388,Number(document['getElementById']('previewCount')[_0x3e8fd6(0x272)])||0x14)),_0x4ea652=document[_0x3e8fd6(0x1d4)](_0x3e8fd6(0x296));_0x4ea652&&(_0x4ea652[_0x3e8fd6(0x44a)]=!0x0,_0x4ea652[_0x3e8fd6(0x3dc)]=_0x3e8fd6(0x31c)),renderMakePreviewProgress({'done':0x0,'total':_0x103b29,'message':'正在启动后台打造计算'});try{renderMakePreview(await predictFixedOrangeByOrdinaryPadsAsync(_0x6fdf3e,_0x103b29,renderMakePreviewProgress)),renderMakePreviewProgress({'done':_0x103b29,'total':_0x103b29,'message':'打造序列预测完成，共\x20'+_0x103b29+'\x20次'}),updateMakeHints();}catch(_0x5b4bf7){clearPreview(_0x3e8fd6(0x448)+publicSimulationError(_0x5b4bf7));const _0xe0276b=document[_0x3e8fd6(0x1d4)](_0x3e8fd6(0x465));_0xe0276b&&(_0xe0276b[_0x3e8fd6(0x3dc)]=_0x3e8fd6(0x448)+publicSimulationError(_0x5b4bf7));}finally{_0x4ea652&&(_0x4ea652[_0x3e8fd6(0x44a)]=!0x1,_0x4ea652['textContent']=_0x3e8fd6(0x308));}}async function doSpecialAttachPreview(){const _0x341dc2=_0x442d85;if(!saveLoaded)return void alert(_0x341dc2(0x421));const _0x9e6c12=document[_0x341dc2(0x1d4)]('bagEquipSelect')?.[_0x341dc2(0x272)]||'',_0x39acb3=document['getElementById'](_0x341dc2(0x20a))?.[_0x341dc2(0x272)]||'',_0x19a1d0=saveEquips[_0x341dc2(0x265)](_0x478971=>runtimeKey(_0x478971)===_0x9e6c12),_0x57bcae=EQUIP_DATA[_0x341dc2(0x411)][String(_0x39acb3)];if(!_0x19a1d0)return void alert('请选择要连续附加材料的装备');if(!_0x57bcae)return void alert(_0x341dc2(0x1ad));const _0x45f8cf=Number(document[_0x341dc2(0x1d4)](_0x341dc2(0x282))?.['value']);try{if(!Number[_0x341dc2(0x266)](_0x45f8cf)||_0x45f8cf<0x1||_0x45f8cf>0x1388)throw new RangeError(_0x341dc2(0x208));renderSpecialAttachPreview(await YYJHCalculation[_0x341dc2(0x20e)](_0x341dc2(0x15c),{'equip':_0x19a1d0,'material':_0x57bcae,'count':_0x45f8cf},{'scope':_0x341dc2(0x28f)}));}catch(_0x52f671){const _0x12a4d9=publicSimulationError(_0x52f671);clearPreview('连续附加预测失败：'+_0x12a4d9),alert('连续附加预测失败：'+_0x12a4d9);}}function doMakeAdvanceTo(_0x31c77e,_0x5e976f){const _0x1a8eb0=_0x442d85;if(!saveLoaded)return void alert(_0x1a8eb0(0x421));const _0x2f89d2=requireCurrentMakeRequest();if(!_0x2f89d2)return;const _0x14afff=Math['floor'](Number(_0x31c77e));if(!(_0x14afff>=0x1&&_0x14afff<=0x1388))return void alert(_0x1a8eb0(0x22c));let _0x42897c=advanceFixedOrangeByOrdinaryPads(_0x2f89d2,_0x14afff);if(_0x42897c?.[_0x1a8eb0(0x439)])return alert(_0x1a8eb0(0x1c8)+_0x14afff+'\x20次失败：'+_0x42897c[_0x1a8eb0(0x439)]),void updateMakeHints();if(!_0x42897c)for(let _0x4c5c36=0x1;_0x4c5c36<=_0x14afff;_0x4c5c36++){const _0xd820e6=wasmMakeOnce(_0x2f89d2);if(_0xd820e6[_0x1a8eb0(0x439)])return alert('推进至第\x20'+_0x4c5c36+_0x1a8eb0(0x1c7)+_0xd820e6[_0x1a8eb0(0x439)]),void updateMakeHints();_0xd820e6[_0x1a8eb0(0x3d6)]=_0x4c5c36,_0x42897c=_0xd820e6;}const _0x352649=addCraftedFromMakeResult(_0x42897c,null!=_0x5e976f?_0x5e976f:getDefaultMakeMark(),_0x2f89d2[_0x1a8eb0(0x2cd)]);setMakeAdvanceNotice(_0x42897c,_0x352649,_0x14afff);const _0x1a0b95=_0x352649?.[_0x1a8eb0(0x2c9)]?_0x1a8eb0(0x213)+_0x352649['_mark']+'」':'';appendLog(_0x1a8eb0(0x454)+_0x14afff+'\x20件]\x20'+_0x42897c[_0x1a8eb0(0x186)]+_0x1a8eb0(0x164)+(COLOR_NAMES[_0x42897c[_0x1a8eb0(0x3c6)]]||_0x42897c[_0x1a8eb0(0x3c6)])+_0x1a8eb0(0x164)+(_0x42897c[_0x1a8eb0(0x413)]?'保底':_0x1a8eb0(0x29b)===_0x42897c[_0x1a8eb0(0x162)]?'幸运':'普通')+_0x1a8eb0(0x1f2)+_0x1a0b95),fillEquipSelects(),updateMakeHints(),doMakePreview();}function doShengLianOnce(){const _0x550a10=_0x442d85;if(!saveLoaded)return void alert(_0x550a10(0x421));const _0x35e98d=document[_0x550a10(0x1d4)](_0x550a10(0x3e6)),_0x28c33e=_0x35e98d?.['value'];if(!_0x28c33e)return void alert(_0x550a10(0x467));const _0x2c6de5=applyShengLian(_0x28c33e);if(_0x2c6de5[_0x550a10(0x439)])return void alert(_0x2c6de5['error']);const _0x2bd6e5=_0x2c6de5[_0x550a10(0x406)]?.[_0x550a10(0x2c9)]?'\x20·\x20标记「'+_0x2c6de5['equip'][_0x550a10(0x2c9)]+'」':'';appendLog('[升炼]\x20'+_0x2c6de5['from']+_0x550a10(0x252)+_0x2c6de5['to']+_0x2bd6e5),fillEquipSelects(!0x0),_0x35e98d&&_0x2c6de5[_0x550a10(0x406)]&&(_0x35e98d[_0x550a10(0x272)]=runtimeKey(_0x2c6de5[_0x550a10(0x406)])),handleBagEquipChange(!0x1),_0x2c6de5[_0x550a10(0x406)]&&canXilian(_0x2c6de5['equip'])?(switchBagAction(_0x550a10(0x321),!0x1),clearPreview(_0x550a10(0x34c)+_0x2c6de5['to']+_0x550a10(0x483))):clearPreview(_0x550a10(0x34c)+_0x2c6de5['to']);}async function doXilianPreview(){const _0x5c1790=_0x442d85;if(!saveLoaded)return void alert(_0x5c1790(0x421));const _0x5c493f=getRuntimeEquip(document['getElementById'](_0x5c1790(0x3e6))?.['value']||'');if(!_0x5c493f||!canXilian(_0x5c493f))return void alert(_0x5c1790(0x192));const _0x2f1794=Math[_0x5c1790(0x23a)](0x1,Math['min'](0x3e8,Number(document['getElementById'](_0x5c1790(0x2ea))[_0x5c1790(0x272)])||0x14)),_0x6b2196=document['getElementById'](_0x5c1790(0x3b7));_0x6b2196&&(_0x6b2196[_0x5c1790(0x44a)]=!0x0);try{const _0x4100f2=Array(_0x2f1794)['fill'](!0x1);renderXilianPreview(_0x2f1794,await YYJHCalculation[_0x5c1790(0x20e)](_0x5c1790(0x23c),{'equip':toWasmEquip(_0x5c493f),'accepts':_0x4100f2},{'scope':_0x5c1790(0x3a6)})),updateXilianHint();}catch(_0x34e660){clearPreview('精炼预测失败：'+publicSimulationError(_0x34e660));}finally{_0x6b2196&&(_0x6b2196[_0x5c1790(0x44a)]=!0x1);}}async function doStrongPreview(){const _0x19386d=_0x442d85;if(!saveLoaded)return void alert(_0x19386d(0x421));const _0x256f31=getRuntimeEquip(document[_0x19386d(0x1d4)](_0x19386d(0x3e6))?.[_0x19386d(0x272)]||'');if(!_0x256f31||!canStrong(_0x256f31))return void alert(_0x19386d(0x229));fillStrongTargetLevels(_0x256f31);const _0x4ba4d7=Math['max'](0x5,Math[_0x19386d(0x3dd)](0x1388,Number(document[_0x19386d(0x1d4)](_0x19386d(0x22a))[_0x19386d(0x272)])||0x3c)),_0x5b0448=document[_0x19386d(0x1d4)](_0x19386d(0x381));_0x5b0448&&(_0x5b0448['disabled']=!0x0);try{renderStrongPreview(await YYJHCalculation[_0x19386d(0x20e)](_0x19386d(0x205),{'equip':toWasmEquip(_0x256f31),'count':_0x4ba4d7},{'scope':_0x19386d(0x158)}),_0x256f31),updateStrongHint();}catch(_0x3c8370){clearPreview(_0x19386d(0x42c)+publicSimulationError(_0x3c8370));}finally{_0x5b0448&&(_0x5b0448[_0x19386d(0x44a)]=!0x1);}}function clearPreview(_0x3eb46f){const _0x1b278f=_0x442d85,_0x1824ff=document[_0x1b278f(0x1d4)]('previewBody'),_0x4724a4=document[_0x1b278f(0x1d4)](_0x1b278f(0x293)),_0x524567=document[_0x1b278f(0x1d4)](_0x1b278f(0x2da));_0x524567&&(_0x524567[_0x1b278f(0x22b)]=''),_0x4724a4&&(_0x4724a4[_0x1b278f(0x3dc)]=''),_0x1824ff&&(_0x1824ff[_0x1b278f(0x22b)]=_0x1b278f(0x2e5)+escapeHtml(_0x3eb46f||'点击预测查看结果')+'</td></tr>');const _0x390b8c=document['getElementById']('strongAdvice');_0x390b8c&&(_0x390b8c[_0x1b278f(0x22b)]='');const _0x66e7f0=document[_0x1b278f(0x1d4)]('jianwangStrongAdvice');_0x66e7f0&&(_0x66e7f0['innerHTML']='');const _0xf6222e=document[_0x1b278f(0x1d4)](_0x1b278f(0x45c));_0xf6222e&&(_0xf6222e['hidden']=!0x0);const _0x5aa022=document[_0x1b278f(0x1d4)]('makeFilterBar');_0x5aa022&&(_0x5aa022[_0x1b278f(0x19f)]=!0x0),xilianPlanItems=[],tablePager[_0x1b278f(0x3ad)]=[],tablePager['makeItems']=[],tablePager[_0x1b278f(0x17d)]=[],strongPlanCache=null,hidePreviewPager();}function resetAll(){const _0x3aca54=_0x442d85;makeRndSnapshot&&wasmMakeSetState(makeRndSnapshot),saveEquips=JSON[_0x3aca54(0x2c4)](JSON[_0x3aca54(0x3df)](saveEquipsSnapshot)),equipRuntime=JSON['parse'](JSON[_0x3aca54(0x3df)](equipRuntimeSnapshot)),jianwangReforgeCounts={...jianwangReforgeCountsSnapshot},jianwangRedSeed=jianwangRedSeedSnapshot,jianwangGeneratedSwordCount=0x0,refreshJianwangSelectableBlank(),craftedSeq=0x35a4e900,resetXilianSession(),strongPlanCache=null,fillEquipSelects(),renderCraftedBagList(),clearMakeAdvanceNotice(),clearPreview(_0x3aca54(0x37a)),updateMakeHints(),updateXilianHint(),updateStrongHint(),updateShenglianHint(),updateCraftedBagHint(),updateJianwangCycleHint(),appendLog(_0x3aca54(0x316));}async function doJianwangCyclePreview(){const _0x429c42=_0x442d85;if(!saveLoaded)return void alert('请先导入存档');const _0x4f0069=document[_0x429c42(0x1d4)](_0x429c42(0x27d))?.[_0x429c42(0x272)]||'',_0x4b0a17=findEquipByRuntimeKey(_0x4f0069),_0x390bcb=_0x4b0a17?getRuntimeEquip(_0x4f0069)||_0x4b0a17:null;try{if(!_0x390bcb||!isJianwangSword(_0x390bcb))throw new TypeError(_0x429c42(0x416));if(_0x390bcb[_0x429c42(0x484)]&&!_0x390bcb[_0x429c42(0x180)])throw new TypeError('请先执行领取，让模拟剑胚道具成为60级剑');const _0x3370ac=jianwangNextRedSeedForEquip(_0x390bcb);if(!validJianwangRedSeed(_0x3370ac))throw new TypeError(_0x429c42(0x25d));const _0x260927=Number(document[_0x429c42(0x1d4)](_0x429c42(0x271))?.['value']),_0x1924ff=Number(document[_0x429c42(0x1d4)](_0x429c42(0x482))?.[_0x429c42(0x272)]||0x0);renderJianwangCyclePreview(await YYJHCalculation['run'](_0x429c42(0x173),{'equip':{..._0x390bcb,'_jianwangSwordIndex':Math[_0x429c42(0x23a)](jianwangGeneratedSwordCount,Number(_0x390bcb[_0x429c42(0x196)])||0x0)},'redSeed':_0x3370ac,'count':_0x260927,'rule':currentJianwangRule(),'routeId':_0x1924ff||null},{'scope':_0x429c42(0x462)}));}catch(_0x122e90){const _0x58919c=publicSimulationError(_0x122e90);clearPreview('碎剑预览失败：'+_0x58919c),alert(_0x429c42(0x288)+_0x58919c);}}async function doJianwangPreview(){const _0x56f8b9=_0x442d85;if(!saveLoaded)return void alert('请先导入存档');const _0x86f08a=document[_0x56f8b9(0x1d4)](_0x56f8b9(0x27d))?.[_0x56f8b9(0x272)]||'',_0x339202=document[_0x56f8b9(0x1d4)](_0x56f8b9(0x3d5))?.[_0x56f8b9(0x272)]||'',_0x14ecc2=document[_0x56f8b9(0x1d4)](_0x56f8b9(0x39f))?.[_0x56f8b9(0x272)]||'',_0x9766b7=findEquipByRuntimeKey(_0x86f08a),_0x43ab03=_0x9766b7?getRuntimeEquip(_0x86f08a)||_0x9766b7:null,_0x269b9b=EQUIP_DATA[_0x56f8b9(0x411)][String(_0x14ecc2)];if(_0x43ab03&&_0x339202)try{const _0x2425ad=Number(document[_0x56f8b9(0x1d4)](_0x56f8b9(0x445))?.[_0x56f8b9(0x272)]),_0x12927b=_0x56f8b9(0x355)===_0x339202?0x5:0x1;if(!Number[_0x56f8b9(0x266)](_0x2425ad)||_0x2425ad<_0x12927b||_0x2425ad>0x1388)throw new RangeError('预测次数必须是\x20'+_0x12927b+_0x56f8b9(0x1cd));if('claim'===_0x339202)return void renderJianwangPreview([previewJianwangBlankClaim(_0x43ab03)],'state');if(_0x56f8b9(0x355)===_0x339202){if(!canPredictJianwangStrong(_0x43ab03))throw new TypeError(_0x56f8b9(0x3d4));return void renderStrongPreview(await YYJHCalculation['run'](_0x56f8b9(0x205),{'equip':toWasmEquip(_0x43ab03),'count':_0x2425ad},{'scope':_0x56f8b9(0x20b)}),_0x43ab03,{'targetSelectId':_0x56f8b9(0x333),'minGradeSelectId':'jianwangStrongMinGrade','adviceId':_0x56f8b9(0x34f),'highlightSelectId':_0x56f8b9(0x1ae)});}if(_0x56f8b9(0x1b2)===_0x339202){if(!canPredictJianwangMangjing(_0x43ab03))throw new TypeError(_0x56f8b9(0x3bc));if(!_0x269b9b)throw new TypeError(_0x56f8b9(0x379));return void renderJianwangPreview(await YYJHCalculation[_0x56f8b9(0x20e)](_0x56f8b9(0x15c),{'equip':_0x43ab03,'material':_0x269b9b,'count':_0x2425ad},{'scope':_0x56f8b9(0x20b)}),_0x56f8b9(0x1b2));}if(_0x56f8b9(0x330)===_0x339202||_0x56f8b9(0x46d)===_0x339202)return void renderJianwangPreview([await YYJHCalculation[_0x56f8b9(0x20e)](_0x56f8b9(0x291),{'equip':_0x43ab03,'action':_0x339202,'redSeed':jianwangNextRedSeedForEquip(_0x43ab03),'swordIndex':nextJianwangSwordIndex(_0x43ab03)},{'scope':_0x56f8b9(0x20b)})],'shatter');const _0x314dee=Number(document[_0x56f8b9(0x1d4)](_0x56f8b9(0x2b4))?.['value']||0x0);renderJianwangPreview(await YYJHCalculation['run'](_0x56f8b9(0x3d2),{'equip':_0x43ab03,'action':_0x339202,'count':_0x2425ad,'keepIndex':_0x314dee,'completedReforges':Number(jianwangReforgeCounts[String(Number(_0x43ab03['id']))])||0x0,'rule':currentJianwangRule()},{'scope':_0x56f8b9(0x20b)}),_0x56f8b9(0x314));}catch(_0x122295){const _0x9ae14c=publicSimulationError(_0x122295);clearPreview(_0x56f8b9(0x47b)+_0x9ae14c),alert(_0x56f8b9(0x47b)+_0x9ae14c);}else alert(_0x56f8b9(0x416));}function doJianwangApplyOnce(){const _0x185a3e=_0x442d85;if(!saveLoaded)return void alert(_0x185a3e(0x421));const _0x17058f=document[_0x185a3e(0x1d4)](_0x185a3e(0x27d))?.['value']||'',_0x55dddb=document[_0x185a3e(0x1d4)]('jianwangActionSelect')?.[_0x185a3e(0x272)]||'',_0x35a2d5=findEquipByRuntimeKey(_0x17058f),_0x2dddf8=_0x35a2d5?getRuntimeEquip(_0x17058f)||_0x35a2d5:null;if(_0x2dddf8&&_0x55dddb){if(_0x185a3e(0x1b2)!==_0x55dddb){if(_0x185a3e(0x355)!==_0x55dddb)try{if(_0x185a3e(0x2d8)===_0x55dddb){const _0x5eef5d=previewJianwangBlankClaim(_0x2dddf8);return _0x5eef5d['equip']=claimJianwangSelectableBlank(_0x2dddf8,_0x5eef5d[_0x185a3e(0x406)]),setRuntimeEquip(_0x17058f,_0x5eef5d['equip']),appendLog(_0x185a3e(0x2bb)+_0x5eef5d[_0x185a3e(0x29c)]),fillJianwangEquipSelect(!0x0),renderJianwangPreview([_0x5eef5d],_0x185a3e(0x314)),updateJianwangHint(),void updateJianwangCycleHint();}if('shatter:90'===_0x55dddb||_0x185a3e(0x46d)===_0x55dddb){const _0x35d5e8=jianwangNextRedSeedForEquip(_0x2dddf8),_0x5d6bb6=predictJianwangShatterRebuild(_0x2dddf8,_0x55dddb,_0x35d5e8);return setRuntimeEquip(_0x17058f,_0x5d6bb6[_0x185a3e(0x406)]),jianwangRedSeed=_0x5d6bb6['redSeedAfter'],jianwangGeneratedSwordCount=Math[_0x185a3e(0x23a)](jianwangGeneratedSwordCount,Math['floor'](Number(_0x5d6bb6[_0x185a3e(0x406)]?.['_jianwangSwordIndex'])||0x0)),discardMatchingUnclaimedJianwangBlank(_0x35d5e8),jianwangReforgeCounts[String(_0x5d6bb6[_0x185a3e(0x2aa)])]=0x0,appendLog(_0x185a3e(0x45f)+_0x5d6bb6['shatterLabel']+']\x20'+_0x5d6bb6[_0x185a3e(0x17b)]+_0x185a3e(0x252)+_0x5d6bb6['toName']),fillJianwangEquipSelect(!0x0),renderJianwangPreview([_0x5d6bb6],_0x185a3e(0x485)),updateJianwangHint(),void updateJianwangCycleHint();}const _0x4cbbc7=predictJianwangStateSequence(_0x2dddf8,_0x55dddb,0x1,Number(document['getElementById'](_0x185a3e(0x2b4))?.[_0x185a3e(0x272)]||0x0),Number(jianwangReforgeCounts[String(Number(_0x2dddf8['id']))])||0x0),_0x1fb966=_0x4cbbc7[0x0];if(setRuntimeEquip(_0x17058f,_0x1fb966[_0x185a3e(0x406)]),'reforge'===_0x55dddb){const _0x2706aa=String(Number(_0x2dddf8['id']));jianwangReforgeCounts[_0x2706aa]=(Number(jianwangReforgeCounts[_0x2706aa])||0x0)+0x1;}appendLog(_0x185a3e(0x45f)+(_0x185a3e(0x2e2)===_0x55dddb?'重铸':_0x55dddb[_0x185a3e(0x450)](_0x185a3e(0x1ee))?'神兵':'成长')+']\x20'+_0x1fb966[_0x185a3e(0x17b)]+_0x185a3e(0x252)+_0x1fb966[_0x185a3e(0x29c)]),fillJianwangEquipSelect(!0x0),renderJianwangPreview(_0x4cbbc7,'state'),updateJianwangHint();}catch(_0x4d258b){const _0x2b0e13=publicSimulationError(_0x4d258b);alert('剑王阁专武执行失败：'+_0x2b0e13);}else alert(_0x185a3e(0x1a2));}else alert('芒晶序列只读，不在网页内推进后续状态');}else alert('请选择剑王阁实物或模拟新剑胚');}async function initApp(){const _0x347475=_0x442d85;_0x347475(0x1ec)==typeof markNavTransition&&document[_0x347475(0x2df)]('header\x20a[href*=\x22.html\x22]')[_0x347475(0x31d)](_0x271895=>{_0x271895['addEventListener']('click',()=>markNavTransition());}),document[_0x347475(0x1d4)]('tabBar')[_0x347475(0x24f)]('click',_0xd3c8ec=>{const _0x28fe5e=_0x347475,_0x2e2136=_0xd3c8ec[_0x28fe5e(0x2fc)][_0x28fe5e(0x457)]('.tab-btn');_0x2e2136&&switchTab(_0x2e2136['dataset'][_0x28fe5e(0x40c)]);}),document[_0x347475(0x1d4)](_0x347475(0x16b))?.[_0x347475(0x24f)]('click',exportEquipTable);const _0x56a906=new URLSearchParams(window[_0x347475(0x42f)][_0x347475(0x3fc)])['get'](_0x347475(0x1a9));if([_0x347475(0x3e5),_0x347475(0x39a),_0x347475(0x47d),'xilian',_0x347475(0x355),_0x347475(0x22d),_0x347475(0x1f9),_0x347475(0x46b)][_0x347475(0x460)](_0x56a906)&&switchTab(_0x56a906),!await initWasm())return void alert(_0x347475(0x261));if(await WasmAlgorithmAPI[_0x347475(0x230)],!wasmMakeInitTables(EQUIP_DATA))return void alert(_0x347475(0x267));if(window[_0x347475(0x42e)]){const _0x2038a4=new URL('../shared/equipment_route_worker.js',window['location'][_0x347475(0x1d5)]),_0x35761b=_0x347475(0x235)==typeof CORE_VERSION?'':String(CORE_VERSION||'');_0x35761b&&_0x2038a4['searchParams']['set']('v',_0x35761b),_0x2038a4[_0x347475(0x343)][_0x347475(0x44e)](_0x347475(0x32b),_0x347475(0x2be)),window[_0x347475(0x21f)]?.[_0x347475(0x17e)](_0x2038a4),window[_0x347475(0x42e)][_0x347475(0x313)](_0x2038a4);}if(_0x347475(0x1ec)==typeof initializeEquipAutoFeature&&initializeEquipAutoFeature(),'function'==typeof initializeJianwangAutoFeature&&initializeJianwangAutoFeature(),_0x347475(0x1ec)==typeof loadShareStore){const _0x4f901d=loadShareStore();if(_0x4f901d&&_0x4f901d[_0x347475(0x1cb)])try{saveMeta={'version':_0x4f901d[_0x347475(0x152)]&&_0x4f901d[_0x347475(0x152)][_0x347475(0x306)]||'','platform':_0x4f901d[_0x347475(0x152)]&&_0x4f901d[_0x347475(0x152)]['platform']||'','columns':_0x4f901d[_0x347475(0x152)]&&_0x4f901d['meta'][_0x347475(0x2d1)]||null,'row':_0x4f901d[_0x347475(0x152)]&&_0x4f901d[_0x347475(0x152)]['row']||null},loadSaveData(_0x4f901d[_0x347475(0x1cb)]);}catch(_0x6b31b4){console[_0x347475(0x2c6)](_0x347475(0x34b),_0x6b31b4);}}fillNpcSelect(),fillPaperSelect(),renderCraftedBagList(),document[_0x347475(0x1d4)](_0x347475(0x1c9))[_0x347475(0x24f)](_0x347475(0x182),()=>{const _0x440323=_0x347475,_0x3adb29=document['getElementById'](_0x440323(0x3a1));_0x3adb29&&(_0x3adb29['value']=''),fillPaperSelect(),fillMakePadSelect(!0x1),clearPreview(_0x440323(0x307));}),document[_0x347475(0x1d4)](_0x347475(0x3a1))?.[_0x347475(0x24f)](_0x347475(0x438),fillPaperSelect),document[_0x347475(0x1d4)](_0x347475(0x3a4))[_0x347475(0x24f)](_0x347475(0x182),()=>{const _0x497aa2=_0x347475;fillSpecialSelect(),fillMakePadSelect(!0x1),updateMakeHints(),clearPreview(_0x497aa2(0x307));}),document['getElementById'](_0x347475(0x2a5))['addEventListener'](_0x347475(0x182),()=>{const _0x4cbe5b=_0x347475;updateMakeHints(),clearPreview(_0x4cbe5b(0x251));}),document[_0x347475(0x1d4)](_0x347475(0x2b0))?.[_0x347475(0x24f)](_0x347475(0x182),()=>{const _0x8be03e=_0x347475;updateMakeHints(),clearPreview(_0x8be03e(0x2a7));}),document['getElementById']('specialAttachMaterialSelect')?.[_0x347475(0x24f)]('change',()=>{const _0x45b35c=_0x347475;updateSpecialAttachHint(),clearPreview(_0x45b35c(0x26b));}),document[_0x347475(0x1d4)](_0x347475(0x3c3))?.[_0x347475(0x24f)]('click',doJianwangCyclePreview),document[_0x347475(0x1d4)](_0x347475(0x271))?.[_0x347475(0x24f)](_0x347475(0x182),()=>{clearPreview('循环次数已变更，请重新进行碎剑预览');}),document[_0x347475(0x1d4)](_0x347475(0x482))?.[_0x347475(0x24f)](_0x347475(0x182),()=>{updateJianwangCycleHint(),clearPreview('90级路线已变更，请重新进行碎剑预览');}),document['getElementById'](_0x347475(0x27d))?.[_0x347475(0x24f)](_0x347475(0x182),()=>{const _0x42278b=_0x347475;fillJianwangActionSelect(!0x1),fillJianwangCycleRouteSelect(!0x1),updateJianwangHint(),updateJianwangCycleHint(),clearPreview(_0x42278b(0x434));}),document['getElementById']('jianwangActionSelect')?.[_0x347475(0x24f)]('change',()=>{const _0x4e2d7e=_0x347475;fillJianwangKeepSelect(!0x1),fillJianwangMaterialSelect(!0x1),updateJianwangControls(),updateJianwangHint(),clearPreview(_0x4e2d7e(0x1e9));}),document[_0x347475(0x1d4)](_0x347475(0x2b4))?.['addEventListener'](_0x347475(0x182),()=>{const _0x57e981=_0x347475;updateJianwangHint(),clearPreview(_0x57e981(0x21b));}),document[_0x347475(0x1d4)](_0x347475(0x39f))?.['addEventListener'](_0x347475(0x182),()=>{const _0x5c1c10=_0x347475;updateJianwangHint(),clearPreview(_0x5c1c10(0x184));}),document[_0x347475(0x1d4)](_0x347475(0x29d))?.['addEventListener'](_0x347475(0x182),()=>{const _0x2b5d24=_0x347475;clearPreview(_0x2b5d24(0x277)),updateJianwangHint();}),document[_0x347475(0x1d4)](_0x347475(0x333))?.[_0x347475(0x24f)](_0x347475(0x182),()=>{clearPreview('期望层数已变更，请重新点击「预测并生成建议」'),updateJianwangHint();}),document['getElementById']('bagEquipSelect')?.[_0x347475(0x24f)]('change',()=>handleBagEquipChange(!0x0)),document[_0x347475(0x1df)]('.bag-action-tabs')?.[_0x347475(0x24f)]('click',_0x36b10e=>{const _0x2a1475=_0x347475,_0x4ad003=_0x36b10e[_0x2a1475(0x2fc)][_0x2a1475(0x457)](_0x2a1475(0x1d2));_0x4ad003&&!_0x4ad003['disabled']&&switchBagAction(_0x4ad003['dataset']['bagAction']);});const _0x192dd5=()=>fillEquipSelects(!0x0);document[_0x347475(0x1d4)](_0x347475(0x28c))?.['addEventListener'](_0x347475(0x182),_0x192dd5),document[_0x347475(0x1d4)](_0x347475(0x2f7))?.[_0x347475(0x24f)]('change',_0x192dd5),document[_0x347475(0x1d4)](_0x347475(0x209))?.['addEventListener'](_0x347475(0x182),_0x192dd5),document[_0x347475(0x1d4)](_0x347475(0x28a))?.['addEventListener'](_0x347475(0x438),_0x192dd5),document['getElementById'](_0x347475(0x153))?.[_0x347475(0x24f)]('change',()=>{clearPreview('条件已变更，请重新点击「预测并生成建议」'),updateStrongHint();}),document[_0x347475(0x1d4)](_0x347475(0x287))?.[_0x347475(0x24f)](_0x347475(0x182),()=>{clearPreview('期望层数已变更，请重新点击「预测并生成建议」'),updateStrongHint();}),document[_0x347475(0x1d4)](_0x347475(0x296))[_0x347475(0x24f)](_0x347475(0x1d8),doMakePreview),document[_0x347475(0x1d4)]('btnSpecialAttachPreview')?.[_0x347475(0x24f)](_0x347475(0x1d8),doSpecialAttachPreview),document[_0x347475(0x1d4)](_0x347475(0x22e))?.[_0x347475(0x24f)](_0x347475(0x1d8),doJianwangPreview),document[_0x347475(0x1d4)](_0x347475(0x347))?.['addEventListener'](_0x347475(0x1d8),doJianwangApplyOnce),document[_0x347475(0x1d4)](_0x347475(0x1ae))?.[_0x347475(0x24f)](_0x347475(0x182),_0x12ff1b=>{const _0x2fc912=_0x347475;highlightStrongPlan(_0x12ff1b[_0x2fc912(0x2fc)][_0x2fc912(0x272)]);}),document[_0x347475(0x1d4)](_0x347475(0x172))?.[_0x347475(0x24f)](_0x347475(0x1d8),_0x252819=>{const _0x55a425=_0x347475,_0x32fc09=_0x252819[_0x55a425(0x2fc)][_0x55a425(0x457)]('.btn-make-advance');if(!_0x32fc09||_0x55a425(0x3e5)!==tablePager[_0x55a425(0x18d)])return;const _0x3d0d05=Number(_0x32fc09[_0x55a425(0x47a)][_0x55a425(0x3d6)]),_0x29d8e6=_0x32fc09['closest']('tr'),_0x56a5e7=_0x29d8e6?.[_0x55a425(0x1df)](_0x55a425(0x1af))?.['value']??getDefaultMakeMark();confirm(_0x55a425(0x2a9)+_0x3d0d05+'\x20次，并把第\x20'+_0x3d0d05+_0x55a425(0x3c5))&&doMakeAdvanceTo(_0x3d0d05,_0x56a5e7);}),document[_0x347475(0x1d4)](_0x347475(0x42a))?.[_0x347475(0x24f)]('change',_0x402347=>{const _0x2b509e=_0x347475,_0x4c475d=_0x402347['target'][_0x2b509e(0x457)](_0x2b509e(0x300));if(!_0x4c475d)return;const _0x58354e=_0x4c475d[_0x2b509e(0x457)]('[data-only-id]'),_0x4e0125=Number(_0x58354e?.['dataset'][_0x2b509e(0x1ef)]);_0x4e0125&&setCraftedMark(_0x4e0125,_0x4c475d[_0x2b509e(0x272)]);}),document['getElementById'](_0x347475(0x42a))?.[_0x347475(0x24f)]('click',_0x46c618=>{const _0x1b4166=_0x347475,_0x582536=_0x46c618[_0x1b4166(0x2fc)][_0x1b4166(0x457)]('[data-act]');if(!_0x582536)return;const _0x14e2e7=_0x582536['closest'](_0x1b4166(0x30e));if('select'===_0x582536[_0x1b4166(0x47a)][_0x1b4166(0x419)]){const _0x2b1c37=document[_0x1b4166(0x1d4)](_0x1b4166(0x3e6)),_0x24a908=_0x14e2e7?.[_0x1b4166(0x47a)][_0x1b4166(0x2e3)]||'';return void(_0x2b1c37&&[..._0x2b1c37[_0x1b4166(0x3cd)]][_0x1b4166(0x157)](_0x2b3d37=>_0x2b3d37[_0x1b4166(0x272)]===_0x24a908)&&(_0x2b1c37['value']=_0x24a908,handleBagEquipChange(!0x0)));}const _0x5346fb=Number(_0x14e2e7?.[_0x1b4166(0x47a)][_0x1b4166(0x1ef)]);_0x5346fb&&confirm(_0x1b4166(0x275))&&removeCraftedEquip(_0x5346fb);}),document[_0x347475(0x1d4)](_0x347475(0x35d))?.[_0x347475(0x24f)](_0x347475(0x1d8),doShengLianOnce),document[_0x347475(0x1d4)](_0x347475(0x3b7))[_0x347475(0x24f)](_0x347475(0x1d8),doXilianPreview),document['getElementById'](_0x347475(0x381))[_0x347475(0x24f)]('click',doStrongPreview),document[_0x347475(0x1d4)](_0x347475(0x2d6))?.[_0x347475(0x24f)](_0x347475(0x1d8),()=>highlightStrongPlan(_0x347475(0x3dd))),document[_0x347475(0x1d4)](_0x347475(0x16f))?.['addEventListener'](_0x347475(0x1d8),()=>highlightStrongPlan(_0x347475(0x14e))),document[_0x347475(0x1d4)](_0x347475(0x1c2))?.[_0x347475(0x24f)](_0x347475(0x182),()=>{const _0x4e9f2d=_0x347475;xilianPlanItems[_0x4e9f2d(0x3d7)]&&renderXilianRows(xilianPlanItems,xilianAcceptFlags,!0x0);}),document[_0x347475(0x1d4)]('xilianFilterProp')?.[_0x347475(0x24f)](_0x347475(0x182),()=>{const _0x3491cc=_0x347475;xilianPlanItems[_0x3491cc(0x3d7)]&&renderXilianRows(xilianPlanItems,xilianAcceptFlags,!0x0);});const _0x2b3ebb=()=>{const _0x36bf6b=_0x347475;(tablePager[_0x36bf6b(0x3ad)]||[])[_0x36bf6b(0x3d7)]&&applyMakeFilter(!0x0);};document['getElementById']('makeFilterColor')?.[_0x347475(0x24f)](_0x347475(0x182),_0x2b3ebb),document['getElementById'](_0x347475(0x222))?.[_0x347475(0x24f)]('change',_0x2b3ebb),document['getElementById'](_0x347475(0x425))?.[_0x347475(0x24f)]('change',_0x2b3ebb),document[_0x347475(0x1d4)](_0x347475(0x382))?.[_0x347475(0x24f)](_0x347475(0x1d8),()=>{const _0x314398=_0x347475;tablePager[_0x314398(0x247)]>0x1&&(tablePager['page']-=0x1,renderCurrentPreviewPage());}),document[_0x347475(0x1d4)]('btnPreviewNext')?.[_0x347475(0x24f)](_0x347475(0x1d8),()=>{const _0x1deb41=_0x347475;tablePager[_0x1deb41(0x247)]+=0x1,renderCurrentPreviewPage();}),document[_0x347475(0x1d4)](_0x347475(0x1eb))?.[_0x347475(0x24f)](_0x347475(0x182),()=>{tablePager['page']=0x1,renderCurrentPreviewPage();}),document['getElementById'](_0x347475(0x17a))?.[_0x347475(0x24f)]('click',()=>{logPage>0x1&&(logPage-=0x1,renderLogPage());}),document['getElementById']('btnLogNext')?.[_0x347475(0x24f)](_0x347475(0x1d8),()=>{logPage+=0x1,renderLogPage();}),document[_0x347475(0x1d4)](_0x347475(0x2fa))[_0x347475(0x24f)](_0x347475(0x1d8),()=>{logLines=[],logPage=0x1,renderLogPage();});}const equipAppMarkupReady='function'==typeof document[_0x442d85(0x1d4)]&&document[_0x442d85(0x1d4)](_0x442d85(0x33b)),initialEquipTool=_0x442d85(0x1ec)==typeof URLSearchParams?new URLSearchParams(window[_0x442d85(0x42f)][_0x442d85(0x3fc)])['get'](_0x442d85(0x1a9)):'';equipAppMarkupReady&&[_0x442d85(0x3e5),'bag','shenglian',_0x442d85(0x321),_0x442d85(0x355),'jianwang',_0x442d85(0x1f9),_0x442d85(0x46b)][_0x442d85(0x460)](initialEquipTool)&&renderEquipTabChrome(['shenglian',_0x442d85(0x321),'strong'][_0x442d85(0x460)](initialEquipTool)?_0x442d85(0x39a):initialEquipTool),_0x442d85(0x204)!==document[_0x442d85(0x442)]&&equipAppMarkupReady?initApp():document[_0x442d85(0x24f)](_0x442d85(0x1e8),initApp),setTimeout(function(){'function'==typeof prewarmSql&&prewarmSql();},0xc8);
+const COLOR_NAMES = (typeof EQUIP_DATA !== 'undefined' && EQUIP_DATA.colorNames) || {
+    1: '白', 2: '绿', 3: '蓝', 4: '紫', 5: '橙', 6: '红',
+};
+const PROP_NAMES = (typeof EQUIP_DATA !== 'undefined' && EQUIP_DATA.propNames) || {};
+const TYPE_NAMES = (typeof EQUIP_DATA !== 'undefined' && EQUIP_DATA.typeNames) || {};
+
+let makeRndSnapshot = null;
+let saveLoaded = false;
+let logLines = [];
+let saveMeta = null;
+let saveEquips = [];
+let saveEquipsSnapshot = [];
+let equipRuntime = {};
+let equipRuntimeSnapshot = {};
+let currentTab = 'make';
+let craftedSeq = 900000000;
+let makeAdvanceNotice = null;
+
+const PREVIEW_MAX = 5000;
+const XILIAN_MAX = 1000;
+const MANGJING_MAX = 500;
+const MANGJING_DEFAULT = 30;
+const DEFAULT_MAKE_COLOR_FILTER = '4';   // 「预测序列」后默认只看紫装（4 = 紫）
+const LOG_PAGE_SIZE = 40;
+const PATH_PAGE_SIZE = 12;
+const CRAFTED_MJ_SEED_PAPER_MULTIPLIER = 198;
+const SPECIAL_MATERIAL_PART_OVERRIDES = Object.freeze({
+    6884: Object.freeze([7]),
+});
+const JIANWANG_SWORD_IDS = new Set([5707, 5708, 5709, 5710, 5711, 5712, 5713, 5714, 5715, 5716, 5717]);
+const JIANWANG_LEVEL_100_IDS = new Set([5714, 5715, 5716, 5717]);
+const JIANWANG_LEVEL_90_IDS = new Set([5710, 5711, 5712, 5713]);
+const JIANWANG_GROW_TARGETS = Object.freeze({
+    5707: Object.freeze([5708]),
+    5708: Object.freeze([5709]),
+    5709: Object.freeze([5710, 5711, 5712, 5713]),
+});
+const JIANWANG_LEVEL_100_TARGETS = Object.freeze({ 5710: 5714, 5711: 5715, 5712: 5716, 5713: 5717 });
+const JIANWANG_EXT_PROP_ORDER = Object.freeze([
+    'atk_add', 'hit_add', 'def_add', 'hp_add', 'speed_add', 'dodge_add', 'parry_add', 'def_ign',
+    'unarmed_add', 'sword_add', 'blade_add', 'stick_add', 'hp_back', 'mp_back', 'mp_f', 'dmg_off',
+    'dmg_ref', 'blood', 'renxing', 'po_parry', 'po_dodge', 'atk_extend', 'xx_prob', 'xx_crit',
+]);
+const JIANWANG_BASE_PROP_ORDER = Object.freeze(['atk', 'def', 'hit', 'hp', 'speed', 'dodge', 'parry', 'neijin', 'gq_base']);
+const JIANWANG_COLOR_ROLL_WEIGHTS = Object.freeze([74, 20, 5, 1]);
+const JIANWANG_REFORGE_COSTS = Object.freeze([
+    Object.freeze([2, 3]), Object.freeze([3, 4]), Object.freeze([4, 4]),
+    Object.freeze([6, 5]), Object.freeze([6, 6]),
+]);
+const JIANWANG_REFORGE_LIMIT = 10;
+const JIANWANG_BLANK_ID = 5707;
+const JIANWANG_REDSEED_DRAW_MAX = 99999999;
+const JIANWANG_REDSEED_MJ_MULTIPLIER = 123;
+const JIANWANG_REDSEED_CZ_MULTIPLIER = 321;
+const JIANWANG_SHATTER_ROUTE_IDS = Object.freeze({
+    5710: 5710, 5711: 5711, 5712: 5712, 5713: 5713,
+    5714: 5710, 5715: 5711, 5716: 5712, 5717: 5713,
+});
+const JIANWANG_SHATTER_90 = 'shatter:90';
+const JIANWANG_SHATTER_100 = 'shatter:100';
+
+let tablePager = {
+    mode: null,
+    page: 1,
+    makeItems: [],
+    specialAttachItems: [],
+    xilianEntries: [],
+    strongItems: [],
+    jianwangItems: [],
+    jianwangKind: '',
+    jianwangCyclePages: [],
+    strongMinSet: null,
+    strongBestSet: null,
+};
+let jianwangReforgeCounts = {};
+let jianwangReforgeCountsSnapshot = {};
+let jianwangRedSeed = null;
+let jianwangRedSeedSnapshot = null;
+let jianwangVirtualFirstSword = null;
+let jianwangRuleDetection = Object.freeze({
+    rule: 'patched',
+    confidence: 'fallback',
+    reason: '没有足够的实物批次 S 可判断，保持二号补丁规则',
+});
+let logPage = 1;
+let pathPages = { min: 1, max: 1 };
+
+function propLabel(key) {
+    return PROP_NAMES[key] || key;
+}
+
+function formatPropValue(prop, v) {
+    if (typeof v !== 'number') return String(v);
+    const asPct = v < 1 || prop === 'atk_extend';
+    if (!asPct) return String(v);
+    if (v < 0.1) {
+        const n = Math.floor(v * 1000 + 0.001) / 10;
+        return `${n}%`;
+    }
+    return `${Math.floor(v * 100 + 0.001)}%`;
+}
+
+/** 判断是否按百分比格式展示（与 shared/simulator.js 的 equipAutoUsesPercentFormat 同规则） */
+function mangjingUsesPercentFormat(prop, value) {
+    const number = Number(value);
+    return Number.isFinite(number) && (number < 1 || prop === 'atk_extend');
+}
+
+/** 百分比 → 百分比点（0.055 → 5.5），与 shared/simulator.js 的 equipAutoPercentagePoints 同规则。
+ *  装备自动模拟的「盲晶筛选」就是这么比对的，打造页保持同一套，避免两处行为不一致。 */
+function mangjingPercentagePoints(value) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return 0;
+    if (Math.abs(number) < 0.1) return Math.floor(number * 1000 + 0.001) / 10;
+    return Math.floor(number * 100 + 0.001);
+}
+
+/** 盲晶「显示数值」：武器是百分比小数（0.055 → 5.5），防具是原始点数（16 → 16）。
+ *  「盲晶≥」按用户看到的显示值输入，避免武器要输 0.055 这种反直觉操作。 */
+function mangjingDisplayValue(prop, v) {
+    const num = Number(v);
+    if (!Number.isFinite(num)) return NaN;
+    return mangjingUsesPercentFormat(prop, num) ? mangjingPercentagePoints(num) : num;
+}
+
+function formatProps(list) {
+    if (!list || !list.length) return '—';
+    return list.map(p => {
+        const shown = formatPropValue(p.prop, p.value);
+        return `<span class="prop-line">${propLabel(p.prop)}+${shown}</span>`;
+    }).join('');
+}
+
+function formatBase(base) {
+    if (!base || !Object.keys(base).length) return '—';
+    const order = ['atk', 'def', 'hit', 'hp', 'speed', 'dodge', 'parry'];
+    const parts = [];
+    for (const k of order) {
+        if (base[k] != null) parts.push(`${propLabel(k)}${base[k]}`);
+    }
+    for (const [k, v] of Object.entries(base)) {
+        if (!order.includes(k)) parts.push(`${propLabel(k)}${v}`);
+    }
+    return parts.join(' / ');
+}
+
+function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    })[c]);
+}
+
+function getPreviewPageSize() {
+    return Number(document.getElementById('previewPageSize')?.value) || 20;
+}
+
+function updatePreviewPager(total) {
+    const bar = document.getElementById('previewPager');
+    const info = document.getElementById('previewPagerInfo');
+    if (!bar || !info) return;
+    const pagerSize = document.getElementById('previewPageSizeWrap');
+    if (pagerSize) pagerSize.hidden = false;
+    const pageSize = getPreviewPageSize();
+    const pages = Math.max(1, Math.ceil(total / pageSize) || 1);
+    if (tablePager.page > pages) tablePager.page = pages;
+    if (tablePager.page < 1) tablePager.page = 1;
+    bar.hidden = total <= 0;
+    info.textContent = total
+        ? `第 ${tablePager.page}/${pages} 页 · 预览 ${total} 条`
+        : '—';
+    const prev = document.getElementById('btnPreviewPrev');
+    const next = document.getElementById('btnPreviewNext');
+    if (prev) prev.disabled = tablePager.page <= 1;
+    if (next) next.disabled = tablePager.page >= pages;
+}
+
+function updateJianwangCyclePager(totalPages, swordIndex) {
+    const bar = document.getElementById('previewPager');
+    const info = document.getElementById('previewPagerInfo');
+    if (!bar || !info) return;
+    const pages = Math.max(1, Number(totalPages) || 1);
+    if (tablePager.page > pages) tablePager.page = pages;
+    if (tablePager.page < 1) tablePager.page = 1;
+    bar.hidden = totalPages <= 0;
+    const pagerSize = document.getElementById('previewPageSizeWrap');
+    if (pagerSize) pagerSize.hidden = true;
+    info.textContent = totalPages
+        ? `第 ${tablePager.page}/${pages} 页 · 第 ${swordIndex || tablePager.page} 把剑`
+        : '—';
+    const prev = document.getElementById('btnPreviewPrev');
+    const next = document.getElementById('btnPreviewNext');
+    if (prev) prev.disabled = tablePager.page <= 1;
+    if (next) next.disabled = tablePager.page >= pages;
+}
+
+function hidePreviewPager() {
+    const bar = document.getElementById('previewPager');
+    if (bar) bar.hidden = true;
+    tablePager.mode = null;
+    tablePager.page = 1;
+}
+
+function renderCurrentPreviewPage() {
+    if (tablePager.mode === 'make') renderMakePage();
+    else if (tablePager.mode === 'specialAttach') renderSpecialAttachPage();
+    else if (tablePager.mode === 'xilian') renderXilianPage();
+    else if (tablePager.mode === 'strong') renderStrongPage();
+    else if (tablePager.mode === 'jianwang') renderJianwangPage();
+}
+
+function updateLogPager() {
+    const bar = document.getElementById('logPager');
+    const info = document.getElementById('logPagerInfo');
+    if (!bar || !info) return;
+    const total = logLines.length;
+    const pages = Math.max(1, Math.ceil(total / LOG_PAGE_SIZE) || 1);
+    if (logPage > pages) logPage = pages;
+    if (logPage < 1) logPage = 1;
+    bar.hidden = total <= LOG_PAGE_SIZE;
+    info.textContent = total
+        ? `第 ${logPage}/${pages} 页 · 共 ${total} 条`
+        : '—';
+    const prev = document.getElementById('btnLogPrev');
+    const next = document.getElementById('btnLogNext');
+    if (prev) prev.disabled = logPage <= 1;
+    if (next) next.disabled = logPage >= pages;
+}
+
+function renderLogPage() {
+    const el = document.getElementById('makeLog');
+    if (!el) return;
+    if (!logLines.length) {
+        el.textContent = '';
+        updateLogPager();
+        return;
+    }
+    const start = (logPage - 1) * LOG_PAGE_SIZE;
+    el.textContent = logLines.slice(start, start + LOG_PAGE_SIZE).join('\n');
+    updateLogPager();
+}
+
+function appendLog(line) {
+    logLines.push(line);
+    if (logLines.length > 20000) logLines.splice(0, logLines.length - 20000);
+    logPage = Math.max(1, Math.ceil(logLines.length / LOG_PAGE_SIZE));
+    renderLogPage();
+}
+
+function normalizeExts(raw) {
+    if (!raw) return [];
+    if (Array.isArray(raw)) {
+        return raw.filter(Boolean).map(e => ({
+            prop: e.Key || e.prop || e.key,
+            value: e.Value != null ? e.Value : e.value,
+        })).filter(e => e.prop);
+    }
+    return [];
+}
+
+function normalizeJianwangExts(raw) {
+    if (!raw) return [];
+    if (Array.isArray(raw)) {
+        return raw.filter(Boolean).map(e => ({
+            prop: e.Key || e.prop || e.key,
+            value: e.Value != null ? e.Value : e.value,
+            S: e.S != null ? e.S : (e.s || 0),
+            propCheck: e.PropCheck || e.propCheck || '',
+        })).filter(e => e.prop);
+    }
+    return [];
+}
+
+function parseXilianMarks(raw) {
+    const data = raw?.ExtsXilianData;
+    if (!data || typeof data !== 'object') return [];
+    return Object.keys(data)
+        .filter(k => data[k])
+        .map(Number)
+        .filter(n => n >= 1 && n <= 3)
+        .sort((a, b) => a - b);
+}
+
+function toEquipInstance(raw, source, equipped) {
+    const id = raw.ID || raw.id;
+    const cfg = EQUIP_DATA.equipment[String(id)] || {};
+    const marks = parseXilianMarks(raw);
+    return {
+        id,
+        only_id: raw.OnlyID || raw.only_id || 0,
+        name: cfg.name || String(id),
+        need_lv: cfg.lv || 0,
+        typ: cfg.type || 0,
+        color: raw.Color != null ? raw.Color : (raw.color || 1),
+        level: raw.Level != null ? raw.Level : (raw.level || 0),
+        lv_prop: raw.LvProp != null ? raw.LvProp : (raw.lv_prop || 0),
+        S: raw.S != null ? raw.S : (raw.s || 0),
+        MJSeed: raw.MJSeed != null ? raw.MJSeed : (raw.mj_seed || 0),
+        CZSeed: raw.CZSeed != null ? raw.CZSeed : (raw.cz_seed || 0),
+        XLLevel: raw.XLLevel != null ? raw.XLLevel : (raw.xl_level || 0),
+        XLNumber: raw.XLNumber != null ? raw.XLNumber : (raw.xl_number || 0),
+        exp: raw.Exp != null ? raw.Exp : (raw.exp || 0),
+        base: {
+            atk: raw.Atk != null ? raw.Atk : (raw.atk || 0),
+            def: raw.Def != null ? raw.Def : (raw.def || 0),
+            hit: raw.Hit != null ? raw.Hit : (raw.hit || 0),
+            hp: raw.Hp != null ? raw.Hp : (raw.hp || 0),
+            speed: raw.Speed != null ? raw.Speed : (raw.speed || 0),
+            dodge: raw.Dodge != null ? raw.Dodge : (raw.dodge || 0),
+            parry: raw.Parry != null ? raw.Parry : (raw.parry || 0),
+            neijin: raw.Neijin != null ? raw.Neijin : (raw.neijin || 0),
+            gq_base: raw.Gangqi != null ? raw.Gangqi : (raw.gq_base || 0),
+        },
+        exts: JIANWANG_SWORD_IDS.has(Number(id))
+            ? normalizeJianwangExts(raw.EnExts || raw.exts)
+            : normalizeExts(raw.EnExts || raw.exts),
+        specials: normalizeExts(raw.EnSpecials || raw.specials),
+        // 装备提供的「角色基础属性」（臂力 / 根骨 / 身法 / 内息）单独存在 EnMans，
+        // 游戏界面把它和附加属性排在一起显示，所以这里也一起展示。
+        mans: normalizeExts(raw.EnMans || raw.en_mans || raw.mans),
+        xilian_marks: marks,
+        xilian_accepted: marks.length,
+        _source: source,
+        _equipped: !!equipped,
+        _crafted: false,
+        _mark: '',
+    };
+}
+
+function canXilian(e) {
+    return e.need_lv > 90 && e.color > 1 && e.color < 5 && e.exts.length > 0;
+}
+
+function canStrong(e) {
+    return e.typ >= 1 && e.typ <= 4 && e.level < 15;
+}
+
+function canShengLian(e) {
+    if (!e || e.need_lv !== 90 || e.color >= 5) return false;
+    const cfg = EQUIP_DATA.equipment[String(e.id)] || {};
+    const nextId = cfg.equ_next || 0;
+    return nextId > 0 && !!EQUIP_DATA.equipment[String(nextId)];
+}
+
+function nextCraftedOnlyId() {
+    craftedSeq += 1;
+    return craftedSeq;
+}
+
+function getSourceFilter(which) {
+    const id = which === 'strong'
+        ? 'strongSourceFilter'
+        : (which === 'shenglian' ? 'shenglianSourceFilter' : 'xilianSourceFilter');
+    return document.getElementById(id)?.value || 'all';
+}
+
+function getTextFilter(which) {
+    const id = which === 'strong'
+        ? 'strongTextFilter'
+        : (which === 'shenglian' ? 'shenglianTextFilter' : 'xilianTextFilter');
+    return (document.getElementById(id)?.value || '').trim().toLowerCase();
+}
+
+function passEquipListFilter(e, which) {
+    const source = getSourceFilter(which);
+    if (source === 'equipped' && !e._equipped) return false;
+    if (source === 'unequipped' && (e._equipped || e._crafted)) return false;
+    if (source === 'crafted' && !e._crafted) return false;
+    // 升炼只对蓝、紫有实际价值：真实装备（身上穿的 / 背包仓库里的）白绿直接过滤；模拟装备不过滤
+    if (which === 'shenglian' && source !== 'crafted' && !e._crafted
+        && e.color !== 3 && e.color !== 4) return false;
+
+    const q = getTextFilter(which);
+    if (!q) return true;
+    const hay = [
+        e.name,
+        e._mark,
+        e._source,
+        String(e.only_id || ''),
+        COLOR_NAMES[e.color] || e.color,
+        TYPE_NAMES[e.typ] || e.typ,
+        `${e.need_lv}级`,
+        e._crafted ? '模拟打造' : '',
+        e._equipped ? '已装备' : '未装备',
+    ].join(' ').toLowerCase();
+    return hay.includes(q);
+}
+
+function getDefaultMakeMark() {
+    return (document.getElementById('makeDefaultMark')?.value || '').trim();
+}
+
+function craftedMJSeedFromMakeResult(result, paperId) {
+    const czSeed = result?.CZSeed != null ? result.CZSeed : result?.cz_seed;
+    if (!Number.isSafeInteger(paperId) || paperId <= 0) {
+        throw new TypeError(`打造图纸 ID 必须是正安全整数，实际为 ${String(paperId)}`);
+    }
+    const offset = paperId * CRAFTED_MJ_SEED_PAPER_MULTIPLIER;
+    if (!Number.isSafeInteger(czSeed) || czSeed <= offset) {
+        throw new TypeError(`打造结果 CZSeed 必须是大于图纸偏移 ${offset} 的安全整数，实际为 ${String(czSeed)}`);
+    }
+    return czSeed - offset;
+}
+
+function addCraftedFromMakeResult(r, mark, paperId, npcId) {
+    if (!r || r.error || !r.equip_id) return null;
+    const cfg = EQUIP_DATA.equipment[String(r.equip_id)] || {};
+    const onlyId = nextCraftedOnlyId();
+    const markText = (mark != null ? String(mark) : getDefaultMakeMark()).trim();
+    const czSeed = r.CZSeed != null ? r.CZSeed : r.cz_seed;
+    const eq = {
+        id: r.equip_id,
+        only_id: onlyId,
+        name: r.name || cfg.name || String(r.equip_id),
+        need_lv: cfg.lv || 0,
+        typ: cfg.type || 0,
+        color: r.color || 1,
+        level: 0,
+        lv_prop: 0,
+        S: r.S != null ? r.S : (r.s || 0),
+        MJSeed: craftedMJSeedFromMakeResult(r, paperId),
+        CZSeed: czSeed,
+        XLLevel: 0,
+        XLNumber: 0,
+        exts: (r.exts || []).map(p => ({ prop: p.prop, value: p.value })),
+        specials: (r.special || []).map(p => ({ prop: p.prop, value: p.value })),
+        xilian_marks: [],
+        xilian_accepted: 0,
+        _source: '模拟打造',
+        _equipped: false,
+        _crafted: true,
+        _mark: markText,
+        _make_base: r.base || {},
+        _make_region: r.region || [],
+        _make_special: r.special || [],
+        _make_index: r.index || 0,
+        _make_pity: !!r.pity,                       // 打造那一刻是否保底（快照，供详情显示）
+        _make_seedKind: r.seed_kind || 'normal',    // normal / lucky
+        _make_npcId: npcId || null,   // 打造时选的工匠，供成品背包显示地点
+    };
+    saveEquips.push(eq);
+    const k = runtimeKey(eq);
+    const full = { ...eq, ...toWasmEquip(eq), xilian_marks: [] };
+    equipRuntime[k] = JSON.parse(JSON.stringify(full));
+    updateCraftedBagHint();
+    renderCraftedBagList();
+    return eq;
+}
+
+function setCraftedMark(onlyId, mark) {
+    const text = String(mark || '').trim().slice(0, 40);
+    const eq = saveEquips.find(e => e.only_id === onlyId);
+    if (eq) {
+        eq._mark = text;
+        const k = runtimeKey(eq);
+        if (equipRuntime[k]) equipRuntime[k]._mark = text;
+    }
+    fillEquipSelects();
+    renderCraftedBagList();
+}
+
+function removeCraftedEquip(onlyId) {
+    const idx = saveEquips.findIndex(e => e.only_id === onlyId && e._crafted);
+    if (idx < 0) return;
+    const eq = saveEquips[idx];
+    const k = runtimeKey(eq);
+    saveEquips.splice(idx, 1);
+    delete equipRuntime[k];
+    updateCraftedBagHint();
+    renderCraftedBagList();
+    fillEquipSelects();
+}
+
+function renderCraftedBagList() {
+    const box = document.getElementById('craftedBagList');
+    if (!box) return;
+    const list = saveEquips.filter(e => e._crafted);
+    if (!list.length) {
+        box.classList.add('empty');
+        box.textContent = '暂无模拟打造装备';
+        return;
+    }
+    box.classList.remove('empty');
+    box.innerHTML = list.map(e => {
+        const color = COLOR_NAMES[e.color] || e.color;
+        const typ = TYPE_NAMES[e.typ] || e.typ;
+        const mark = e._mark || '';
+        return `<div class="crafted-bag-row" data-only-id="${e.only_id}">
+            <div class="bag-meta">${escapeHtml(e.name)} · ${e.need_lv}级 · ${escapeHtml(String(color))} · ${escapeHtml(String(typ))} · #${e.only_id}</div>
+            <input type="text" class="crafted-mark-input" maxlength="40" value="${escapeHtml(mark)}" placeholder="输入标记">
+            <div class="bag-actions">
+                <button type="button" class="btn btn-reset btn-row-action" data-act="remove">移除</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function calcShengLianCost(eq) {
+    const cfg = EQUIP_DATA.equipment[String(eq.id)] || {};
+    const nextCfg = EQUIP_DATA.equipment[String(cfg.equ_next)] || {};
+    const isArmor = eq.typ >= 5 && eq.typ <= 7;
+    const matId = isArmor ? 3036 : 3026;
+    const matName = isArmor ? '青蝉翼' : '昆吾石';
+    const price = nextCfg.price > 0 ? nextCfg.price : (cfg.price || 10000);
+    const silver = Math.floor(price * 6);
+    return [
+        { id: 8801, name: '连金泥', n: 10 },
+        { id: matId, name: matName, n: 120 },
+        { id: 3001, name: '银两', n: silver },
+    ];
+}
+
+function applyShengLian(key) {
+    const idx = saveEquips.findIndex(e => runtimeKey(e) === key);
+    if (idx < 0) return { error: '未找到装备' };
+    const cur = saveEquips[idx];
+    if (!canShengLian(cur)) return { error: '该装备不可升炼（需 90 级且有下一档）' };
+    const cfg = EQUIP_DATA.equipment[String(cur.id)] || {};
+    const nextId = cfg.equ_next;
+    const nextCfg = EQUIP_DATA.equipment[String(nextId)];
+    if (!nextCfg) return { error: `缺少下一档装备 ${nextId}` };
+
+    if (!cur.only_id) cur.only_id = nextCraftedOnlyId();
+    const stableKey = runtimeKey(cur);
+    const rt = getRuntimeEquip(stableKey) || getRuntimeEquip(key);
+
+    const oldName = cur.name;
+    const oldLv = cur.need_lv;
+    cur.id = nextId;
+    cur.name = nextCfg.name || String(nextId);
+    cur.need_lv = nextCfg.lv || 100;
+    cur.typ = nextCfg.type || cur.typ;
+
+    if (rt) {
+        rt.id = cur.id;
+        rt.name = cur.name;
+        rt.need_lv = cur.need_lv;
+        rt.typ = cur.typ;
+        rt.only_id = cur.only_id;
+        const newKey = runtimeKey(cur);
+        if (key !== newKey) delete equipRuntime[key];
+        if (stableKey !== newKey) delete equipRuntime[stableKey];
+        equipRuntime[newKey] = { ...rt, ...toWasmEquip(rt), xilian_marks: [...(rt.xilian_marks || [])] };
+    }
+    return {
+        ok: true,
+        key: runtimeKey(cur),
+        from: `${oldName}(${oldLv})`,
+        to: `${cur.name}(${cur.need_lv})`,
+        equip: cur,
+    };
+}
+
+function updateCraftedBagHint() {
+    const el = document.getElementById('craftedBagHint');
+    if (!el) return;
+    const n = saveEquips.filter(e => e._crafted).length;
+    const marked = saveEquips.filter(e => e._crafted && e._mark).length;
+    const canSl = saveEquips.filter(e => e._crafted && canShengLian(e)).length;
+    const canXl = saveEquips.filter(e => e._crafted && canXilian(e)).length;
+    const canSt = saveEquips.filter(e => e._crafted && canStrong(e)).length;
+    // 只显示统计：没有模拟打造装备时不显示任何文字，也不占位置
+    el.textContent = n
+        ? `模拟背包：打造 ${n} 件（已标记 ${marked}）· 可升炼 ${canSl} · 可精炼 ${canXl} · 可淬炼 ${canSt}`
+        : '';
+    el.style.display = n ? '' : 'none';
+}
+
+function toWasmEquip(eq) {
+    const marks = eq.xilian_marks || [];
+    return {
+        id: eq.id,
+        only_id: eq.only_id,
+        name: eq.name,
+        color: eq.color,
+        level: eq.level,
+        lv_prop: eq.lv_prop,
+        S: eq.S,
+        CZSeed: eq.CZSeed,
+        MJSeed: eq.MJSeed,
+        XLLevel: eq.XLLevel,
+        XLNumber: eq.XLNumber,
+        exp: eq.exp || 0,
+        base: eq.base || {},
+        exts: eq.exts,
+        xilian_accepted: marks.length || eq.xilian_accepted || 0,
+        xilian_marks: marks,
+        need_lv: eq.need_lv || 0,
+        typ: eq.typ || 0,
+    };
+}
+
+
+function xilianCostMult(marksCount) {
+    return [1, 2, 4, 8][Math.min(3, Math.max(0, marksCount))] || 8;
+}
+
+function formatSilver(wen) {
+    const liang = Math.floor(wen / 1000);
+    const rest = wen % 1000;
+    let s = '';
+    if (liang > 0) s += `${liang}两`;
+    if (rest > 0 || !s) s += `${rest}文`;
+    return s;
+}
+
+function calcXilianCost(eq) {
+    const marks = (eq.xilian_marks || []).length;
+    const mult = xilianCostMult(marks);
+    const cfg = EQUIP_DATA.equipment[String(eq.id)] || {};
+    const isArmor = eq.typ >= 5 && eq.typ <= 7;
+    const matId = isArmor ? 3036 : 3026;
+    const matName = isArmor ? '青蝉翼' : '昆吾石';
+    const price = cfg.price > 0 ? cfg.price : 10000;
+    const silver = Math.floor(price * 1.5);
+    return {
+        mult,
+        mats: [
+            { id: matId, name: matName, n: 5 * mult },
+            { id: 8801, name: '连金泥', n: mult },
+            { id: 3001, name: '银两', n: silver },
+        ],
+    };
+}
+
+function formatCostList(mats) {
+    return mats.map(m => {
+        if (m.id === 3001) return `${m.name}${formatSilver(m.n)}`;
+        return `${m.name}×${m.n}`;
+    }).join(' · ');
+}
+
+function xlMainBonus(xlLevel, kind) {
+    const tiers = kind === 'gq_base'
+        ? [[0, 10, 1], [10, 20, 1.5], [20, 30, 2], [30, 40, 2.5], [40, 50, 3],
+           [50, 60, 2.5], [60, 70, 2], [70, 80, 1.5], [80, 200, 1]]
+        : [[0, 10, 1], [10, 20, 2], [20, 30, 3], [30, 40, 4], [40, 50, 5],
+           [50, 60, 4], [60, 70, 3], [70, 80, 2], [80, 300, 1]];
+    if (xlLevel <= 0) return 0;
+    let sum = 0;
+    for (const [lo, hi, rate] of tiers) {
+        if (xlLevel >= hi) sum += (hi - lo) * rate;
+        else {
+            sum += (xlLevel - lo) * rate;
+            break;
+        }
+    }
+    return Math.floor(sum);
+}
+
+function mainPropDisplay(eq, xlLevel) {
+    const cfg = EQUIP_DATA.equipment[String(eq.id)] || {};
+    const base = cfg.base || {};
+    const out = [];
+    if (base.gq_base > 0) {
+        const bonus = xlMainBonus(xlLevel, 'gq_base');
+        const v = Math.min(200, Math.floor(base.gq_base + bonus));
+        out.push({ key: 'gq_base', label: '罡气', base: base.gq_base, value: v, bonus });
+    }
+    if (base.neijin > 0) {
+        const bonus = xlMainBonus(xlLevel, 'neijin');
+        const v = Math.min(300, Math.floor(base.neijin + bonus));
+        out.push({ key: 'neijin', label: '内劲', base: base.neijin, value: v, bonus });
+    }
+    return out;
+}
+
+let xilianAcceptFlags = [];
+let xilianPlanEquipKey = null;
+let xilianPlanItems = [];
+
+/* ── 成品背包 ─────────────────────────────────────────── */
+const REFINED_BAG_KEY = 'yyjh_refined_bag_v1';   // localStorage 兜底键
+const REFINED_BAG_DB = 'yyjh_refined_bag_db';    // IndexedDB 库名（容量远大于 localStorage）
+const REFINED_BAG_STORE = 'bag';                 // IndexedDB 对象仓库
+const REFINED_BAG_DB_KEY = 'list';               // IndexedDB 记录键
+let refinedBag = [];            // [{id, title, baseTitle, mark, equipName, npcPlace, regionText, color, extText, costText, mjText, xl, keepN, at}]
+let lastXilianPlan = null;      // refreshXilianPlan 算好的精炼规划快照（含 equipKey，标明是对哪件装备算的）
+let lastMangjingResult = null;  // 最近一次「芒晶序列」结果 {materialName, prop, value, index, count, equipKey}
+
+let strongPlanCache = null;
+
+const STONE_NAMES = { 3027: '白炼石', 3028: '绿炼石', 3029: '蓝炼石', 3030: '紫炼石' };
+const STONE_WEIGHT = { 3027: 1, 3028: 1e4, 3029: 1e8, 3030: 1e12 };
+
+function resetXilianSession() {
+    xilianAcceptFlags = [];
+    xilianPlanEquipKey = null;
+    xilianPlanItems = [];
+    // 这两份快照的消费者是「加入成品背包」，切换装备/重置时一并清掉，
+    // 否则会把上一件装备的词条、花费、盲晶信息错记到当前选中的装备名下。
+    lastXilianPlan = null;
+    lastMangjingResult = null;
+    const box = document.getElementById('xilianPlanSummary');
+    if (box) {
+        box.classList.add('empty');
+        box.innerHTML = '预测后勾选「保留」查看总花费与最终属性';
+    }
+    const bar = document.getElementById('xilianFilterBar');
+    if (bar) bar.hidden = true;
+}
+
+function qianghuaEqTier(needLv) {
+    return Math.min(11, Math.max(1, Math.floor((needLv || 90) / 10) + 1));
+}
+
+function strongAttemptCost(needLv, fromLevel) {
+    const target = fromLevel + 1;
+    const qh = EQUIP_DATA.qianghua?.[String(target)];
+    if (!qh) return null;
+    const tier = qianghuaEqTier(needLv);
+    const row = qh.costs?.[tier] || qh.costs?.[String(tier)];
+    if (!row) return null;
+    return { mat: row.mat, num: row.num, silver: row.silver, qhcd: qh.qhcd };
+}
+
+function costScore(bag) {
+    let s = (bag.silver || 0);
+    for (const [id, n] of Object.entries(bag.stones || {})) {
+        s += (STONE_WEIGHT[id] || 1) * n;
+    }
+    return s;
+}
+
+function formatStoneBag(bag) {
+    const parts = [];
+    for (const id of [3027, 3028, 3029, 3030]) {
+        const n = bag.stones?.[id] || 0;
+        if (n) parts.push(`${STONE_NAMES[id]}×${n}`);
+    }
+    if (bag.silver) parts.push(`银两${formatSilver(bag.silver)}`);
+    return parts.join(' · ') || '—';
+}
+
+function planStrongPath(grades, startLevel, targetLevel, minGrade, needLv) {
+    const need = targetLevel - startLevel;
+    if (need <= 0) return { minCost: { ok: false, reason: '已达期望层数' }, maxValue: { ok: false, reason: '已达期望层数' } };
+    const n = grades.length;
+
+    const better = (a, b, mode) => {
+        if (!a) return true;
+        if (mode === 'maxValue') {
+            if (b.value !== a.value) return b.value > a.value;
+            return b.score < a.score;
+        }
+        if (b.score !== a.score) return b.score < a.score;
+        return b.value > a.value;
+    };
+
+    const run = (mode) => {
+        const d = Array.from({ length: n + 1 }, () => Array(need + 1).fill(null));
+        d[0][0] = { score: 0, value: 0, bag: { stones: {}, silver: 0 }, from: null };
+
+        for (let i = 0; i < n; i++) {
+            for (let k = 0; k <= need; k++) {
+                const cur = d[i][k];
+                if (!cur) continue;
+
+                if (k === need) {
+                    const stay = { score: cur.score, value: cur.value, bag: cur.bag, from: { i, k, action: 'done', seq: i } };
+                    if (better(d[i + 1][k], stay, mode)) d[i + 1][k] = stay;
+                    continue;
+                }
+
+                const level = startLevel + k;
+                if (level >= 15) continue;
+                const c = strongAttemptCost(needLv, level);
+                if (!c) continue;
+
+                const nextBag = {
+                    stones: { ...cur.bag.stones, [c.mat]: (cur.bag.stones[c.mat] || 0) + c.num },
+                    silver: cur.bag.silver + c.silver,
+                };
+                const sc = costScore(nextBag);
+                const grade = grades[i];
+                const add = Math.floor([0, 600, 700, 800, 1000][grade] * c.qhcd);
+
+                const skipSt = {
+                    score: sc, value: cur.value, bag: nextBag,
+                    from: { i, k, action: 'skip', seq: i, level, grade, add },
+                };
+                if (better(d[i + 1][k], skipSt, mode)) d[i + 1][k] = skipSt;
+
+                if (grade >= minGrade) {
+                    const accSt = {
+                        score: sc, value: cur.value + add, bag: nextBag,
+                        from: { i, k, action: 'accept', seq: i, level, grade, add },
+                    };
+                    if (better(d[i + 1][k + 1], accSt, mode)) d[i + 1][k + 1] = accSt;
+                }
+            }
+        }
+
+        let best = null;
+        let bestI = -1;
+        for (let i = 0; i <= n; i++) {
+            const st = d[i][need];
+            if (!st) continue;
+            if (better(best, st, mode)) {
+                best = st;
+                bestI = i;
+            }
+        }
+        if (!best) {
+            let maxK = -1;
+            for (let i = 0; i <= n; i++) {
+                for (let k = 0; k <= need; k++) {
+                    if (d[i][k] && k > maxK) maxK = k;
+                }
+            }
+            return {
+                ok: false,
+                reason: maxK < 0 ? '无可行路径' : `序列内最多升至 +${startLevel + maxK}（期望 +${targetLevel}），请加长序列或降低档位`,
+                reached: startLevel + Math.max(0, maxK),
+            };
+        }
+
+        const accepts = new Set();
+        const steps = [];
+        let i = bestI;
+        let k = need;
+        while (i > 0 || k > 0) {
+            const st = d[i][k];
+            if (!st || !st.from) break;
+            const f = st.from;
+            if (f.action === 'accept') {
+                accepts.add(f.seq + 1);
+                steps.push({ index: f.seq + 1, action: '接受', level: f.level, grade: f.grade, add: f.add });
+                i = f.i;
+                k = f.k;
+            } else if (f.action === 'skip') {
+                steps.push({ index: f.seq + 1, action: '取消', level: f.level, grade: f.grade, add: f.add });
+                i = f.i;
+                k = f.k;
+            } else {
+                i = f.i;
+                k = f.k;
+            }
+        }
+        steps.reverse();
+        return {
+            ok: true,
+            mode,
+            accepts,
+            steps,
+            bag: best.bag,
+            value: best.value,
+            reached: targetLevel,
+            attempts: steps.filter(s => s.action !== 'done').length,
+        };
+    };
+
+    return { minCost: run('minCost'), maxValue: run('maxValue') };
+}
+
+function collectEquipsFromSave(data) {
+    const root = Array.isArray(data) ? data[0] : data;
+    const out = [];
+    const seen = new Set();
+
+    const pushList = (list, src, equipped) => {
+        if (!list) return;
+        const arr = Array.isArray(list) ? list : Object.values(list);
+        for (const raw of arr) {
+            if (!raw || (raw.ID == null && raw.id == null)) continue;
+            const id = raw.ID ?? raw.id;
+            if (!EQUIP_DATA.equipment[String(id)]) continue;
+            if (raw.CZSeed == null && raw.S == null && !raw.EnExts && raw.Color == null) continue;
+            const inst = toEquipInstance(raw, src, equipped);
+            const key = inst.only_id || `${src}:${inst.id}:${inst.CZSeed}`;
+            if (seen.has(key)) continue;
+            seen.add(key);
+            out.push(inst);
+        }
+    };
+
+    const asRoleList = (v) => {
+        if (!v) return [];
+        if (Array.isArray(v)) return v;
+        if (typeof v === 'object') return Object.values(v);
+        return [];
+    };
+
+    pushList(root.MainRole?.Equips, '主角装备', true);
+    asRoleList(root.Roles).forEach((r, i) => {
+        const name = r.Name || r.name || `随从${i + 1}`;
+        pushList(r.Equips, name, true);
+    });
+    asRoleList(root.Leavers).forEach((r, i) => {
+        const name = r.Name || r.name || `离队${i + 1}`;
+        pushList(r.Equips, name, true);
+    });
+    pushList(root.Equips, '背包', false);
+    const depots = root.EncryptDepots || root.Depots || {};
+    for (const [depotId, depot] of Object.entries(depots)) {
+        const list = depot?.Depots || depot?.Items || depot;
+        const label = depot?.Name || depot?.name || `仓库:${depotId}`;
+        pushList(list, label, false);
+    }
+
+    return out;
+}
+
+function runtimeKey(eq) {
+    return String(eq.only_id || `${eq.id}_${eq.CZSeed}_${eq.S}`);
+}
+
+function findEquipByRuntimeKey(selectId) {
+    const real = saveEquips.find(e => runtimeKey(e) === selectId);
+    if (real) return real;
+    if (jianwangVirtualFirstSword && runtimeKey(jianwangVirtualFirstSword) === selectId) {
+        return jianwangVirtualFirstSword;
+    }
+    return null;
+}
+
+function getRuntimeEquip(selectId) {
+    const base = findEquipByRuntimeKey(selectId);
+    if (!base) return null;
+    return equipRuntime[selectId] || JSON.parse(JSON.stringify(toWasmEquip(base)));
+}
+
+function setRuntimeEquip(selectId, eq) {
+    equipRuntime[selectId] = eq;
+}
+
+
+function sortedCraftsmen() {
+    return Object.values(EQUIP_DATA.craftsman).sort((a, b) => {
+        const pa = a.place || a.name;
+        const pb = b.place || b.name;
+        if (pa !== pb) return pa.localeCompare(pb, 'zh');
+        return a.id - b.id;
+    });
+}
+
+function papersForNpc(npcId) {
+    const cm = EQUIP_DATA.craftsman[String(npcId)];
+    if (!cm) return [];
+    const list = [];
+    const seen = new Set();
+    for (const pid of cm.pf || []) {
+        const paper = EQUIP_DATA.papers[String(pid)];
+        if (!paper) continue;
+        const eq = EQUIP_DATA.equipment[String(paper.dz_equip)];
+        if (!eq) continue;
+        seen.add(paper.id);
+        list.push({
+            selectId: paper.id,
+            equipId: paper.dz_equip,
+            label: `${eq.name}（免图纸·${eq.lv}级）`,
+            paper,
+            equip: eq,
+        });
+    }
+    const zhi = cm.zhi || 'dazao';
+    const allow = zhi === 'fengzhi' ? new Set([5, 6, 7]) : new Set([1, 2, 3, 4, 8, 9]);
+    for (const paper of Object.values(EQUIP_DATA.papers)) {
+        if (seen.has(paper.id)) continue;
+        const eq = EQUIP_DATA.equipment[String(paper.dz_equip)];
+        if (!eq || !allow.has(eq.type)) continue;
+        list.push({
+            selectId: paper.id,
+            equipId: paper.dz_equip,
+            label: `${eq.name}（${paper.name}·${eq.lv}级）`,
+            paper,
+            equip: eq,
+        });
+    }
+    list.sort((a, b) => (b.equip.lv - a.equip.lv) || a.label.localeCompare(b.label, 'zh'));
+    return list;
+}
+
+function fillNpcSelect() {
+    const sel = document.getElementById('npcSelect');
+    sel.innerHTML = '';
+    for (const cm of sortedCraftsmen()) {
+        const opt = document.createElement('option');
+        opt.value = cm.id;
+        opt.textContent = `${cm.place || cm.name} · ${cm.name}（${cm.zhi === 'fengzhi' ? '绣' : '铁'}）`;
+        sel.appendChild(opt);
+    }
+    for (const id of ['40520', '32180', '31230', '32256']) {
+        if (EQUIP_DATA.craftsman[id]) { sel.value = id; break; }
+    }
+}
+
+/* ── 工匠地点分类筛选（铁匠 / 绣庄 / 全部） ───────────────── */
+const NPC_CATEGORY_TIE = [
+    { place: '铸剑山庄',   name: '紫金熔炉', isDefault: true },
+    { place: '剑王阁',     name: '石老' },
+    { place: '洛阳铁匠铺', name: '李铁匠' },
+    { place: '南阳渡铁匠铺', name: '胡铁匠' },
+    { place: '无双城铁匠铺', name: '赵小炉' },
+    { place: '恒山派',     name: '金锐' },
+];
+const NPC_CATEGORY_XIU = [
+    { place: '泠月宫',     name: '月绣', isDefault: true },
+    { place: '洛阳绣庄',   name: '红萝' },
+    { place: '南阳渡绣庄', name: '陈三娘' },
+    { place: '塞北绣庄',   name: '贝奇娅' },
+    { place: '无双城衣服店', name: '穆老板' },
+];
+
+function findCraftsmanByPlaceName(place, name) {
+    for (const id in EQUIP_DATA.craftsman) {
+        const cm = EQUIP_DATA.craftsman[id];
+        if ((cm.place || cm.name) === place && cm.name === name) return cm;
+    }
+    return null;
+}
+
+/** 按分类填工匠下拉（铁匠/绣庄）；"全部" 走旧 fillNpcSelect */
+function fillNpcSelectByCategory(category) {
+    const sel = document.getElementById('npcSelect');
+    if (!sel) return;
+    const list = category === 'tie' ? NPC_CATEGORY_TIE : NPC_CATEGORY_XIU;
+    sel.innerHTML = '';
+    let firstCm = null;
+    for (const item of list) {
+        const cm = findCraftsmanByPlaceName(item.place, item.name);
+        if (!cm) continue;
+        if (!firstCm) firstCm = cm;
+        const opt = document.createElement('option');
+        opt.value = cm.id;
+        opt.textContent = `${cm.place || cm.name} · ${cm.name}（${cm.zhi === 'fengzhi' ? '绣' : '铁'}）`;
+        sel.appendChild(opt);
+    }
+    if (!firstCm) {
+        sel.innerHTML = '<option value="">（未找到匹配工匠）</option>';
+        return;
+    }
+    const def = list.find(it => it.isDefault);
+    const target = def ? findCraftsmanByPlaceName(def.place, def.name) : firstCm;
+    if (target && [...sel.options].some(o => Number(o.value) === Number(target.id))) {
+        sel.value = target.id;
+    } else {
+        sel.value = firstCm.id;
+    }
+}
+
+/** 应用分类：同步筛选下拉值 + 重建工匠下拉 */
+function applyNpcCategory(category) {
+    const filterSel = document.getElementById('npcCategoryFilter');
+    if (filterSel) filterSel.value = category || 'all';
+    if (category === 'tie' || category === 'xiu') {
+        fillNpcSelectByCategory(category);
+    } else {
+        fillNpcSelect();
+    }
+}
+
+/* ── 目标装备分类（铁匠 12 武器 / 绣庄 6 防具） ────────────── */
+const PAPER_CATEGORY_TIE_NAMES = [
+    '青云戒', '苏布宝戒', '青云坠', '其木格坠',
+    '碎月重刀', '掠影刀', '万仞重剑', '巽风剑',
+    '破军指套', '撼岳掌套', '碎虚枪', '贪狼棍',
+];
+const PAPER_CATEGORY_XIU_NAMES = [
+    '呼如木甲', '乌蚕宝甲', '乌斯护腕', '紫薇护腕',
+    '玉衡护腰', '吉达护腰',
+];
+
+/** paper 是否在任意工匠的 pf 列表里（即"免图纸"类） */
+function isFreePaper(paperId) {
+    for (const cid in EQUIP_DATA.craftsman) {
+        if ((EQUIP_DATA.craftsman[cid].pf || []).includes(paperId)) return true;
+    }
+    return false;
+}
+
+/** 全局按装备名（默认 90 级）找 paper；不限制当前工匠，确保 12/6 件齐 */
+function findPaperByEquipName(name, lv) {
+    if (lv == null) lv = 90;
+    for (const eid in EQUIP_DATA.equipment) {
+        const eq = EQUIP_DATA.equipment[eid];
+        if (eq.name !== name || eq.lv !== lv) continue;
+        for (const pid in EQUIP_DATA.papers) {
+            const p = EQUIP_DATA.papers[pid];
+            if (Number(p.dz_equip) !== Number(eid)) continue;
+            const free = isFreePaper(p.id);
+            return {
+                selectId: p.id,
+                equipId: Number(eid),
+                minColor: p.min_color || 0,
+                maxColor: p.max_color || 0,
+                label: `${eq.name}（${free ? '免图纸' : p.name}·${eq.lv}级）`,
+            };
+        }
+    }
+    return null;
+}
+
+/** 按分类填 paperSelect：tie→12 铁匠武器，xiu→6 绣庄防具，all→旧逻辑
+ *  全局找 paper，不受当前工匠限制（确保 12/6 件齐） */
+function fillPaperSelectByCategory(category) {
+    if (category === 'all' || !category) {
+        fillPaperSelect();
+        return;
+    }
+    const sel = document.getElementById('paperSelect');
+    if (!sel) return;
+    const filter = (document.getElementById('paperFilter')?.value || '').trim().toLowerCase();
+    const allowed = category === 'tie' ? PAPER_CATEGORY_TIE_NAMES : PAPER_CATEGORY_XIU_NAMES;
+    const prev = sel.value;
+    sel.innerHTML = '';
+    const items = [];
+    for (const name of allowed) {
+        const paper = findPaperByEquipName(name);
+        if (!paper) {
+            // 数据里找不到对应 paper —— 占位但禁选，一眼看出哪件缺失
+            items.push({ missing: true, name });
+            continue;
+        }
+        if (filter) {
+            const hay = `${paper.label} ${name}`.toLowerCase();
+            if (!hay.includes(filter)) continue;
+        }
+        items.push(paper);
+    }
+    let matched = 0;
+    for (const it of items) {
+        const opt = document.createElement('option');
+        if (it.missing) {
+            opt.value = '';
+            opt.textContent = `— ${it.name}（未在数据中找到对应 paper）—`;
+            opt.disabled = true;
+            sel.appendChild(opt);
+            continue;
+        }
+        opt.value = JSON.stringify({
+            selectId: it.selectId,
+            equipId: it.equipId,
+            minColor: it.minColor,
+            maxColor: it.maxColor,
+        });
+        opt.textContent = it.label;
+        sel.appendChild(opt);
+        matched++;
+    }
+    if (!matched) {
+        sel.innerHTML = '<option value="">（该分类下无匹配装备）</option>';
+    } else if (prev && [...sel.options].some(o => o.value === prev)) {
+        sel.value = prev;
+    }
+    fillSpecialSelect();
+    updateMakeHints();
+}
+
+/** 同步两个分类下拉 + 重建工匠/paper 下拉（双向联动的核心） */
+function syncMakeCategory(category) {
+    const cat = category || 'all';
+    const npcCat   = document.getElementById('npcCategoryFilter');
+    const paperCat = document.getElementById('paperCategoryFilter');
+    if (npcCat)   npcCat.value = cat;
+    if (paperCat) paperCat.value = cat;
+    if (cat === 'tie' || cat === 'xiu') {
+        fillNpcSelectByCategory(cat);
+    } else {
+        fillNpcSelect();
+    }
+    fillPaperSelectByCategory(cat);
+}
+
+function fillPaperSelect() {
+    const npcId = Number(document.getElementById('npcSelect').value);
+    const sel = document.getElementById('paperSelect');
+    const filter = (document.getElementById('paperFilter')?.value || '').trim().toLowerCase();
+    const prev = sel.value;
+    sel.innerHTML = '';
+    let matched = 0;
+    for (const it of papersForNpc(npcId)) {
+        if (filter) {
+            const hay = `${it.label} ${it.equip?.name || ''}`.toLowerCase();
+            if (!hay.includes(filter)) continue;
+        }
+        const opt = document.createElement('option');
+        opt.value = JSON.stringify({
+            selectId: it.selectId,
+            equipId: it.equipId,
+            minColor: it.paper.min_color,
+            maxColor: it.paper.max_color,
+        });
+        opt.textContent = it.label;
+        sel.appendChild(opt);
+        matched++;
+    }
+    if (!matched) {
+        sel.innerHTML = '<option value="">（无匹配装备）</option>';
+    } else if (prev) {
+        const still = [...sel.options].some(o => o.value === prev);
+        if (still) sel.value = prev;
+    }
+    fillSpecialSelect();
+    autoSelectMangjingDefault();   // 必须在 fillSpecialSelect 之后，specialSelect 才有 options
+    updateMakeHints();
+}
+
+function fillSpecialSelect() {
+    const sel = document.getElementById('specialSelect');
+    if (!sel) return;
+    const previous = sel.value;
+    let meta = null;
+    try { meta = JSON.parse(document.getElementById('paperSelect')?.value || ''); }
+    catch { }
+    const equip = meta ? EQUIP_DATA.equipment[String(meta.equipId)] : null;
+    sel.innerHTML = '<option value="0">不加特殊材料</option>';
+    const materials = equip ? specialMaterialsForEquip(equip) : [];
+    for (const sp of materials) {
+        const opt = document.createElement('option');
+        opt.value = sp.id;
+        opt.textContent = sp.name || String(sp.id);
+        sel.appendChild(opt);
+    }
+    // 恢复上次的用户选择（仍在选项里；previous='0' 即"不加"不算恢复，走默认）
+    if (previous && previous !== '0' && [...sel.options].some(option => option.value === previous)) {
+        sel.value = previous;
+    } else {
+        // 首次或上次选的不再可用 → 按装备类型默认选龙骨(2021)/紫玉髓(2023)，别再卡在「不加特殊材料」
+        const typ = equip ? Number(equip.type || 0) : 0;
+        const isArmor = typ >= 5 && typ <= 7;
+        const defaultId = isArmor ? 2023 : 2021;
+        if ([...sel.options].some(option => Number(option.value) === defaultId)) {
+            sel.value = String(defaultId);
+        }
+    }
+}
+
+/* ── 打造页表单记忆（工匠地点 + 图纸）─────────────────────────
+   重置网页会清掉 sessionStorage 里所有 yyjh_ 前缀的键，
+   这里刻意用不带前缀的键，使「地点 + 图纸」能在重置/刷新后存活，
+   其余配置（预览次数、特殊材料等）照常回到默认。 */
+const EQUIP_FORM_KEY = 'equip_make_form_v1';
+
+function saveMakeFormState() {
+    try {
+        const npc = document.getElementById('npcSelect')?.value || '';
+        const paper = document.getElementById('paperSelect')?.value || '';
+        const filter = document.getElementById('paperFilter')?.value || '';
+        const category = document.getElementById('npcCategoryFilter')?.value || '';
+        if (npc || paper || filter || category) {
+            sessionStorage.setItem(EQUIP_FORM_KEY, JSON.stringify({ npc, paper, filter, category }));
+        }
+    } catch (e) { /* 忽略 */ }
+}
+
+/** 恢复上次的「工匠地点 + 图纸」；选项不存在时跳过，避免选中无效值 */
+function restoreMakeFormState() {
+    let saved = null;
+    try {
+        const raw = sessionStorage.getItem(EQUIP_FORM_KEY);
+        if (raw) saved = JSON.parse(raw);
+    } catch (e) { saved = null; }
+
+    const npcSel = document.getElementById('npcSelect');
+    const paperSel = document.getElementById('paperSelect');
+    const filter = document.getElementById('paperFilter');
+
+    if (saved && saved.npc && npcSel) {
+        if ([...npcSel.options].some(o => o.value === saved.npc)) npcSel.value = saved.npc;
+    }
+    // 两个分类下拉同步（默认 'tie'）
+    syncMakeCategory(saved?.category || 'tie');
+
+    if (saved && saved.filter && filter) filter.value = saved.filter;
+
+    // 必须按「已恢复的工匠 + 分类 + 筛选」重建图纸列表（用分类版，否则会退回旧逻辑全部）
+    const paperCat = document.getElementById('paperCategoryFilter')?.value || 'all';
+    fillPaperSelectByCategory(paperCat);
+
+    if (saved && saved.paper && paperSel) {
+        if ([...paperSel.options].some(o => o.value === saved.paper)) paperSel.value = saved.paper;
+    }
+    if (typeof fillSpecialSelect === 'function') fillSpecialSelect();
+    if (typeof updateMakeHints === 'function') updateMakeHints();
+}
+
+function currentMakeRequest() {
+    const npcId = Number(document.getElementById('npcSelect').value);
+    let meta;
+    try { meta = JSON.parse(document.getElementById('paperSelect').value); }
+    catch { return null; }
+    return {
+        npc_id: npcId,
+        select_id: meta.selectId,
+        equip_id: meta.equipId,
+        special_id: Number(document.getElementById('specialSelect').value) || 0,
+        min_color: meta.minColor,
+        max_color: meta.maxColor,
+    };
+}
+
+function makeRequestValidationError(req) {
+    if (!req) return '请选择目标装备';
+    const equip = EQUIP_DATA.equipment[String(req.equip_id)];
+    if (!equip) return `目标装备 ${req.equip_id} 不存在`;
+    if (!req.special_id) return '';
+    const material = EQUIP_DATA.special[String(req.special_id)];
+    if (!material) return `特殊材料 ${req.special_id} 不存在`;
+    if (!specialMaterialSupportsEquip(material, equip)) {
+        return `特殊材料「${material.name || material.id}」不适用于装备「${equip.name || equip.id}」`;
+    }
+    return '';
+}
+
+function requireCurrentMakeRequest() {
+    const req = currentMakeRequest();
+    const error = makeRequestValidationError(req);
+    if (error) {
+        alert(error);
+        return null;
+    }
+    return req;
+}
+
+function updateMakeHints() {
+    const costEl = document.getElementById('costHint');
+    const luckyEl = document.getElementById('luckyHint');
+    // 这两行小字提示（消耗估算 / 保底种子）已按需求从页面移除。
+    // 元素不在时直接返回，避免后面写入空引用报错（本函数只服务这两行提示）。
+    if (!costEl || !luckyEl) return;
+    const req = currentMakeRequest();
+    if (!req) {
+        costEl.textContent = '请选择目标装备';
+        luckyEl.textContent = '';
+        return;
+    }
+    const paper = EQUIP_DATA.papers[String(req.select_id)];
+    const cm = EQUIP_DATA.craftsman[String(req.npc_id)];
+    const eq = EQUIP_DATA.equipment[String(req.equip_id)];
+    const matName = paper && EQUIP_DATA.itemNames[String(paper.dz_mat)]
+        ? EQUIP_DATA.itemNames[String(paper.dz_mat)]
+        : (paper ? `材料${paper.dz_mat}` : '');
+    const silver = (cm?.cost || 0) + (paper?.cost || 0);
+    const freePaper = !!(cm && (cm.pf || []).map(Number).includes(Number(req.select_id)));
+    if (paper) {
+        const parts = [];
+        if (!freePaper) parts.push(`图纸「${paper.name}」×1`);
+        parts.push(`${matName}×${paper.dz_num}`);
+        const special = req.special_id ? EQUIP_DATA.special[String(req.special_id)] : null;
+        if (special) parts.push(`特殊材料「${special.name || special.id}」×1`);
+        parts.push(`银两约 ${silver}`);
+        costEl.textContent = `若执行将消耗：${parts.join('、')}（仅提示）`;
+    } else {
+        costEl.textContent = '消耗未知';
+    }
+
+    if (!saveLoaded) {
+        luckyEl.textContent = '尚未导入存档种子';
+        luckyEl.classList.remove('pity');
+        return;
+    }
+    const st = wasmMakeGetState();
+    const lucky = st?.MakeLucky?.[String(req.equip_id)]?.value ?? 0;
+    const tier = Math.floor((eq?.lv || 0) / 10);
+    const bucket = st?.Seeds?.[String(eq?.type)];
+    const hasSeed = !!(bucket && typeof bucket === 'object' && bucket[String(tier)] != null);
+    if (!hasSeed && (eq?.lv || 0) < 100) {
+        luckyEl.textContent = `警告：存档无 Seeds[${eq?.type}][${tier}]，无法预测`;
+        luckyEl.classList.add('pity');
+    } else if (lucky >= 10) {
+        luckyEl.textContent = `保底已触发（MakeLucky=${lucky}）：下一次强制紫装`;
+        luckyEl.classList.add('pity');
+    } else {
+        luckyEl.textContent = `保底 MakeLucky=${lucky}/10 · Seeds[${eq?.type}][${tier}]`;
+        luckyEl.classList.remove('pity');
+    }
+}
+
+function setMakeHead() {
+    setPreviewTableKind('make');
+    document.getElementById('previewHead').innerHTML = `<tr>
+        <th>#</th><th>品质</th><th>基础</th><th>蓝词条</th><th>地区附加</th><th>盲晶最高</th><th>红词条</th><th>种子</th><th>标记</th><th>选</th><th>操作</th>
+    </tr>`;
+}
+
+function setSpecialAttachHead() {
+    setPreviewTableKind('special-attach');
+    document.getElementById('previewHead').innerHTML = `<tr>
+        <th>#</th><th>装备</th><th>材料</th><th>预测红词条</th><th>数值倍率</th><th>MJSeed（前 → 后）</th>
+    </tr>`;
+}
+
+function setPreviewTableKind(kind) {
+    const table = document.getElementById('previewTable');
+    if (!table) return;
+    table.classList.toggle('jianwang-state-table', kind === 'jianwang-state');
+}
+
+function makeSeedKind(it) {
+    if (it.pity) return 'pity';
+    if (it.seed_kind === 'lucky') return 'lucky';
+    return 'normal';
+}
+
+function fillMakePropFilter(items) {
+    const sel = document.getElementById('makeFilterProp');
+    if (!sel) return;
+    const prev = sel.value;
+    const keys = new Set();
+    for (const it of items || []) {
+        for (const list of [it.exts, it.region, it.special]) {
+            for (const p of list || []) {
+                if (p?.prop) keys.add(p.prop);
+            }
+        }
+    }
+    const sorted = [...keys].sort((a, b) => propLabel(a).localeCompare(propLabel(b), 'zh'));
+    sel.innerHTML = '<option value="">全部</option>'
+        + sorted.map(k => `<option value="${escapeHtml(k)}">${escapeHtml(propLabel(k))}</option>`).join('');
+    if (prev && keys.has(prev)) sel.value = prev;
+}
+
+function makeFilterMatch(it) {
+    const color = document.getElementById('makeFilterColor')?.value || '';
+    const seed = document.getElementById('makeFilterSeed')?.value || '';
+    const prop = document.getElementById('makeFilterProp')?.value || '';
+    const mjMin = document.getElementById('makeFilterMangjing')?.value || '';
+    if (color && String(it.color) !== color) return false;
+    if (seed && makeSeedKind(it) !== seed) return false;
+    if (prop) {
+        const has = [...(it.exts || []), ...(it.region || []), ...(it.special || [])]
+            .some(p => p?.prop === prop);
+        if (!has) return false;
+    }
+    if (mjMin) {
+        const best = it.mangjingBest;
+        if (!best) return false;
+        // 盲晶值不统一（武器百分比 0~1 / 防具原始点数 1~30），
+        // 统一换算成「用户看到的显示值」再比较：武器 0.055 → 5.5（输 5.5 即可），防具 16 → 16。
+        const disp = mangjingDisplayValue(best.prop, best.value);
+        if (!(disp >= Number(mjMin))) return false;
+    }
+    return true;
+}
+
+function applyMakeFilter(resetPage = false) {
+    const all = tablePager.makeAllItems || [];
+    tablePager.makeItems = all.filter(makeFilterMatch);
+    if (resetPage) tablePager.page = 1;
+    const metaFilter = document.getElementById('makeFilterMeta');
+    if (metaFilter) metaFilter.textContent = `显示 ${tablePager.makeItems.length} / ${all.length} 条`;
+    renderMakePage();
+}
+
+function renderMakePage() {
+    const body = document.getElementById('previewBody');
+    if (!body) return;
+    const items = tablePager.makeItems || [];
+    const pageSize = getPreviewPageSize();
+    const start = (tablePager.page - 1) * pageSize;
+    const slice = items.slice(start, start + pageSize);
+    const defaultMark = escapeHtml(getDefaultMakeMark());
+    if (!slice.length) {
+        body.innerHTML = `<tr><td colspan="11" class="empty-row">无匹配记录</td></tr>`;
+        updatePreviewPager(items.length);
+        updateMakeBatchButton();
+        return;
+    }
+    body.innerHTML = slice.map(it => {
+        const seedTxt = it.pity ? '保底' : (it.seed_kind === 'lucky' ? '幸运' : '普通');
+        const seedCls = it.seed_kind === 'lucky' || it.pity ? 'seed-tag lucky' : 'seed-tag';
+        return `<tr data-make-index="${it.index}">
+            <td>${it.index}</td>
+            <td class="color-${it.color}">${COLOR_NAMES[it.color] || it.color}</td>
+            <td>${formatBase(it.base)}</td>
+            <td>${formatProps(it.exts)}</td>
+            <td>${formatProps(it.region)}</td>
+            <td>${mangjingBestText(it)}</td>
+            <td>${formatProps(it.special)}</td>
+            <td><span class="${seedCls}">${seedTxt}</span></td>
+            <td><input type="text" class="mark-input make-row-mark" maxlength="40" value="${defaultMark}" placeholder="标记"></td>
+            <td><input type="checkbox" class="make-row-check" data-index="${it.index}" data-color="${it.color}" title="勾选后可用「一键推进」批量推进"></td>
+            <td><button type="button" class="btn btn-wash btn-row-action btn-make-advance" data-index="${it.index}">推进到此</button></td>
+        </tr>`;
+    }).join('');
+    updatePreviewPager(items.length);
+    updateMakeBatchButton();
+    // 渲染后立即校验：标记里的品质名与行的实际品质是否一致
+    document.querySelectorAll('#previewBody .make-row-mark').forEach(flagMarkMismatch);
+}
+
+/* ── 打造预测结果：逐件跑盲晶 ─────────────────────────────── */
+
+/** 当前预览的目标装备类型（同一次预测所有件都是同一件装备） */
+function currentMakeEquipType() {
+    try {
+        const meta = JSON.parse(document.getElementById('paperSelect')?.value || '');
+        const eq = EQUIP_DATA.equipment[String(meta.equipId)];
+        return eq ? Number(eq.type || 0) : 0;
+    } catch (e) { return 0; }
+}
+
+/** 当前预览选中的图纸 ID（算 MJSeed 需要：MJSeed = CZSeed - paperId * 198） */
+function currentMakePaperId() {
+    try {
+        const meta = JSON.parse(document.getElementById('paperSelect')?.value || '');
+        return Number(meta?.selectId);
+    } catch (e) { return 0; }
+}
+
+/** 盲晶材料默认：用户没选特殊材料(id=0)时，按装备类型自动选龙骨(2021)/紫玉髓(2023)
+ *  用户已选了非零材料就不动 */
+function autoSelectMangjingDefault() {
+    const sel = document.getElementById('specialSelect');
+    if (!sel) return;
+    if (Number(sel.value) > 0) return;   // 用户已选，不动
+    const typ = currentMakeEquipType();
+    const isArmor = typ >= 5 && typ <= 7;
+    const defaultId = isArmor ? 2023 : 2021;
+    const m = EQUIP_DATA.special[String(defaultId)];
+    if (m && [...sel.options].some(o => Number(o.value) === defaultId)) {
+        sel.value = String(defaultId);
+    }
+}
+
+/** 盲晶材料：优先「特殊材料」下拉（需与装备匹配），否则武器=龙骨(2021)、防具=紫玉髓(2023) */
+function pickMangjingMaterial(equipType, equip) {
+    const sel = document.getElementById('specialSelect');
+    const id = sel ? Number(sel.value) : 0;
+    if (id > 0 && equip) {
+        const m = EQUIP_DATA.special[String(id)];
+        if (m) {
+            let ok = false;
+            try {
+                ok = typeof specialMaterialSupportsEquip === 'function'
+                    ? specialMaterialSupportsEquip(m, equip) : false;
+            } catch (e) { ok = false; }
+            if (ok) return m;
+        }
+    }
+    const isArmor = equipType >= 5 && equipType <= 7;
+    return EQUIP_DATA.special[String(isArmor ? 2023 : 2021)] || null;
+}
+
+/** 造一个能跑盲晶的 equip，并复刻自动页的「先升炼到 100 级」步骤。
+ *  自动页 L5954 用的是 specialAttachEquips（升炼后 100 级）的 equip，
+ *  所以材料数值查 lvs['lv100']；直接用 90 级会查 lv90，紫玉髓等材料没有该档 → 抛错。
+ *  MJSeed 在升炼中不变（upgradeEquip 是 ...clone(equip)），只改 id/name/need_lv/typ。 */
+function buildMangjingEquip(it, equipType) {
+    let meta;
+    try { meta = JSON.parse(document.getElementById('paperSelect')?.value || ''); } catch (e) { meta = null; }
+    const equipId = meta ? meta.equipId : 0;
+    const cfg = EQUIP_DATA.equipment[String(equipId)];
+    if (!cfg) return null;
+    const equip = {
+        id: Number(equipId),
+        name: cfg.name || ('item_' + it.index),
+        need_lv: Number(cfg.lv) || 90,
+        typ: Number(cfg.type) || equipType,
+        color: Number(it.color) || 0,
+        MJSeed: it.MJSeed,
+    };
+    // 复刻 canUpgrade + upgradeEquip：90 级、非橙红、有下一档 → 升到 100 级
+    if (equip.need_lv === 90 && equip.color < 5) {
+        const nextId = Number(cfg.equ_next) || 0;
+        const cfgNext = nextId ? EQUIP_DATA.equipment[String(nextId)] : null;
+        if (cfgNext) {
+            equip.id = nextId;
+            equip.name = cfgNext.name || String(nextId);
+            equip.need_lv = Number(cfgNext.lv) || 100;
+            equip.typ = Number(cfgNext.type) || equip.typ;
+        }
+    }
+    return equip;
+}
+
+/** 逐件跑盲晶，把「最高那次」挂到 item.mangjingBest（同值取第一次） */
+function computeMangjingForItems(items, count) {
+    const equipType = currentMakeEquipType();
+    const paperId = currentMakePaperId();
+    const validCount = Math.max(1, Math.min(MANGJING_MAX, Number(count) || MANGJING_DEFAULT));
+    for (const it of items || []) {
+        it.mangjingBest = null;
+        if (!it) continue;
+        // make 预览项自带 CZSeed，据此算出盲晶必需的 MJSeed
+        if (Number.isSafeInteger(paperId) && paperId > 0) {
+            try {
+                it.MJSeed = craftedMJSeedFromMakeResult(it, paperId);
+            } catch (e) {
+                console.warn('[盲晶] MJSeed 算不出来，preview 项可能没有 CZSeed。paperId=' + paperId + ', item keys=' + Object.keys(it).join(','));
+                it.MJSeed = 0;
+            }
+        }
+        if (!Number.isSafeInteger(it.MJSeed) || it.MJSeed <= 0) continue;
+        // 构造可跑盲晶的 equip（含升炼到 100 级），预览项本身缺 typ/need_lv/name
+        const mjEquip = buildMangjingEquip(it, equipType);
+        if (!mjEquip) continue;
+        let material = pickMangjingMaterial(mjEquip.typ, mjEquip);
+        if (!material) continue;
+        let arr = [];
+        try {
+            const result = runSpecialAttachPredict(mjEquip, material, validCount);
+            arr = Array.isArray(result) ? result : (Array.isArray(result?.items) ? result.items : []);
+        } catch (e) {
+            // 选定材料与装备不匹配 → 回退按类型默认材料再试一次
+            material = pickMangjingMaterial(mjEquip.typ, null);
+            if (!material) continue;
+            try {
+                const result = runSpecialAttachPredict(mjEquip, material, validCount);
+                arr = Array.isArray(result) ? result : (Array.isArray(result?.items) ? result.items : []);
+            } catch (e2) { continue; }
+        }
+        let best = null;
+        for (const r of arr) {
+            const v = Number(r?.value);
+            if (!Number.isFinite(v)) continue;
+            if (!best || v > Number(best.value)) best = r;
+        }
+        if (best) it.mangjingBest = best;
+    }
+}
+
+/** 盲晶预测单元格：两行结构，主值加粗 + 第 N 次小灰字，无则「—」 */
+function mangjingBestText(it) {
+    const best = it?.mangjingBest;
+    if (!best) return '—';
+    const valTxt = `${escapeHtml(propLabel(best.prop))}+${escapeHtml(formatPropValue(best.prop, best.value))}`;
+    // index 缺失/非法时省略「第 N 次」，避免显示「第 NaN 次」
+    const idxNum = Number(best.index);
+    const idxTxt = Number.isFinite(idxNum) ? `第 ${idxNum} 次` : '';
+    return idxTxt
+        ? `<span class="mj-val">${valTxt}</span><span class="mj-idx">· ${idxTxt}</span>`
+        : `<span class="mj-val">${valTxt}</span>`;
+}
+
+function renderMakePreview(resp) {
+    setMakeHead();
+    const body = document.getElementById('previewBody');
+    const meta = document.getElementById('previewMeta');
+    const seqNotice = document.getElementById('makeSeqNotice');
+    const filterBar = document.getElementById('makeFilterBar');
+    const xlFilter = document.getElementById('xilianFilterBar');
+    if (xlFilter) xlFilter.hidden = true;
+    renderMakeAdvanceNotice();
+    if (resp.error && (!resp.items || !resp.items.length)) {
+        body.innerHTML = `<tr><td colspan="11" class="empty-row">${escapeHtml(resp.error)}</td></tr>`;
+        meta.textContent = '';
+        if (seqNotice) seqNotice.hidden = true;
+        if (filterBar) filterBar.hidden = true;
+        hidePreviewPager();
+        return;
+    }
+    const items = resp.items || [];
+    const purple = items.filter(i => i.color === 4).length;
+    const sequenceTip = makeAdvanceNotice ? ' · 下表从推进后的下一件重新编号' : '';
+    // 内核已换回含「打造后状态推进修正」的 core_glue（MAKE_SLOT_ADVANCE_BOUND=98999999，
+    // 保底件改走 LuckySeeds），多件序列与游戏一致，不再提示偏移。
+    if (seqNotice) seqNotice.hidden = true;
+    const seqWarn = '';
+    meta.textContent = `共 ${items.length} 件 · 紫装 ${purple} · 可点「推进到此」直达${sequenceTip}${seqWarn}` + (resp.error ? ` · ${resp.error}` : '');
+    tablePager.mode = 'make';
+    tablePager.page = 1;
+    tablePager.makeAllItems = items;
+    if (filterBar) {
+        filterBar.hidden = false;
+        // 默认只筛紫装；用户仍可在下拉里改成其他品质或「全部」
+        document.getElementById('makeFilterColor').value = DEFAULT_MAKE_COLOR_FILTER;
+        document.getElementById('makeFilterSeed').value = '';
+        fillMakePropFilter(items);
+        document.getElementById('makeFilterProp').value = '';
+        document.getElementById('makeFilterMangjing').value = '';
+    }
+    // 逐件跑盲晶（默认全跑），取最高那次用于展示 + 筛选
+    computeMangjingForItems(items, Number(document.getElementById('mangjingCount')?.value) || MANGJING_DEFAULT);
+    applyMakeFilter(true);
+}
+
+const SPECIAL_QUALITY_WEIGHTS = [5000, 500, 50, 5, 1];
+const SPECIAL_QUALITY_RANGES = [[85, 95], [95, 105], [105, 115], [115, 125], [125, 150]];
+const WHALE_MULTIPLIER = 245109059551232n;
+const WHALE_INCREMENT = 48083817484545n;
+const WHALE_MASK = 2147483647n;
+const WHALE_REDUCTION_LIMIT = 2047483645n;
+
+function requirePositiveInteger(value, field) {
+    if (!Number.isSafeInteger(value) || value < 1) {
+        throw new TypeError(`${field}必须是正整数，实际为 ${String(value)}`);
+    }
+    return value;
+}
+
+function drawWhaleInt(seed, maximum) {
+    const validSeed = requirePositiveInteger(seed, '随机种子');
+    const validMaximum = requirePositiveInteger(maximum, '随机上限');
+    const mixed = BigInt.asUintN(
+        64,
+        (BigInt(validSeed) + BigInt(validMaximum)) * WHALE_MULTIPLIER + WHALE_INCREMENT,
+    );
+    const raw = (mixed >> 17n) & WHALE_MASK;
+    const nextSeed = Number((raw < WHALE_REDUCTION_LIMIT ? raw : raw - WHALE_REDUCTION_LIMIT) + 1n);
+    return { seed: nextSeed, value: nextSeed % validMaximum + 1 };
+}
+
+function drawWeightedIndex(seed, weights, context) {
+    if (!Array.isArray(weights) || !weights.length) {
+        throw new TypeError(`${context}权重不能为空`);
+    }
+    const validWeights = weights.map((weight, index) => {
+        if (!Number.isSafeInteger(weight) || weight < 0) {
+            throw new TypeError(`${context}第 ${index + 1} 项权重必须是非负整数`);
+        }
+        return weight;
+    });
+    const total = validWeights.reduce((sum, weight) => sum + weight, 0);
+    requirePositiveInteger(total, `${context}总权重`);
+    const draw = drawWhaleInt(seed, total);
+    let cumulative = 0;
+    const index = validWeights.findIndex((weight) => {
+        cumulative += weight;
+        return draw.value <= cumulative;
+    });
+    if (index < 0) throw new RangeError(`${context}随机值 ${draw.value} 超出总权重 ${total}`);
+    return { seed: draw.seed, index };
+}
+
+function drawJianwangBetween(seed, minimum, maximum, context) {
+    if (!Number.isSafeInteger(minimum) || !Number.isSafeInteger(maximum) || maximum < minimum) {
+        throw new TypeError(`${context}区间无效：${minimum}–${maximum}`);
+    }
+    const draw = drawWhaleInt(seed, maximum - minimum + 1);
+    return { seed: draw.seed, value: draw.value - 1 + minimum };
+}
+
+const JIANWANG_RULE_PATCHED = 'patched';
+const JIANWANG_RULE_STANDARD = 'standard';
+
+function classifyJianwangExtSeedBatch(equip) {
+    if (!equip || !isJianwangSword(equip) || !Array.isArray(equip.exts)) return null;
+    const seeds = equip.exts.map(ext => Number(ext?.S || 0));
+    if (seeds.length < 2 || seeds.some(seed => !Number.isSafeInteger(seed) || seed <= 0)) return null;
+
+    // 游戏保留词条时只覆盖下一批的一号位，不会让新生成词条顺延。
+    // 因此 3 条以上时用第 2..N 位判断“本轮新生成批次”；一号位允许保留旧 S。
+    const generatedBatch = seeds.length >= 3 ? seeds.slice(1) : seeds;
+    if (new Set(generatedBatch).size === 1) return JIANWANG_RULE_PATCHED;
+
+    // 当前已经确认的无保留 70→80 实物中，原项目规则会让两条新词出现不同 S。
+    // 2 槽装备无法安全剔除一号位，所以两条不同才作为原项目规则证据。
+    if (seeds.length === 2) return JIANWANG_RULE_STANDARD;
+    return null;
+}
+
+function detectJianwangRuleFromEquips(equips) {
+    const evidence = (Array.isArray(equips) ? equips : [])
+        .filter(isJianwangSword)
+        .map(equip => ({ equip, rule: classifyJianwangExtSeedBatch(equip) }))
+        .filter(item => item.rule);
+    const patchedCount = evidence.filter(item => item.rule === JIANWANG_RULE_PATCHED).length;
+    const standardCount = evidence.filter(item => item.rule === JIANWANG_RULE_STANDARD).length;
+
+    if (standardCount > 0 && patchedCount === 0) {
+        return Object.freeze({
+            rule: JIANWANG_RULE_STANDARD,
+            confidence: standardCount > 1 ? 'batch-consensus' : 'batch-evidence',
+            reason: `${standardCount} 把实物的可判定新生成批次的 EnExts.S 不一致，使用原项目规则`,
+        });
+    }
+    if (patchedCount > 0 && standardCount === 0) {
+        return Object.freeze({
+            rule: JIANWANG_RULE_PATCHED,
+            confidence: patchedCount > 1 ? 'batch-consensus' : 'batch-evidence',
+            reason: `${patchedCount} 把实物的可判定新生成批次共用 EnExts.S，使用二号补丁规则`,
+        });
+    }
+    if (standardCount > patchedCount) {
+        return Object.freeze({
+            rule: JIANWANG_RULE_STANDARD,
+            confidence: 'batch-majority',
+            reason: `实物批次 S 证据冲突（原项目 ${standardCount} / 二号补丁 ${patchedCount}），按多数使用原项目规则`,
+        });
+    }
+    if (patchedCount > standardCount) {
+        return Object.freeze({
+            rule: JIANWANG_RULE_PATCHED,
+            confidence: 'batch-majority',
+            reason: `实物批次 S 证据冲突（二号补丁 ${patchedCount} / 原项目 ${standardCount}），按多数使用二号补丁规则`,
+        });
+    }
+    return Object.freeze({
+        rule: JIANWANG_RULE_PATCHED,
+        confidence: evidence.length ? 'conflict-fallback' : 'fallback',
+        reason: evidence.length
+            ? '实物批次 S 证据数量相同且互相冲突，保持二号补丁规则'
+            : '没有至少两条且带有效 EnExts.S 的剑王阁实物，保持二号补丁规则',
+    });
+}
+
+function currentJianwangRule() {
+    return jianwangRuleDetection?.rule === JIANWANG_RULE_STANDARD
+        ? JIANWANG_RULE_STANDARD
+        : JIANWANG_RULE_PATCHED;
+}
+
+function generateJianwangEquip(targetId, startSeed, rule = JIANWANG_RULE_PATCHED) {
+    const cfg = EQUIP_DATA.equipment[String(targetId)];
+    if (!cfg || !JIANWANG_SWORD_IDS.has(Number(targetId))) {
+        throw new RangeError(`无效的剑王阁目标装备：${targetId}`);
+    }
+    const standard = rule === JIANWANG_RULE_STANDARD;
+    let seed = requirePositiveInteger(Number(startSeed), 'CZSeed');
+    seed = drawWeightedIndex(seed, JIANWANG_COLOR_ROLL_WEIGHTS, '剑王阁品质占位').seed;
+    const base = {};
+    for (const prop of JIANWANG_BASE_PROP_ORDER) {
+        const raw = Number(cfg.base?.[prop]) || 0;
+        if (raw <= 0) continue;
+        if (!standard) {
+            base[prop] = raw;
+            continue;
+        }
+        const draw = drawJianwangBetween(seed, 100, 100, `剑王阁${prop}`);
+        seed = draw.seed;
+        base[prop] = Math.floor(raw * draw.value / 100);
+    }
+
+    const candidates = JIANWANG_EXT_PROP_ORDER.filter(prop => Number(cfg.exts?.[prop]?.[0]) > 0);
+    const candidateWeights = candidates.map(prop => Math.max(0, Math.floor(Number(cfg.exts[prop][1]) || 0)));
+    const slotCount = Math.max(0, Math.floor(((Number(cfg.lv) || 60) - 60) / 10) + 1);
+    const exts = [];
+    for (let slot = 0; slot < slotCount; slot++) {
+        const propDraw = drawWeightedIndex(seed, candidateWeights, '剑王阁副属性');
+        seed = propDraw.seed;
+        const prop = candidates[propDraw.index];
+        exts.push({
+            prop,
+            value: Number(cfg.exts[prop][0]),
+        });
+        if (standard) candidateWeights[propDraw.index] = 0;
+    }
+    return { id: Number(targetId), seedAfter: seed, base, exts };
+}
+
+function validJianwangRedSeed(value) {
+    const seed = Number(value);
+    return Number.isSafeInteger(seed) && seed > 0;
+}
+
+function createJianwangBlankFromRedSeed(redSeed, swordIndex = null) {
+    const sourceRedSeed = requirePositiveInteger(Number(redSeed), 'RedSeeds[5707]');
+    const sequenceIndex = swordIndex == null ? null : requirePositiveInteger(Number(swordIndex), '模拟背包剑序号');
+    const baseSeed = Math.floor(sourceRedSeed / 10);
+    const MJSeed = baseSeed + JIANWANG_BLANK_ID * JIANWANG_REDSEED_MJ_MULTIPLIER;
+    const CZSeed = baseSeed + JIANWANG_BLANK_ID * JIANWANG_REDSEED_CZ_MULTIPLIER;
+    requirePositiveInteger(MJSeed, '新剑胚 MJSeed');
+    requirePositiveInteger(CZSeed, '新剑胚 CZSeed');
+    const generated = generateJianwangEquip(JIANWANG_BLANK_ID, sourceRedSeed, JIANWANG_RULE_STANDARD);
+    const nextRedSeed = drawWhaleInt(sourceRedSeed, JIANWANG_REDSEED_DRAW_MAX).seed;
+    const cfg = EQUIP_DATA.equipment[String(JIANWANG_BLANK_ID)] || {};
+    const equip = {
+        id: JIANWANG_BLANK_ID,
+        name: cfg.name || '剑胚',
+        need_lv: Number(cfg.lv) || 60,
+        typ: Number(cfg.type) || 3,
+        color: 6,
+        level: 0,
+        lv_prop: 0,
+        S: generated.seedAfter,
+        MJSeed,
+        CZSeed,
+        XLLevel: 0,
+        XLNumber: 0,
+        exp: 0,
+        base: generated.base,
+        exts: generated.exts.map(item => ({ prop: item.prop, value: item.value })),
+        specials: [],
+        xilian_marks: [],
+        xilian_accepted: 0,
+        _source: sequenceIndex ? '模拟背包' : '网页碎剑重铸',
+        _equipped: false,
+        _crafted: false,
+        _mark: '',
+        _jianwangRebuilt: true,
+        _jianwangSwordIndex: sequenceIndex,
+    };
+    return {
+        redSeedBefore: sourceRedSeed,
+        redSeedAfter: nextRedSeed,
+        baseSeed,
+        MJSeed,
+        CZSeed,
+        S: generated.seedAfter,
+        swordIndex: sequenceIndex,
+        base: generated.base,
+        exts: generated.exts.map(item => ({ prop: item.prop, value: item.value })),
+        equip,
+    };
+}
+
+function createJianwangVirtualFirstSword(redSeed) {
+    const created = createJianwangBlankFromRedSeed(redSeed, 1);
+    return {
+        ...created,
+        equip: {
+            ...created.equip,
+            _source: '虛擬劍胚',
+            _jianwangRebuilt: false,
+            _jianwangVirtualFirst: true,
+            _jianwangSwordIndex: 1,
+            _jianwangNextRedSeed: created.redSeedAfter,
+        },
+    };
+}
+
+function refreshJianwangVirtualFirstSword() {
+    if (jianwangVirtualFirstSword) delete equipRuntime[runtimeKey(jianwangVirtualFirstSword)];
+    jianwangVirtualFirstSword = null;
+    if (saveEquips.some(isJianwangSword) || !validJianwangRedSeed(jianwangRedSeed)) return;
+    const created = createJianwangVirtualFirstSword(jianwangRedSeed);
+    jianwangVirtualFirstSword = created.equip;
+    const key = runtimeKey(jianwangVirtualFirstSword);
+    const full = {
+        ...jianwangVirtualFirstSword,
+        ...toWasmEquip(jianwangVirtualFirstSword),
+        xilian_marks: [...(jianwangVirtualFirstSword.xilian_marks || [])],
+    };
+    equipRuntime[key] = JSON.parse(JSON.stringify(full));
+}
+
+function jianwangNextRedSeedForEquip(equip) {
+    const virtualNext = Number(equip?._jianwangNextRedSeed);
+    return validJianwangRedSeed(virtualNext) ? virtualNext : jianwangRedSeed;
+}
+
+function predictJianwangFutureBlanks(startRedSeed, count = 1) {
+    const total = Number(count);
+    if (!Number.isSafeInteger(total) || total < 1 || total > PREVIEW_MAX) {
+        throw new RangeError(`预览把数必须是 1–${PREVIEW_MAX} 的整数`);
+    }
+    let redSeed = requirePositiveInteger(Number(startRedSeed), 'RedSeeds[5707]');
+    const rows = [];
+    for (let index = 1; index <= total; index++) {
+        const created = createJianwangBlankFromRedSeed(redSeed);
+        rows.push({ index, ...created });
+        redSeed = created.redSeedAfter;
+    }
+    return rows;
+}
+
+function jianwangShatterRouteId(equip) {
+    const routeId = JIANWANG_SHATTER_ROUTE_IDS[Number(equip?.id)];
+    if (!routeId) throw new TypeError('只有90级专武或100级神兵可以碎剑重铸');
+    return routeId;
+}
+
+function predictJianwangShatterRebuild(equip, action, redSeed) {
+    if (!equip || !isJianwangSword(equip)) throw new TypeError('请选择剑王阁实物或虛擬劍胚');
+    const id = Number(equip.id);
+    const isNinety = action === JIANWANG_SHATTER_90 && JIANWANG_LEVEL_90_IDS.has(id);
+    const isHundred = action === JIANWANG_SHATTER_100 && JIANWANG_LEVEL_100_IDS.has(id);
+    if (!isNinety && !isHundred) {
+        throw new RangeError(action === JIANWANG_SHATTER_90
+            ? '90级碎剑只能用于5710～5713'
+            : '100级碎神兵只能用于5714～5717');
+    }
+    const nextSwordIndex = Math.max(0, Math.floor(Number(equip._jianwangSwordIndex) || 0)) + 1;
+    const created = createJianwangBlankFromRedSeed(redSeed, nextSwordIndex);
+    const fromStage = jianwangStageName(equip);
+    return {
+        index: 1,
+        action,
+        routeId: jianwangShatterRouteId(equip),
+        fromId: id,
+        toId: JIANWANG_BLANK_ID,
+        fromName: fromStage,
+        toName: jianwangStageName(created.equip),
+        shatterLabel: isNinety ? '90级碎剑' : '100级碎神兵',
+        cost: '碎剑返还：剑胚6518×1、雪银3024×200、紫金3025×300、青金石2000×10、陨铁2020×2、贡献-500、碎剑计数+1；重新锻造：剑胚6518×1、雪银3024×200、青金石2000×10、贡献-500',
+        ...created,
+    };
+}
+
+function resolveJianwangCycleRouteId(equip, requestedRouteId = null) {
+    if (!equip || !isJianwangSword(equip)) throw new TypeError('请选择剑王阁剑胚或专武');
+    const id = Number(equip.id);
+    const fixedRouteId = JIANWANG_SHATTER_ROUTE_IDS[id];
+    if (fixedRouteId) return fixedRouteId;
+    if (![5707, 5708, 5709].includes(id)) throw new TypeError('当前剑王阁装备不能进入碎剑预览');
+    const routeId = Number(requestedRouteId);
+    if (!JIANWANG_LEVEL_90_IDS.has(routeId)) throw new TypeError('请选择90级专武路线');
+    return routeId;
+}
+
+function prepareJianwangCycleStart(equip, routeId, rule = currentJianwangRule()) {
+    let current = JSON.parse(JSON.stringify(equip));
+    const rows = [];
+    const targets = [];
+    if (Number(current.id) === 5707) targets.push(5708, 5709, routeId);
+    else if (Number(current.id) === 5708) targets.push(5709, routeId);
+    else if (Number(current.id) === 5709) targets.push(routeId);
+    for (const targetId of targets) {
+        const row = predictJianwangStateSequence(current, `grow:${targetId}`, 1, 0, 0, rule)[0];
+        current = JSON.parse(JSON.stringify(row.equip));
+        rows.push({ ...row, index: rows.length + 1 });
+    }
+    return { equip: current, rows };
+}
+
+function predictJianwangShatterCycle(equip, startRedSeed, count = 1, rule = currentJianwangRule(), requestedRouteId = null) {
+    if (!equip || !isJianwangSword(equip)) {
+        throw new TypeError('碎剑预览只能从剑王阁5707～5717实物或虛擬劍胚开始');
+    }
+    const total = Number(count);
+    if (!Number.isSafeInteger(total) || total < 1 || total > PREVIEW_MAX) {
+        throw new RangeError(`循环次数必须是 1–${PREVIEW_MAX} 的整数`);
+    }
+    const initial = JSON.parse(JSON.stringify(equip));
+    const routeId = resolveJianwangCycleRouteId(initial, requestedRouteId);
+    const prepared = prepareJianwangCycleStart(initial, routeId, rule);
+    let current = prepared.equip;
+    let redSeed = requirePositiveInteger(Number(startRedSeed), 'RedSeeds[5707]');
+    const initialId = Number(initial.id);
+    const entryNote = JIANWANG_LEVEL_100_IDS.has(initialId)
+        ? `${jianwangStageName(initial)}直接碎神兵进入第1轮`
+        : prepared.rows.length
+            ? `${jianwangStageName(initial)}先无保留升至${jianwangStageName(current)}后碎剑进入第1轮`
+            : `${jianwangStageName(initial)}直接碎剑进入第1轮`;
+    const pages = [];
+    for (let cycle = 1; cycle <= total; cycle++) {
+        const shatterAction = JIANWANG_LEVEL_100_IDS.has(Number(current.id))
+            ? JIANWANG_SHATTER_100
+            : JIANWANG_SHATTER_90;
+        const shatter = predictJianwangShatterRebuild(current, shatterAction, redSeed);
+        let stage = JSON.parse(JSON.stringify(shatter.equip));
+        const rows = [{
+            index: 1,
+            action: 'blank',
+            fromId: Number(current.id),
+            toId: JIANWANG_BLANK_ID,
+            fromName: jianwangStageName(current),
+            toName: jianwangStageName(stage),
+            seedBefore: Number(stage.CZSeed),
+            seedAfter: Number(stage.CZSeed),
+            base: stage.base || {},
+            exts: stage.exts || [],
+            kept: null,
+            cost: shatter.cost,
+            shatterLabel: shatter.shatterLabel,
+            equip: JSON.parse(JSON.stringify(stage)),
+            redSeedBefore: shatter.redSeedBefore,
+            redSeedAfter: shatter.redSeedAfter,
+        }];
+        const growActions = ['grow:5708', 'grow:5709', `grow:${routeId}`];
+        for (const action of growActions) {
+            const row = predictJianwangStateSequence(stage, action, 1, 0, 0, rule)[0];
+            stage = JSON.parse(JSON.stringify(row.equip));
+            rows.push({ ...row, index: rows.length + 1 });
+        }
+        const reforges = predictJianwangStateSequence(stage, 'reforge', JIANWANG_REFORGE_LIMIT, 0, 0, rule);
+        for (const row of reforges) {
+            stage = JSON.parse(JSON.stringify(row.equip));
+            rows.push({ ...row, index: rows.length + 1 });
+        }
+        pages.push({
+            cycle,
+            swordIndex: Number(shatter.equip._jianwangSwordIndex) || cycle,
+            routeId,
+            name: shatter.equip.name,
+            entryNote: cycle === 1 ? entryNote : '',
+            initialPreparation: cycle === 1 ? prepared.rows : [],
+            shatterLabel: shatter.shatterLabel,
+            blank: JSON.parse(JSON.stringify(shatter.equip)),
+            finalEquip: JSON.parse(JSON.stringify(stage)),
+            redSeedBefore: shatter.redSeedBefore,
+            redSeedAfter: shatter.redSeedAfter,
+            rows,
+        });
+        current = stage;
+        redSeed = shatter.redSeedAfter;
+    }
+    return pages;
+}
+
+function requireJianwangKeepIndex(equip, action, keepIndex) {
+    const index = Number(keepIndex) || 0;
+    const limit = jianwangKeepLimit(equip, action);
+    if (!Number.isSafeInteger(index) || index < 0 || index > limit) {
+        throw new RangeError(`保留槽位必须是 0–${limit} 的整数`);
+    }
+    return index;
+}
+
+function predictJianwangGrow(equip, targetId, keepIndex = 0, rule = currentJianwangRule()) {
+    if (!equip || !isJianwangSword(equip)) throw new TypeError('请选择剑王阁实物或虛擬劍胚');
+    if (!validJianwangCZSeed(equip)) throw new TypeError('所选实物缺少有效 CZSeed');
+    const fromId = Number(equip.id);
+    const target = Number(targetId);
+    const action = target === fromId ? 'reforge' : `grow:${target}`;
+    const allowed = target === fromId
+        ? JIANWANG_LEVEL_90_IDS.has(fromId)
+        : (JIANWANG_GROW_TARGETS[fromId] || []).includes(target);
+    if (!allowed) throw new RangeError(`不允许从 ${fromId} 成长到 ${target}`);
+    const index = requireJianwangKeepIndex(equip, action, keepIndex);
+    const generated = generateJianwangEquip(target, Number(equip.CZSeed), rule);
+    const exts = generated.exts.map(item => ({ prop: item.prop, value: item.value }));
+    if (index > 0) {
+        const kept = equip.exts[index - 1];
+        exts.splice(0, 1);
+        exts.unshift({ prop: kept.prop, value: kept.value });
+    }
+    const cfg = EQUIP_DATA.equipment[String(target)];
+    return {
+        ...JSON.parse(JSON.stringify(equip)),
+        id: target,
+        name: cfg.name,
+        need_lv: cfg.lv,
+        typ: cfg.type,
+        color: 6,
+        exp: target === fromId ? Number(equip.exp) || 0 : 0,
+        base: generated.base,
+        exts,
+        CZSeed: generated.seedAfter,
+    };
+}
+
+function predictJianwangAscend(equip, targetId) {
+    if (!equip || !JIANWANG_LEVEL_90_IDS.has(Number(equip.id))) {
+        throw new TypeError('只有存档中的90级剑王阁专武可以铸为100级神兵');
+    }
+    const target = Number(targetId);
+    if (JIANWANG_LEVEL_100_TARGETS[Number(equip.id)] !== target) {
+        throw new RangeError(`90级专武 ${equip.id} 不能转换为 ${target}`);
+    }
+    const cfg = EQUIP_DATA.equipment[String(target)];
+    return {
+        ...JSON.parse(JSON.stringify(equip)),
+        id: target,
+        name: cfg.name,
+        need_lv: cfg.lv,
+        typ: cfg.type,
+        color: 6,
+        exp: 0,
+        base: { ...(cfg.base || {}) },
+        exts: (equip.exts || []).slice(0, 6).map(item => ({ prop: item.prop, value: item.value })),
+        CZSeed: equip.CZSeed,
+    };
+}
+
+function predictJianwangStateSequence(equip, action, count = 1, keepIndex = 0, completedReforges = 0, rule = currentJianwangRule()) {
+    if (!equip) throw new TypeError('请选择剑王阁实物或虛擬劍胚');
+    const total = action === 'reforge' ? Number(count) : 1;
+    if (!Number.isSafeInteger(total) || total < 1 || total > PREVIEW_MAX) {
+        throw new RangeError(`预测次数必须是 1–${PREVIEW_MAX} 的整数`);
+    }
+    if (action === 'reforge') {
+        const completed = Math.max(0, Math.floor(Number(completedReforges) || 0));
+        const remaining = Math.max(0, JIANWANG_REFORGE_LIMIT - completed);
+        if (total > remaining) {
+            throw new RangeError(remaining > 0
+                ? `此流派已重铸 ${completed} 次，仅剩 ${remaining} 次可预览`
+                : `此流派已重铸 ${completed} 次，已达 ${JIANWANG_REFORGE_LIMIT} 次上限`);
+        }
+    }
+    let current = JSON.parse(JSON.stringify(equip));
+    const rows = [];
+    for (let index = 1; index <= total; index++) {
+        const before = current;
+        if (action === 'reforge') {
+            current = predictJianwangGrow(current, current.id, keepIndex, rule);
+        } else if (action.startsWith('grow:')) {
+            current = predictJianwangGrow(current, Number(action.split(':')[1]), keepIndex, rule);
+        } else if (action.startsWith('ascend:')) {
+            current = predictJianwangAscend(current, Number(action.split(':')[1]));
+        } else {
+            throw new RangeError(`不支持的剑王阁流程：${action}`);
+        }
+        const kept = Number(keepIndex) > 0 ? before.exts?.[Number(keepIndex) - 1] : null;
+        rows.push({
+            index,
+            action,
+            fromId: Number(before.id),
+            toId: Number(current.id),
+            fromName: jianwangStageName(before),
+            toName: jianwangStageName(current),
+            seedBefore: Number(before.CZSeed),
+            seedAfter: Number(current.CZSeed),
+            base: current.base || {},
+            exts: current.exts || [],
+            kept: kept ? { prop: kept.prop, value: kept.value } : null,
+            cost: action === 'reforge'
+                ? jianwangReforgeCost(Number(completedReforges) + index)
+                : jianwangCostText(before, action, index),
+            equip: JSON.parse(JSON.stringify(current)),
+        });
+    }
+    return rows;
+}
+
+function requireSpecialMaterial(material, equip) {
+    if (!material || typeof material !== 'object' || Array.isArray(material)) {
+        throw new TypeError('特殊材料必须是对象');
+    }
+    if (!Number.isSafeInteger(material.id) || typeof material.name !== 'string' || !material.name) {
+        throw new TypeError('特殊材料缺少有效的 id 或名称');
+    }
+    if (!specialMaterialSupportsEquip(material, equip)) {
+        throw new RangeError(`特殊材料「${material.name}」不适用于装备「${equip.name}」`);
+    }
+    if (!Array.isArray(material.prop) || !material.prop.length) {
+        throw new TypeError(`特殊材料「${material.name}」缺少属性权重`);
+    }
+    if (!material.lvs || typeof material.lvs !== 'object' || Array.isArray(material.lvs)) {
+        throw new TypeError(`特殊材料「${material.name}」缺少等级数值`);
+    }
+    return material;
+}
+
+function specialMaterialParts(material) {
+    if (!Array.isArray(material.part)) {
+        throw new TypeError(`特殊材料「${material.name}」的适用部位格式无效`);
+    }
+    if (material.part.length) return material.part;
+    return SPECIAL_MATERIAL_PART_OVERRIDES[String(material.id)] || [];
+}
+
+function specialMaterialSupportsEquip(material, equip) {
+    const equipType = equip && (equip.typ != null ? equip.typ : equip.type);
+    return specialMaterialParts(material).includes(equipType);
+}
+
+function clearMakeAdvanceNotice() {
+    makeAdvanceNotice = null;
+    renderMakeAdvanceNotice();
+}
+
+function setMakeAdvanceNotice(result, crafted, advancedCount) {
+    const n = Math.max(1, Math.floor(Number(advancedCount) || 1));
+    const rawColor = Number(result?.color);
+    const color = Number.isSafeInteger(rawColor) && rawColor >= 1 && rawColor <= 6 ? rawColor : 1;
+    const rawOnlyId = Number(crafted?.only_id);
+    makeAdvanceNotice = {
+        advancedCount: n,
+        result: {
+            name: result?.name || String(result?.equip_id || '装备'),
+            color,
+            base: result?.base || {},
+            exts: result?.exts || [],
+            region: result?.region || [],
+            special: result?.special || [],
+            seed_kind: result?.seed_kind || 'normal',
+            pity: !!result?.pity,
+        },
+        onlyId: Number.isSafeInteger(rawOnlyId) && rawOnlyId > 0 ? rawOnlyId : null,
+        mark: crafted?._mark || '',
+    };
+    renderMakeAdvanceNotice();
+}
+
+function renderMakeAdvanceNotice() {
+    const box = document.getElementById('makeAdvanceNotice');
+    if (!box) return;
+    if (!makeAdvanceNotice || currentTab !== 'make') {
+        box.hidden = true;
+        box.innerHTML = '';
+        return;
+    }
+    const { advancedCount: n, result, onlyId, mark } = makeAdvanceNotice;
+    const color = COLOR_NAMES[result.color] || result.color;
+    const seed = result.pity ? '保底' : (result.seed_kind === 'lucky' ? '幸运' : '普通');
+    const middle = n > 1 ? `前 ${n - 1} 件只推进、未加入背包；` : '';
+    const bag = onlyId ? `已加入模拟背包 #${onlyId}` : '已完成推进';
+    const markText = mark ? ` · 标记「${escapeHtml(mark)}」` : '';
+    box.innerHTML = `<div class="make-advance-notice-head">
+        <span class="make-advance-notice-title">本次推进结果：${escapeHtml(result.name)} · <span class="color-${result.color}">${escapeHtml(String(color))}</span> · ${escapeHtml(seed)}${markText}</span>
+        <span class="make-advance-notice-sequence">${middle}第 ${n} 件${bag}；下表从下一件重新编号</span>
+    </div>
+    <div class="make-advance-notice-details">
+        <div class="make-advance-notice-detail"><strong>基础属性</strong>${formatBase(result.base)}</div>
+        <div class="make-advance-notice-detail"><strong>蓝/紫词条</strong>${formatProps(result.exts)}</div>
+        <div class="make-advance-notice-detail"><strong>地区附加</strong>${formatProps(result.region)}</div>
+        <div class="make-advance-notice-detail"><strong>特殊材料</strong>${formatProps(result.special)}</div>
+    </div>`;
+    box.hidden = false;
+}
+
+function specialMaterialProperties(material) {
+    return material.prop.map((entry, index) => {
+        if (!Array.isArray(entry) || entry.length < 2 || typeof entry[0] !== 'string' || !entry[0]) {
+            throw new TypeError(`特殊材料「${material.name}」第 ${index + 1} 项属性格式无效`);
+        }
+        if (!Number.isSafeInteger(entry[1]) || entry[1] < 0) {
+            throw new TypeError(`特殊材料「${material.name}」第 ${index + 1} 项属性权重无效`);
+        }
+        return { prop: entry[0], weight: entry[1] };
+    });
+}
+
+function specialMaterialBaseValue(material, equipLevel, propertyIndex) {
+    const level = requirePositiveInteger(equipLevel, '装备等级');
+    const raw = material.lvs[`lv${level}`];
+    if (raw === undefined) {
+        throw new RangeError(`特殊材料「${material.name}」没有 lv${level} 数值`);
+    }
+    const value = Array.isArray(raw) ? raw[propertyIndex] : raw;
+    if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0) {
+        throw new TypeError(`特殊材料「${material.name}」的 lv${level} 第 ${propertyIndex + 1} 项数值无效`);
+    }
+    return value;
+}
+
+function scaleSpecialMaterialValue(baseValue, factor) {
+    if (baseValue < 1) return baseValue * factor / 100;
+    return Math.max(1, Math.floor(baseValue * factor / 100));
+}
+
+function predictSpecialAttachSequence(equip, material, count) {
+    if (!equip || typeof equip !== 'object' || Array.isArray(equip)) {
+        throw new TypeError('目标装备必须是对象');
+    }
+    const validCount = requirePositiveInteger(count, '预测次数');
+    const validMaterial = requireSpecialMaterial(material, equip);
+    const properties = specialMaterialProperties(validMaterial);
+    let seed = requirePositiveInteger(equip.MJSeed, `装备「${equip.name}」的 MJSeed`);
+    const items = [];
+    for (let index = 1; index <= validCount; index += 1) {
+        const seedBefore = seed;
+        const propertyDraw = drawWeightedIndex(seed, properties.map(item => item.weight), '材料属性');
+        seed = propertyDraw.seed;
+        const qualityDraw = drawWeightedIndex(seed, SPECIAL_QUALITY_WEIGHTS, '材料品质');
+        seed = qualityDraw.seed;
+        const range = SPECIAL_QUALITY_RANGES[qualityDraw.index];
+        const factorDraw = drawWhaleInt(seed, range[1] - range[0] + 1);
+        seed = factorDraw.seed;
+        const factor = range[0] + factorDraw.value - 1;
+        const selected = properties[propertyDraw.index];
+        const baseValue = specialMaterialBaseValue(validMaterial, equip.need_lv, propertyDraw.index);
+        items.push({
+            index,
+            equipName: equip.name,
+            materialName: validMaterial.name,
+            prop: selected.prop,
+            value: scaleSpecialMaterialValue(baseValue, factor),
+            factor,
+            factorMin: range[0],
+            factorMax: range[1],
+            seedBefore,
+            seedAfter: seed,
+        });
+    }
+    const maxValue = Math.max(...items.map(item => item.value));
+    return items.map(item => ({ ...item, isBest: item.value === maxValue }));
+}
+
+function renderSpecialAttachPage() {
+    const body = document.getElementById('previewBody');
+    if (!body) return;
+    const items = tablePager.specialAttachItems || [];
+    const pageSize = getPreviewPageSize();
+    const start = (tablePager.page - 1) * pageSize;
+    const slice = items.slice(start, start + pageSize);
+    if (!slice.length) {
+        body.innerHTML = '<tr><td colspan="6" class="empty-row">无预测记录</td></tr>';
+        updatePreviewPager(items.length);
+        return;
+    }
+    body.innerHTML = slice.map(item => `<tr class="${item.isBest ? 'special-attach-best' : ''}">
+        <td>${item.index}</td>
+        <td>${escapeHtml(item.equipName)}</td>
+        <td>${escapeHtml(item.materialName)}</td>
+        <td class="special-attach-value">${escapeHtml(propLabel(item.prop))}+${formatPropValue(item.prop, item.value)}</td>
+        <td>${item.factor}% · 区间 ${item.factorMin}–${item.factorMax}%${item.isBest ? ' · 最高' : ''}</td>
+        <td>${item.seedBefore} → ${item.seedAfter}</td>
+    </tr>`).join('');
+    updatePreviewPager(items.length);
+}
+
+function renderSpecialAttachPreview(items) {
+    setSpecialAttachHead();
+    const meta = document.getElementById('previewMeta');
+    const makeFilter = document.getElementById('makeFilterBar');
+    const xilianFilter = document.getElementById('xilianFilterBar');
+    if (makeFilter) makeFilter.hidden = true;
+    if (xilianFilter) xilianFilter.hidden = true;
+    const bestIndexes = items.filter(item => item.isBest).map(item => item.index).join('、');
+    tablePager.mode = 'specialAttach';
+    tablePager.page = 1;
+    tablePager.specialAttachItems = items;
+    if (meta) meta.textContent = `连续附加 ${items.length} 次 · 最高值位于第 ${bestIndexes} 次 · 只读预测，不推进 MJSeed`;
+    renderSpecialAttachPage();
+}
+
+function setJianwangCycleHead() {
+    setPreviewTableKind('jianwang-state');
+    document.getElementById('previewHead').innerHTML = `<tr>
+        <th>#</th><th>结果</th><th>基础属性</th><th>副属性</th><th>种子 / 消耗</th>
+    </tr>`;
+}
+
+function renderJianwangCyclePage() {
+    const body = document.getElementById('previewBody');
+    const meta = document.getElementById('previewMeta');
+    const pages = tablePager.jianwangCyclePages || [];
+    if (!body) return;
+    const page = pages[tablePager.page - 1];
+    if (!page) {
+        body.innerHTML = '<tr><td colspan="5" class="empty-row">无碎剑循环记录</td></tr>';
+        if (meta) meta.textContent = '';
+        updateJianwangCyclePager(0, 0);
+        return;
+    }
+    setJianwangCycleHead();
+    const blankName = page.blank?.name || '剑胚';
+    if (meta) {
+        const entryText = page.entryNote ? ` · ${page.entryNote}` : '';
+        meta.textContent = `模拟背包 · ${blankName} · 第 ${page.swordIndex} 把剑 · 碎剑预览${entryText} · 本页含60→90与10次不保留重铸 · 预览不推进状态`;
+    }
+    body.innerHTML = page.rows.map((item, rowIndex) => {
+        const blank = item.action === 'blank';
+        const fromCfg = EQUIP_DATA.equipment[String(item.fromId)] || {};
+        const toCfg = EQUIP_DATA.equipment[String(item.toId)] || {};
+        const fromLevel = Number(fromCfg.lv) || '?';
+        const toLevel = Number(toCfg.lv) || '?';
+        const resultName = escapeHtml(toCfg.name || item.toName || item.equip?.name || '剑胚');
+        let resultLabel;
+        if (blank) {
+            resultLabel = `${item.shatterLabel || '碎剑'} → ${toLevel}级 · ${resultName}`;
+        } else if (item.action === 'reforge') {
+            const reforgeIndex = rowIndex - 3;
+            resultLabel = `${toLevel}级重铸 第${reforgeIndex}次 · ${resultName}`;
+        } else {
+            resultLabel = `${fromLevel}→${toLevel} · ${resultName}`;
+        }
+        const base = escapeHtml(formatBase(item.base || item.equip?.base || {}));
+        const props = (item.exts || item.equip?.exts || []).length
+            ? (item.exts || item.equip.exts).map(prop => `<span class="jianwang-prop-token">${escapeHtml(propLabel(prop.prop))}+${formatPropValue(prop.prop, prop.value)}</span>`).join('')
+            : '<span class="muted">无</span>';
+        const seedText = blank
+            ? `RedSeed ${item.redSeedBefore} → ${item.redSeedAfter}<br>CZSeed ${item.seedAfter}`
+            : `CZSeed ${item.seedBefore} → ${item.seedAfter}${item.seedBefore === item.seedAfter ? ' · 不推进' : ''}`;
+        const costs = String(item.cost || '—').split(/[、；]/)
+            .filter(Boolean)
+            .map(cost => `<span class="jianwang-cost-token">${escapeHtml(cost)}</span>`).join('');
+        return `<tr>
+            <td>${item.index}</td>
+            <td class="jianwang-result-cell"><strong>${resultLabel}</strong></td>
+            <td>${base}</td>
+            <td><div class="jianwang-token-list">${props}</div></td>
+            <td class="jianwang-result-cell"><span class="jianwang-seed">${seedText}</span><div class="jianwang-token-list jianwang-cost-list">${costs}</div></td>
+        </tr>`;
+    }).join('');
+    updateJianwangCyclePager(pages.length, page.swordIndex);
+}
+
+function renderJianwangCyclePreview(pages) {
+    const makeFilter = document.getElementById('makeFilterBar');
+    const xilianFilter = document.getElementById('xilianFilterBar');
+    if (makeFilter) makeFilter.hidden = true;
+    if (xilianFilter) xilianFilter.hidden = true;
+    tablePager.mode = 'jianwang';
+    tablePager.page = 1;
+    tablePager.jianwangKind = 'cycle';
+    tablePager.jianwangItems = [];
+    tablePager.jianwangCyclePages = Array.isArray(pages) ? pages : [];
+    renderJianwangCyclePage();
+}
+
+function renderJianwangPage() {
+    if (tablePager.jianwangKind === 'cycle') {
+        renderJianwangCyclePage();
+        return;
+    }
+    const body = document.getElementById('previewBody');
+    if (!body) return;
+    const items = tablePager.jianwangItems || [];
+    const pageSize = getPreviewPageSize();
+    const start = (tablePager.page - 1) * pageSize;
+    const slice = items.slice(start, start + pageSize);
+    const blankKind = tablePager.jianwangKind === 'blanks' || tablePager.jianwangKind === 'shatter';
+    if (!slice.length) {
+        const columns = tablePager.jianwangKind === 'mangjing' ? 6 : (blankKind ? 6 : 4);
+        body.innerHTML = `<tr><td colspan="${columns}" class="empty-row">无专武序列记录</td></tr>`;
+        updatePreviewPager(items.length);
+        return;
+    }
+    if (tablePager.jianwangKind === 'mangjing') {
+        body.innerHTML = slice.map(item => `<tr class="${item.isBest ? 'jianwang-best' : ''}">
+            <td>${item.index}</td>
+            <td>${escapeHtml(item.equipName)}</td>
+            <td>${escapeHtml(item.materialName)}</td>
+            <td class="special-attach-value">${escapeHtml(propLabel(item.prop))}+${formatPropValue(item.prop, item.value)}</td>
+            <td>${item.factor}% · 区间 ${item.factorMin}–${item.factorMax}%${item.isBest ? ' · 最高' : ''}</td>
+            <td>${item.seedBefore} → ${item.seedAfter}</td>
+        </tr>`).join('');
+    } else if (blankKind) {
+        body.innerHTML = slice.map(item => {
+            const resultLabel = item.shatterLabel
+                ? `${escapeHtml(item.shatterLabel)} → 60级剑胚`
+                : `第 ${item.index} 把后续60级剑胚`;
+            const base = escapeHtml(formatBase(item.base));
+            const props = (item.exts || []).length
+                ? item.exts.map(prop => `<span class="jianwang-prop-token">${escapeHtml(propLabel(prop.prop))}+${formatPropValue(prop.prop, prop.value)}</span>`).join('')
+                : '<span class="muted">无</span>';
+            const seeds = `CZSeed ${item.CZSeed}<br>MJSeed ${item.MJSeed}<br>S ${item.S}`;
+            const redSeed = `${item.redSeedBefore} → ${item.redSeedAfter}`;
+            const resources = item.cost
+                ? String(item.cost).split('；').map(part => `<span class="jianwang-cost-token">${escapeHtml(part)}</span>`).join('')
+                : '<span class="muted">只读预览</span>';
+            return `<tr>
+                <td>${item.index}</td>
+                <td class="jianwang-result-cell"><strong>${resultLabel}</strong><span class="jianwang-seed">${item.shatterLabel ? escapeHtml(item.fromName) : '源码首次生成规则'}</span></td>
+                <td>${base}</td>
+                <td><div class="jianwang-token-list">${props}</div></td>
+                <td class="jianwang-result-cell"><span class="jianwang-seed">${seeds}</span></td>
+                <td class="jianwang-result-cell"><span class="jianwang-seed">RedSeed ${redSeed}</span><div class="jianwang-token-list jianwang-cost-list">${resources}</div></td>
+            </tr>`;
+        }).join('');
+    } else {
+        body.innerHTML = slice.map(item => {
+            const kept = item.kept
+                ? `保留 ${propLabel(item.kept.prop)}+${formatPropValue(item.kept.prop, item.kept.value)}`
+                : (item.action.startsWith('ascend:') ? '固定保留现有六条' : '不保留旧词条');
+            const fromCfg = EQUIP_DATA.equipment[String(item.fromId)] || {};
+            const toCfg = EQUIP_DATA.equipment[String(item.toId)] || {};
+            const fromLevel = Number(fromCfg.lv) || '?';
+            const toLevel = Number(toCfg.lv) || '?';
+            const resultName = escapeHtml(toCfg.name || item.toName);
+            const resultLabel = item.action === 'reforge'
+                ? `${toLevel}级重铸 · ${resultName}`
+                : `${fromLevel}→${toLevel} · ${resultName}`;
+            const seedStatus = item.seedBefore === item.seedAfter ? ' · 不推进' : '';
+            const props = (item.exts || []).length
+                ? item.exts.map(prop => `<span class="jianwang-prop-token">${escapeHtml(propLabel(prop.prop))}+${formatPropValue(prop.prop, prop.value)}</span>`).join('')
+                : '<span class="muted">无</span>';
+            const costs = String(item.cost || '—').split('、')
+                .map(cost => `<span class="jianwang-cost-token">${escapeHtml(cost)}</span>`).join('');
+            return `<tr>
+                <td>${item.index}</td>
+                <td class="jianwang-result-cell"><strong>${resultLabel}</strong><span class="jianwang-seed">CZSeed ${item.seedBefore} → ${item.seedAfter}${seedStatus}</span></td>
+                <td><div class="jianwang-token-list">${props}</div></td>
+                <td><span class="jianwang-keep">${escapeHtml(kept)}</span><div class="jianwang-token-list jianwang-cost-list">${costs}</div></td>
+            </tr>`;
+        }).join('');
+    }
+    updatePreviewPager(items.length);
+}
+
+function setJianwangStateHead() {
+    setPreviewTableKind('jianwang-state');
+    document.getElementById('previewHead').innerHTML = `<tr>
+        <th>#</th><th>结果</th><th>副属性</th><th>选择与消耗</th>
+    </tr>`;
+}
+
+function setJianwangBlankHead() {
+    setPreviewTableKind('jianwang-state');
+    document.getElementById('previewHead').innerHTML = `<tr>
+        <th>#</th><th>结果</th><th>基础属性</th><th>副属性</th><th>实例种子</th><th>RedSeed / 资源</th>
+    </tr>`;
+}
+
+function renderJianwangPreview(items, kind = 'state') {
+    if (kind === 'mangjing') setSpecialAttachHead();
+    else if (kind === 'blanks' || kind === 'shatter') setJianwangBlankHead();
+    else setJianwangStateHead();
+    const meta = document.getElementById('previewMeta');
+    const makeFilter = document.getElementById('makeFilterBar');
+    const xilianFilter = document.getElementById('xilianFilterBar');
+    if (makeFilter) makeFilter.hidden = true;
+    if (xilianFilter) xilianFilter.hidden = true;
+    tablePager.mode = 'jianwang';
+    tablePager.page = 1;
+    tablePager.jianwangItems = items;
+    tablePager.jianwangKind = kind;
+    if (meta) {
+        if (kind === 'mangjing') {
+            const bestIndexes = items.filter(item => item.isBest).map(item => item.index).join('、');
+            meta.textContent = `剑王阁芒晶洗练 ${items.length} 次 · 最高值位于第 ${bestIndexes} 次 · 每次芒晶×10 · 只读预测`;
+        } else if (kind === 'blanks') {
+            meta.textContent = `后续60级剑胚 ${items.length} 把 · 从当前 RedSeeds[5707] 顺序推演 · 预览不推进页面内状态`;
+        } else if (kind === 'shatter') {
+            meta.textContent = `${items[0]?.shatterLabel || '碎剑'} → 重铸下一把60级剑胚 · 预览不推进页面内状态`;
+        } else {
+            meta.textContent = `从所选剑王阁起点起步 · ${items.length} 步 · 预览不推进页面内状态`;
+        }
+    }
+    renderJianwangPage();
+}
+
+
+/* 词条列表 → 纯文本（「闪避+114 招架+59」），给详情标签用 */
+function equipPropText(list) {
+    if (!list || !list.length) return '';
+    return list
+        .map(p => `${propLabel(p.prop)}+${formatPropValue(p.prop, p.value)}`)
+        .join(' ');
+}
+
+/*
+ * 「打造信息」标签行：把打造页表格那一行的信息（第几件 / 品质 / 基础 / 蓝词条 / 地区附加 / 红词条 / 种子）
+ * 带到"选装备"的地方，方便直接挑。
+ * 没有的项一律不输出（没附加就不写、不是保底就不写）。
+ * 注意：_make_* 字段只有「模拟打造」的装备才有；已装备 / 存档里的装备只有 exts / specials。
+ */
+function equipMakeDetailHtml(e) {
+    if (!e) return '';
+    const chips = [];
+    if (e._make_index) chips.push(`第 ${e._make_index} 件`);
+    const color = COLOR_NAMES[e.color] || e.color;
+    if (color) chips.push(String(color));
+    const baseText = formatBase(e._make_base);
+    if (baseText !== '—') chips.push(`基础 ${baseText}`);
+    const extText = equipPropText(e.exts);
+    if (extText) chips.push(`蓝词条 ${extText}`);
+    // 角色基础属性（臂力 / 根骨 / 身法 / 内息）来自 EnMans，单独成组，不跟附加属性混在一起
+    const mansText = equipPropText(e.mans);
+    if (mansText) chips.push(`属性 ${mansText}`);
+    const regionText = equipPropText(e._make_region);
+    if (regionText) chips.push(`（${regionText}）`);
+    const specialList = (Array.isArray(e.specials) && e.specials.length) ? e.specials : e._make_special;
+    const specialText = equipPropText(specialList);
+    if (specialText) chips.push(`红词条 ${specialText}`);
+    if (e._make_pity) chips.push('保底');
+    else if (e._make_seedKind === 'lucky') chips.push('幸运');
+    if (!chips.length) return '';
+    return `<div class="make-detail">${chips
+        .map(c => `<span class="md-chip">${escapeHtml(c)}</span>`)
+        .join('')}</div>`;
+}
+
+function equipOptionLabel(e, mode) {
+    // 带上"所属"：已装备的显示穿在谁身上（主角 / 随从名），未装备的显示它在哪（背包 / 仓库）
+    const owner = e._source || '';
+    const wear = e._crafted
+        ? '模拟打造'
+        : (e._equipped ? `已装备 · ${owner || '未知'}` : (owner || '未装备'));
+    const color = COLOR_NAMES[e.color] || e.color;
+    const mark = e._mark ? `「${e._mark}」` : '';
+    if (mode === 'strong') {
+        return `${mark}${e.name} · 淬炼${e.level} · LvProp${e.lv_prop} · ${wear}`;
+    }
+    if (mode === 'shenglian') {
+        const cfg = EQUIP_DATA.equipment[String(e.id)] || {};
+        const next = EQUIP_DATA.equipment[String(cfg.equ_next)] || {};
+        const typ = TYPE_NAMES[e.typ] || e.typ;
+        return `${mark}${e.name} · ${e.need_lv}→${next.lv || 100} · ${color} · ${typ} · ${wear}`;
+    }
+    return `${mark}${e.name} · ${e.need_lv}级 · ${color} · 词条${e.exts.length} · ${wear}`;
+}
+
+function canPredictSpecialAttach(equip) {
+    return Number.isSafeInteger(equip.MJSeed)
+        && equip.MJSeed > 0
+        && Object.values(EQUIP_DATA.special).some(material => specialMaterialSupportsEquip(material, equip));
+}
+
+function specialAttachEquipLabel(equip) {
+    const source = equip._crafted ? '模拟打造' : (equip._equipped ? equip._source : '未装备');
+    const base = equip.exts.length
+        ? equip.exts.map(item => `${propLabel(item.prop)}+${formatPropValue(item.prop, item.value)}`).join(' / ')
+        : '无基础词条';
+    const current = equip.specials.length
+        ? equip.specials.map(item => `${propLabel(item.prop)}+${formatPropValue(item.prop, item.value)}`).join(' / ')
+        : '当前无红词条';
+    return `${source} · ${equip.name} · ${base} · ${current} · #${equip.only_id}`;
+}
+
+function specialMaterialsForEquip(equip) {
+    return Object.values(EQUIP_DATA.special)
+        .filter(material => specialMaterialSupportsEquip(material, equip))
+        .sort((left, right) => left.id - right.id);
+}
+
+function fillSpecialAttachMaterialSelect(preserveSelection) {
+    const equipSelect = document.getElementById('specialAttachEquipSelect');
+    const materialSelect = document.getElementById('specialAttachMaterialSelect');
+    if (!equipSelect || !materialSelect) return;
+    const previous = preserveSelection ? materialSelect.value : '';
+    const equip = saveEquips.find(item => runtimeKey(item) === equipSelect.value);
+    materialSelect.innerHTML = '';
+    if (!equip) {
+        materialSelect.innerHTML = '<option value="">（请先选择可预测装备）</option>';
+        return;
+    }
+    const materials = specialMaterialsForEquip(equip);
+    for (const material of materials) {
+        const option = document.createElement('option');
+        option.value = String(material.id);
+        option.textContent = material.name;
+        materialSelect.appendChild(option);
+    }
+    if (previous && [...materialSelect.options].some(option => option.value === previous)) {
+        materialSelect.value = previous;
+    }
+}
+
+function fillSpecialAttachEquipSelect(preserveSelection) {
+    const select = document.getElementById('specialAttachEquipSelect');
+    if (!select) return;
+    const previous = preserveSelection ? select.value : '';
+    const equips = saveEquips.filter(canPredictSpecialAttach);
+    select.innerHTML = '';
+    if (!equips.length) {
+        select.innerHTML = '<option value="">（没有带有效 MJSeed 的适用装备）</option>';
+    } else {
+        for (const equip of equips) {
+            const option = document.createElement('option');
+            option.value = runtimeKey(equip);
+            option.textContent = specialAttachEquipLabel(equip);
+            select.appendChild(option);
+        }
+        if (previous && [...select.options].some(option => option.value === previous)) {
+            select.value = previous;
+        }
+    }
+    fillSpecialAttachMaterialSelect(preserveSelection);
+    updateSpecialAttachHint();
+}
+
+function updateSpecialAttachHint() {
+    const hint = document.getElementById('specialAttachHint');
+    const equipSelect = document.getElementById('specialAttachEquipSelect');
+    const materialSelect = document.getElementById('specialAttachMaterialSelect');
+    if (!hint || !equipSelect || !materialSelect) return;
+    const equip = saveEquips.find(item => runtimeKey(item) === equipSelect.value);
+    const material = EQUIP_DATA.special[String(materialSelect.value)];
+    if (!equip || !material) {
+        hint.textContent = '导入存档后选择同一件装备和材料，预测连续覆盖红词条的结果';
+        return;
+    }
+    const current = equip.specials.length
+        ? equip.specials.map(item => `${propLabel(item.prop)}+${formatPropValue(item.prop, item.value)}`).join(' / ')
+        : '无';
+    hint.textContent = `当前红词条：${current} · 起始 MJSeed=${equip.MJSeed} · 预测不会修改存档或种子`;
+}
+
+function isJianwangSword(equip) {
+    return !!equip && JIANWANG_SWORD_IDS.has(Number(equip.id));
+}
+
+function collectJianwangSwords() {
+    return saveEquips
+        .filter(isJianwangSword)
+        .sort((a, b) => Number(a.id) - Number(b.id) || String(a._source).localeCompare(String(b._source), 'zh'));
+}
+
+function validJianwangCZSeed(equip) {
+    return isJianwangSword(equip)
+        && Number.isSafeInteger(Number(equip.CZSeed))
+        && Number(equip.CZSeed) > 0;
+}
+
+function canPredictJianwangMangjing(equip) {
+    return isJianwangSword(equip)
+        && JIANWANG_LEVEL_100_IDS.has(Number(equip.id))
+        && Number(equip.color) === 6
+        && Array.isArray(equip.specials)
+        && equip.specials.length > 0
+        && Number.isSafeInteger(equip.MJSeed)
+        && equip.MJSeed > 0;
+}
+
+function jianwangStageName(equip) {
+    const cfg = EQUIP_DATA.equipment[String(equip?.id)] || {};
+    const lv = Number(cfg.lv) || Number(equip?.need_lv) || 0;
+    if (Number(equip?.id) === 5707) return '60级剑胚';
+    if (Number(equip?.id) === 5708) return '70级剑胚';
+    if (Number(equip?.id) === 5709) return '80级剑胚';
+    if (JIANWANG_LEVEL_90_IDS.has(Number(equip?.id))) return `90级专武 · ${cfg.name || equip.name}`;
+    if (JIANWANG_LEVEL_100_IDS.has(Number(equip?.id))) return `100级神兵 · ${cfg.name || equip.name}`;
+    return `${lv}级`;
+}
+
+function jianwangSwordLabel(equip) {
+    const key = runtimeKey(equip);
+    const current = getRuntimeEquip(key) || equip;
+    const seed = JIANWANG_LEVEL_100_IDS.has(Number(current.id))
+        ? `MJSeed ${current.MJSeed || '无效'}`
+        : `CZSeed ${current.CZSeed || '无效'}`;
+    if (current._jianwangVirtualFirst) {
+        const name = current.name || EQUIP_DATA.equipment[String(current.id)]?.name || jianwangStageName(current);
+        return `虛擬劍胚 · ${name} · 初始劍胚 · ${seed}`;
+    }
+    if (current._jianwangRebuilt) {
+        const swordIndex = Math.max(1, Math.floor(Number(current._jianwangSwordIndex) || 1));
+        const name = current.name || EQUIP_DATA.equipment[String(current.id)]?.name || jianwangStageName(current);
+        return `模拟背包 · ${name} · 第 ${swordIndex} 把剑`;
+    }
+    return `${current._source || equip._source || '未知来源'} · ${jianwangStageName(current)} · #${equip.only_id || '无OnlyID'} · ${seed}`;
+}
+
+function jianwangActionOptions(equip) {
+    if (!equip) return [];
+    const id = Number(equip.id);
+    if (JIANWANG_GROW_TARGETS[id]) {
+        return JIANWANG_GROW_TARGETS[id].map(targetId => ({
+            value: `grow:${targetId}`,
+            label: `${jianwangStageName(equip)} → ${jianwangStageName({ id: targetId })}`,
+        }));
+    }
+    if (JIANWANG_LEVEL_90_IDS.has(id)) {
+        return [
+            { value: 'reforge', label: `重铸 ${jianwangStageName(equip)}` },
+            { value: `ascend:${JIANWANG_LEVEL_100_TARGETS[id]}`, label: `铸为100级神兵（固定保留六条）` },
+            { value: JIANWANG_SHATTER_90, label: '90级碎剑 → 重铸下一把60级剑胚' },
+        ];
+    }
+    if (JIANWANG_LEVEL_100_IDS.has(id)) {
+        return [
+            { value: 'mangjing', label: '查看芒晶洗练序列' },
+            { value: JIANWANG_SHATTER_100, label: '100级碎神兵 → 重铸下一把60级剑胚' },
+        ];
+    }
+    return [];
+}
+
+function jianwangKeepLimit(equip, action) {
+    if (!equip || !action) return 0;
+    if (action === 'reforge') return Math.min(4, equip.exts?.length || 0);
+    if (action.startsWith('grow:')) {
+        const byId = { 5707: 1, 5708: 2, 5709: 3 };
+        return Math.min(byId[Number(equip.id)] || 0, equip.exts?.length || 0);
+    }
+    return 0;
+}
+
+function fillJianwangActionSelect(preserveSelection = true) {
+    const equipSelect = document.getElementById('jianwangEquipSelect');
+    const actionSelect = document.getElementById('jianwangActionSelect');
+    if (!equipSelect || !actionSelect) return;
+    const previous = preserveSelection ? actionSelect.value : '';
+    const base = findEquipByRuntimeKey(equipSelect.value);
+    const equip = base ? (getRuntimeEquip(runtimeKey(base)) || base) : null;
+    const actions = jianwangActionOptions(equip);
+    actionSelect.innerHTML = '';
+    if (!actions.length) {
+        actionSelect.innerHTML = '<option value="">（当前起点没有可用流程）</option>';
+    } else {
+        for (const action of actions) {
+            const option = document.createElement('option');
+            option.value = action.value;
+            option.textContent = action.label;
+            actionSelect.appendChild(option);
+        }
+        if (previous && [...actionSelect.options].some(option => option.value === previous)) {
+            actionSelect.value = previous;
+        }
+    }
+    fillJianwangKeepSelect(preserveSelection);
+    fillJianwangMaterialSelect(preserveSelection);
+    updateJianwangControls();
+}
+
+function fillJianwangCycleRouteSelect(preserveSelection = true) {
+    const routeSelect = document.getElementById('jianwangCycleRouteSelect');
+    const equipSelect = document.getElementById('jianwangEquipSelect');
+    if (!routeSelect || !equipSelect) return;
+    const previous = preserveSelection ? routeSelect.value : '';
+    const base = findEquipByRuntimeKey(equipSelect.value);
+    const equip = base ? (getRuntimeEquip(runtimeKey(base)) || base) : null;
+    const fixedRouteId = equip ? JIANWANG_SHATTER_ROUTE_IDS[Number(equip.id)] : null;
+    routeSelect.innerHTML = '';
+    if (!equip) {
+        routeSelect.innerHTML = '<option value="">（请先选择剑王阁起点）</option>';
+        routeSelect.disabled = true;
+        return;
+    }
+    if (fixedRouteId) {
+        const option = document.createElement('option');
+        option.value = String(fixedRouteId);
+        option.textContent = jianwangStageName({ id: fixedRouteId });
+        routeSelect.appendChild(option);
+        routeSelect.disabled = true;
+        return;
+    }
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = '请选择90级专武路线';
+    routeSelect.appendChild(placeholder);
+    for (const routeId of JIANWANG_GROW_TARGETS[5709]) {
+        const option = document.createElement('option');
+        option.value = String(routeId);
+        option.textContent = jianwangStageName({ id: routeId });
+        routeSelect.appendChild(option);
+    }
+    routeSelect.disabled = false;
+    if (previous && [...routeSelect.options].some(option => option.value === previous)) {
+        routeSelect.value = previous;
+    }
+}
+
+function fillJianwangKeepSelect(preserveSelection = true) {
+    const equipSelect = document.getElementById('jianwangEquipSelect');
+    const actionSelect = document.getElementById('jianwangActionSelect');
+    const keepSelect = document.getElementById('jianwangKeepSelect');
+    if (!equipSelect || !actionSelect || !keepSelect) return;
+    const previous = preserveSelection ? keepSelect.value : '';
+    const base = findEquipByRuntimeKey(equipSelect.value);
+    const equip = base ? (getRuntimeEquip(runtimeKey(base)) || base) : null;
+    const limit = jianwangKeepLimit(equip, actionSelect.value);
+    keepSelect.innerHTML = '<option value="0">不保留</option>';
+    for (let i = 0; i < limit; i++) {
+        const prop = equip.exts[i];
+        const option = document.createElement('option');
+        option.value = String(i + 1);
+        option.textContent = `槽 ${i + 1} · ${propLabel(prop.prop)}+${formatPropValue(prop.prop, prop.value)}`;
+        keepSelect.appendChild(option);
+    }
+    if (previous && [...keepSelect.options].some(option => option.value === previous)) keepSelect.value = previous;
+}
+
+function jianwangMaterialsForEquip(equip) {
+    const materials = specialMaterialsForEquip(equip);
+    const currentProps = new Set((equip?.specials || []).map(item => item.prop));
+    const matched = materials.filter(material => material.prop.some(entry => currentProps.has(entry[0])));
+    return matched.length ? matched : materials;
+}
+
+function fillJianwangMaterialSelect(preserveSelection = true) {
+    const equipSelect = document.getElementById('jianwangEquipSelect');
+    const materialSelect = document.getElementById('jianwangMaterialSelect');
+    if (!equipSelect || !materialSelect) return;
+    const previous = preserveSelection ? materialSelect.value : '';
+    const base = findEquipByRuntimeKey(equipSelect.value);
+    const equip = base ? (getRuntimeEquip(runtimeKey(base)) || base) : null;
+    materialSelect.innerHTML = '';
+    if (!equip) {
+        materialSelect.innerHTML = '<option value="">（请先选择已铸进专武）</option>';
+        return;
+    }
+    for (const material of jianwangMaterialsForEquip(equip)) {
+        const option = document.createElement('option');
+        option.value = String(material.id);
+        option.textContent = `${material.name} · ${material.prop.map(entry => propLabel(entry[0])).join('/')}`;
+        materialSelect.appendChild(option);
+    }
+    if (previous && [...materialSelect.options].some(option => option.value === previous)) {
+        materialSelect.value = previous;
+    }
+}
+
+function fillJianwangEquipSelect(preserveSelection = true) {
+    const select = document.getElementById('jianwangEquipSelect');
+    if (!select) return;
+    const previous = preserveSelection ? select.value : '';
+    const realSwords = collectJianwangSwords();
+    const swords = realSwords.length
+        ? realSwords
+        : (jianwangVirtualFirstSword ? [jianwangVirtualFirstSword] : []);
+    select.innerHTML = '';
+    if (!swords.length) {
+        select.innerHTML = '<option value="">（无剑王阁实物，且缺少可推演首剑的 RedSeed）</option>';
+    } else {
+        for (const sword of swords) {
+            const option = document.createElement('option');
+            option.value = runtimeKey(sword);
+            option.textContent = jianwangSwordLabel(sword);
+            select.appendChild(option);
+        }
+        if (previous && [...select.options].some(option => option.value === previous)) {
+            select.value = previous;
+        }
+    }
+    fillJianwangActionSelect(preserveSelection);
+    fillJianwangCycleRouteSelect(preserveSelection);
+    updateJianwangHint();
+    updateJianwangCycleHint();
+}
+
+function updateJianwangControls() {
+    const equipSelect = document.getElementById('jianwangEquipSelect');
+    const action = document.getElementById('jianwangActionSelect')?.value || '';
+    const base = findEquipByRuntimeKey(equipSelect?.value);
+    const equip = base ? (getRuntimeEquip(runtimeKey(base)) || base) : null;
+    const nextRedSeed = jianwangNextRedSeedForEquip(equip);
+    const keepGroup = document.getElementById('jianwangKeepGroup');
+    const countGroup = document.getElementById('jianwangCountGroup');
+    const materialGroup = document.getElementById('jianwangMaterialGroup');
+    const countInput = document.getElementById('jianwangCount');
+    if (keepGroup) keepGroup.hidden = !(action === 'reforge' || action.startsWith('grow:'));
+    if (countGroup) countGroup.hidden = !(action === 'reforge' || action === 'mangjing');
+    if (materialGroup) materialGroup.hidden = action !== 'mangjing';
+    const completedReforges = Math.max(0, Math.floor(Number(
+        jianwangReforgeCounts[String(Number(equip?.id))],
+    ) || 0));
+    const remainingReforges = Math.max(0, JIANWANG_REFORGE_LIMIT - completedReforges);
+    const reforgeExhausted = action === 'reforge' && remainingReforges === 0;
+    if (countInput) {
+        countInput.disabled = reforgeExhausted;
+        countInput.min = '1';
+        countInput.max = String(action === 'reforge' ? remainingReforges : PREVIEW_MAX);
+        if (action === 'reforge') {
+            const current = Number(countInput.value);
+            if (!Number.isSafeInteger(current) || current < 1 || current > remainingReforges) {
+                countInput.value = '1';
+            }
+        }
+    }
+    const previewButton = document.getElementById('btnJianwangPreview');
+    if (previewButton) {
+        const shatter = action === JIANWANG_SHATTER_90 || action === JIANWANG_SHATTER_100;
+        previewButton.disabled = reforgeExhausted || (shatter && !validJianwangRedSeed(nextRedSeed));
+    }
+    const applyButton = document.getElementById('btnJianwangApply');
+    if (applyButton) {
+        const shatter = action === JIANWANG_SHATTER_90 || action === JIANWANG_SHATTER_100;
+        const deterministic = action === 'reforge' || action.startsWith('grow:') || action.startsWith('ascend:') || shatter;
+        applyButton.disabled = !equip || !deterministic || reforgeExhausted
+            || (shatter ? !validJianwangRedSeed(nextRedSeed)
+                : (action !== '' && !action.startsWith('ascend:') && !validJianwangCZSeed(equip)));
+    }
+}
+
+function findSaveScalar(root, wantedKey) {
+    const seen = new Set();
+    const unwrap = value => {
+        if (typeof value === 'number' && Number.isFinite(value)) return value;
+        if (typeof value === 'string' && value.trim() !== '' && Number.isFinite(Number(value))) return Number(value);
+        if (value && typeof value === 'object') {
+            for (const key of ['Value', 'value', 'V', 'v', 'Number', 'number']) {
+                if (Object.prototype.hasOwnProperty.call(value, key)) {
+                    const parsed = unwrap(value[key]);
+                    if (parsed != null) return parsed;
+                }
+            }
+        }
+        return null;
+    };
+    const walk = value => {
+        if (!value || typeof value !== 'object' || seen.has(value)) return null;
+        seen.add(value);
+        if (Object.prototype.hasOwnProperty.call(value, wantedKey)) {
+            const found = unwrap(value[wantedKey]);
+            if (found != null) return found;
+        }
+        for (const child of Object.values(value)) {
+            const found = walk(child);
+            if (found != null) return found;
+        }
+        return null;
+    };
+    return walk(root);
+}
+
+function jianwangReforgeCost(attemptNumber) {
+    const index = Math.min(JIANWANG_REFORGE_COSTS.length - 1, Math.max(0, Number(attemptNumber) - 1));
+    const [coreA, coreB] = JIANWANG_REFORGE_COSTS[index];
+    return `真气×500、剑芯6516×${coreA}、剑芯6517×${coreB}`;
+}
+
+function jianwangCostText(equip, action, sequenceIndex = 1) {
+    if (!equip) return '';
+    const id = Number(equip.id);
+    if (action === 'reforge') {
+        const completed = Number(jianwangReforgeCounts[String(Number(equip.id))]) || 0;
+        return jianwangReforgeCost(completed + sequenceIndex);
+    }
+    if (action === 'grow:5708') return '剑意150、雪银×400、青金石×20、贡献×1200';
+    if (action === 'grow:5709') return '剑意300、紫金×200、陨铁×1、贡献×2000';
+    if (action.startsWith('grow:') && id === 5709) return '剑意600、紫金×400、陨铁×2、贡献×4000';
+    if (action.startsWith('ascend:')) return '昆吾石×100、陨铁×2、连金泥×10、内力×1000、铸炼进度×10';
+    if (action === 'mangjing') return '芒晶×10 / 次';
+    if (action === JIANWANG_SHATTER_90) return '90级碎剑后重新锻造60级剑胚';
+    if (action === JIANWANG_SHATTER_100) return '100级碎神兵后重新锻造60级剑胚';
+    return '';
+}
+
+function updateJianwangHint() {
+    const hint = document.getElementById('jianwangHint');
+    const equipSelect = document.getElementById('jianwangEquipSelect');
+    const materialSelect = document.getElementById('jianwangMaterialSelect');
+    if (!hint || !equipSelect || !materialSelect) return;
+    const base = findEquipByRuntimeKey(equipSelect.value);
+    const equip = base ? (getRuntimeEquip(runtimeKey(base)) || base) : null;
+    const nextRedSeed = jianwangNextRedSeedForEquip(equip);
+    const action = document.getElementById('jianwangActionSelect')?.value || '';
+    const material = EQUIP_DATA.special[String(materialSelect.value)];
+    if (!equip) {
+        hint.textContent = saveLoaded
+            ? '当前存档没有剑王阁实物，且缺少有效 MakeRnd.RedSeeds[5707]，无法推演首剑序列'
+            : '导入存档后自动扫描剑王阁实物；无实物时可用 RedSeeds[5707] 推演虛擬劍胚';
+        return;
+    }
+    if (action === 'mangjing') {
+        if (!canPredictJianwangMangjing(equip)) {
+            hint.textContent = `${equip._source || base?._source || '存档'} · ${jianwangStageName(equip)} 已列出，但缺少有效 MJSeed 或已铸进特殊词条，不能伪造芒晶序列`;
+            return;
+        }
+        const materialText = material ? `按「${material.name}」属性池` : '请选择游戏中实际铸进的材料';
+        hint.textContent = `${equip._source || base?._source || '存档'} · ${materialText} · 起始 MJSeed=${equip.MJSeed} · ${jianwangCostText(equip, action)}`;
+        return;
+    }
+    if (action === JIANWANG_SHATTER_90 || action === JIANWANG_SHATTER_100) {
+        if (!validJianwangRedSeed(nextRedSeed)) {
+            hint.textContent = `${jianwangStageName(equip)} · 存档缺少有效 MakeRnd.RedSeeds[5707]，不能预测下一把60级剑胚`;
+            return;
+        }
+        const next = createJianwangBlankFromRedSeed(nextRedSeed);
+        const actionLabel = action === JIANWANG_SHATTER_90 ? '90级碎剑' : '100级碎神兵';
+        hint.textContent = `${actionLabel} · RedSeed ${next.redSeedBefore} → ${next.redSeedAfter} · 新60级剑胚 CZSeed=${next.CZSeed} · MJSeed=${next.MJSeed} · 仅网页模拟`;
+        return;
+    }
+    if ((action === 'reforge' || action.startsWith('grow:')) && !validJianwangCZSeed(equip)) {
+        hint.textContent = `${base?._source || '存档'} · ${jianwangStageName(equip)} 已列出，但 CZSeed 无效，不能生成替代序列`;
+        return;
+    }
+    if (action === 'reforge') {
+        const completed = Math.max(0, Math.floor(Number(
+            jianwangReforgeCounts[String(Number(equip.id))],
+        ) || 0));
+        const remaining = Math.max(0, JIANWANG_REFORGE_LIMIT - completed);
+        if (remaining === 0) {
+            hint.textContent = `${base?._source || '存档'} · ${jianwangStageName(equip)} · 已重铸 ${completed} 次，已达 ${JIANWANG_REFORGE_LIMIT} 次上限`;
+            return;
+        }
+        hint.textContent = `${base?._source || '存档'} · ${jianwangStageName(equip)} · 起始 CZSeed=${equip.CZSeed} · 已重铸 ${completed}/${JIANWANG_REFORGE_LIMIT} 次，剩余 ${remaining} 次 · ${jianwangCostText(equip, action)}`;
+        return;
+    }
+    const seedText = action.startsWith('ascend:') ? `CZSeed=${equip.CZSeed}（固定转换不推进）` : `起始 CZSeed=${equip.CZSeed}`;
+    hint.textContent = `${base?._source || '存档'} · ${jianwangStageName(equip)} · ${seedText} · ${jianwangCostText(equip, action)}`;
+}
+
+function updateJianwangCycleHint() {
+    const hint = document.getElementById('jianwangCycleHint');
+    const button = document.getElementById('btnJianwangCyclePreview');
+    const equipSelect = document.getElementById('jianwangEquipSelect');
+    const routeSelect = document.getElementById('jianwangCycleRouteSelect');
+    const base = findEquipByRuntimeKey(equipSelect?.value);
+    const equip = base ? (getRuntimeEquip(runtimeKey(base)) || base) : null;
+    const nextRedSeed = jianwangNextRedSeedForEquip(equip);
+    if (!hint) return;
+    const id = Number(equip?.id);
+    const needsRoute = [5707, 5708, 5709].includes(id);
+    const routeId = Number(routeSelect?.value);
+    const routeReady = !needsRoute || JIANWANG_LEVEL_90_IDS.has(routeId);
+    const startSeedReady = !needsRoute || validJianwangCZSeed(equip);
+    const available = saveLoaded && !!equip && isJianwangSword(equip)
+        && routeReady && startSeedReady && validJianwangRedSeed(nextRedSeed);
+    if (button) button.disabled = !available;
+    if (!saveLoaded) {
+        hint.textContent = '导入存档后可从实物或虛擬劍胚起跑，按每把新剑一页预览完整循环';
+    } else if (!equip || !isJianwangSword(equip)) {
+        hint.textContent = '当前存档既没有剑王阁实物，也没有可用于首剑推演的 RedSeeds[5707]';
+    } else if (!validJianwangRedSeed(nextRedSeed)) {
+        hint.textContent = '存档缺少有效 MakeRnd.RedSeeds[5707]，无法进行碎剑预览';
+    } else if (needsRoute && !validJianwangCZSeed(equip)) {
+        hint.textContent = `${jianwangStageName(equip)}缺少有效 CZSeed，无法先推到90级`;
+    } else if (needsRoute && !routeReady) {
+        hint.textContent = `${jianwangStageName(equip)}尚未到90级，请先选择最终90级专武路线`;
+    } else if (JIANWANG_LEVEL_100_IDS.has(id)) {
+        hint.textContent = '当前100级神兵会直接碎神兵进入第1轮；之后每把新剑按60→70→80→90→10次重铸循环';
+    } else if (equip._jianwangVirtualFirst) {
+        hint.textContent = '当前为由存档 RedSeeds[5707] 推演出的虛擬劍胚；先按所选路线升至90级，再从下一把剑开始碎剑循环';
+    } else if (needsRoute) {
+        hint.textContent = `${jianwangStageName(equip)}会先无保留推到所选90级路线再碎剑；之后每把新剑独立一页`;
+    } else {
+        hint.textContent = '当前90级专武直接碎剑进入第1轮；每把新剑独立一页并预览60→90与10次不保留重铸';
+    }
+}
+
+function emptyEquipTip(which) {
+    const source = getSourceFilter(which);
+    if (which === 'shenglian') {
+        if (source === 'crafted') return '（没有可升炼的模拟打造装备；可改来源或文本筛选）';
+        if (source === 'unequipped') return '（背包仓库里没有可升炼的蓝紫装备）';
+        return '（已装备里没有可升炼的蓝紫装备）';
+    }
+    if (source === 'crafted') return '（无匹配的模拟打造装备；可改来源或文本筛选）';
+    if (source === 'unequipped') return '（背包仓库里无匹配项）';
+    if (source === 'equipped') return '（无已装备匹配项；可改来源或文本筛选）';
+    if (which === 'strong') return '（无可淬炼武器）';
+    return '（无 100 级可精炼装备；90 级请先升炼）';
+}
+
+function fillEquipSelects(preserveSelection = true) {
+    const configs = [
+        { which: 'xilian', selId: 'xilianEquipSelect', pred: canXilian },
+        { which: 'strong', selId: 'strongEquipSelect', pred: canStrong },
+        { which: 'shenglian', selId: 'shenglianEquipSelect', pred: canShengLian },
+    ];
+    for (const { which, selId, pred } of configs) {
+        const sel = document.getElementById(selId);
+        if (!sel) continue;
+        const prev = preserveSelection ? sel.value : '';
+        const list = saveEquips.filter(e => pred(e) && passEquipListFilter(e, which));
+        sel.innerHTML = '';
+        if (!list.length) {
+            sel.innerHTML = `<option value="">${emptyEquipTip(which)}</option>`;
+        } else {
+            for (const e of list) {
+                const opt = document.createElement('option');
+                opt.value = runtimeKey(e);
+                opt.textContent = equipOptionLabel(e, which);
+                sel.appendChild(opt);
+            }
+            if (prev && [...sel.options].some(o => o.value === prev)) sel.value = prev;
+        }
+    }
+    fillSpecialAttachEquipSelect(preserveSelection);
+    fillJianwangEquipSelect(preserveSelection);
+    updateXilianHint();
+    updateStrongHint();
+    updateShenglianHint();
+    updateJianwangHint();
+    updateCraftedBagHint();
+}
+
+function updateShenglianHint() {
+    const el = document.getElementById('shenglianHint');
+    const box = document.getElementById('shenglianPreview');
+    const sel = document.getElementById('shenglianEquipSelect');
+    if (!el || !sel) return;
+    const key = sel.value;
+    const base = key ? saveEquips.find(e => runtimeKey(e) === key) : null;
+    if (!base) {
+        el.textContent = '90 级非橙红装且存在下一档（equ_next）可升炼至 100 级，之后才能精炼';
+        if (box) {
+            box.classList.add('empty');
+            box.textContent = '选择装备后显示 90→100 对照';
+        }
+        return;
+    }
+    const cost = calcShengLianCost(base);
+    el.textContent = `消耗提示：${formatCostList(cost)}（仅提示，不扣背包）`;
+    if (box) {
+        box.classList.remove('empty');
+        // 只保留「打造信息」标签行：品质 / 蓝词条 / 地区附加 / 红词条 / 保底（没有的项不输出）
+        box.innerHTML = equipMakeDetailHtml(base);
+    }
+}
+
+function updateXilianHint() {
+    const el = document.getElementById('xilianHint');
+    const detail = document.getElementById('xilianMakeDetail');
+    const key = document.getElementById('xilianEquipSelect').value;
+    const eq = key ? getRuntimeEquip(key) : null;
+    if (!eq) {
+        if (el) {
+            el.hidden = false;
+            el.textContent = '仅 100 级绿/蓝/紫装可精炼；90 级请先升炼；来源可选「仅模拟打造」，支持按标记筛选';
+        }
+        if (detail) {
+            detail.innerHTML = '';
+            detail.hidden = true;
+        }
+        return;
+    }
+    // 选中装备后只展示它的底子（品质 / 基础 / 词条），不再堆 CZSeed、下次消耗那串数字
+    if (el) el.hidden = true;
+    if (detail) {
+        const html = equipMakeDetailHtml(eq);
+        detail.innerHTML = html;
+        detail.hidden = !html;
+    }
+}
+
+function updateStrongHint() {
+    const el = document.getElementById('strongHint');
+    const key = document.getElementById('strongEquipSelect').value;
+    const eq = key ? getRuntimeEquip(key) : null;
+    if (!eq) {
+        el.textContent = '仅武器可淬炼；来源选「仅模拟打造」可专看打造武器，支持按标记筛选';
+        return;
+    }
+    fillStrongTargetLevels(eq);
+    const next = eq.level + 1;
+    const c = strongAttemptCost(eq.need_lv || 90, eq.level);
+    const stone = c ? `${STONE_NAMES[c.mat] || c.mat}×${c.num}` : '?';
+    const baseEq = saveEquips.find(e => runtimeKey(e) === key);
+    const userMark = baseEq?._mark ? ` · 标记「${baseEq._mark}」` : '';
+    el.textContent = `S=${eq.S} · 当前 +${eq.level}/15 · 下一级消耗 ${stone} · LvProp=${eq.lv_prop}${userMark}`;
+}
+
+function setXilianHead() {
+    setPreviewTableKind('xilian');
+    document.getElementById('previewHead').innerHTML = `<tr>
+        <th>保留</th><th>#</th><th>槽</th><th>原→新</th><th>倍率</th><th>XLLevel</th>
+    </tr>`;
+}
+
+function fillXilianPropFilter(items) {
+    const sel = document.getElementById('xilianFilterProp');
+    if (!sel) return;
+    const prev = sel.value;
+    const props = [...new Set((items || []).map(it => it.prop?.prop).filter(Boolean))].sort((a, b) => {
+        return propLabel(a).localeCompare(propLabel(b), 'zh');
+    });
+    sel.innerHTML = '<option value="">全部</option>' + props.map(p =>
+        `<option value="${escapeHtml(p)}">${escapeHtml(propLabel(p))}</option>`
+    ).join('');
+    if (prev && props.includes(prev)) sel.value = prev;
+}
+
+function xilianFilterMatch(it) {
+    const slot = document.getElementById('xilianFilterSlot')?.value || '';
+    const prop = document.getElementById('xilianFilterProp')?.value || '';
+    if (slot && String(it.slot) !== slot) return false;
+    if (prop && it.prop?.prop !== prop) return false;
+    return true;
+}
+
+function bindXilianKeepChecks() {
+    document.querySelectorAll('#previewBody input.xl-keep').forEach(cb => {
+        cb.addEventListener('change', () => {
+            const idx = Number(cb.dataset.idx);
+            if (Number.isFinite(idx)) xilianAcceptFlags[idx] = cb.checked;
+            refreshXilianPlan();
+        });
+    });
+}
+
+function buildXilianEntries(items) {
+    const out = [];
+    (items || []).forEach((it, idx) => {
+        if (xilianFilterMatch(it)) out.push({ it, idx });
+    });
+    return out;
+}
+
+/* 「聚气」这类固定小数值词条不存在「最大值」概念，不参与计算 */
+const XILIAN_MAX_SKIP = new Set(['mp_back']);
+
+/** 每行（含）为止累积消耗的连金泥数：不锁每次 1，洗出的词条勾「保留」后消耗翻倍（1→2→4→8） */
+function xilianCumMud(items) {
+    const list = items || [];
+    const out = new Array(list.length);
+    let cum = 0;
+    for (let i = 0; i < list.length; i++) {
+        const mult = Number(list[i] && list[i].cost_mult);
+        cum += Number.isFinite(mult) && mult > 0 ? mult : 1;
+        out[i] = cum;
+    }
+    return out;
+}
+
+/**
+ * 词条「预计最大值」的数值文本（不含括号，取不到返回空串）。
+ * 算法：这次洗出的显示数值 ÷ 所在档位系数。
+ * 档位按**累积泥消耗**（装备的 XLLevel，含此前洗过的历史）分：
+ *   1~20 → 0.6、21~40 → 0.7、41~60 → 0.8、61~80 → 0.9。
+ * 累积过 80 之后系数为 1（洗出来就是满值，没有提升空间），故一律不显示 ——
+ * 洗过很久的装备就属于这种，它显示的原值本身就是最大值。
+ * 整除则显示整数，否则四舍五入保留 2 位小数。
+ */
+function xilianMaxValueText(prop, value, cumMud) {
+    if (!(cumMud >= 1 && cumMud <= 80)) return '';
+    if (XILIAN_MAX_SKIP.has(prop)) return '';
+    const coef = cumMud <= 20 ? 0.6 : cumMud <= 40 ? 0.7 : cumMud <= 60 ? 0.8 : 0.9;
+    const shown = mangjingDisplayValue(prop, value);
+    if (!Number.isFinite(shown) || !shown) return '';
+    const max = shown / coef;
+    const text = Math.abs(max - Math.round(max)) < 1e-6
+        ? String(Math.round(max))
+        : (Math.round(max * 100) / 100).toFixed(2);
+    return `${text}${mangjingUsesPercentFormat(prop, value) ? '%' : ''}`;
+}
+
+/** 精炼预测表那一列用的带括号版本 */
+function xilianMaxText(prop, value, seqNo) {
+    const t = xilianMaxValueText(prop, value, seqNo);
+    return t ? `(最大值 ${t})` : '';
+}
+
+/**
+ * 粗估"洗到目标要花多少连金泥"。
+ * 只用于"有词条落在第 80 次之前"的情况 —— 实战必须提前锁槽把泥消耗顶过 80 才能吃满，
+ * 而序列里的累加值是按勾选状态算的、不含这部分，会明显偏小，所以按理论下限重估：
+ *   前段固定 80 泥（刚好卡到满值线），之后每刀按"需要的锁数"对应的倍率算。
+ * 锁数由第一个目标的位次决定：≤13 三锁也不够 80（做不到）、14~22 三锁、23~41 双锁、≥42 单锁。
+ */
+function estimateXilianLianjin(seqNos) {
+    // 口径与共享优化器完全一致，优先复用它那份实现，避免两处各写一份以后走偏
+    if (typeof EquipmentAutoOptimizer !== 'undefined' && EquipmentAutoOptimizer
+        && typeof EquipmentAutoOptimizer.estimateRefinementLianjin === 'function') {
+        return EquipmentAutoOptimizer.estimateRefinementLianjin(seqNos);
+    }
+    const list = (seqNos || []).filter(n => Number.isFinite(n)).sort((a, b) => a - b);
+    if (!list.length) return null;
+    const first = list[0];
+    if (first <= 13) return null; // 三锁也够不到 80
+    let locks = first <= 22 ? 3 : first <= 41 ? 2 : 1;
+    let mud = 80;            // 前段：把累积顶过满值线
+    let from = first;        // 从第一个目标那一刀开始算
+    for (let i = 0; i < list.length; i++) {
+        const isLast = i === list.length - 1;
+        const to = isLast ? list[i] : list[i + 1];
+        mud += (to - from + 1) * (1 << Math.min(3, locks));
+        if (isLast) break;
+        // 靠前的目标若已被"凑 80 用的锁"覆盖，就不会新增；否则要新锁一个。
+        // 最后一个目标留到收工再锁，所以不参与翻倍。
+        if (i + 1 >= locks) locks = Math.min(3, locks + 1);
+        from = to + 1;
+    }
+    return mud;
+}
+
+function renderXilianPage() {
+    const body = document.getElementById('previewBody');
+    const metaFilter = document.getElementById('xilianFilterMeta');
+    if (!body) return;
+    const entries = tablePager.xilianEntries || [];
+    const accepts = xilianAcceptFlags;
+    const pageSize = getPreviewPageSize();
+    const start = (tablePager.page - 1) * pageSize;
+    const slice = entries.slice(start, start + pageSize);
+    if (!slice.length) {
+        body.innerHTML = `<tr><td colspan="6" class="empty-row">无匹配记录</td></tr>`;
+    } else {
+        body.innerHTML = slice.map(({ it, idx }) => {
+            const oldTxt = it.old_prop
+                ? `${propLabel(it.old_prop.prop)}+${formatPropValue(it.old_prop.prop, it.old_prop.value)}`
+                : '—';
+            /* 勾了「保留」才显示这一行的最大值。档位看"这一刀结束时的累积泥"（XLLevel）：
+               装备之前洗过的话它早就过 80，洗出来本身就是满值，没有提升空间，会自然不显示 */
+            const maxTxt = accepts[idx] ? xilianMaxText(it.prop.prop, it.prop.value, it.xl_level) : '';
+            const newTxt = `${propLabel(it.prop.prop)}+${formatPropValue(it.prop.prop, it.prop.value)}`
+                + (maxTxt ? `<span class="xl-max">${maxTxt}</span>` : '');
+            const kept = !!accepts[idx];
+            return `<tr class="${kept ? 'row-keep' : ''}" data-idx="${idx}">
+                <td><input type="checkbox" class="xl-keep" data-idx="${idx}" ${kept ? 'checked' : ''}></td>
+                <td>${it.index}</td>
+                <td>槽 ${it.slot}</td>
+                <td>${oldTxt} → ${newTxt}</td>
+                <td>×${it.cost_mult}</td>
+                <td>${it.xl_level_before}→${it.xl_level}</td>
+            </tr>`;
+        }).join('');
+        bindXilianKeepChecks();
+    }
+    if (metaFilter) {
+        metaFilter.textContent = `显示 ${entries.length} / ${(xilianPlanItems || []).length} 条`;
+    }
+    updatePreviewPager(entries.length);
+}
+
+function renderXilianRows(items, accepts, resetPage = false) {
+    tablePager.mode = 'xilian';
+    if (resetPage) tablePager.page = 1;
+    tablePager.xilianEntries = buildXilianEntries(items);
+    void accepts;
+    renderXilianPage();
+}
+
+function sumXilianCosts(eq, items, untilIdx) {
+    const end = untilIdx == null ? items.length - 1 : untilIdx;
+    const total = {};
+    const isArmor = eq.typ >= 5 && eq.typ <= 7;
+    const matName = isArmor ? '青蝉翼' : '昆吾石';
+    const price = (EQUIP_DATA.equipment[String(eq.id)]?.price) || 10000;
+    const silverOnce = Math.floor(price * 1.5);
+    for (let i = 0; i <= end && i < items.length; i++) {
+        const mult = items[i].cost_mult;
+        total[matName] = (total[matName] || 0) + 5 * mult;
+        total['连金泥'] = (total['连金泥'] || 0) + mult;
+        total['银两'] = (total['银两'] || 0) + silverOnce;
+    }
+    return total;
+}
+
+function formatXilianCostText(total) {
+    return Object.entries(total).map(([name, n]) => {
+        if (name === '银两') return `${name}${formatSilver(n)}`;
+        return `${name}×${n}`;
+    }).join(' · ') || '—';
+}
+
+function refreshXilianPlan() {
+    const key = document.getElementById('xilianEquipSelect').value;
+    const eq = getRuntimeEquip(key);
+    const box = document.getElementById('xilianPlanSummary');
+    if (!eq || !xilianAcceptFlags.length) {
+        if (box) {
+            box.classList.add('empty');
+            box.innerHTML = '预测后勾选「保留」查看总花费与最终属性';
+        }
+        return;
+    }
+    const accepts = xilianAcceptFlags.slice();
+    const plan = wasmXilianPlan(toWasmEquip(eq), accepts);
+    if (plan.error && !plan.items?.length) {
+        box.classList.remove('empty');
+        box.textContent = plan.error;
+        return;
+    }
+
+    xilianPlanItems = plan.items || [];
+
+    let marks = new Set(eq.xilian_marks || []);
+    let simMarks = marks.size;
+    for (const it of xilianPlanItems) {
+        if (it.accepted) {
+            marks.add(it.slot);
+            simMarks = marks.size;
+        }
+    }
+
+    const total = sumXilianCosts(eq, xilianPlanItems);
+    const keepN = accepts.filter(Boolean).length;
+    let lastKeepIdx = -1;
+    for (let i = accepts.length - 1; i >= 0; i--) {
+        if (accepts[i]) {
+            lastKeepIdx = i;
+            break;
+        }
+    }
+    const lastKeepNo = lastKeepIdx >= 0
+        ? (xilianPlanItems[lastKeepIdx]?.index ?? lastKeepIdx + 1)
+        : 0;
+
+    const finalEq = plan.equip || eq;
+    const xl = finalEq.XLLevel ?? finalEq.xl_level ?? 0;
+    const exts = finalEq.exts || [];
+
+    // 每个槽位最后一次被「保留」的精炼序号：附加项要标明"第几次洗出来的"，
+    // 并据此算理论最大值；slotLastIndex 同时供「加入成品背包」复用。
+    const slotLastIndex = {};
+    const slotLastCum = {};
+    const keepSeqNos = [];
+    const keepCums = [];
+    for (let i = 0; i < xilianPlanItems.length; i++) {
+        if (!accepts[i]) continue;
+        const it = xilianPlanItems[i];
+        slotLastIndex[it.slot] = it.index ?? (i + 1);
+        slotLastCum[it.slot] = it.xl_level ?? 0;
+        keepSeqNos.push(it.index ?? (i + 1));
+        keepCums.push(it.xl_level ?? 0);
+    }
+    // 准确与否要看**累积泥**（含装备洗过的历史）：都过 80 → 早就在满值区，序列累加即真实花费；
+    // 有落在 80 及以内的，实战得提前锁槽把泥顶过 80，只能按理论下限估算。
+    const costExact = keepN > 0 && keepCums.every(c => c >= 81);
+    const estLianjin = costExact ? null : estimateXilianLianjin(keepSeqNos);
+
+    let cutoffTotal = lastKeepIdx >= 0
+        ? sumXilianCosts(eq, xilianPlanItems, lastKeepIdx)
+        : null;
+    if (cutoffTotal && !costExact && estLianjin != null) {
+        // 用理论下限替换连金泥；主材料与连金泥 5:1 同步；银两按"每次固定"计，不随倍率变
+        cutoffTotal['连金泥'] = estLianjin;
+        for (const k of Object.keys(cutoffTotal)) {
+            if (k !== '连金泥' && k !== '银两') cutoffTotal[k] = 5 * estLianjin;
+        }
+    }
+
+    const cutoffTxt = cutoffTotal ? formatXilianCostText(cutoffTotal) : '';
+
+    const extTxt = exts.length
+        ? exts.map((p, i) => {
+            const mk = (finalEq.xilian_marks || []).includes(i + 1) || (finalEq.xilian_marks || []).includes(String(i + 1));
+            const at = slotLastIndex[i + 1];
+            const cum = slotLastCum[i + 1];
+            /* 第 81 次之后系数为 1（洗出来就是满值），不再标注；
+               最大值按「累积连金泥」cum 算，不能用工序序号 at，否则档位系数会错 */
+            const mv = at ? xilianMaxValueText(p.prop, p.value, cum) : '';
+            return `${i + 1}.${propLabel(p.prop)}+${formatPropValue(p.prop, p.value)}`
+                + (at ? `（第${at}次${mv ? '，最大值 ' + mv : ''}）` : '')
+                + (mk ? '🔒' : '');
+        }).join(' · ')
+        : '—';
+
+    const cutoffLine = cutoffTotal
+        ? `<div><strong>${costExact ? '截止花费' : '估算花费'}</strong>：${cutoffTxt}</div>`
+        : '';
+    const costWarn = costExact
+        ? ''
+        : '<div class="cost-warn">⚠ 当所选词条出现在 80 次之前，当前估算的消耗仅供参考。</div>';
+
+    box.classList.remove('empty');
+    // 顺序：警告在上、估算花费在中、最终附加在下（花费与附加之间空一行）
+    box.innerHTML = `
+        ${costWarn}
+        ${cutoffLine}
+        <div class="plan-gap"></div>
+        <div class="swap-line"><strong>最终附加</strong>：${extTxt}</div>
+        <div class="warn">※ 每次精炼均消耗；仅勾选「保留」的结果会替换对应槽并标记（后续消耗翻倍）。勾选后「截止花费」按最后一条保留记录统计。</div>
+    `;
+
+    lastXilianPlan = {
+        equipKey: xilianPlanEquipKey,
+        exts,                 // 最终附加 [{prop, value}]
+        slotLastIndex,        // {槽位: 精炼序号}
+        slotLastCum,          // {槽位: 累积连金泥}（算最大值用，不能用序号）
+        costTotal: total,
+        costCutoff: cutoffTotal,
+        costText: formatXilianCostText(total),
+        cutoffText: cutoffTotal ? formatXilianCostText(cutoffTotal) : '',
+        xl,
+        keepN,
+        lastKeepNo,
+        simMarks,
+        accepts: accepts.slice(),
+    };
+
+    fillXilianPropFilter(xilianPlanItems);
+    renderXilianRows(xilianPlanItems, accepts, false);
+}
+
+function renderXilianPreview(n) {
+    setXilianHead();
+    const body = document.getElementById('previewBody');
+    const meta = document.getElementById('previewMeta');
+    const key = document.getElementById('xilianEquipSelect').value;
+    const eq = getRuntimeEquip(key);
+    const filterBar = document.getElementById('xilianFilterBar');
+    const makeFilter = document.getElementById('makeFilterBar');
+    if (makeFilter) makeFilter.hidden = true;
+    if (!eq) {
+        body.innerHTML = `<tr><td colspan="6" class="empty-row">请选择装备</td></tr>`;
+        if (filterBar) filterBar.hidden = true;
+        hidePreviewPager();
+        return;
+    }
+    xilianPlanEquipKey = key;
+    xilianAcceptFlags = Array(n).fill(false);
+    const plan = wasmXilianPlan(toWasmEquip(eq), xilianAcceptFlags);
+    if (plan.error && !plan.items?.length) {
+        body.innerHTML = `<tr><td colspan="6" class="empty-row">${escapeHtml(plan.error)}</td></tr>`;
+        meta.textContent = '';
+        if (filterBar) filterBar.hidden = true;
+        hidePreviewPager();
+        return;
+    }
+    xilianPlanItems = plan.items || [];
+    meta.textContent = `预览 ${xilianPlanItems.length} 条序列 · 勾选「保留」后自动统计花费与最终属性`;
+    if (filterBar) {
+        filterBar.hidden = false;
+        document.getElementById('xilianFilterSlot').value = '';
+        fillXilianPropFilter(xilianPlanItems);
+        document.getElementById('xilianFilterProp').value = '';
+    }
+    tablePager.page = 1;
+    refreshXilianPlan();
+}
+
+function setStrongHead() {
+    setPreviewTableKind('strong');
+    document.getElementById('previewHead').innerHTML = `<tr>
+        <th>#</th><th>档位</th><th>淬炼度</th><th>消耗最少</th><th>数值最优</th>
+    </tr>`;
+}
+
+function strongMinGrade() {
+    return Number(document.getElementById('strongMinGrade')?.value) || 3;
+}
+
+function fillStrongTargetLevels(eq) {
+    const sel = document.getElementById('strongTargetLevel');
+    if (!sel) return;
+    const cur = eq?.level || 0;
+    const prev = Number(sel.value) || 0;
+    sel.innerHTML = '';
+    for (let lv = cur + 1; lv <= 15; lv++) {
+        const opt = document.createElement('option');
+        opt.value = lv;
+        opt.textContent = `+${lv}`;
+        sel.appendChild(opt);
+    }
+    if (!sel.options.length) {
+        sel.innerHTML = '<option value="">已满 +15</option>';
+        return;
+    }
+    const prefer = prev > cur ? prev : 15;
+    sel.value = String(prefer);
+}
+
+function formatCostChips(bag) {
+    const chips = [];
+    for (const id of [3027, 3028, 3029, 3030]) {
+        const n = bag?.stones?.[id] || 0;
+        if (n) chips.push(`<span class="cost-chip">${STONE_NAMES[id]}×${n}</span>`);
+    }
+    if (bag?.silver) chips.push(`<span class="cost-chip">银两${formatSilver(bag.silver)}</span>`);
+    return chips.join('') || '<span class="cost-chip">—</span>';
+}
+
+function renderPathChipsHtml(accepts, names, which) {
+    const total = accepts.length;
+    if (!total) return '<div class="advice-path">—</div>';
+    const pages = Math.max(1, Math.ceil(total / PATH_PAGE_SIZE));
+    let page = pathPages[which] || 1;
+    if (page > pages) page = pages;
+    if (page < 1) page = 1;
+    pathPages[which] = page;
+    const start = (page - 1) * PATH_PAGE_SIZE;
+    const slice = accepts.slice(start, start + PATH_PAGE_SIZE);
+    const path = slice.map(st => {
+        const nextLv = (st.level || 0) + 1;
+        return `<span class="path-chip">
+            <span class="lv">+${st.level}→+${nextLv}</span>
+            <span class="idx">#${st.index}</span>
+            <span class="grade-${st.grade}">${names[st.grade] || ''}</span>
+        </span>`;
+    }).join('');
+    const pager = total > PATH_PAGE_SIZE
+        ? `<div class="path-pager" data-which="${which}">
+            <button type="button" class="btn btn-reset path-prev" ${page <= 1 ? 'disabled' : ''}>上一页</button>
+            <span>第 ${page}/${pages} 页 · 共 ${total} 次</span>
+            <button type="button" class="btn btn-reset path-next" ${page >= pages ? 'disabled' : ''}>下一页</button>
+           </div>`
+        : '';
+    return `<div class="advice-path">${path}</div>${pager}`;
+}
+
+function formatPlanCard(title, plan, names, tag, which) {
+    if (!plan?.ok) {
+        return `<article class="advice-card fail">
+            <div class="advice-card-head"><h3>${title}</h3></div>
+            <div>${escapeHtml(plan?.reason || '不可用')}</div>
+        </article>`;
+    }
+    const deg = plan.value / 2;
+    const atk = (plan.value / 10).toFixed(1);
+    const accepts = plan.steps.filter(s => s.action === '接受');
+    plan._acceptSteps = accepts;
+    plan._names = names;
+    return `<article class="advice-card" data-plan="${which}">
+        <div class="advice-card-head">
+            <h3>${title}</h3>
+            <span class="tag">${tag}</span>
+        </div>
+        <div class="advice-metrics">
+            <div class="advice-metric"><span class="v">${plan.attempts}</span><span class="k">尝试次数</span></div>
+            <div class="advice-metric"><span class="v">+${deg}%</span><span class="k">淬炼度</span></div>
+            <div class="advice-metric"><span class="v">+${atk}%</span><span class="k">约属性</span></div>
+        </div>
+        <div class="advice-costs">${formatCostChips(plan.bag)}</div>
+        <div class="advice-path-label">接受路径（共 ${accepts.length} 次升层）</div>
+        <div class="advice-path-wrap">${renderPathChipsHtml(accepts, names, which)}</div>
+    </article>`;
+}
+
+function bindPathPagers() {
+    document.querySelectorAll('.path-pager').forEach(bar => {
+        const which = bar.dataset.which;
+        bar.querySelector('.path-prev')?.addEventListener('click', () => {
+            pathPages[which] = (pathPages[which] || 1) - 1;
+            refreshPathSection(which);
+        });
+        bar.querySelector('.path-next')?.addEventListener('click', () => {
+            pathPages[which] = (pathPages[which] || 1) + 1;
+            refreshPathSection(which);
+        });
+    });
+}
+
+function refreshPathSection(which) {
+    if (!strongPlanCache) return;
+    const plan = which === 'min' ? strongPlanCache.minCost : strongPlanCache.maxValue;
+    const card = document.querySelector(`.advice-card[data-plan="${which}"]`);
+    const wrap = card?.querySelector('.advice-path-wrap');
+    if (!wrap || !plan?._acceptSteps) return;
+    wrap.innerHTML = renderPathChipsHtml(plan._acceptSteps, plan._names || {}, which);
+    bindPathPagers();
+}
+
+function highlightStrongPlan(which) {
+    if (!strongPlanCache) return;
+    const plan = which === 'min' ? strongPlanCache.minCost : strongPlanCache.maxValue;
+    const set = plan?.ok ? plan.accepts : new Set();
+    document.querySelectorAll('#previewBody tr[data-idx]').forEach(tr => {
+        const idx = Number(tr.dataset.idx);
+        tr.classList.toggle('row-keep', set.has(idx));
+    });
+}
+
+function renderStrongPage() {
+    const body = document.getElementById('previewBody');
+    if (!body) return;
+    const items = tablePager.strongItems || [];
+    const minSet = tablePager.strongMinSet || new Set();
+    const bestSet = tablePager.strongBestSet || new Set();
+    const pageSize = getPreviewPageSize();
+    const start = (tablePager.page - 1) * pageSize;
+    const slice = items.slice(start, start + pageSize);
+    if (!slice.length) {
+        body.innerHTML = `<tr><td colspan="5" class="empty-row">无数据</td></tr>`;
+    } else {
+        body.innerHTML = slice.map(it => {
+            const deg = it.add_lv_prop / 2;
+            return `<tr data-idx="${it.index}">
+                <td>${it.index}</td>
+                <td class="grade-${it.grade}">${it.grade_name}</td>
+                <td>+${deg}%（同层参考）</td>
+                <td class="${minSet.has(it.index) ? 'advice-yes' : 'advice-no'}">${minSet.has(it.index) ? '接受' : '—'}</td>
+                <td class="${bestSet.has(it.index) ? 'advice-yes' : 'advice-no'}">${bestSet.has(it.index) ? '接受' : '—'}</td>
+            </tr>`;
+        }).join('');
+    }
+    updatePreviewPager(items.length);
+}
+
+function renderStrongPreview(resp, eq) {
+    setStrongHead();
+    const body = document.getElementById('previewBody');
+    const meta = document.getElementById('previewMeta');
+    const advice = document.getElementById('strongAdvice');
+    const xlFilter = document.getElementById('xilianFilterBar');
+    if (xlFilter) xlFilter.hidden = true;
+    const makeFilter = document.getElementById('makeFilterBar');
+    if (makeFilter) makeFilter.hidden = true;
+    if (resp.error && (!resp.items || !resp.items.length)) {
+        body.innerHTML = `<tr><td colspan="5" class="empty-row">${escapeHtml(resp.error)}</td></tr>`;
+        meta.textContent = '';
+        if (advice) advice.innerHTML = '';
+        strongPlanCache = null;
+        hidePreviewPager();
+        return;
+    }
+    const items = resp.items || [];
+    const grades = items.map(i => i.grade);
+    const startLevel = eq.level || 0;
+    const target = Number(document.getElementById('strongTargetLevel')?.value) || Math.min(15, startLevel + 3);
+    const minG = strongMinGrade();
+    const names = { 1: '一般', 2: '良好', 3: '优秀', 4: '完美' };
+
+    const plans = planStrongPath(grades, startLevel, target, minG, eq.need_lv || 90);
+    strongPlanCache = plans;
+    strongPlanCache.items = items;
+    pathPages = { min: 1, max: 1 };
+
+    const perfect = items.filter(i => i.grade === 4).length;
+    meta.textContent = `序列 ${items.length} · 完美 ${perfect} · 当前 +${startLevel} → 期望 +${target} · 最低 ${names[minG]}`;
+
+    advice.innerHTML = [
+        formatPlanCard('消耗最少', plans.minCost, names, '优先省稀有炼石', 'min'),
+        formatPlanCard('数值最优', plans.maxValue, names, '优先高淬炼度', 'max'),
+        '<div class="advice-note">※ 取消也耗炼石；同结果尽量把尝试留在更便宜的层。稀有度：紫＞蓝＞绿＞白。点下方按钮可高亮对应接受行。</div>',
+    ].join('');
+    bindPathPagers();
+
+    const minSet = plans.minCost?.ok ? plans.minCost.accepts : new Set();
+    const bestSet = plans.maxValue?.ok ? plans.maxValue.accepts : new Set();
+
+    tablePager.mode = 'strong';
+    tablePager.page = 1;
+    tablePager.strongItems = items;
+    tablePager.strongMinSet = minSet;
+    tablePager.strongBestSet = bestSet;
+    renderStrongPage();
+}
+
+
+function extractMakeRnd(data) {
+    if (!data) return null;
+    if (data.MakeRnd) return data.MakeRnd;
+    if (Array.isArray(data) && data[0]?.MakeRnd) return data[0].MakeRnd;
+    if (data.Seeds || data.LuckySeeds) return data;
+    return null;
+}
+
+function loadSaveData(json) {
+    const makeRnd = extractMakeRnd(json);
+    if (!makeRnd) throw new Error('存档中未找到 MakeRnd');
+    const state = {
+        Seeds: makeRnd.Seeds || {},
+        LuckySeeds: makeRnd.LuckySeeds || {},
+        IDSeeds: makeRnd.IDSeeds || {},
+        MakeLucky: makeRnd.MakeLucky || {},
+    };
+    if (!wasmMakeSetState(state)) throw new Error('MakeRnd 注入失败');
+    makeRndSnapshot = JSON.parse(JSON.stringify(state));
+
+    saveEquips = collectEquipsFromSave(json);
+    saveEquipsSnapshot = JSON.parse(JSON.stringify(saveEquips));
+    equipRuntime = {};
+    equipRuntimeSnapshot = {};
+    jianwangRuleDetection = detectJianwangRuleFromEquips(saveEquips);
+    jianwangRedSeed = validJianwangRedSeed(makeRnd.RedSeeds?.[String(JIANWANG_BLANK_ID)])
+        ? Number(makeRnd.RedSeeds[String(JIANWANG_BLANK_ID)])
+        : null;
+    jianwangRedSeedSnapshot = jianwangRedSeed;
+    jianwangReforgeCounts = {};
+    const saveRoot = Array.isArray(json) ? json[0] : json;
+    for (const id of JIANWANG_LEVEL_90_IDS) {
+        const savedCount = findSaveScalar(saveRoot, `again_${id}`);
+        jianwangReforgeCounts[String(id)] = Math.max(0, Math.floor(Number(savedCount) || 0));
+    }
+    for (const e of saveEquips) {
+        const k = runtimeKey(e);
+        const full = { ...e, ...toWasmEquip(e), xilian_marks: [...(e.xilian_marks || [])] };
+        equipRuntime[k] = JSON.parse(JSON.stringify(full));
+        equipRuntimeSnapshot[k] = JSON.parse(JSON.stringify(full));
+    }
+    refreshJianwangVirtualFirstSword();
+    jianwangReforgeCountsSnapshot = { ...jianwangReforgeCounts };
+
+    saveLoaded = true;
+    clearMakeAdvanceNotice();
+    resetXilianSession();
+    document.getElementById('saveStatus').textContent = '导入成功';
+    if (typeof renderArchiveState === 'function') renderArchiveState(json);
+    fillEquipSelects();
+    renderCraftedBagList();
+    updateMakeHints();
+    updateCraftedBagHint();
+    updateJianwangCycleHint();
+}
+
+async function handleSaveFile(file) {
+    if (typeof _importFeedback === 'function') _importFeedback(true);
+    let json;
+    try {
+        if (typeof decryptSaveFile === 'function') {
+            const r = await decryptSaveFile(file);
+            json = r.data;
+            saveMeta = {
+                version: r.version || '',
+                platform: r.platform || '',
+                columns: r.columns || null,
+                row: r.row || null,
+            };
+            if (typeof saveShareStore === 'function') {
+                saveShareStore(json, {
+                    version: r.version, platform: r.platform,
+                    channel: r.channel || (String(r.platform || '').toLowerCase() === 'oversea' ? '国际服' : ''),
+                    format: r.format || 'json', columns: r.columns || null, row: r.row || null,
+                });
+            }
+        } else {
+            const text = await file.text();
+            const raw = JSON.parse(text);
+            const entry = Array.isArray(raw) ? raw[0] : raw;
+            if (entry && (entry.content || entry.encrypted)) {
+                json = wasmDecryptSave(entry.content || entry.encrypted);
+            } else {
+                json = raw;
+            }
+        }
+    } catch (e) {
+        if (typeof _importFeedback === 'function') _importFeedback(false);
+        throw new Error('存档解析失败: ' + e.message);
+    }
+    if (typeof _importFeedback === 'function') _importFeedback(false);
+    loadSaveData(json);
+}
+
+function switchTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.tab === tab);
+    });
+    document.getElementById('panelMake').hidden = tab !== 'make';
+    const sl = document.getElementById('panelShenglian');
+    if (sl) sl.hidden = tab !== 'shenglian';
+    document.getElementById('panelXilian').hidden = tab !== 'xilian';
+    document.getElementById('panelStrong').hidden = tab !== 'strong';
+    const jwg = document.getElementById('panelJianwang');
+    if (jwg) jwg.hidden = tab !== 'jianwang';
+    renderMakeAdvanceNotice();
+    if (tab === 'shenglian') {
+        fillEquipSelects();
+        updateShenglianHint();
+        clearPreview('升炼无需预测序列，选择装备后点击「执行升炼」');
+    } else if (tab === 'jianwang') {
+        fillJianwangEquipSelect(true);
+        updateJianwangHint();
+        clearPreview('选择剑王阁实物或虛擬劍胚和流程后，点击「预览当前流程」');
+    } else if (tab === 'xilian') {
+        fillXilianMangjingMaterials();
+        clearPreview('点击预测查看结果');
+    } else {
+        clearPreview('点击预测查看结果');
+    }
+}
+
+function doMakePreview() {
+    if (!saveLoaded) { alert('请先导入存档'); return; }
+    const req = requireCurrentMakeRequest();
+    if (!req) return;
+    const n = Math.max(1, Math.min(PREVIEW_MAX, Number(document.getElementById('previewCount').value) || 100));
+    renderMakePreview(wasmMakePreview(req, n));
+    updateMakeHints();
+}
+
+function doSpecialAttachPreview() {
+    if (!saveLoaded) { alert('请先导入存档'); return; }
+    const equipKey = document.getElementById('specialAttachEquipSelect')?.value || '';
+    const materialId = document.getElementById('specialAttachMaterialSelect')?.value || '';
+    const equip = saveEquips.find(item => runtimeKey(item) === equipKey);
+    const material = EQUIP_DATA.special[String(materialId)];
+    if (!equip) { alert('请选择要连续附加材料的装备'); return; }
+    if (!material) { alert('请选择要重复附加的特殊材料'); return; }
+    const count = Number(document.getElementById('specialAttachCount')?.value);
+    try {
+        if (!Number.isSafeInteger(count) || count < 1 || count > PREVIEW_MAX) {
+            throw new RangeError(`预测次数必须是 1–${PREVIEW_MAX} 的整数`);
+        }
+        renderSpecialAttachPreview(predictSpecialAttachSequence(equip, material, count));
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        clearPreview(`连续附加预测失败：${message}`);
+        alert(`连续附加预测失败：${message}`);
+    }
+}
+
+/* ── 精炼页 · 芒晶洗练序列 ─────────────────────────────── */
+/** 按装备部位选择默认芒晶材料：武器类→龙骨(2021)、防具类→紫玉髓(2023) */
+function defaultMangjingMaterialForEquip(equip) {
+    const typ = Number(equip?.typ);
+    // 武器类：拳套/刀/剑/枪棍/戒指/挂坠 → 龙骨（穿甲）
+    if ([1, 2, 3, 4, 8, 9].includes(typ)) return 2021;
+    // 防具类：腰带/护腕/内甲 → 紫玉髓（真元）
+    if ([5, 6, 7].includes(typ)) return 2023;
+    return null;
+}
+
+/** 填充芒晶材料下拉（只列适用于当前精炼装备的材料），并按部位自动选默认 */
+function fillXilianMangjingMaterials() {
+    const sel = document.getElementById('xilianMangjingMaterial');
+    if (!sel) return;
+    const previous = sel.value;
+    const equipKey = document.getElementById('xilianEquipSelect')?.value || '';
+    const equip = saveEquips.find(item => runtimeKey(item) === equipKey);
+    sel.innerHTML = '';
+    if (!equip) {
+        sel.innerHTML = '<option value="">请先选择装备</option>';
+        return;
+    }
+    const materials = specialMaterialsForEquip(equip);
+    if (!materials.length) {
+        sel.innerHTML = '<option value="">该装备无适用材料</option>';
+        return;
+    }
+    for (const m of materials) {
+        const opt = document.createElement('option');
+        opt.value = String(m.id);
+        opt.textContent = m.name || String(m.id);
+        sel.appendChild(opt);
+    }
+    // 优先保留用户上次选择；否则按部位自动选默认
+    if (previous && materials.some(m => String(m.id) === previous)) {
+        sel.value = previous;
+    } else {
+        const defId = defaultMangjingMaterialForEquip(equip);
+        const def = defId ? materials.find(m => Number(m.id) === defId) : null;
+        if (def) sel.value = String(def.id);
+    }
+}
+
+/** 渲染芒晶序列：头部最高值 + 逐次结果列表 */
+function renderXilianMangjing(result, material, equip) {
+    const box = document.getElementById('xilianMangjingResult');
+    if (!box) return;
+    // wasm 的 predictSpecialAttachSequence 直接返回数组；EquipmentAutoOptimizer 版返回 {items}
+    const items = Array.isArray(result) ? result : (Array.isArray(result?.items) ? result.items : []);
+    if (!items.length) {
+        box.classList.add('empty');
+        const err = result?.error ? ` · error: ${result.error}` : '';
+        box.innerHTML = `芒晶序列无结果（items 为空）${escapeHtml(err)}
+            <pre style="text-align:left;font-size:0.7rem;opacity:.7;margin-top:.5rem;max-height:8rem;overflow:auto;background:rgba(0,0,0,.2);padding:.4rem;border-radius:4px">${escapeHtml(JSON.stringify(result, null, 2).slice(0, 1500))}</pre>
+            <small style="opacity:.6">F12 Console 搜 [mangjing] 看完整入参</small>`;
+        return;
+    }
+    box.classList.remove('empty');
+    let best = items[0];
+    for (const it of items) {
+        if (Number(it.value) > Number(best.value)) best = it;
+    }
+    const levelText = Number(equip?.need_lv) > 0 ? ` · ${Number(equip.need_lv)}级` : '';
+    const head = `<div class="mangjing-head">
+        <strong>芒晶洗练 · ${escapeHtml(material.name || String(material.id))}${escapeHtml(levelText)}</strong>
+        <span class="mangjing-peak">最高 ${escapeHtml(propLabel(best.prop))} ${escapeHtml(formatPropValue(best.prop, best.value))} · 第 ${Number(best.index)} 次</span>
+        <span class="mangjing-cost">消耗 芒晶×${Number(best.index)}</span>
+        <button type="button" class="mangjing-toggle" aria-expanded="false">展开 ${items.length} 次序列</button>
+    </div>`;
+    const seq = `<ol class="mangjing-sequence" hidden>${items.map(it => {
+        const isBest = it === best;
+        return `<li class="mangjing-item${isBest ? ' is-best' : ''}">
+            <span class="mangjing-idx">第 ${Number(it.index)} 次</span>
+            <span class="mangjing-prop">${escapeHtml(propLabel(it.prop))}</span>
+            <span class="mangjing-val">${escapeHtml(formatPropValue(it.prop, it.value))}</span>
+        </li>`;
+    }).join('')}</ol>`;
+    box.innerHTML = head + seq;
+    // 折叠/展开 序列
+    const toggleBtn = box.querySelector('.mangjing-toggle');
+    const seqEl = box.querySelector('.mangjing-sequence');
+    if (toggleBtn && seqEl) {
+        toggleBtn.addEventListener('click', () => {
+            const open = seqEl.hasAttribute('hidden');
+            if (open) {
+                seqEl.removeAttribute('hidden');
+                toggleBtn.textContent = `折叠序列`;
+                toggleBtn.setAttribute('aria-expanded', 'true');
+            } else {
+                seqEl.setAttribute('hidden', '');
+                toggleBtn.textContent = `展开 ${items.length} 次序列`;
+                toggleBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+}
+
+/** 芒晶序列预测：优先用全局函数，回退到 EquipmentAutoOptimizer（两种挂载方式都兼容） */
+function runSpecialAttachPredict(equip, material, count) {
+    if (typeof predictSpecialAttachSequence === 'function') {
+        return predictSpecialAttachSequence(equip, material, count);
+    }
+    const fn = (typeof EquipmentAutoOptimizer !== 'undefined')
+        ? EquipmentAutoOptimizer?.predictSpecialAttachSequence
+        : null;
+    if (typeof fn === 'function') return fn(equip, material, count);
+    throw new Error('芒晶序列预测函数不可用（页面资源未加载完整，请刷新重试）');
+}
+
+/* ── 成品背包：入包 / 渲染 / 持久化 / 导出 ─────────────── */
+/** 本地下载实现（equip 页不依赖 simulator.js，triggerFileDownload 不存在） */
+function equipDownloadFile(filename, text) {
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+    return true;
+}
+
+/** 序列化装备的「最终附加」行：1.攻击+129（第70次，最大值 143.33）· 2.攻击+115 · 3.攻击+73
+ *  与「保留规划」那行用同一个 xilianMaxValueText，入包后也能看到理论上限。
+ *  不再合计：词条可能是 攻击+吸血 之类不同维度，合计无意义。
+ *  slotLastCum 是「累积连金泥」映射（算最大值用），缺失时回退用序号，避免入参为空时报错。 */
+function buildExtLines(exts, slotLastIndex, slotLastCum) {
+    const parts = [];
+    (exts || []).forEach((p, i) => {
+        const slot = i + 1;
+        const at = slotLastIndex?.[slot];
+        const cum = slotLastCum?.[slot] ?? at;
+        // 档位按这一刀所处的精炼阶段（累积泥）算；过 80 后系数为 1，此时 xilianMaxValueText 返回空串，不标注
+        const mv = at ? xilianMaxValueText(p.prop, p.value, cum) : '';
+        parts.push(`${slot}.${propLabel(p.prop)}+${formatPropValue(p.prop, p.value)}`
+            + (at ? `（第${at}次${mv ? '，最大值 ' + mv : ''}）` : ''));
+    });
+    return { extText: parts.join(' · ') };
+}
+
+/** 生成标题：标记 + 装备名；同标记+同名已存在则自动加 (n) 后缀 */
+function buildBagTitle(mark, equipName) {
+    const base = [mark, equipName].filter(Boolean).join(' ');
+    const same = refinedBag.filter(e => e.baseTitle === base).length;
+    return { baseTitle: base, title: `${base} (${same + 1})` };
+}
+
+/** 「加入成品背包」：汇总当前精炼规划 + 最近一次芒晶结果 */
+function addRefinedToBag() {
+    if (!saveLoaded) { alert('请先导入存档'); return; }
+    const equipKey = document.getElementById('xilianEquipSelect')?.value || '';
+    const equip = saveEquips.find(item => runtimeKey(item) === equipKey);
+    if (!equip) { alert('请先选择一件精炼装备'); return; }
+
+    const plan = lastXilianPlan;
+    const mj = lastMangjingResult;
+
+    /*
+     * 这两份快照都是「上次对某一件装备」算出来的。若中途在下拉框换了装备却没重新预测，
+     * 直接加背包就会把 A 的精炼词条/花费/盲晶记到 B 的名字下（名字取当前选中、属性取快照）。
+     * 所以必须核对装备标识，不一致就拦下来。
+     */
+    if (plan && plan.equipKey && plan.equipKey !== equipKey) {
+        alert('这件装备和上次「预测序列」的装备对不上（中途换过装备，或它升炼后编号变了）。\n请先对当前这件重新点一次「预测序列」，再点「加入成品背包」。');
+        return;
+    }
+    if (mj && mj.equipKey && mj.equipKey !== equipKey) {
+        alert('这件装备和上次「芒晶序列」的装备对不上（中途换过装备，或它升炼后编号变了）。\n请先对当前这件重新跑一次「芒晶序列」，再点「加入成品背包」。');
+        return;
+    }
+
+    const anyAccepted = plan ? plan.accepts.some(Boolean) : false;
+
+    // 校验：未勾保留 / 未跑芒晶 都给警告，用户可强行加入
+    if (!anyAccepted) {
+        if (!confirm('当前没有勾选任何「保留」项，最终附加为空。\n仍要加入成品背包吗？')) return;
+    }
+    if (!mj) {
+        if (!confirm('尚未运行「芒晶序列」，盲晶信息会为空。\n仍要加入成品背包吗？')) return;
+    }
+
+    const mark = String(equip._mark || '').trim();
+    const equipName = equip.name || String(equip.id || '装备');
+    const { baseTitle, title } = buildBagTitle(mark, equipName);
+    const { extText } = buildExtLines(plan?.exts || [], plan?.slotLastIndex, plan?.slotLastCum);
+    const costText = plan ? (plan.cutoffText || plan.costText) : '';
+    // 打造工匠地点（仅新打造的装备有 _make_npcId；老数据/已装备装备为空）
+    let npcPlace = '';
+    if (equip._make_npcId) {
+        const cm = EQUIP_DATA.craftsman[String(equip._make_npcId)];
+        if (cm) {
+            npcPlace = `${cm.place || cm.name} · ${cm.name}（${cm.zhi === 'fengzhi' ? '绣' : '铁'}）`;
+        }
+    }
+    // 地区附加（仅模拟打造装备有 _make_region；老数据/已装备装备为空 → 不显示）
+    let regionText = '';
+    if (Array.isArray(equip._make_region) && equip._make_region.length) {
+        regionText = equip._make_region
+            .map(p => `${propLabel(p.prop)}+${formatPropValue(p.prop, p.value)}`)
+            .join(' · ');
+    }
+    const mjText = mj
+        ? `盲晶 ${mj.materialName} · 最高 ${propLabel(mj.prop)} ${formatPropValue(mj.prop, mj.value)} · 第 ${mj.index} 次`
+        : '盲晶 —（未运行芒晶序列）';
+
+    refinedBag.push({
+        id: `rb_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+        title,
+        baseTitle,
+        mark,
+        equipName,
+        npcPlace,
+        regionText,
+        color: equip.color,
+        extText: extText || '未勾选保留',
+        costText: costText || '—',
+        mjText,
+        xl: plan?.xl ?? 0,
+        keepN: plan?.keepN ?? 0,
+        note: '',
+        at: Date.now(),
+    });
+    saveRefinedBag();
+    renderRefinedBag();
+}
+
+/** 把文本切成「文字 / 数字」片段：只有数字部分允许编辑（序号 1. 之类不受影响） */
+function splitEditableNumbers(text) {
+    const s = String(text ?? '');
+    const parts = [];
+    const re = /(?<![\d.])\d+(?:\.\d+)?(?![\d.])/g;
+    let last = 0;
+    let m;
+    while ((m = re.exec(s)) !== null) {
+        if (m.index > last) parts.push({ num: false, v: s.slice(last, m.index) });
+        parts.push({ num: true, v: m[0] });
+        last = m.index + m[0].length;
+    }
+    if (last < s.length) parts.push({ num: false, v: s.slice(last) });
+    return parts;
+}
+
+/** 渲染成品背包的一行：文字原样输出，数字换成可编辑输入框 */
+function renderRefinedBagLine(label, text, field) {
+    const body = splitEditableNumbers(text).map(p => {
+        if (!p.num) return escapeHtml(p.v);
+        return `<input type="text" inputmode="decimal" class="rb-num" data-field="${field}" size="${Math.max(2, p.v.length)}" value="${escapeHtml(p.v)}">`;
+    }).join('');
+    return `<div class="refined-bag-line"><span>${label}</span><div class="rb-line-body">${body}</div></div>`;
+}
+
+/** 用输入框里的新值，按原文本的数字位置重新拼回字符串 */
+function rebuildRefinedBagField(originalText, values) {
+    let i = 0;
+    return splitEditableNumbers(originalText)
+        .map(p => (p.num ? (values[i++] ?? p.v) : p.v))
+        .join('');
+}
+
+/** 数字输入变化：重拼该行文本并持久化（不重渲染，避免打断输入） */
+function onRefinedBagNumberChange(input) {
+    const card = input.closest('.refined-bag-card');
+    if (!card) return;
+    const rec = refinedBag.find(x => x.id === card.dataset.id);
+    if (!rec) return;
+    const field = input.dataset.field;
+    if (!field) return;
+    const inputs = Array.from(card.querySelectorAll(`.rb-num[data-field="${field}"]`));
+    const originals = splitEditableNumbers(rec[field]).filter(p => p.num).map(p => p.v);
+    const values = inputs.map((el, i) => {
+        const v = String(el.value).trim();
+        if (/^-?\d+(?:\.\d+)?$/.test(v)) return v;
+        alert('这里只能填数字，已还原为原值。');
+        el.value = originals[i] ?? '';
+        return originals[i] ?? '';
+    });
+    rec[field] = rebuildRefinedBagField(rec[field], values);
+    saveRefinedBag();
+}
+
+/** 渲染成品背包卡片列表 */
+function renderRefinedBag() {
+    const box = document.getElementById('refinedBagList');
+    const meta = document.getElementById('refinedBagMeta');
+    if (!box) return;
+    if (meta) meta.textContent = refinedBag.length ? `共 ${refinedBag.length} 件` : '';
+    if (!refinedBag.length) {
+        box.classList.add('empty');
+        box.textContent = '暂无成品装备。先「预测序列」勾选保留 → 跑「芒晶序列」→ 点「加入成品背包」';
+        return;
+    }
+    box.classList.remove('empty');
+    box.innerHTML = refinedBag.map(e => {
+        const note = typeof e.note === 'string' ? e.note : '';
+        return `<div class="refined-bag-card" data-id="${escapeHtml(e.id)}">
+            <div class="refined-bag-head">
+                <strong class="color-${Number(e.color) || 1}">${escapeHtml(e.title)}</strong>
+                ${e.regionText ? `<span class="refined-bag-region">${escapeHtml(e.regionText)}</span>` : ''}
+                <button type="button" class="btn btn-reset btn-row-action refined-bag-del" data-id="${escapeHtml(e.id)}">移除</button>
+            </div>
+            ${renderRefinedBagLine('最终附加', e.extText, 'extText')}
+            ${renderRefinedBagLine('消耗', e.costText, 'costText')}
+            ${renderRefinedBagLine('盲晶', e.mjText, 'mjText')}
+            <div class="refined-bag-line refined-bag-note-line">
+                <span>备注</span>
+                <input type="text" class="rb-note" maxlength="100" placeholder="选填，最多 100 字" value="${escapeHtml(note)}">
+                <em class="rb-note-count">${note.length}/100</em>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+/* ── 成品背包持久化：IndexedDB 为主（容量大），localStorage 兜底 ────────── */
+let refinedBagDBPromise = null;
+let refinedBagIdbTimer = null;
+let refinedBagSaveWarned = false;
+
+function openRefinedBagDB() {
+    if (refinedBagDBPromise) return refinedBagDBPromise;
+    refinedBagDBPromise = new Promise((resolve, reject) => {
+        if (typeof indexedDB === 'undefined') { reject(new Error('indexedDB 不可用')); return; }
+        let req;
+        try { req = indexedDB.open(REFINED_BAG_DB, 1); } catch (e) { reject(e); return; }
+        req.onupgradeneeded = () => {
+            const db = req.result;
+            if (!db.objectStoreNames.contains(REFINED_BAG_STORE)) db.createObjectStore(REFINED_BAG_STORE);
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error || new Error('打开 IndexedDB 失败'));
+        req.onblocked = () => reject(new Error('IndexedDB 被其它标签页占用'));
+    }).catch(err => {
+        refinedBagDBPromise = null;   // 失败后允许下次重试
+        throw err;
+    });
+    return refinedBagDBPromise;
+}
+
+async function idbSaveRefinedBag() {
+    try {
+        const db = await openRefinedBagDB();
+        await new Promise((resolve, reject) => {
+            const tx = db.transaction(REFINED_BAG_STORE, 'readwrite');
+            tx.objectStore(REFINED_BAG_STORE).put(refinedBag, REFINED_BAG_DB_KEY);
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => reject(tx.error);
+            tx.onabort = () => reject(tx.error);
+        });
+        return true;
+    } catch (e) {
+        console.warn('[成品背包] IndexedDB 写入失败：', e);
+        return false;
+    }
+}
+
+async function idbLoadRefinedBag() {
+    try {
+        const db = await openRefinedBagDB();
+        const value = await new Promise((resolve, reject) => {
+            const tx = db.transaction(REFINED_BAG_STORE, 'readonly');
+            const req = tx.objectStore(REFINED_BAG_STORE).get(REFINED_BAG_DB_KEY);
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(req.error);
+        });
+        return Array.isArray(value) ? value : null;
+    } catch (e) {
+        console.warn('[成品背包] IndexedDB 读取失败：', e);
+        return null;
+    }
+}
+
+function readRefinedBagLocal() {
+    try {
+        const raw = localStorage.getItem(REFINED_BAG_KEY);
+        if (!raw) return null;
+        const arr = JSON.parse(raw);
+        return Array.isArray(arr) ? arr : null;
+    } catch (e) {
+        return null;
+    }
+}
+
+function normalizeRefinedBag(list) {
+    return (list || []).map(e => ({ ...e, note: typeof e.note === 'string' ? e.note : '' }));
+}
+
+/** 恢复成品背包：优先 IndexedDB，其次 localStorage（旧数据自动迁移过去） */
+async function loadRefinedBag() {
+    let list = await idbLoadRefinedBag();
+    if (!list) {
+        list = readRefinedBagLocal();
+        if (list && list.length) {
+            refinedBag = normalizeRefinedBag(list);
+            idbSaveRefinedBag();   // 迁移到 IndexedDB
+            return refinedBag;
+        }
+    }
+    refinedBag = list ? normalizeRefinedBag(list) : [];
+    return refinedBag;
+}
+
+/** 保存成品背包：localStorage 同步写（即时），IndexedDB 异步写（大容量兜底） */
+function saveRefinedBag() {
+    let localOk = false;
+    try {
+        localStorage.setItem(REFINED_BAG_KEY, JSON.stringify(refinedBag));
+        localOk = true;
+    } catch (e) {
+        console.error('[成品背包] localStorage 写入失败：', e);
+    }
+    // IndexedDB 合并写入，避免备注连续输入时频繁开事务
+    clearTimeout(refinedBagIdbTimer);
+    refinedBagIdbTimer = setTimeout(() => {
+        idbSaveRefinedBag().then(idbOk => {
+            if (!localOk && !idbOk && !refinedBagSaveWarned) {
+                refinedBagSaveWarned = true;
+                alert('成品背包保存失败：浏览器本地存储不可用或空间已满。\n本次改动刷新后可能丢失，请先「导出 txt」备份。');
+            }
+            if (localOk || idbOk) refinedBagSaveWarned = false;
+        });
+    }, 150);
+    return localOk;
+}
+
+/** 导出 txt：每件 4 行（备注非空时追加 1 行），装备间用虚线分隔 */
+function exportRefinedBagTxt() {
+    try {
+        if (!refinedBag.length) { alert('成品背包为空，没有可导出的装备。'); return; }
+        const lines = [];
+        const sep = '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -';
+        refinedBag.forEach((e, i) => {
+            if (i > 0) {
+                lines.push('');   // 装备之间上方空行
+                lines.push(sep);  // 虚线分隔
+                lines.push('');   // 装备之间下方空行
+            }
+            let head = e.npcPlace ? `${e.title}（${e.npcPlace}）` : e.title;
+            if (e.regionText) head += ` ${e.regionText}`;
+            lines.push(head);
+            lines.push(`最终附加：${e.extText}`);
+            lines.push(`消耗 ${e.costText}`);
+            lines.push(e.mjText);
+            const note = String(e.note || '').trim();
+            if (note) lines.push(`备注：${note}`);   // 备注为空则不输出
+        });
+        const d = new Date();
+        const p = v => String(v).padStart(2, '0');
+        const stamp = `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
+        // 文件名：角色名 + 成品背包 + 时间戳。角色名取当前存档主角；拿不到时退回不带前缀
+        const roleName = String(document.getElementById('archiveMainRole')?.textContent || '').trim();
+        const prefix = roleName && roleName !== '—' ? `${roleName}_` : '';
+        const filename = `${prefix}成品背包_${stamp}.txt`;
+        const text = lines.join('\n');
+        console.log('[导出成品背包] filename=', filename, 'bytes=', text.length, 'lines=', lines.length);
+        equipDownloadFile(filename, text);
+        console.log('[导出成品背包] 调用完毕');
+    } catch (e) {
+        console.error('[导出成品背包] 失败:', e);
+        alert('导出失败：' + (e?.message || String(e)));
+    }
+}
+
+/** 从芒晶序列结果里提取「最高那次」摘要（供成品背包记录） */
+function buildMangjingSummary(result, material, count, equipKey) {
+    const items = Array.isArray(result) ? result : (Array.isArray(result?.items) ? result.items : []);
+    if (!items.length) return null;
+    let best = items[0];
+    for (const it of items) {
+        if (Number(it.value) > Number(best.value)) best = it;
+    }
+    return {
+        materialId: material?.id,
+        materialName: material?.name || String(material?.id || ''),
+        prop: best.prop,
+        value: best.value,
+        index: Number(best.index),
+        count: items.length || count,
+        equipKey: equipKey || null,   // 记下是对哪件装备算的，供「加入成品背包」核对
+    };
+}
+
+/** 精炼页「芒晶序列」：只读预测 N 次芒晶洗练，不推进 MJSeed */
+function doXilianMangjing() {
+    if (!saveLoaded) { alert('请先导入存档'); return; }
+    const panel = document.getElementById('xilianMangjingPanel');
+    const box = document.getElementById('xilianMangjingResult');
+    if (!box) return;
+    const equipKey = document.getElementById('xilianEquipSelect')?.value || '';
+    const equip = saveEquips.find(item => runtimeKey(item) === equipKey);
+    if (!equip) { alert('请选择要模拟芒晶洗练的装备'); return; }
+    const materialId = document.getElementById('xilianMangjingMaterial')?.value || '';
+    const material = EQUIP_DATA.special[String(materialId)];
+    if (!material) { alert('请选择芒晶材料（下拉为空说明该装备无适用材料）'); return; }
+    const count = Number(document.getElementById('xilianMangjingCount')?.value) || 30;
+    try {
+        if (!Number.isSafeInteger(count) || count < 1 || count > PREVIEW_MAX) {
+            throw new RangeError(`预测次数必须是 1–${PREVIEW_MAX} 的整数`);
+        }
+        const result = runSpecialAttachPredict(equip, material, count);
+        lastMangjingResult = buildMangjingSummary(result, material, count, equipKey);
+        renderXilianMangjing(result, material, equip);
+        if (panel) panel.hidden = false;
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        box.classList.add('empty');
+        box.textContent = `芒晶序列预测失败：${message}`;
+        if (panel) panel.hidden = false;
+    }
+}
+
+function doMakeOnce() {
+    if (!saveLoaded) { alert('请先导入存档'); return; }
+    const req = requireCurrentMakeRequest();
+    if (!req) return;
+    const r = wasmMakeOnce(req);
+    if (r.error) { alert(r.error); return; }
+    r.index = 1;
+    const mark = getDefaultMakeMark();
+    const crafted = addCraftedFromMakeResult(r, mark, req.select_id, req.npc_id);
+    setMakeAdvanceNotice(r, crafted, 1);
+    const markTip = crafted?._mark ? ` · 标记「${crafted._mark}」` : '';
+    const bagTip = crafted
+        ? ` · 已入模拟背包(#${crafted.only_id})${markTip}`
+        : '';
+    appendLog(`[打造] ${r.name} · ${COLOR_NAMES[r.color] || r.color} · ${r.pity ? '保底' : r.seed_kind}${bagTip} · S=${r.S ?? r.s ?? '?'} · CZSeed=${r.CZSeed ?? r.cz_seed ?? '?'}`);
+    fillEquipSelects();
+    updateMakeHints();
+    doMakePreview();
+}
+
+function doMakeAdvanceTo(targetIndex, mark) {
+    if (!saveLoaded) { alert('请先导入存档'); return; }
+    const req = requireCurrentMakeRequest();
+    if (!req) return;
+    const n = Math.floor(Number(targetIndex));
+    if (!(n >= 1 && n <= PREVIEW_MAX)) {
+        alert(`目标序号无效（1–${PREVIEW_MAX}）`);
+        return;
+    }
+    let last = null;
+    for (let i = 1; i <= n; i++) {
+        const r = wasmMakeOnce(req);
+        if (r.error) {
+            alert(`推进至第 ${i} 次失败：${r.error}`);
+            updateMakeHints();
+            return;
+        }
+        r.index = i;
+        last = r;
+    }
+    const crafted = addCraftedFromMakeResult(last, mark != null ? mark : getDefaultMakeMark(), req.select_id, req.npc_id);
+    setMakeAdvanceNotice(last, crafted, n);
+    const markTip = crafted?._mark ? ` · 标记「${crafted._mark}」` : '';
+    appendLog(`[打造·推进到#${n}] ${last.name} · ${COLOR_NAMES[last.color] || last.color} · ${last.pity ? '保底' : last.seed_kind} · 入包#${crafted?.only_id || '?'}${markTip}`);
+    fillEquipSelects();
+    updateMakeHints();
+    doMakePreview();
+}
+
+/* ── 一键推进（勾选批量） ───────────────────────────────── */
+/** 收集当前页勾选的行 → [{idx, mark}]，mark 未填时兜底为「紫 23」这种「品质+序号」 */
+function collectMakeCheckedTargets() {
+    const checked = Array.from(document.querySelectorAll('#previewBody .make-row-check:checked'));
+    return checked.map(cb => {
+        const tr = cb.closest('tr');
+        const idx = Number(cb.dataset.index);
+        const rawColor = Number(cb.dataset.color);
+        const colorName = COLOR_NAMES[rawColor] || String(rawColor || '');
+        const userMark = (tr?.querySelector('.make-row-mark')?.value || '').trim();
+        return { idx, mark: userMark || `${colorName} ${idx}`, colorName, userMark };
+    })
+        .filter(t => Number.isFinite(t.idx) && t.idx >= 1)
+        .sort((a, b) => a.idx - b.idx);
+}
+
+/** 从标记文本里取开头的品质名（如「紫 31」→ 紫；「备选5」→ 空） */
+function markColorName(mark) {
+    const m = /^(白|绿|蓝|紫|橙|红)/.exec(String(mark || '').trim());
+    return m ? m[1] : '';
+}
+
+/** 标记输入框实时校验：标记里的品质名 ≠ 行的实际品质 → 红框警告 */
+function flagMarkMismatch(input) {
+    const tr = input?.closest('tr');
+    if (!tr) return;
+    const cb = tr.querySelector('.make-row-check');
+    const rawColor = Number(cb?.dataset.color);
+    const colorName = COLOR_NAMES[rawColor] || '';
+    const name = markColorName(input.value);
+    const bad = !!(name && colorName && name !== colorName);
+    input.classList.toggle('is-mismatch', bad);
+    input.title = bad ? `标记写的是「${name}」，但这件实际是「${colorName}」` : '';
+}
+
+/** 刷新「一键推进勾选 N 件」按钮文案与可用状态 */
+function updateMakeBatchButton() {
+    const btn = document.getElementById('btnMakeBatchAdvance');
+    if (!btn) return;
+    const n = document.querySelectorAll('#previewBody .make-row-check:checked').length;
+    const total = document.querySelectorAll('#previewBody .make-row-check').length;
+    btn.textContent = n ? `一键推进勾选 ${n} 件` : '一键推进勾选';
+    btn.disabled = n === 0;
+    btn.classList.toggle('btn-batch-armed', n > 0);
+    // 全选复选框三态：全勾=勾，部分勾=半勾（indeterminate），全不勾=不勾
+    const all = document.getElementById('makeCheckAll');
+    if (all) {
+        all.checked = total > 0 && n === total;
+        all.indeterminate = n > 0 && n < total;
+        all.disabled = total === 0;
+    }
+}
+
+/** 一键推进：把当前页勾选的行按序号升序串行推进到模拟背包 */
+async function batchAdvanceChecked() {
+    if (!saveLoaded) { alert('请先导入存档'); return; }
+    const targets = collectMakeCheckedTargets();
+    if (!targets.length) { alert('请先勾选要推进的装备（仅当前页可见行）。'); return; }
+
+    // ① 校验：标记里的品质名是否跟装备实际品质一致（如标记「紫 14」但实际是蓝）
+    const bad = targets.filter(t => {
+        const name = markColorName(t.mark);
+        return name && name !== t.colorName;
+    });
+    if (bad.length) {
+        const list = bad.slice(0, 15)
+            .map(t => `· #${t.idx}　标记「${t.mark}」　实际 ${t.colorName}`)
+            .join('\n');
+        const more = bad.length > 15 ? `\n…等共 ${bad.length} 件` : '';
+        if (confirm(
+            `⚠ 检测到 ${bad.length} 件的「标记」与装备实际品质不一致：\n${list}${more}\n\n`
+            + `【确定】= 自动把标记改成实际品质（如「紫 14」→「蓝 14」）后推进\n`
+            + `【取消】= 保留你填的原标记继续推进`
+        )) {
+            for (const t of bad) t.mark = `${t.colorName} ${t.idx}`;
+        }
+    }
+
+    const totalSteps = targets.reduce((s, t) => s + t.idx, 0);
+    const summary = targets.map(t => `· #${t.idx}　${t.mark}`).join('\n');
+    if (!confirm(
+        `将批量推进 ${targets.length} 件到模拟背包：\n${summary}\n\n`
+        + `每件都从「当前存档种子状态」独立起跑，入包的正是本表对应的那件\n`
+        + `（wasm 状态不会累积，与手动逐个点「推进到此」不同）`
+    )) return;
+
+    // ② 推进前快照 wasm 种子状态；每件推进前恢复，保证第 2 件起仍是本表预测的那件
+    let snapshot = null;
+    try { snapshot = JSON.parse(JSON.stringify(wasmMakeGetState() || null)); } catch { snapshot = null; }
+
+    for (let i = 0; i < targets.length; i++) {
+        if (!saveLoaded) { alert('存档状态已丢失，批量推进中止。'); return; }
+        const t = targets[i];
+        if (snapshot) {
+            try { wasmMakeSetState(snapshot); } catch { /* 恢复失败则沿用当前状态 */ }
+        }
+        doMakeAdvanceTo(t.idx, t.mark);
+        if (i < targets.length - 1) await new Promise(r => setTimeout(r, 30));   // 让 UI 重绘
+    }
+}
+
+function doShengLianAll() {
+    if (!saveLoaded) { alert('请先导入存档'); return; }
+
+    // 范围：当前来源下所有可升炼装备（忽略文本筛选）
+    const source = getSourceFilter('shenglian');
+    const isCrafted  = source === 'crafted';
+    const isEquipped = source === 'equipped';
+    const isUnequipped = source === 'unequipped';
+    const targets = saveEquips.filter(e => {
+        if (!canShengLian(e)) return false;
+        if (isCrafted  && !e._crafted)  return false;
+        if (isEquipped && !e._equipped) return false;
+        if (isUnequipped && (e._equipped || e._crafted)) return false;
+        // 与列表口径一致：真实装备只升炼蓝紫
+        if (!isCrafted && !e._crafted && e.color !== 3 && e.color !== 4) return false;
+        return true;
+    });
+    if (!targets.length) { alert('当前来源下没有可升炼装备'); return; }
+
+    let firstUpgraded = null;
+    let success = 0, fail = 0;
+    for (const eq of targets) {
+        const result = applyShengLian(runtimeKey(eq));
+        if (result.error) { fail++; continue; }
+        success++;
+        const markTip = result.equip?._mark ? ` · 标记「${result.equip._mark}」` : '';
+        appendLog(`[升炼] ${result.from} → ${result.to}${markTip}`);
+        if (!firstUpgraded) firstUpgraded = result.equip;
+    }
+
+    fillEquipSelects();
+    renderCraftedBagList();
+    updateShenglianHint();
+
+    // 升炼完成：切到精炼页并预选第一件（不是最后一件）
+    if (firstUpgraded && canXilian(firstUpgraded)) {
+        switchTab('xilian');
+        const xl  = document.getElementById('xilianEquipSelect');
+        const src = document.getElementById('xilianSourceFilter');
+        if (firstUpgraded._crafted && src) {
+            src.value = 'crafted';
+            fillEquipSelects(false);
+        }
+        const nk = runtimeKey(firstUpgraded);
+        if (xl && [...xl.options].some(o => o.value === nk)) xl.value = nk;
+        // L4338 只改了 xilianEquipSelect 的选中值，但 fillXilianMangjingMaterials 在 switchTab 时
+        // 已经用旧值（升炼前的 prev）跑过一次了，必须再调一次才能让芒晶材料下拉跟着新选中刷新
+        fillXilianMangjingMaterials();
+        clearPreview(`批量升炼完成：成功 ${success} / 失败 ${fail}，已切到精炼页（第一件：${firstUpgraded.name}）`);
+    } else {
+        clearPreview(`批量升炼完成：成功 ${success} / 失败 ${fail}`);
+    }
+}
+
+/** 只升炼下拉里当前选中的那一件（与「一键升炼」共用 applyShengLian） */
+function doShengLianOne() {
+    if (!saveLoaded) { alert('请先导入存档'); return; }
+    const key = document.getElementById('shenglianEquipSelect')?.value || '';
+    const eq = key ? saveEquips.find(e => runtimeKey(e) === key) : null;
+    if (!eq) { alert('请先在上面的「可升炼装备」里选一件'); return; }
+    const costTxt = formatCostList(calcShengLianCost(eq));
+    if (!confirm(`升炼「${eq.name}」到 100 级？\n消耗：${costTxt}（仅提示，不扣背包）`)) return;
+
+    const result = applyShengLian(key);
+    if (result.error) { alert(result.error); return; }
+
+    const markTip = result.equip?._mark ? ` · 标记「${result.equip._mark}」` : '';
+    appendLog(`[升炼] ${result.from} → ${result.to}${markTip}`);
+    fillEquipSelects();
+    renderCraftedBagList();
+    updateShenglianHint();
+    // 单件升炼不自动跳页，方便接着升下一件
+    clearPreview(`已升炼：${result.from} → ${result.to}`);
+}
+
+/** 下拉里没有可升炼装备时，把两个升炼按钮禁用掉 */
+function updateShenglianButtons() {
+    const sel = document.getElementById('shenglianEquipSelect');
+    const one = document.getElementById('btnShenglianOne');
+    if (one) one.disabled = !(sel && sel.value);
+}
+
+function doXilianPreview() {
+    if (!saveLoaded) { alert('请先导入存档'); return; }
+    const key = document.getElementById('xilianEquipSelect').value;
+    const eq = getRuntimeEquip(key);
+    if (!eq) { alert('请选择装备'); return; }
+    const n = Math.max(1, Math.min(XILIAN_MAX, Number(document.getElementById('xilianCount').value) || 600));
+    renderXilianPreview(n);
+    updateXilianHint();
+}
+
+function doStrongPreview() {
+    if (!saveLoaded) { alert('请先导入存档'); return; }
+    const key = document.getElementById('strongEquipSelect').value;
+    const eq = getRuntimeEquip(key);
+    if (!eq) { alert('请选择装备'); return; }
+    fillStrongTargetLevels(eq);
+    const n = Math.max(5, Math.min(PREVIEW_MAX, Number(document.getElementById('strongCount').value) || 80));
+    renderStrongPreview(wasmStrongPreview(toWasmEquip(eq), n), eq);
+    updateStrongHint();
+}
+
+function clearPreview(msg) {
+    const body = document.getElementById('previewBody');
+    const meta = document.getElementById('previewMeta');
+    const head = document.getElementById('previewHead');
+    if (head) head.innerHTML = '';
+    if (meta) meta.textContent = '';
+    if (body) {
+        body.innerHTML = `<tr><td class="empty-row">${escapeHtml(msg || '点击预测查看结果')}</td></tr>`;
+    }
+    const advice = document.getElementById('strongAdvice');
+    if (advice) advice.innerHTML = '';
+    const xlFilter = document.getElementById('xilianFilterBar');
+    if (xlFilter) xlFilter.hidden = true;
+    const makeFilter = document.getElementById('makeFilterBar');
+    if (makeFilter) makeFilter.hidden = true;
+    xilianPlanItems = [];
+    tablePager.makeAllItems = [];
+    tablePager.makeItems = [];
+    tablePager.jianwangCyclePages = [];
+    strongPlanCache = null;
+    hidePreviewPager();
+}
+
+function resetAll() {
+    if (!saveLoaded) { alert('请先导入存档'); return; }
+    if (makeRndSnapshot) wasmMakeSetState(makeRndSnapshot);
+    saveEquips = JSON.parse(JSON.stringify(saveEquipsSnapshot));
+    equipRuntime = JSON.parse(JSON.stringify(equipRuntimeSnapshot));
+    jianwangReforgeCounts = { ...jianwangReforgeCountsSnapshot };
+    jianwangRedSeed = jianwangRedSeedSnapshot;
+    refreshJianwangVirtualFirstSword();
+    craftedSeq = 900000000;
+    resetXilianSession();
+    strongPlanCache = null;
+    fillEquipSelects();
+    renderCraftedBagList();
+    clearMakeAdvanceNotice();
+    clearPreview('已重置，请重新点击预测');
+    updateMakeHints();
+    updateXilianHint();
+    updateStrongHint();
+    updateShenglianHint();
+    updateCraftedBagHint();
+    updateJianwangCycleHint();
+    appendLog('— 已重置为导入时状态（模拟背包已清空，升炼/精炼/淬炼进度已回滚）—');
+}
+
+function doJianwangCyclePreview() {
+    if (!saveLoaded) { alert('请先导入存档'); return; }
+    const equipKey = document.getElementById('jianwangEquipSelect')?.value || '';
+    const base = findEquipByRuntimeKey(equipKey);
+    const equip = base ? (getRuntimeEquip(equipKey) || base) : null;
+    try {
+        if (!equip || !isJianwangSword(equip)) {
+            throw new TypeError('请选择剑王阁实物或虛擬劍胚');
+        }
+        const nextRedSeed = jianwangNextRedSeedForEquip(equip);
+        if (!validJianwangRedSeed(nextRedSeed)) {
+            throw new TypeError('存档缺少有效 MakeRnd.RedSeeds[5707]');
+        }
+        const count = Number(document.getElementById('jianwangCycleCount')?.value);
+        const routeId = Number(document.getElementById('jianwangCycleRouteSelect')?.value || 0);
+        renderJianwangCyclePreview(predictJianwangShatterCycle(
+            equip,
+            nextRedSeed,
+            count,
+            currentJianwangRule(),
+            routeId || null,
+        ));
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        clearPreview(`碎剑预览失败：${message}`);
+        alert(`碎剑预览失败：${message}`);
+    }
+}
+
+function doJianwangPreview() {
+    if (!saveLoaded) { alert('请先导入存档'); return; }
+    const equipKey = document.getElementById('jianwangEquipSelect')?.value || '';
+    const action = document.getElementById('jianwangActionSelect')?.value || '';
+    const materialId = document.getElementById('jianwangMaterialSelect')?.value || '';
+    const base = findEquipByRuntimeKey(equipKey);
+    const equip = base ? (getRuntimeEquip(equipKey) || base) : null;
+    const material = EQUIP_DATA.special[String(materialId)];
+    if (!equip || !action) {
+        alert('请选择剑王阁实物或虛擬劍胚');
+        return;
+    }
+    try {
+        const count = Number(document.getElementById('jianwangCount')?.value);
+        if (!Number.isSafeInteger(count) || count < 1 || count > PREVIEW_MAX) {
+            throw new RangeError(`预测次数必须是 1–${PREVIEW_MAX} 的整数`);
+        }
+        if (action === 'mangjing') {
+            if (!canPredictJianwangMangjing(equip)) {
+                throw new TypeError('所选100级实物缺少有效 MJSeed 或已铸进特殊词条');
+            }
+            if (!material) throw new TypeError('请选择游戏中实际铸进的特殊材料');
+            renderJianwangPreview(predictSpecialAttachSequence(equip, material, count), 'mangjing');
+            return;
+        }
+        if (action === JIANWANG_SHATTER_90 || action === JIANWANG_SHATTER_100) {
+            renderJianwangPreview([predictJianwangShatterRebuild(equip, action, jianwangNextRedSeedForEquip(equip))], 'shatter');
+            return;
+        }
+        const keepIndex = Number(document.getElementById('jianwangKeepSelect')?.value || 0);
+        const rows = predictJianwangStateSequence(
+            equip,
+            action,
+            count,
+            keepIndex,
+            Number(jianwangReforgeCounts[String(Number(equip.id))]) || 0,
+        );
+        renderJianwangPreview(rows, 'state');
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        clearPreview(`剑王阁专武序列预测失败：${message}`);
+        alert(`剑王阁专武序列预测失败：${message}`);
+    }
+}
+
+function doJianwangApplyOnce() {
+    if (!saveLoaded) { alert('请先导入存档'); return; }
+    const equipKey = document.getElementById('jianwangEquipSelect')?.value || '';
+    const action = document.getElementById('jianwangActionSelect')?.value || '';
+    const base = findEquipByRuntimeKey(equipKey);
+    const equip = base ? (getRuntimeEquip(equipKey) || base) : null;
+    if (!equip || !action) { alert('请选择剑王阁实物或虛擬劍胚'); return; }
+    if (action === 'mangjing') { alert('芒晶序列只读，不在网页内推进 MJSeed'); return; }
+    try {
+        if (action === JIANWANG_SHATTER_90 || action === JIANWANG_SHATTER_100) {
+            const result = predictJianwangShatterRebuild(equip, action, jianwangNextRedSeedForEquip(equip));
+            setRuntimeEquip(equipKey, result.equip);
+            jianwangRedSeed = result.redSeedAfter;
+            jianwangReforgeCounts[String(result.routeId)] = 0;
+            appendLog(`[剑王阁·${result.shatterLabel}] ${result.fromName} → ${result.toName} · RedSeed ${result.redSeedBefore}→${result.redSeedAfter} · 新CZSeed ${result.CZSeed}`);
+            fillJianwangEquipSelect(true);
+            renderJianwangPreview([result], 'shatter');
+            updateJianwangHint();
+            updateJianwangCycleHint();
+            return;
+        }
+        const keepIndex = Number(document.getElementById('jianwangKeepSelect')?.value || 0);
+        const rows = predictJianwangStateSequence(
+            equip,
+            action,
+            1,
+            keepIndex,
+            Number(jianwangReforgeCounts[String(Number(equip.id))]) || 0,
+        );
+        const result = rows[0];
+        setRuntimeEquip(equipKey, result.equip);
+        if (action === 'reforge') {
+            const idKey = String(Number(equip.id));
+            jianwangReforgeCounts[idKey] = (Number(jianwangReforgeCounts[idKey]) || 0) + 1;
+        }
+        appendLog(`[剑王阁·${action === 'reforge' ? '重铸' : (action.startsWith('ascend:') ? '神兵' : '成长')}] ${result.fromName} → ${result.toName} · CZSeed ${result.seedBefore}→${result.seedAfter}`);
+        fillJianwangEquipSelect(true);
+        renderJianwangPreview(rows, 'state');
+        updateJianwangHint();
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        alert(`剑王阁专武执行失败：${message}`);
+    }
+}
+
+async function initApp() {
+    // 成品背包先恢复显示：不依赖 wasm / 存档，避免初始化异常导致「看起来丢了」
+    loadRefinedBag().then(renderRefinedBag).catch(err => {
+        console.error('[成品背包] 恢复失败：', err);
+        renderRefinedBag();
+    });
+
+    if (typeof markNavTransition === 'function') {
+        document.querySelectorAll('header a[href*=".html"]').forEach(a => {
+            a.addEventListener('click', () => markNavTransition());
+        });
+    }
+
+    const ok = await initWasm();
+    if (!ok) { alert('WASM 加载失败：装备模拟不可用（存档导入与解密不受影响）'); return; }
+    if (!wasmMakeInitTables(EQUIP_DATA)) { alert('装备表注入失败'); return; }
+
+    if (typeof loadShareStore === 'function') {
+        const shared = loadShareStore();
+        if (shared && shared.data) {
+            try {
+                saveMeta = {
+                    version: (shared.meta && shared.meta.version) || '',
+                    platform: (shared.meta && shared.meta.platform) || '',
+                    columns: (shared.meta && shared.meta.columns) || null,
+                    row: (shared.meta && shared.meta.row) || null,
+                };
+                loadSaveData(shared.data);
+            } catch (e) {
+                console.warn('自动加载共享存档失败:', e);
+            }
+        }
+    }
+
+    fillNpcSelect();
+    restoreMakeFormState();   // 内部会调用 fillPaperSelect()，并恢复上次的地点 + 图纸
+    renderCraftedBagList();
+
+    // 「重置进度」：把模拟打造 / 升炼 / 精炼 / 淬炼 / 剑王阁回滚到刚导入存档时的状态。
+    // 注意别和右上角那个「重置网页」（清浏览器存储 + 刷新页面，由 archive_state.js 绑定）搞混。
+    document.getElementById('btnResetProgress')?.addEventListener('click', resetAll);
+
+    document.getElementById('tabBar').addEventListener('click', (e) => {
+        const btn = e.target.closest('.tab-btn');
+        if (btn) switchTab(btn.dataset.tab);
+    });
+
+    document.getElementById('npcSelect').addEventListener('change', () => {
+        const filter = document.getElementById('paperFilter');
+        if (filter) filter.value = '';
+        const cat = document.getElementById('paperCategoryFilter')?.value || 'all';
+        fillPaperSelectByCategory(cat);
+        saveMakeFormState();
+        clearPreview('目标已变更，请点击「预测序列」');
+    });
+    document.getElementById('npcCategoryFilter')?.addEventListener('change', (e) => {
+        syncMakeCategory(e.target.value);
+        const filter = document.getElementById('paperFilter');
+        if (filter) filter.value = '';
+        saveMakeFormState();
+        clearPreview('目标已变更，请点击「预测序列」');
+    });
+    document.getElementById('paperCategoryFilter')?.addEventListener('change', (e) => {
+        syncMakeCategory(e.target.value);
+        const filter = document.getElementById('paperFilter');
+        if (filter) filter.value = '';
+        saveMakeFormState();
+        clearPreview('目标已变更，请点击「预测序列」');
+    });
+    document.getElementById('paperFilter')?.addEventListener('input', () => {
+        const cat = document.getElementById('paperCategoryFilter')?.value || 'all';
+        fillPaperSelectByCategory(cat);
+        saveMakeFormState();
+    });
+    document.getElementById('paperSelect').addEventListener('change', () => {
+        fillSpecialSelect();
+        updateMakeHints();
+        saveMakeFormState();
+        clearPreview('目标已变更，请点击「预测序列」');
+    });
+    document.getElementById('specialSelect').addEventListener('change', () => {
+        updateMakeHints();
+        clearPreview('材料已变更，请点击「预测序列」');
+    });
+    document.getElementById('specialAttachEquipSelect')?.addEventListener('change', () => {
+        fillSpecialAttachMaterialSelect(false);
+        updateSpecialAttachHint();
+        clearPreview('目标装备已变更，请点击「预测连续附加」');
+    });
+    document.getElementById('specialAttachMaterialSelect')?.addEventListener('change', () => {
+        updateSpecialAttachHint();
+        clearPreview('附加材料已变更，请点击「预测连续附加」');
+    });
+    document.getElementById('btnJianwangCyclePreview')?.addEventListener('click', doJianwangCyclePreview);
+    document.getElementById('jianwangCycleCount')?.addEventListener('change', () => {
+        clearPreview('循环次数已变更，请重新进行碎剑预览');
+    });
+    document.getElementById('jianwangCycleRouteSelect')?.addEventListener('change', () => {
+        updateJianwangCycleHint();
+        clearPreview('90级路线已变更，请重新进行碎剑预览');
+    });
+    document.getElementById('jianwangEquipSelect')?.addEventListener('change', () => {
+        fillJianwangActionSelect(false);
+        fillJianwangCycleRouteSelect(false);
+        updateJianwangHint();
+        updateJianwangCycleHint();
+        clearPreview('剑王阁起点已变更，请点击「预览当前流程」');
+    });
+    document.getElementById('jianwangActionSelect')?.addEventListener('change', () => {
+        fillJianwangKeepSelect(false);
+        fillJianwangMaterialSelect(false);
+        updateJianwangControls();
+        updateJianwangHint();
+        clearPreview('流程已变更，请点击「预览当前流程」');
+    });
+    document.getElementById('jianwangKeepSelect')?.addEventListener('change', () => {
+        updateJianwangHint();
+        clearPreview('保留槽位已变更，请重新预览');
+    });
+    document.getElementById('jianwangMaterialSelect')?.addEventListener('change', () => {
+        updateJianwangHint();
+        clearPreview('铸进材料已变更，请点击「查看专武序列」');
+    });
+    document.getElementById('xilianEquipSelect').addEventListener('change', () => {
+        resetXilianSession();
+        updateXilianHint();
+        fillXilianMangjingMaterials();
+        document.getElementById('xilianMangjingPanel').hidden = true;
+        clearPreview('装备已变更，请点击「预测序列」');
+    });
+    document.getElementById('btnXilianMangjing')?.addEventListener('click', doXilianMangjing);
+    document.getElementById('btnAddRefinedToBag')?.addEventListener('click', addRefinedToBag);
+    document.getElementById('btnExportRefinedBag')?.addEventListener('click', exportRefinedBagTxt);
+    document.getElementById('refinedBagList')?.addEventListener('click', (e) => {
+        const btn = e.target.closest('.refined-bag-del');
+        if (!btn) return;
+        const id = btn.dataset.id;
+        refinedBag = refinedBag.filter(x => x.id !== id);
+        saveRefinedBag();
+        renderRefinedBag();
+    });
+    // 成品背包：数字失焦保存；备注实时保存并更新字数
+    document.getElementById('refinedBagList')?.addEventListener('change', (e) => {
+        const input = e.target.closest('.rb-num');
+        if (input) onRefinedBagNumberChange(input);
+    });
+    document.getElementById('refinedBagList')?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target.closest('.rb-num, .rb-note')) {
+            e.preventDefault();
+            e.target.blur();
+        }
+    });
+    // 聚焦数字时自动全选，直接输入即可覆盖
+    document.getElementById('refinedBagList')?.addEventListener('focusin', (e) => {
+        const numEl = e.target.closest('.rb-num');
+        if (!numEl) return;
+        requestAnimationFrame(() => { if (document.activeElement === numEl) numEl.select(); });
+    });
+    document.getElementById('refinedBagList')?.addEventListener('input', (e) => {
+        // 数字输入时同步宽度，避免长数字被截断
+        const numEl = e.target.closest('.rb-num');
+        if (numEl) { numEl.size = Math.max(2, numEl.value.length); return; }
+        const noteEl = e.target.closest('.rb-note');
+        if (!noteEl) return;
+        const card = noteEl.closest('.refined-bag-card');
+        const rec = refinedBag.find(x => x.id === card?.dataset.id);
+        if (!rec) return;
+        rec.note = noteEl.value.slice(0, 100);
+        const counter = card.querySelector('.rb-note-count');
+        if (counter) counter.textContent = `${rec.note.length}/100`;
+        saveRefinedBag();
+    });
+    document.getElementById('strongEquipSelect').addEventListener('change', () => {
+        strongPlanCache = null;
+        updateStrongHint();
+        clearPreview('装备已变更，请点击「预测并生成建议」');
+    });
+    document.getElementById('shenglianEquipSelect')?.addEventListener('change', () => {
+        updateShenglianHint();
+    });
+    const onEquipFilterChange = () => fillEquipSelects(true);
+    document.getElementById('xilianSourceFilter')?.addEventListener('change', onEquipFilterChange);
+    document.getElementById('strongSourceFilter')?.addEventListener('change', onEquipFilterChange);
+    document.getElementById('shenglianSourceFilter')?.addEventListener('change', onEquipFilterChange);
+    document.getElementById('xilianTextFilter')?.addEventListener('input', onEquipFilterChange);
+    document.getElementById('strongTextFilter')?.addEventListener('input', onEquipFilterChange);
+    document.getElementById('shenglianTextFilter')?.addEventListener('input', onEquipFilterChange);
+    document.getElementById('strongMinGrade')?.addEventListener('change', () => {
+        clearPreview('条件已变更，请重新点击「预测并生成建议」');
+        updateStrongHint();
+    });
+    document.getElementById('strongTargetLevel')?.addEventListener('change', () => {
+        clearPreview('期望层数已变更，请重新点击「预测并生成建议」');
+        updateStrongHint();
+    });
+
+    document.getElementById('btnPreview').addEventListener('click', doMakePreview);
+    document.getElementById('btnSpecialAttachPreview')?.addEventListener('click', doSpecialAttachPreview);
+    document.getElementById('btnJianwangPreview')?.addEventListener('click', doJianwangPreview);
+    document.getElementById('btnJianwangApply')?.addEventListener('click', doJianwangApplyOnce);
+    document.getElementById('btnMakeOnce').addEventListener('click', doMakeOnce);
+
+    document.getElementById('previewBody')?.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-make-advance');
+        if (!btn || tablePager.mode !== 'make') return;
+        const idx = Number(btn.dataset.index);
+        const row = btn.closest('tr');
+        const mark = row?.querySelector('.make-row-mark')?.value ?? getDefaultMakeMark();
+        if (!confirm(`将连续推进 ${idx} 次，并把第 ${idx} 件加入模拟背包？\n（中间结果只推进种子，不入包）`)) return;
+        doMakeAdvanceTo(idx, mark);
+    });
+
+    // 勾选框变化 → 刷新「一键推进勾选 N 件」按钮
+    document.getElementById('previewBody')?.addEventListener('change', (e) => {
+        if (e.target.classList?.contains('make-row-check')) updateMakeBatchButton();
+        if (e.target.classList?.contains('make-row-mark')) flagMarkMismatch(e.target);
+    });
+    // 输入标记时实时校验品质是否一致
+    document.getElementById('previewBody')?.addEventListener('input', (e) => {
+        if (e.target.classList?.contains('make-row-mark')) flagMarkMismatch(e.target);
+    });
+
+    // 全选当前页
+    document.getElementById('makeCheckAll')?.addEventListener('change', (e) => {
+        const on = e.target.checked;
+        document.querySelectorAll('#previewBody .make-row-check').forEach(cb => { cb.checked = on; });
+        updateMakeBatchButton();
+    });
+
+    // 一键推进勾选
+    document.getElementById('btnMakeBatchAdvance')?.addEventListener('click', () => { batchAdvanceChecked(); });
+
+    document.getElementById('craftedBagList')?.addEventListener('change', (e) => {
+        const input = e.target.closest('.crafted-mark-input');
+        if (!input) return;
+        const row = input.closest('[data-only-id]');
+        const onlyId = Number(row?.dataset.onlyId);
+        if (onlyId) setCraftedMark(onlyId, input.value);
+    });
+    document.getElementById('craftedBagList')?.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-act="remove"]');
+        if (!btn) return;
+        const row = btn.closest('[data-only-id]');
+        const onlyId = Number(row?.dataset.onlyId);
+        if (!onlyId) return;
+        if (!confirm('从模拟背包移除该打造装备？')) return;
+        removeCraftedEquip(onlyId);
+    });
+    document.getElementById('btnShenglianOne')?.addEventListener('click', doShengLianOne);
+    document.getElementById('btnShenglianOnce')?.addEventListener('click', doShengLianAll);
+    document.getElementById('btnXilianPreview').addEventListener('click', doXilianPreview);
+    document.getElementById('btnStrongPreview').addEventListener('click', doStrongPreview);
+    document.getElementById('btnStrongShowMin')?.addEventListener('click', () => highlightStrongPlan('min'));
+    document.getElementById('btnStrongShowBest')?.addEventListener('click', () => highlightStrongPlan('best'));
+    document.getElementById('xilianFilterSlot')?.addEventListener('change', () => {
+        if (xilianPlanItems.length) renderXilianRows(xilianPlanItems, xilianAcceptFlags, true);
+    });
+    document.getElementById('xilianFilterProp')?.addEventListener('change', () => {
+        if (xilianPlanItems.length) renderXilianRows(xilianPlanItems, xilianAcceptFlags, true);
+    });
+    const onMakeFilterChange = () => {
+        if ((tablePager.makeAllItems || []).length) applyMakeFilter(true);
+    };
+    document.getElementById('makeFilterColor')?.addEventListener('change', onMakeFilterChange);
+    document.getElementById('makeFilterSeed')?.addEventListener('change', onMakeFilterChange);
+    document.getElementById('makeFilterProp')?.addEventListener('change', onMakeFilterChange);
+    document.getElementById('makeFilterMangjing')?.addEventListener('input', onMakeFilterChange);
+    // 改盲晶次数 → 只对已预测结果重算盲晶，不用重跑打造预测
+    document.getElementById('mangjingCount')?.addEventListener('change', () => {
+        if (tablePager.mode !== 'make' || !tablePager.makeAllItems?.length) return;
+        computeMangjingForItems(
+            tablePager.makeAllItems,
+            Number(document.getElementById('mangjingCount').value) || MANGJING_DEFAULT,
+        );
+        applyMakeFilter(false);
+    });
+    document.getElementById('btnPreviewPrev')?.addEventListener('click', () => {
+        if (tablePager.page > 1) {
+            tablePager.page -= 1;
+            renderCurrentPreviewPage();
+        }
+    });
+    document.getElementById('btnPreviewNext')?.addEventListener('click', () => {
+        tablePager.page += 1;
+        renderCurrentPreviewPage();
+    });
+    document.getElementById('previewPageSize')?.addEventListener('change', () => {
+        tablePager.page = 1;
+        renderCurrentPreviewPage();
+    });
+    document.getElementById('btnLogPrev')?.addEventListener('click', () => {
+        if (logPage > 1) {
+            logPage -= 1;
+            renderLogPage();
+        }
+    });
+    document.getElementById('btnLogNext')?.addEventListener('click', () => {
+        logPage += 1;
+        renderLogPage();
+    });
+    document.getElementById('btnClearLog').addEventListener('click', () => {
+        logLines = [];
+        logPage = 1;
+        renderLogPage();
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initApp);
+setTimeout(function () { if (typeof prewarmSql === 'function') prewarmSql(); }, 200);

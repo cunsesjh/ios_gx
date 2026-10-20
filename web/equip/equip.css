@@ -122,65 +122,7 @@
 }
 
 .equip-filter-row {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(7rem, 0.65fr)) minmax(12rem, 1.4fr);
-    gap: 0.65rem;
     margin-top: 0.55rem;
-}
-
-.equip-filter-row .config-group {
-    min-width: 0;
-}
-
-.crafted-bag-disclosure {
-    margin-top: 0.85rem;
-    border-top: 1px solid var(--border-color);
-}
-
-.crafted-bag-disclosure > summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    min-height: 44px;
-    padding: 0.55rem 0.15rem;
-    color: var(--text-primary);
-    font-family: var(--font-serif);
-    font-weight: 600;
-    cursor: pointer;
-    list-style: none;
-}
-
-.crafted-bag-disclosure > summary::-webkit-details-marker {
-    display: none;
-}
-
-.crafted-bag-disclosure > summary::before {
-    content: '›';
-    color: var(--text-muted);
-    transform: rotate(0deg);
-    transition: transform 0.15s ease;
-}
-
-.crafted-bag-disclosure[open] > summary::before {
-    transform: rotate(90deg);
-}
-
-.crafted-bag-disclosure > summary span:first-child {
-    margin-right: auto;
-}
-
-.crafted-bag-scroll {
-    max-height: clamp(16rem, 48vh, 30rem);
-    overflow-y: auto;
-    padding: 0.15rem 0.2rem 0.2rem 0;
-    overscroll-behavior: contain;
-}
-
-.crafted-bag-help {
-    margin: 0.55rem 0 0;
-    color: var(--text-muted);
-    font-size: 0.78rem;
 }
 
 .crafted-bag-list {
@@ -207,26 +149,10 @@
     background: var(--bg-primary);
 }
 
-.crafted-bag-row.selected {
-    border-color: var(--border-accent);
-    background: var(--bg-card);
-    box-shadow: inset 3px 0 0 var(--purple-bright);
-}
-
 .crafted-bag-row .bag-meta {
-    display: grid;
-    gap: 0.18rem;
     min-width: 0;
     line-height: 1.35;
     word-break: break-all;
-}
-
-.crafted-bag-row .bag-meta strong {
-    color: var(--text-primary);
-}
-
-.crafted-bag-row .bag-source {
-    color: var(--text-muted);
 }
 
 .crafted-bag-row input[type="text"],
@@ -262,44 +188,325 @@
     flex-wrap: wrap;
 }
 
-.bag-action-tabs {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.5rem;
-    margin-bottom: 0.85rem;
-}
-
-.bag-action-btn {
-    min-height: 44px;
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    background: var(--bg-primary);
-}
-
-.bag-action-btn.active {
-    border-color: var(--border-accent);
-    color: var(--purple-bright);
-    background: var(--bg-card);
-}
-
-.bag-action-btn:disabled {
-    cursor: not-allowed;
-    opacity: 0.45;
-}
-
-.bag-action-panel[hidden] {
-    display: none !important;
-}
-
-.bag-action-panel .manual-panel {
-    margin-top: 0.85rem;
-}
-
 .preview-table .mark-input {
     width: 6.5rem;
     max-width: 100%;
     padding: 0.2rem 0.35rem;
     font-size: 0.78rem;
+}
+
+/* 批量推进勾选框 */
+.preview-table .make-row-check {
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    cursor: pointer;
+    accent-color: var(--purple-bright, #9b6bc9);
+    vertical-align: middle;
+}
+
+.preview-table th:has(.make-row-check),
+.preview-table td:has(.make-row-check) {
+    text-align: center;
+}
+
+/* 盲晶预测列：强制两行（主值加粗 + 副值小灰字），统一左对齐 */
+.preview-table td .mj-val,
+.preview-table td .mj-idx {
+    display: block;
+    text-align: left;
+    line-height: 1.45;
+}
+.preview-table td .mj-val {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.preview-table td .mj-idx {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.filter-bar .check-all-label {
+    cursor: pointer;
+    user-select: none;
+}
+
+.filter-bar .check-all-label input[type="checkbox"] {
+    width: 0.95rem;
+    height: 0.95rem;
+    margin: 0;
+    cursor: pointer;
+    accent-color: var(--purple-bright, #9b6bc9);
+}
+
+#btnMakeBatchAdvance:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+#btnMakeBatchAdvance.btn-batch-armed {
+    border-color: var(--purple-bright, #9b6bc9);
+    color: var(--purple-bright, #9b6bc9);
+    font-weight: 600;
+}
+
+/* 标记与实际品质不一致 → 红框警告（如标记「紫 14」但实际是蓝） */
+.preview-table .mark-input.is-mismatch {
+    border-color: #ff7b7b;
+    background: rgba(255, 123, 123, 0.08);
+}
+
+/* 精炼页 · 成品背包 */
+.refined-bag-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.refined-bag-card {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-primary);
+}
+
+.refined-bag-card .refined-bag-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+}
+
+.refined-bag-card .refined-bag-head strong {
+    font-size: 0.92rem;
+}
+
+.refined-bag-card .refined-bag-del {
+    margin-left: auto;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+.refined-bag-card .refined-bag-region {
+    font-size: 0.78rem;
+    color: #f0a020;
+    background: rgba(240, 160, 32, 0.08);
+    border: 1px solid rgba(240, 160, 32, 0.25);
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+    white-space: nowrap;
+}
+
+.refined-bag-card .refined-bag-line {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+}
+
+.refined-bag-card .refined-bag-line > span {
+    flex: 0 0 4.2rem;
+    color: var(--text-muted);
+}
+
+/* 行内容：文字与可编辑数字混排，数字宽度自适应，文字不产生缝隙 */
+.refined-bag-card .refined-bag-line .rb-line-body {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+    min-width: 0;
+    word-break: break-all;
+    font-variant-numeric: tabular-nums;
+}
+
+/* 可编辑数字：默认与正文一致，悬停/聚焦才显出「可编辑」 */
+.refined-bag-card input.rb-num {
+    width: auto;
+    padding: 0 0.25rem;
+    margin: 0 -0.25rem;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: center;
+    color: inherit;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    transition: background 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.refined-bag-card input.rb-num:hover {
+    background: rgba(240, 160, 32, 0.12);
+    border-color: rgba(240, 160, 32, 0.4);
+}
+
+.refined-bag-card input.rb-num:focus {
+    outline: none;
+    background: rgba(240, 160, 32, 0.14);
+    border-color: #f0a020;
+    box-shadow: 0 0 0 2px rgba(240, 160, 32, 0.18);
+}
+
+/* 正在编辑的那一行，标签跟着高亮 */
+.refined-bag-card .refined-bag-line:focus-within > span {
+    color: #f0a020;
+}
+
+/* 备注行：像填空题，平时只有一条淡虚线 */
+.refined-bag-card .refined-bag-note-line input.rb-note {
+    flex: 1;
+    min-width: 0;
+    padding: 0 0.25rem;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: var(--text-primary);
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed var(--border-color);
+    border-radius: 0;
+    transition: border-color 0.12s ease, background 0.12s ease;
+}
+
+.refined-bag-card .refined-bag-note-line input.rb-note:hover {
+    border-bottom-color: rgba(240, 160, 32, 0.5);
+}
+
+.refined-bag-card .refined-bag-note-line input.rb-note:focus {
+    outline: none;
+    border-bottom-color: #f0a020;
+    background: rgba(240, 160, 32, 0.08);
+}
+
+.refined-bag-card .refined-bag-note-line .rb-note-count {
+    flex: 0 0 auto;
+    font-size: 0.7rem;
+    font-style: normal;
+    color: var(--text-muted);
+}
+
+/* 精炼页 · 芒晶洗练序列 */
+.mangjing-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.6rem 1rem;
+    margin-top: 0.6rem;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-card);
+}
+
+.mangjing-actions label.stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+}
+
+.mangjing-actions label.stack > span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.mangjing-actions select,
+.mangjing-actions input[type="number"] {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 4px;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.85rem;
+    min-width: 8.5rem;
+}
+
+.mangjing-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 0.9rem;
+    margin-bottom: 0.7rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.mangjing-head strong {
+    color: var(--purple-bright, #9b6bc9);
+    font-size: 0.92rem;
+}
+
+.mangjing-peak {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.88rem;
+}
+
+.mangjing-cost {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.mangjing-head .mangjing-toggle {
+    margin-left: auto;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.78rem;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--purple-bright, #9b6bc9);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.mangjing-head .mangjing-toggle:hover {
+    background: rgba(155, 107, 201, 0.1);
+}
+
+.mangjing-sequence[hidden] {
+    display: none;
+}
+
+.mangjing-sequence {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+    gap: 0.4rem;
+}
+
+.mangjing-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--bg-primary);
+    font-size: 0.78rem;
+}
+
+.mangjing-item.is-best {
+    border-color: var(--purple-bright, #9b6bc9);
+    background: rgba(155, 107, 201, 0.12);
+}
+
+.mangjing-item .mangjing-idx {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+}
+
+.mangjing-item .mangjing-prop {
+    color: var(--text-secondary);
+}
+
+.mangjing-item .mangjing-val {
+    color: var(--text-primary);
+    font-weight: 600;
 }
 
 .preview-table .btn-row-action {
@@ -309,14 +516,6 @@
 }
 
 @media (max-width: 720px) {
-    .equip-filter-row {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .equip-filter-row .config-group.grow {
-        grid-column: 1 / -1;
-    }
-
     .crafted-bag-row {
         grid-template-columns: 1fr;
     }
@@ -390,6 +589,36 @@
     line-height: 1.35;
 }
 
+/* 精炼预测表的「(最大值 xxx)」：勾选「保留」后显示该词条的预计上限 */
+.xl-max {
+    color: var(--red);
+    margin-left: 0.3rem;
+    white-space: nowrap;
+}
+
+/* 「估算花费」的误差提醒：红底高亮，别让玩家把它当成准数 */
+.cost-warn {
+    margin-top: 0.35rem;
+    padding: 0.35rem 0.55rem;
+    border-left: 3px solid var(--red);
+    background: rgba(224, 116, 106, 0.12);
+    color: var(--red);
+    line-height: 1.5;
+}
+
+/* 精炼规划的前提提示：本页按"全新装备"推算，洗过的装备会有偏差 */
+.xilian-fresh-note {
+    margin: 0 0 0.5rem;
+    padding: 0.4rem 0.55rem;
+    border-left: 3px solid var(--purple-bright);
+    background: rgba(155, 107, 201, 0.10);
+    line-height: 1.55;
+}
+
+.xilian-fresh-note b {
+    color: var(--purple-bright);
+}
+
 .special-attach-value {
     color: var(--red);
     font-weight: 600;
@@ -433,6 +662,10 @@
     font-size: 1.1rem;
     font-weight: 600;
     letter-spacing: 0.08em;
+}
+
+.panel-header > button {
+    flex-shrink: 0;
 }
 
 .meta-text {
@@ -549,6 +782,11 @@
 
 .manual-result .swap-line {
     margin: 0.35rem 0;
+}
+
+/* 「保留规划」里花费与最终附加之间的空行 */
+.manual-result .plan-gap {
+    height: 0.55rem;
 }
 
 .manual-result .up {
@@ -765,7 +1003,7 @@
 
 .tab-bar {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0.4rem;
     margin-top: 0.9rem;
 }
@@ -926,14 +1164,6 @@
 }
 
 @media (max-width: 720px) {
-    .tab-bar {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .bag-action-tabs {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
     .jianwang-rule-grid {
         grid-template-columns: 1fr;
     }
@@ -943,23 +1173,26 @@
     }
 }
 
-@media (max-width: 460px) {
-    .equip-filter-row {
-        grid-template-columns: 1fr;
-    }
-
-    .equip-filter-row .config-group.grow {
-        grid-column: auto;
-    }
-}
-
 .grade-1 { color: var(--text-secondary); }
 .grade-2 { color: var(--green-bright); }
 .grade-3 { color: var(--blue-bright); }
 .grade-4 { color: var(--purple-bright); }
 
-/* The shared .config-row display:flex rule overrides the browser's native
-   [hidden] style. Keep the orange pad picker genuinely hidden when disabled. */
-#makePadGroup[hidden] {
-    display: none !important;
+/* 「打造信息」标签行：选装备处显示 第几件 / 品质 / 基础 / 蓝词条 / 地区附加 / 红词条 / 种子
+   （没有的项目不会输出，所以标签数量随装备而变） */
+.make-detail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.45rem;
+    margin: 0.15rem 0 0.5rem;
+}
+
+.md-chip {
+    padding: 0.14rem 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.035);
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    line-height: 1.6;
 }

@@ -127,75 +127,6 @@
     font-weight: 600;
 }
 
-.source-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-bottom: 0.7rem;
-}
-
-.evidence {
-    display: inline-flex;
-    align-items: center;
-    min-height: 1.55rem;
-    padding: 0.12rem 0.45rem;
-    border: 1px solid var(--border-color);
-    border-radius: 999px;
-    font-size: 0.7rem;
-    color: var(--text-secondary);
-    white-space: nowrap;
-}
-
-.evidence-save { border-color: #6a5438; color: #c9a56f; }
-.evidence-table { border-color: #3d5a4a; color: #7dcea0; }
-.evidence-calc { border-color: #4a3461; color: var(--purple-bright); }
-.evidence-unknown { border-style: dashed; color: var(--text-muted); }
-
-.source-ledger {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-    gap: 0.55rem;
-}
-
-.source-ledger details {
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    background: var(--bg-primary);
-}
-
-.source-ledger summary {
-    display: flex;
-    justify-content: space-between;
-    gap: 0.75rem;
-    min-height: 2.75rem;
-    padding: 0.65rem 0.75rem;
-    align-items: center;
-    cursor: pointer;
-    color: var(--text-primary);
-}
-
-.source-ledger summary::marker { color: var(--text-muted); }
-.ledger-total { color: var(--purple-bright); font-variant-numeric: tabular-nums; font-weight: 600; }
-.ledger-rows { padding: 0 0.75rem 0.7rem; }
-.ledger-row {
-    display: grid;
-    grid-template-columns: minmax(7rem, 1fr) auto auto;
-    gap: 0.45rem;
-    align-items: center;
-    padding: 0.38rem 0;
-    border-top: 1px dashed var(--border-color);
-    font-size: 0.78rem;
-    color: var(--text-secondary);
-}
-.ledger-row .ledger-value { color: var(--text-primary); font-variant-numeric: tabular-nums; }
-.ledger-note { grid-column: 1 / -1; color: var(--text-muted); font-size: 0.72rem; line-height: 1.45; }
-
-@media (max-width: 520px) {
-    .source-ledger { grid-template-columns: 1fr; }
-    .ledger-row { grid-template-columns: 1fr auto; }
-    .ledger-row .evidence { grid-column: 1 / -1; justify-self: start; }
-}
-
 .role-table .prop-line {
     display: inline-block;
     margin: 0.1rem 0.35rem 0.1rem 0;
@@ -330,6 +261,13 @@
     color: var(--text-muted);
     line-height: 1.45;
     white-space: pre-wrap;
+}
+
+.talent-effects {
+    margin-top: 0.25rem;
+    font-size: 0.74rem;
+    color: var(--accent, #6eb5ff);
+    line-height: 1.4;
 }
 
 .talent-lock {

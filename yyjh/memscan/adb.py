@@ -6,8 +6,9 @@ adb 在哪（`find_adb()`）
     2. 环境变量 YYJH_ADB
     3. keys.local.json 里记住的（上次用过的）
     4. 系统 PATH（shutil.which）
-    5. 19 个常见安装位置（各模拟器自带 + platform-tools + Android SDK）
-    6. 都找不到 → 在 C:\ D:\ 桌面里浅层搜 platform-tools\adb.exe
+    5. 工具自带的 adb/（exe 打包时内置，开箱即用）
+    6. 19 个常见安装位置（各模拟器自带 + platform-tools + Android SDK）
+    7. 都找不到 → 在 C:\ D:\ 桌面里浅层搜 platform-tools\adb.exe
 
 设备选哪台（`Adb.rank()` / `memscan.devices.pick_game_device()`）
     1. --serial / YYJH_SERIAL 指定的
@@ -30,6 +31,7 @@ import glob
 import os
 import shutil
 import subprocess
+import sys
 import time
 
 from ..config import keytables, paths
@@ -97,6 +99,16 @@ def _search_platform_tools(on_progress=None):
                 yield p
 
 
+def bundled_adb():
+    """工具自带的 adb（exe 打包内置 / 开发目录的 adb/）。没有就返回 ''。"""
+    base = getattr(sys, '_MEIPASS', None) or paths.TOOL_DIR
+    for name in ('adb.exe', 'adb'):
+        p = os.path.join(base, 'adb', name)
+        if os.path.isfile(p):
+            return p
+    return ''
+
+
 def find_adb(explicit=None, on_progress=None):
     """找一个能用的 adb。返回 (路径, 来源说明)。
 
@@ -123,6 +135,10 @@ def find_adb(explicit=None, on_progress=None):
     which = shutil.which('adb') or shutil.which('adb.exe')
     if ok(which):
         return which, '系统 PATH'
+
+    bundled = bundled_adb()
+    if ok(bundled):
+        return bundled, '工具自带'
 
     for p in _ADB_CANDIDATES:
         p = _expand(p)

@@ -37,7 +37,7 @@ import sys
 # 版本守卫在 yyjh/__init__.py 里（本文件含 f-string，Python 2 下解析期就报错，
 # 写在这里的守卫根本跑不到）。
 
-from . import __version__, layer1, layer2, ui, wizard
+from . import __version__, layer1, layer2, ui, webserve, wizard
 
 # -v/-q 允许出现在任意位置：先摘出来，再交给 argparse
 _VERBOSE_FLAGS = ('-v', '--verbose')
@@ -84,6 +84,7 @@ def build_parser():
     wizard.add_parsers(sub)
     layer2.add_parsers(sub)
     layer1.add_parsers(sub)
+    webserve.add_parsers(sub)
     return ap
 
 

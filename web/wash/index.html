@@ -3,37 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>烟雨江湖 · 洗脉</title>
+    <title>烟雨江湖 · 洗髓模拟器</title>
     <meta name="description" content="烟雨江湖洗髓模拟器 - 模拟天赋洗髓概率，支持锁定、保底、统计分析">
-    <link rel="stylesheet" href="../shared/tool_page.css?v=1.4.38">
-    <link rel="stylesheet" href="../shared/automation_ui.css?v=1.4.38">
-    <link rel="stylesheet" href="./auto.css?v=1.4.38">
+    <link rel="stylesheet" href="./style.css?v=20260923newalgo1">
+    <link rel="stylesheet" href="../shared/anchor_route.css?v=20261005auto1">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../shared/theme-switch.css?v=1.4.38">
-    <link id="wuxiaThemeStylesheet" rel="stylesheet" href="../shared/wuxia-theme.css?v=1.4.38">
-    <link rel="stylesheet" href="../shared/wasm_loading.css?v=1.4.38">
-    <link rel="stylesheet" href="../shared/feature_shell.css?v=1.4.38">
-    <link rel="stylesheet" href="../shared/jianghu_companion.css?v=1.4.38">
-    <link rel="stylesheet" href="../shared/mobile.css?v=1.4.38">
-    <script src="../shared/opencc-js-cn2t.min.js?v=1.4.38"></script>
-    <script src="../shared/i18n.js?v=1.4.38"></script>
-    <script src="../shared/theme.js?v=1.4.38"></script>
-    </head>
-<body class="wuxia-simulator">
+    <script src="./app.js"></script>
+</head>
+<body>
     <div class="app-container">
-        <div class="theme-switch" role="group" aria-label="界面与语言">
-            <button type="button" data-theme-choice="bright" aria-pressed="false">明亮</button>
-            <button type="button" data-theme-choice="care" aria-pressed="false">护眼</button>
-            <span class="preference-divider" aria-hidden="true"></span>
-            <button type="button" data-language-choice="zh-CN" aria-pressed="false">简体</button>
-            <button type="button" data-language-choice="zh-TW" aria-pressed="false">繁體</button>
-        </div>
         <header class="app-header">
-            <div class="app-title-row">
-                <h1 id="simulatorPageTitle">洗脉</h1>
-                <span id="appVersion" class="app-version"></span>
-            </div>
-            <nav class="sim-nav" aria-label="收藏功能快捷入口"><a href="../index.html">首页</a></nav>
+            <h1 id="simulatorPageTitle">洗髓模拟器</h1>
+            <p class="subtitle"><span id="simulatorPageSubtitle">烟雨江湖 · 天赋洗炼</span></p>
+            <nav class="sim-nav">
+                <a href="../index.html">首页</a>
+                <span class="nav-sep">·</span>
+                <a href="../wash/index.html" class="active" aria-current="page">洗髓模拟</a>
+                <span class="nav-sep">·</span>
+                <a href="../equip/index.html">装备模拟</a>
+                <span class="nav-sep">·</span>
+                <a href="../hengshan/index.html">恒山模拟</a>
+                <span class="nav-sep">·</span>
+                <a href="../role/index.html">角色面板</a>
+                <span class="nav-sep">·</span>
+                <a href="../auto/index.html">自动模拟</a>
+            </nav>
         </header>
 
         <section class="archive-summary" aria-label="存档信息">
@@ -48,16 +42,13 @@
                 </div>
             </div>
             <div class="archive-summary-actions">
-                <a id="archiveImportButton" class="btn btn-archive-action" href="../index.html">导入数据</a>
-                <button id="btnExportTable" class="btn btn-archive-action" type="button">导出表格</button>
-                <button id="btnResetPage" class="btn btn-archive-action" type="button" data-reset-mode="current-role" aria-live="polite">重置本页</button>
+                <button id="btnResetCurrentRole" class="btn btn-archive-action" type="button" aria-live="polite">重置角色</button>
+                <button id="btnChannelSwitch" class="btn btn-archive-action" type="button" disabled
+                    title="当前使用「最新」洗脉算法（先行服新算法）。所有洗脉功能（洗髓、洗到出紫、连洗、置换、原始脉序、保底进度、背包丹）均跟随此算法。"
+                    aria-live="polite">渠道：最新</button>
             </div>
         </section>
-        <nav class="module-tool-switcher" id="tabBar" data-module-tabs role="tablist" aria-label="洗脉小模块切换">
-            <button id="washTabManual" class="module-tool-link is-active" type="button" role="tab" data-wash-tool="manual" aria-controls="simulatorConfigPanel" aria-selected="true">手动洗脉</button>
-            <button id="washTabAuto" class="module-tool-link" type="button" role="tab" data-wash-tool="auto" aria-controls="aiPredictionPanel" aria-selected="false" tabindex="-1">自动洗脉</button>
-        </nav>
-<section id="simulatorConfigPanel" class="config-panel" role="tabpanel" aria-labelledby="washTabManual">
+<section id="simulatorConfigPanel" class="config-panel">
             <input type="hidden" id="modeSelect" value="seed">
 
             <div id="saveRoleRow" class="config-row role-row" hidden>
@@ -72,6 +63,7 @@
                 <div class="config-group bag-group">
                     <span class="bag-label">背包洗髓丹</span>
                     <span id="bagPillDisplay" class="bag-value">--</span>
+                    <button type="button" id="btnSyncBagPill" class="btn-icon" title="按「洗髓丹消耗」刷新背包数（= 初始值 - 消耗；不防负）" aria-label="刷新背包洗髓丹">↻</button>
                 </div>
             </div>
 
@@ -119,6 +111,8 @@
             </div>
 
             <div id="seedControls" class="sr-only" aria-hidden="true">
+                <input type="number" id="seedInput" value="2000548318">
+                <input type="number" id="luckSeedInput" value="">
                 <input type="number" id="roleIdInput" value="10044">
                 <input type="number" id="saltInput" value="278440">
             </div>
@@ -129,41 +123,42 @@
                 <div class="section-title">
                     <span class="section-heading">当前天赋</span>
                 </div>
-                <p class="talent-tip">同类型低阶在前、紫脉在后时显示“!”与置换；置换使用专用紫脉序列，不耗丹，也不改变普通洗髓序列。</p>
+                <p class="talent-tip">同类型低阶在前、紫脉在后时显示「!」与置换；置换走欧气紫池，不耗丹、不推进洗髓种子。</p>
                 <div id="talentSlots" class="talent-slots"></div>
             </section>
 
             <section class="action-panel wash-simulator-only">
                 <div class="action-buttons">
                     <button id="btnWashOnce" class="btn btn-wash" type="button">洗髓</button>
-                    <button id="btnWash10" class="btn btn-wash-multi" type="button">连洗 ×10</button>
-                    <button id="btnWash100" class="btn btn-wash-auto" type="button">连洗 ×100</button>
+                    <button id="btnWashUntilGoldMinusN" class="btn btn-wash-gold btn-wash-until-gold-minus-n" type="button">洗到出紫前 <input id="washUntilGoldMinusNInput" type="number" min="0" max="50" step="1" value="5" class="inline-num-input" /> 次</button>
                     <button id="btnWashUntilGold" class="btn btn-wash-gold" type="button">洗到出紫</button>
                 </div>
                 <div class="action-custom-row">
                     <div class="custom-wash-group">
                         <label>指定连洗条数：</label>
-                        <input type="number" id="customWashInput" min="1" max="1000" value="500">
-                        <button id="btnWashCustom" class="btn btn-wash-custom" type="button">连洗 <span id="customWashNum">500</span> 次</button>
+                        <input type="number" id="customWashInput" min="1" max="1000" value="10">
+                        <button id="btnWashCustom" class="btn btn-wash-custom" type="button">连洗 <span id="customWashNum">10</span> 次</button>
                     </div>
                     <div class="wash-analysis-actions">
-                        <button id="btnUndoWash" class="btn btn-wash-custom" type="button" disabled title="暂无可撤回操作">撤回</button>
-                        <button id="btnOriginalSequence" class="btn btn-wash-custom" type="button">原始脉序列</button>
-                        <button id="btnOpenTalentLocator" class="btn btn-wash-custom" type="button">指定非紫脉定位</button>
+                        <!-- 2026-09-18 重新暴露入口：09-15 只是把这颗按钮从 HTML 拿掉了，
+                             JS 绑定（simulator.js）、样式（.btn-exchange-sequence）、
+                             弹窗（#exchangeSequenceModal）其实一直都在，所以补回来即可。 -->
                         <button id="btnExchangeSequenceFinder" class="btn btn-exchange-sequence" type="button">置换脉序查找</button>
-                        <button id="btnAnalyzePurple" class="btn btn-analyze-purple" type="button">紫脉脉序与置换推演</button>
+                        <button id="btnAnalyzePurple" class="btn btn-analyze-purple" type="button">当前序列的置换序列</button>
                     </div>
                 </div>
                 <div class="pity-bar">
-                    <div class="pity-label">保底累计</div>
+                    <div class="pity-label">保底进度</div>
                     <div class="pity-track">
                         <div id="pityFill" class="pity-fill" style="width: 0%"></div>
                     </div>
-                    <div id="pityText" class="pity-text">0 / 850 · 未出紫按自由槽累计，出紫归零</div>
+                    <div id="pityText" class="pity-text">0 / 850</div>
                 </div>
                 <div class="cost-info">
                     <span id="costInfo">每次消耗：洗髓丹 ×3</span>
                 </div>
+
+                
 
                 <div id="nextConflictPanel" class="next-conflict-panel">
                     <div class="next-conflict-head">
@@ -177,12 +172,12 @@
                         <button id="btnNextConflictFromCurrent" class="btn btn-wash-custom" type="button">从当前进度</button>
                     </div>
                     <div id="nextConflictResult" class="next-conflict-result">
-                        <span class="text-muted">查下一紫及其最近可锁冲突脉，可一键洗到冲突并锁定，再洗到紫脉；任意批量洗后会从当前脉序自动重算。注意：锁脉后保底紫可能偏离未锁预测（与游戏一致）</span>
+                        <span class="text-muted">查下一紫及其最近冲突脉，可一键洗到冲突并锁定，再洗到紫脉。注意：锁脉后保底紫可能偏离未锁预测（与游戏一致）</span>
                     </div>
                 </div>
             </section>
 
-            <section id="aiPredictionPanel" class="ai-prediction-panel auto-simulator-only" role="tabpanel" aria-labelledby="washTabAuto">
+            <section id="aiPredictionPanel" class="ai-prediction-panel auto-simulator-only" aria-labelledby="aiPredictionTitle">
                 <div class="section-title ai-prediction-title-row">
                     <div>
                         <span class="ai-kicker">LOCAL ROUTE OPTIMIZER</span>
@@ -190,7 +185,12 @@
                     </div>
                     <span class="ai-local-note">本地计算</span>
                 </div>
-                <p class="ai-prediction-intro">选择最终希望保留的紫脉。系统固定提升至四槽并跳过无关的连续普通洗脉；多目标路线允许暂时置换一条目标脉，取得其他目标后再重新洗回，并逐步复核候选路线。</p>
+                <p class="ai-prediction-intro">选择最终希望保留的紫脉。系统固定提升至四槽，用关键事件加权 A* 跳过连续普通洗脉；多目标路线允许暂时置换一条目标脉，取得其他目标后再重新洗回，并用同一源码状态机回放候选路线。</p>
+
+                <div class="auto-mode-tabs" role="tablist" aria-label="自动模拟类型">
+                    <button id="btnAutoWashMode" class="auto-mode-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="autoWashModePanel">洗脉路线</button>
+                    <button id="btnAutoEquipMode" class="auto-mode-tab" type="button" role="tab" aria-selected="false" aria-controls="autoEquipModePanel">装备模拟</button>
+                </div>
 
                 <div id="autoWashModePanel" class="auto-mode-panel" role="tabpanel" aria-labelledby="btnAutoWashMode">
                 <div id="autoWashSaveGate" class="auto-wash-save-gate">
@@ -211,76 +211,35 @@
                             </select>
                         </label>
                         <div class="auto-wash-pill-card">
-                            <label class="auto-wash-mode" for="autoWashVipSelect">
-                                <span>VIP</span>
-                                <select id="autoWashVipSelect">
-                                    <option value="0">无 VIP</option>
-                                    <option value="1" selected>VIP 1+</option>
-                                    <option value="2">VIP 2+</option>
-                                </select>
-                            </label>
-                            <div class="auto-wash-pill-row">
-                                <span>当前洗髓丹</span>
-                                <strong id="autoWashBagPillDisplay">--</strong>
-                            </div>
-                            <label class="auto-wash-pill-limit" for="aiMaxTotalPills">
-                                <span>模拟洗脉最大耗丹数量</span>
-                                <span class="auto-wash-pill-input">
-                                    <input type="number" id="aiMaxTotalPills" min="0" max="100000" value="3000">
-                                    <span>丹</span>
-                                </span>
-                            </label>
-                            <label class="auto-wash-pill-limit" for="aiSearchAlgorithm">
-                                <span>推演方案</span>
-                                <select id="aiSearchAlgorithm">
-                                    <option value="exact">方案一 · 完整状态搜索</option>
-                                    <option value="formation">方案二 · 欧气形成路线</option>
-                                </select>
-                            </label>
-                            <p class="auto-wash-lock-tip">方案二比较预算内的欧气形成路线；已有欧气时使用方案一。达到搜索额度会保留候选并标明未完成。</p>
+                            <span>当前洗髓丹</span>
+                            <strong id="autoWashBagPillDisplay">--</strong>
                         </div>
                         <div id="autoWashRoleSummary" class="auto-wash-role-summary">导入后必须明确选择一名人物，才能模拟洗脉路线。</div>
                     </div>
                 </div>
-                <section id="autoWashLockedTalentPanel" class="auto-wash-lock-panel" hidden aria-labelledby="autoWashLockedTalentTitle">
-                    <div class="auto-wash-lock-head">
-                        <span class="auto-step-number">02</span>
-                        <div>
-                            <strong id="autoWashLockedTalentTitle">保留当前天赋</strong>
-                            <span id="autoWashLockedTalentSummary">锁定后会作为模拟起点保留；此处不执行洗脉或置换。</span>
-                        </div>
-                    </div>
-                    <p class="auto-wash-lock-tip">可锁定存档中已经洗出的天赋。已锁紫脉会自动计入最终目标，并减少下方可再选择的目标紫脉数量。</p>
-                    <div id="autoWashLockedTalentSlots" class="talent-slots auto-wash-lock-slots"></div>
-                </section>
                 <div class="ai-target-toolbar">
-                    <label for="aiTalentSearch"><span class="auto-step-number">03</span> 筛选目标脉</label>
+                    <label for="aiTalentSearch"><span class="auto-step-number">02</span> 筛选目标脉</label>
                     <input type="search" id="aiTalentSearch" placeholder="输入紫脉名称" autocomplete="off">
-                    <button type="button" id="btnAiJinDingHun" class="ai-preset-button">金顶混</button>
                     <span id="aiTargetCount" class="ai-target-count">已选 0 / 4</span>
-                </div>
-                <div class="ai-compatible-controls">
-                    <label for="aiTargetGroup">将下方所选脉归入
-                        <select id="aiTargetGroup">
-                            <option value="-1">必选脉</option>
-                            <option value="0">兼容组一 · 任选一条</option>
-                            <option value="1">兼容组二 · 任选一条</option>
-                            <option value="2">兼容组三 · 任选一条</option>
-                            <option value="3">兼容组四 · 任选一条</option>
-                        </select>
-                    </label>
-                    <button type="button" id="btnAiCompatiblePreset" class="ai-preset-button">金顶＋两组兼容</button>
-                    <p>必选脉全部保留，每个兼容组至少保留其中一条；合计最多四条目标。改选分组后，点击紫脉可将它移入该组。</p>
-                    <p id="aiCompatibleSummary" aria-live="polite"></p>
                 </div>
                 <div id="aiTalentChoices" class="ai-talent-choices" role="group" aria-label="选择最终目标紫脉">
                     <span class="text-muted">WASM 加载后显示当前角色可用紫脉</span>
                 </div>
                 <div id="aiSelectionMessage" class="ai-selection-message" aria-live="polite"></div>
 
+                <details class="ai-search-settings wash-tree-settings">
+                    <summary>搜索范围</summary>
+                    <div class="ai-settings-grid">
+                        <label>模拟洗脉最大耗丹数量
+                            <input type="number" id="aiMaxTotalPills" min="0" max="100000" value="3000">
+                            <span>丹</span>
+                        </label>
+                    </div>
+                    <p>以最大耗丹数量为硬边界，开四槽后进行关键事件搜索。该数值只限制路线成本，不改变扫描窗口、队列容量或搜索顺序；因此提高上限不会让低于原上限的路线突然变得可见。结果属于源码回放候选，不代表全动作空间绝对最优。</p>
+                </details>
+
                 <div class="ai-search-actions">
                     <button id="btnAiPredict" class="btn btn-ai-predict" type="button">开始筛选最佳路线</button>
-                    <button id="btnAiResume" class="btn btn-reset" type="button" hidden>继续搜索</button>
                     <button id="btnAiCancel" class="btn btn-reset" type="button" hidden>取消搜索</button>
                 </div>
                 <div id="aiSearchProgress" class="ai-search-progress" hidden aria-live="polite">
@@ -288,14 +247,87 @@
                         <span id="aiProgressText">准备搜索…</span>
                         <b id="aiProgressPercent">0%</b>
                     </div>
-                    <div class="ai-progress-track" role="progressbar" aria-label="Rust 搜索安全额度使用率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="aiProgressFill" class="ai-progress-fill"></div></div>
-                    <div id="aiProgressDetail" class="ai-progress-detail">等待 Rust 搜索状态…</div>
+                    <div class="ai-progress-track"><div id="aiProgressFill" class="ai-progress-fill"></div></div>
                 </div>
                 <div id="aiPredictionResults" class="ai-prediction-results" aria-live="polite">
                     <div class="ai-result-empty">选择目标紫脉后开始预测。结果会显示路线图、逐步操作和精确洗髓丹消耗。</div>
                 </div>
                 </div>
 
+                <div id="autoEquipModePanel" class="auto-mode-panel equip-auto-panel" role="tabpanel" aria-labelledby="btnAutoEquipMode" hidden>
+                    <div class="equip-auto-snapshot-note">
+                        <strong>独立存档分支</strong>
+                        <span>每个“地点 × 图纸 × 首次材料”都从本次导入的原始打造状态开始；同一分支内才连续推进打造序列。</span>
+                    </div>
+
+                    <div class="equip-auto-section">
+                        <div class="equip-auto-section-head">
+                            <div><span>01</span><strong>选择打造地点</strong></div>
+                            <span id="autoEquipLocationCount" class="ai-target-count">已选 0</span>
+                        </div>
+                        <div id="autoEquipLocationChoices" class="equip-auto-choice-grid" role="group" aria-label="选择打造地点">
+                            <span class="text-muted">装备表加载后显示打造地点</span>
+                        </div>
+                    </div>
+
+                    <div class="equip-auto-section">
+                        <div class="equip-auto-section-head">
+                            <div><span>02</span><strong>选择图纸与附加材料</strong></div>
+                            <span id="autoEquipPaperCount" class="ai-target-count">已选 0</span>
+                        </div>
+                        <div class="ai-target-toolbar equip-auto-paper-toolbar">
+                            <label for="autoEquipPaperSearch">筛选图纸</label>
+                            <input type="search" id="autoEquipPaperSearch" placeholder="输入装备或图纸名称" autocomplete="off">
+                        </div>
+                        <div id="autoEquipPaperChoices" class="equip-auto-paper-list" role="group" aria-label="选择图纸">
+                            <span class="text-muted">先选择至少一个打造地点</span>
+                        </div>
+                        <p class="equip-auto-help">每张图纸可多选首次打造材料；每种材料会形成一条独立打造分支，未选材料则按普通打造计算。</p>
+                    </div>
+
+                    <div class="equip-auto-section">
+                        <div class="equip-auto-section-head">
+                            <div><span>03</span><strong>选择目标精炼属性</strong></div>
+                            <span id="autoEquipPropertyCount" class="ai-target-count">已选 0</span>
+                        </div>
+                        <div id="autoEquipPropertyChoices" class="equip-auto-choice-grid equip-auto-property-grid" role="group" aria-label="选择精炼属性"></div>
+                    </div>
+
+                    <details class="ai-search-settings equip-auto-settings" open>
+                        <summary>模拟次数</summary>
+                        <div class="ai-settings-grid">
+                            <label>每分支打造
+                                <input type="number" id="autoEquipCraftCount" min="1" max="5000" value="100">
+                                <span>次</span>
+                            </label>
+                            <label>每属性精炼
+                                <input type="number" id="autoEquipRefineCount" min="1" max="1000" value="200">
+                                <span>次</span>
+                            </label>
+                            <label>盲晶洗练
+                                <input type="number" id="autoEquipAttachCount" min="1" max="5000" value="50">
+                                <span>次</span>
+                            </label>
+                        </div>
+                        <p>只对紫装继续分析；精炼固定使用升炼后的 100 级装备。盲晶洗练默认按「升炼后」阶段批量预测，结果为每个候选装备自动带出最高值及所在次数，无需逐个展开手动模拟；展开候选后仍可切换升炼前/后或调整次数重算。多个目标属性各自从装备原始精炼状态独立分析，不能把不同属性方案串联执行。</p>
+                    </details>
+
+                    <div id="autoEquipSelectionMessage" class="ai-selection-message" aria-live="polite"></div>
+                    <div class="ai-search-actions">
+                        <button id="btnAutoEquipPredict" class="btn btn-ai-predict" type="button">开始装备自动模拟</button>
+                        <button id="btnAutoEquipCancel" class="btn btn-reset" type="button" hidden>取消计算</button>
+                    </div>
+                    <div id="autoEquipProgress" class="ai-search-progress" hidden aria-live="polite">
+                        <div class="ai-progress-head">
+                            <span id="autoEquipProgressText">准备计算…</span>
+                            <b id="autoEquipProgressPercent">0%</b>
+                        </div>
+                        <div class="ai-progress-track"><div id="autoEquipProgressFill" class="ai-progress-fill"></div></div>
+                    </div>
+                    <div id="autoEquipResults" class="ai-prediction-results equip-auto-results" aria-live="polite">
+                        <div class="ai-result-empty">选择地点、图纸和目标属性后开始本地计算。结果将按地点分组、按打造次数排列，并显示属性最高值和材料消耗。</div>
+                    </div>
+                </div>
             </section>
 
             <section class="stats-panel wash-simulator-only">
@@ -346,11 +378,113 @@
                 </div>
             </section>
 
+            <div class="op-recorder-row">
+                <span class="op-recorder-label">操作日志</span>
+                <button id="btnOpRecordStart" class="btn btn-wash-custom" type="button">开始记录</button>
+                <button id="btnOpRecordStop" class="btn btn-wash-custom" type="button" disabled>结束记录</button>
+                                    <button id="btnOpRecordPause" class="btn btn-wash-custom" type="button" disabled>暂停记录</button>
+                                    <button id="btnOpRecordWriteSeq" class="btn btn-wash-custom" type="button" disabled>写入置换序列</button>
+                <button id="btnOpRecordDownload" class="btn btn-wash-gold" type="button" disabled>下载记录</button>
+                <label class="op-seq-count">序列条数<input id="opRecordSeqCount" type="number" min="1" max="50" value="15" class="inline-num-input" /></label>
+                <input type="file" id="opReplayFile" accept=".txt" class="op-replay-file" title="导入下载的 TXT 日志" />
+                    <button id="btnOpReplay" class="btn btn-wash-gold" type="button">执行日志</button>
+                <label class="op-seq-count">到步骤<input id="opReplayStep" type="number" min="1" max="200" value="15" class="inline-num-input" /></label>
+                <span id="opRecordStatus" class="op-recorder-status" aria-live="polite">未开始</span>
+            </div>
+
+            <div class="op-snapshot-panel is-collapsed" id="opSnapshotPanel">
+                <span class="op-snapshot-title op-snapshot-header">进度存档（默认 3 个 · 最多 10 个 · 回档会同时回滚游戏状态与操作日志）</span>
+                <div class="op-snapshot-slot">
+                    <span class="op-snapshot-slot-label">存档1</span>
+                    <div id="opSnapshotDesc0" class="op-snapshot-desc" contenteditable="plaintext-only" data-placeholder="描述（≤100字）" data-maxlength="100"></div>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-save" data-slot="0">存档</button>
+                    <button type="button" class="btn btn-wash-gold btn-op-snapshot-restore" data-slot="0" disabled>回档</button>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-delete" data-slot="0">删除</button>
+                    <span class="op-snapshot-status" id="opSnapshotStatus0">空</span>
+                </div>
+                <div class="op-snapshot-slot">
+                    <span class="op-snapshot-slot-label">存档2</span>
+                    <div id="opSnapshotDesc1" class="op-snapshot-desc" contenteditable="plaintext-only" data-placeholder="描述（≤100字）" data-maxlength="100"></div>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-save" data-slot="1">存档</button>
+                    <button type="button" class="btn btn-wash-gold btn-op-snapshot-restore" data-slot="1" disabled>回档</button>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-delete" data-slot="1">删除</button>
+                    <span class="op-snapshot-status" id="opSnapshotStatus1">空</span>
+                </div>
+                <div class="op-snapshot-slot">
+                    <span class="op-snapshot-slot-label">存档3</span>
+                    <div id="opSnapshotDesc2" class="op-snapshot-desc" contenteditable="plaintext-only" data-placeholder="描述（≤100字）" data-maxlength="100"></div>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-save" data-slot="2">存档</button>
+                    <button type="button" class="btn btn-wash-gold btn-op-snapshot-restore" data-slot="2" disabled>回档</button>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-delete" data-slot="2">删除</button>
+                    <span class="op-snapshot-status" id="opSnapshotStatus2">空</span>
+                </div>
+                <div class="op-snapshot-slot" style="display:none">
+                    <span class="op-snapshot-slot-label">存档4</span>
+                    <div id="opSnapshotDesc3" class="op-snapshot-desc" contenteditable="plaintext-only" data-placeholder="描述（≤100字）" data-maxlength="100"></div>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-save" data-slot="3">存档</button>
+                    <button type="button" class="btn btn-wash-gold btn-op-snapshot-restore" data-slot="3" disabled>回档</button>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-delete" data-slot="3">删除</button>
+                    <span class="op-snapshot-status" id="opSnapshotStatus3">空</span>
+                </div>
+                <div class="op-snapshot-slot" style="display:none">
+                    <span class="op-snapshot-slot-label">存档5</span>
+                    <div id="opSnapshotDesc4" class="op-snapshot-desc" contenteditable="plaintext-only" data-placeholder="描述（≤100字）" data-maxlength="100"></div>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-save" data-slot="4">存档</button>
+                    <button type="button" class="btn btn-wash-gold btn-op-snapshot-restore" data-slot="4" disabled>回档</button>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-delete" data-slot="4">删除</button>
+                    <span class="op-snapshot-status" id="opSnapshotStatus4">空</span>
+                </div>
+                <div class="op-snapshot-slot" style="display:none">
+                    <span class="op-snapshot-slot-label">存档6</span>
+                    <div id="opSnapshotDesc5" class="op-snapshot-desc" contenteditable="plaintext-only" data-placeholder="描述（≤100字）" data-maxlength="100"></div>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-save" data-slot="5">存档</button>
+                    <button type="button" class="btn btn-wash-gold btn-op-snapshot-restore" data-slot="5" disabled>回档</button>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-delete" data-slot="5">删除</button>
+                    <span class="op-snapshot-status" id="opSnapshotStatus5">空</span>
+                </div>
+                <div class="op-snapshot-slot" style="display:none">
+                    <span class="op-snapshot-slot-label">存档7</span>
+                    <div id="opSnapshotDesc6" class="op-snapshot-desc" contenteditable="plaintext-only" data-placeholder="描述（≤100字）" data-maxlength="100"></div>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-save" data-slot="6">存档</button>
+                    <button type="button" class="btn btn-wash-gold btn-op-snapshot-restore" data-slot="6" disabled>回档</button>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-delete" data-slot="6">删除</button>
+                    <span class="op-snapshot-status" id="opSnapshotStatus6">空</span>
+                </div>
+                <div class="op-snapshot-slot" style="display:none">
+                    <span class="op-snapshot-slot-label">存档8</span>
+                    <div id="opSnapshotDesc7" class="op-snapshot-desc" contenteditable="plaintext-only" data-placeholder="描述（≤100字）" data-maxlength="100"></div>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-save" data-slot="7">存档</button>
+                    <button type="button" class="btn btn-wash-gold btn-op-snapshot-restore" data-slot="7" disabled>回档</button>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-delete" data-slot="7">删除</button>
+                    <span class="op-snapshot-status" id="opSnapshotStatus7">空</span>
+                </div>
+                <div class="op-snapshot-slot" style="display:none">
+                    <span class="op-snapshot-slot-label">存档9</span>
+                    <div id="opSnapshotDesc8" class="op-snapshot-desc" contenteditable="plaintext-only" data-placeholder="描述（≤100字）" data-maxlength="100"></div>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-save" data-slot="8">存档</button>
+                    <button type="button" class="btn btn-wash-gold btn-op-snapshot-restore" data-slot="8" disabled>回档</button>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-delete" data-slot="8">删除</button>
+                    <span class="op-snapshot-status" id="opSnapshotStatus8">空</span>
+                </div>
+                <div class="op-snapshot-slot" style="display:none">
+                    <span class="op-snapshot-slot-label">存档10</span>
+                    <div id="opSnapshotDesc9" class="op-snapshot-desc" contenteditable="plaintext-only" data-placeholder="描述（≤100字）" data-maxlength="100"></div>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-save" data-slot="9">存档</button>
+                    <button type="button" class="btn btn-wash-gold btn-op-snapshot-restore" data-slot="9" disabled>回档</button>
+                    <button type="button" class="btn btn-wash-custom btn-op-snapshot-delete" data-slot="9">删除</button>
+                    <span class="op-snapshot-status" id="opSnapshotStatus9">空</span>
+                </div>
+                <div class="op-snapshot-slot op-snapshot-add-row">
+                    <button type="button" id="btnOpSnapshotAdd" class="btn btn-wash-custom">＋ 添加存档</button>
+                    <span class="op-snapshot-status" id="opSnapshotAddHint">已显示 3 / 10</span>
+                </div>
+            </div>
+
             <section class="history-panel wash-simulator-only">
                 <div class="section-title history-title">
                     <span class="section-heading">洗髓记录</span>
                     <div class="section-actions">
-                        <button id="btnExportLog" class="btn-text" type="button" title="下载包含锁脉、开槽、置换和逐次洗髓结果的 JSON">下载操作记录 JSON</button>
+                        <button id="btnExportLog" class="btn-text" type="button">导出</button>
                         <button id="btnClearLog" class="btn-text" type="button">清空</button>
                     </div>
                 </div>
@@ -370,6 +504,32 @@
                     </label>
                 </div>
             </section>
+
+            <section class="pulse-panel wash-simulator-only" id="pulseRecordPanel">
+                <div class="section-title history-title">
+                    <span class="section-heading">原始脉序</span>
+                    <div class="section-actions">
+                        <label class="pulse-pills-label">丹数
+                            <input type="number" id="pulsePillsInput" class="pulse-pills-input" min="1" step="100" placeholder="默认取背包">
+                        </label>
+                        <button id="btnBuildPulseRecord" class="btn-text" type="button">原始脉序</button>
+                    </div>
+                </div>
+                <div id="pulseSummary" class="pulse-summary" hidden></div>
+                <div id="pulseEmptyHint" class="log-empty">点右侧「原始脉序」，看看这些丹能洗出哪些紫脉、每个还剩多少丹、间隔多少。</div>
+                <div id="pulseTableWrap" class="pulse-table-wrap" hidden>
+                    <table class="pulse-table">
+                        <thead>
+                            <tr>
+                                <th>丹数</th>
+                                <th>天赋</th>
+                                <th>间隔</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pulseTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
         </main>
 
         <div id="exchangeSequenceModal" class="modal-overlay wash-simulator-only" hidden>
@@ -380,59 +540,74 @@
                 </div>
                 <div class="modal-body exchange-sequence-body">
                     <section class="exchange-sequence-controls" aria-label="置换脉序参数">
-                        <label class="exchange-sequence-query-group">
+                        <label>
                             <span>查询模式</span>
                             <select id="exchangeSequenceQueryMode">
                                 <option value="normal">普通置换</option>
-                                <option value="jump">首紫跳脉</option>
+                                <option value="normal_theory">普通置换理论序列</option>
+                                <option value="owned">自带置换紫序列</option>
+                                <option value="shenmai">神脉置换</option>
                             </select>
                         </label>
-                        <label class="exchange-sequence-role-group">
+                        <label>
                             <span>角色</span>
                             <select id="exchangeSequenceRoleSelect">
                                 <option value="">请先导入存档</option>
                             </select>
                         </label>
-                        <label id="exchangeSequencePurpleGroup" class="exchange-sequence-purple-group">
+                        <label id="exchangeSequencePurpleGroup">
                             <span>置换首紫</span>
                             <select id="exchangeSequencePurpleSelect" disabled>
                                 <option value="">请先选择角色</option>
                             </select>
                         </label>
-                        <div id="exchangeSequencePadGroup" class="exchange-sequence-pad-group" hidden>
-                            <label for="exchangeSequencePadInput">紫后第 n 条脉</label>
-                            <div class="exchange-sequence-pad-field">
-                                <input id="exchangeSequencePadInput" type="number" min="0" max="200" step="1" value="0">
-                                <div class="exchange-sequence-pad-steppers" role="group" aria-label="调整紫后第 n 条脉">
-                                    <button id="btnExchangeSequencePadIncrement" class="exchange-sequence-pad-step" type="button" aria-label="紫后第 n 条脉加 1">+1</button>
-                                    <button id="btnExchangeSequencePadDecrement" class="exchange-sequence-pad-step" type="button" aria-label="紫后第 n 条脉减 1">−1</button>
-                                </div>
-                            </div>
+                        <div class="exchange-sequence-actions-row">
+                            <label id="exchangeSequencePadGroup">
+                                <span>紫后第n条置换序列</span>
+                                <input id="exchangeSequencePadInput" type="number" min="0" max="300" step="1" value="0">
+                            </label>
+                            <label>
+                                <span>生成项数</span>
+                                <input id="exchangeSequenceCountInput" type="number" min="1" max="30" step="1" value="10">
+                            </label>
+                            <button id="btnGenerateExchangeSequence" class="btn btn-wash-gold" type="button" disabled>生成置换序列</button>
+                            <button id="btnDownloadExchangeSequence" class="btn btn-wash-plain" type="button" disabled>下载全部序列（0..N）</button>
                         </div>
-                        <label class="exchange-sequence-count-group">
-                            <span>生成项数</span>
-                            <input id="exchangeSequenceCountInput" type="number" min="20" max="1000" step="20" value="20">
-                        </label>
-                        <button id="btnGenerateExchangeSequence" class="btn btn-wash-gold" type="button" disabled>生成置换序列</button>
+                        <button id="btnFilterExchangeSequence" class="btn btn-wash-plain" type="button" disabled>在线筛选</button>
                     </section>
 
                     <section id="exchangeSequenceModePanel" class="exchange-sequence-mode" aria-live="polite" hidden></section>
 
-                    <section id="exchangeSequenceJumpPanel" class="exchange-sequence-jump-panel" aria-labelledby="exchangeSequenceJumpTitle" hidden>
-                        <div class="exchange-sequence-jump-head">
-                            <div>
-                                <h3 id="exchangeSequenceJumpTitle">可用去重普通脉</h3>
-                                <span id="exchangeSequenceJumpPity">正在定位最近保底紫…</span>
-                            </div>
-                            <span id="exchangeSequenceJumpMeta">尚未分析</span>
-                        </div>
-                        <div id="exchangeSequenceJumpEmpty" class="exchange-sequence-jump-empty">切换到首紫跳脉模式后自动分析</div>
-                        <div id="exchangeSequenceJumpCandidates" class="exchange-sequence-jump-candidates" hidden></div>
+                    <section id="exchangeSequenceShenmaiPanel" class="exchange-sequence-shenmai" aria-live="polite" hidden>
+                        <label class="shenmai-pick">
+                            <span>先锁（当冲突脉）</span>
+                            <select id="exchangeSequenceShenmaiFirstSelect" disabled>
+                                <option value="">请先选择角色</option>
+                            </select>
+                        </label>
+                        <label class="shenmai-pick">
+                            <span>后锁（被置换）</span>
+                            <select id="exchangeSequenceShenmaiSecondSelect" disabled>
+                                <option value="">请先选择角色</option>
+                            </select>
+                        </label>
+                        <em>神脉（混元 / 玄阳 / 九阴）互为冲突脉，同屏两条不同神脉都能点置换。这里手动指定互冲的那一对，专治「脉序前两个紫都是神脉」这类自动判定挑不出来的情况。</em>
                     </section>
+
+                    <section id="exchangeSequenceOwnedPanel" class="exchange-sequence-owned" aria-live="polite" hidden>
+                        <label class="owned-pick">
+                            <span>自带置换紫</span>
+                            <select id="exchangeSequenceOwnedSelect" disabled>
+                                <option value="">请先选择角色</option>
+                            </select>
+                        </label>
+                        <em>直接用存档里已经锁好的那条紫脉（同类冲突脉已锁）做无限置换，不用再洗髓去找。三槽剩 1 格，四槽再锁紫脉下方最近的普通脉，之后每点一次洗髓推进 1 条原始脉。</em>
+                    </section>
+
 
                     <section class="exchange-sequence-selection" aria-live="polite">
                         <div>
-                            <span>当前序列状态</span>
+                            <span>当前种子源</span>
                             <strong id="exchangeSequenceSeedSource">—</strong>
                         </div>
                         <div>
@@ -440,207 +615,104 @@
                             <strong id="exchangeSequenceSelectedPurple">—</strong>
                         </div>
                         <div>
-                            <span id="exchangeSequenceInitialSeedLabel">置换序列状态</span>
+                            <span id="exchangeSequenceInitialSeedLabel">初始化欧气种子</span>
                             <strong id="exchangeSequenceInitialSeed">等待生成</strong>
                         </div>
                     </section>
 
                     <div id="exchangeSequenceStatus" class="exchange-sequence-status" role="status" aria-live="polite">请先导入共享存档</div>
 
+                    <div id="exchangeSequenceProgress" class="ai-search-progress" hidden aria-live="polite">
+                        <div class="ai-progress-head">
+                            <span id="exchangeSequenceProgressText">正在生成…</span>
+                            <b id="exchangeSequenceProgressPercent">0%</b>
+                        </div>
+                        <div class="ai-progress-track"><div id="exchangeSequenceProgressFill" class="ai-progress-fill"></div></div>
+                    </div>
+
                     <section class="exchange-sequence-results" aria-labelledby="exchangeSequenceResultTitle">
                         <div class="exchange-sequence-result-head">
                             <h3 id="exchangeSequenceResultTitle">置换脉序结果</h3>
+                            <span id="exchangeSequenceBasePulse" class="exchange-base-pulse" hidden></span>
                             <span id="exchangeSequenceResultMeta">尚未生成</span>
                         </div>
                         <div id="exchangeSequenceEmpty" class="exchange-sequence-empty">请先选择参数</div>
                         <ol id="exchangeSequenceGrid" class="exchange-sequence-grid" hidden></ol>
+                        <div id="exchangeSequenceTableWrap" class="exchange-sequence-table-wrap" hidden></div>
                     </section>
+
+                    <!-- 在线筛选弹窗见下方 #exchangeFilterModal（独立叠加层，避免与主弹窗挤在一起） -->
+
                 </div>
                 <div class="modal-footer exchange-sequence-footer">
-                    <p class="modal-tip">当前页面角色按当下手动模拟状态独立计算；弹窗切换其他角色时使用其共享存档快照。普通置换沿当前 Luck 状态生成；首紫跳脉只列出锁定后确实发生同 ID 去重且会改变首位保底置换序列的普通脉。所有计算均使用临时状态，不改变当前洗脉进度；测试服额外保底规则暂不支持。</p>
+                    <p class="modal-tip">该功能从共享存档的原始角色快照独立计算，不改变当前洗脉进度。输入「紫后第n条置换序列」N（点击输入框可自动 +1）只查看紫脉后第 N 条的置换序列，每条为「首紫下方的原始脉 b0 + 后续保底紫 b1..」。已固定欧气种子时，该数值不再改变初始序列；测试服额外保底规则暂不支持。</p>
                 </div>
             </div>
         </div>
 
-        <div id="talentLocatorModal" class="modal-overlay wash-simulator-only" hidden>
-            <div class="modal-content modal-large talent-locator-modal" role="dialog" aria-modal="true" aria-labelledby="talentLocatorTitle">
+        <div id="exchangeFilterModal" class="modal-overlay exchange-filter-modal-overlay" hidden>
+            <div class="modal-content exchange-filter-modal">
                 <div class="modal-header">
-                    <h2 id="talentLocatorTitle">指定非紫脉定位与锁定</h2>
-                    <button id="btnCloseTalentLocator" class="modal-close-btn" type="button" aria-label="关闭指定非紫脉定位窗口">&times;</button>
+                    <h2>序列筛选漏斗（在线筛选）</h2>
+                    <button id="btnCloseExchangeFilterModal" class="modal-close-btn" type="button" aria-label="关闭">&times;</button>
                 </div>
-                <div class="modal-body talent-locator-body">
-                    <section class="talent-locator-purple" aria-label="选择目标紫脉">
-                        <label>
-                            <span>目标紫脉</span>
-                            <select id="talentLocatorPurpleSelect">
-                                <option value="">正在读取当前脉序</option>
-                            </select>
-                        </label>
-                        <button id="btnTalentLocatorLoadMore" class="btn btn-wash-custom" type="button">扩展 3000 条脉序</button>
-                        <span id="talentLocatorPurpleMeta" class="text-muted">默认选择当前状态后的第一紫</span>
-                    </section>
-
-                    <section class="talent-locator-target" aria-labelledby="talentLocatorTargetTitle">
-                        <div class="ai-target-toolbar">
-                            <label id="talentLocatorTargetTitle" for="talentLocatorSearch">复选白／绿／蓝脉</label>
-                            <input type="search" id="talentLocatorSearch" placeholder="输入非紫脉名称" autocomplete="off">
-                            <span id="talentLocatorSelected" class="ai-target-count">尚未选择</span>
-                        </div>
-                        <div id="talentLocatorChoices" class="ai-talent-choices talent-locator-choices" role="group" aria-label="复选要定位的白绿蓝脉">
-                            <span class="text-muted">WASM 加载后显示当前状态可用的非紫脉</span>
-                        </div>
-                        <div class="talent-locator-actions">
-                            <button id="btnRunTalentLocator" class="btn btn-wash-gold" type="button" disabled>开始推演</button>
-                            <span id="talentLocatorStatus" role="status" aria-live="polite">请选择目标紫脉和至少一条非紫脉</span>
-                        </div>
-                    </section>
-
-                    <section class="talent-locator-results" aria-labelledby="talentLocatorResultsTitle">
+                <div class="modal-body">
+                    <section id="exchangeSequenceFilterPanel" class="exchange-sequence-filter" aria-labelledby="exchangeSequenceFilterTitle">
                         <div class="exchange-sequence-result-head">
-                            <h3 id="talentLocatorResultsTitle">可锁定位置</h3>
-                            <span id="talentLocatorResultMeta">尚未推演</span>
+                            <h3 id="exchangeSequenceFilterTitle">筛选条件</h3>
+                            <span id="exchangeSequenceFilterMeta">尚未筛选</span>
                         </div>
-                        <div class="purple-table-container talent-locator-table-wrap">
-                            <table class="purple-table talent-locator-table">
-                                <thead>
-                                    <tr>
-                                        <th>序号</th>
-                                        <th>指定脉</th>
-                                        <th>脉序</th>
-                                        <th>洗髓次数</th>
-                                        <th>距当前</th>
-                                        <th>操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="talentLocatorResultBody">
-                                    <tr><td colspan="6" class="loading-td">完成选择后开始推演</td></tr>
-                                </tbody>
-                            </table>
+                        <section class="exchange-filter-card is-single" aria-label="筛选条件">
+                            <header class="exchange-filter-card-head">
+                                <span class="exchange-filter-mode-group">
+                                    <button id="exchangeFilterModeInclude" class="exchange-filter-mode is-active" type="button">包含</button>
+                                    <button id="exchangeFilterModeExclude" class="exchange-filter-mode" type="button">排除</button>
+                                </span>
+                                <span class="exchange-filter-card-desc">选「包含」点天赋=紫（必须出现）· 选「排除」点天赋=红（出现即淘汰）</span>
+                                <span id="exchangeFilterCount" class="exchange-filter-count is-empty">已选 0 条（0 包含 / 0 排除）</span>
+                            </header>
+                            <div id="exchangeFilterChips" class="exchange-filter-chips"></div>
+                        </section>
+                        <div class="exchange-filter-actions">
+                            <button id="btnRunExchangeFilter" class="btn btn-wash-gold" type="button" disabled>运行筛选</button>
+                            <button id="btnClearExchangeFilter" class="btn btn-wash-plain" type="button">清空结果</button>
+                        </div>
+                        <div id="exchangeFilterResult" class="exchange-filter-result" hidden>
+                            <h4>命中结果</h4>
+                            <div id="exchangeFilterSummary" class="exchange-filter-summary"></div>
+                            <ul id="exchangeFilterHits" class="exchange-filter-hits"></ul>
                         </div>
                     </section>
-                </div>
-                <div class="modal-footer talent-locator-footer">
-                    <p class="modal-tip">只列出当前槽位或目标紫脉之前已经完成的洗髓位置；与紫脉同一洗生成的非紫脉无法提前锁定，因此不会列入。锁定后自由槽和保底状态会改变，目标紫脉只作为本次查找截止点。</p>
+                    <div id="exchangeFilterStatus" class="exchange-sequence-status" role="status" aria-live="polite"></div>
+                    <div id="exchangeFilterProgress" class="ai-search-progress" hidden aria-live="polite">
+                        <div class="ai-progress-head">
+                            <span id="exchangeFilterProgressText">正在生成…</span>
+                            <b id="exchangeFilterProgressPercent">0%</b>
+                        </div>
+                        <div class="ai-progress-track"><div id="exchangeFilterProgressFill" class="ai-progress-fill"></div></div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div id="originalSequenceModal" class="modal-overlay wash-simulator-only" hidden>
-            <section class="modal-content original-sequence-modal" role="dialog" aria-modal="true" aria-labelledby="originalSequenceTitle" aria-describedby="originalSequenceHint">
-                <div class="modal-header">
-                    <h2 id="originalSequenceTitle">原始脉序列</h2>
-                    <button id="btnCloseOriginalSequence" class="modal-close-btn" type="button" aria-label="关闭原始脉序列">&times;</button>
-                </div>
-                <div class="modal-body original-sequence-body">
-                    <p id="originalSequenceHint" class="original-sequence-hint">按当前槽位和已有锁定连续洗脉，记录新出现的紫脉后继续洗。仅预览，不改变当前进度。</p>
-                    <div id="originalSequenceOverview">
-                    <form id="originalSequenceForm" class="original-sequence-controls">
-                        <label for="originalSequencePills">模拟洗髓丹</label>
-                        <input id="originalSequencePills" type="number" min="1" max="100000" step="1" value="3000" required>
-                        <span>颗</span>
-                        <button id="btnRunOriginalSequence" class="btn btn-wash-custom" type="submit">生成脉序列</button>
-                        <button id="btnCancelOriginalSequence" class="btn btn-reset" type="button" hidden>取消</button>
-                    </form>
-                    <p id="originalSequenceState" class="original-sequence-hint"></p>
-                    <div id="originalSequenceStatus" class="original-sequence-status" role="status" aria-live="polite">输入丹药数量后生成。</div>
-                    <div id="originalSequenceResults" hidden>
-                        <div class="original-sequence-table-wrap">
-                            <table class="original-sequence-table">
-                                <thead><tr><th scope="col">洗脉次数 / 脉序</th><th scope="col">紫脉</th><th scope="col">累计耗丹</th><th scope="col">出紫间隔</th><th scope="col" class="original-derive-action">推演</th></tr></thead>
-                                <tbody id="originalSequenceRows"></tbody>
-                            </table>
-                        </div>
-                        <div id="originalSequencePagination" class="original-sequence-pagination">
-                            <button id="btnOriginalSequencePrev" class="btn btn-wash-custom" type="button">上一页</button>
-                            <span id="originalSequencePage" aria-live="polite"></span>
-                            <button id="btnOriginalSequenceNext" class="btn btn-wash-custom" type="button">下一页</button>
-                        </div>
-                    </div>
-                    </div>
-                    <section id="originalDerivationPanel" hidden>
-                        <button id="btnBackOriginalSequence" class="btn btn-wash-custom" type="button">← 返回原始脉序列</button>
-                        <h3 id="originalDerivationTitle"></h3>
-                        <form id="originalDerivationForm" class="original-sequence-controls">
-                            <label for="originalDerivationMode">推演方式</label>
-                            <select id="originalDerivationMode">
-                                <option id="originalDerivationOrdinaryOption" value="ordinary">连续置换</option>
-                                <option id="originalDerivationInfiniteOption" value="infinite">无限置换</option>
-                                <option id="originalDerivationJumpOption" value="jump">保底跳脉</option>
-                            </select>
-                            <label id="originalDerivationCountLabel" for="originalDerivationCount">分支条数</label>
-                            <input id="originalDerivationCount" type="number" min="1" max="1000" step="1" value="20" required>
-                            <label id="originalDerivationPadLabel" for="originalDerivationPad" hidden>起始垫洗次数</label>
-                            <input id="originalDerivationPad" type="number" min="0" max="10000" step="1" value="0" hidden>
-                            <button id="btnRunOriginalDerivation" class="btn btn-wash-custom" type="submit">开始推演</button>
-                            <button id="btnCancelOriginalDerivation" class="btn btn-reset" type="button" hidden>取消</button>
-                        </form>
-                        <p id="originalDerivationHint" class="original-sequence-hint"></p>
-                        <div id="originalDerivationStatus" class="original-sequence-status" role="status" aria-live="polite"></div>
-                        <div id="originalDerivationResult"></div>
-                    </section>
-                </div>
-            </section>
         </div>
 
         <div id="purpleModal" class="modal-overlay wash-simulator-only" hidden>
-            <div class="modal-content modal-split">
+            <div class="modal-content">
                 <div class="modal-header">
-                    <h2>脉序预测与多紫脉联动置换推演</h2>
+                    <h2>后续保底紫预览</h2>
                     <button id="btnClosePurpleModal" class="modal-close-btn" type="button">&times;</button>
                 </div>
-                <div class="modal-body purple-split-body">
-                    <div class="purple-pane purple-pane-seq">
-                        <div class="modal-toolbar">
-                            <div class="search-box">
-                                <input type="text" id="purpleSearchInput" placeholder="搜索紫脉或冲突脉...">
-                            </div>
-                            <div class="filter-box">
-                                <label><input type="checkbox" id="filterExchangeOnly"> 仅可置换</label>
-                                <label><input type="checkbox" id="filterPityOnly"> 仅保底</label>
-                            </div>
-                            <div class="stats-summary">
-                                扫描 <b id="currentMaxWashesDisplay" class="purple-bright">3000</b> 次洗髓
-                                <label class="route-preview-setting">显示 <input type="number" id="routePreviewCount" min="1" max="100" value="10"> 条</label>
-                                /
-                                紫 <b id="purpleCount" class="purple-bright">0</b> /
-                                可置换 <b id="exchangeableCount" class="green-bright">0</b>
-                                <button id="btnLoadMoreSequence" class="btn btn-wash-custom" type="button">+3000</button>
-                            </div>
-                        </div>
-                        <div class="purple-table-container">
-                            <table class="purple-table">
-                                <thead>
-                                    <tr>
-                                        <th>序号</th>
-                                        <th>脉序(条)</th>
-                                        <th>洗出紫脉</th>
-                                        <th>保底</th>
-                                        <th>最近前置同类冲突脉</th>
-                                        <th>操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="purpleTableBody">
-                                    <tr><td colspan="6" class="loading-td">正在分析推演脉序中...</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="modal-body purple-reader-body">
+                    <p class="modal-tip">以当前页面状态为起点（假设洗髓丹管够、继续连洗），直接显示接下来会出现的保底紫。默认 10 条，最多 30。</p>
+                    <div class="purple-reader-toolbar">
+                        <label for="purpleModalCountInput">条数</label>
+                        <input type="number" id="purpleModalCountInput" class="purple-reader-count" min="1" max="30" value="10">
                     </div>
-
-                    <div class="purple-pane purple-pane-exchange">
-                        <div id="exchangeAnalysisBlock" class="exchange-analysis-block">
-                            <div class="block-header">
-                                <h3>多紫脉联动置换</h3>
-                                <span class="block-tip">左侧选 2~3 条可置换紫脉</span>
-                            </div>
-                            <div id="exchangeBlockContent" class="block-content">
-                                <div class="block-empty">尚未选择可置换紫脉。请在左侧表格点击「选择推演」</div>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="purpleModalStatus" class="exchange-sequence-status"></div>
+                    <div id="purpleModalMeta" class="exchange-seq-meta"></div>
+                    <div id="purpleModalGrid" class="exchange-seq-grid-wrap"></div>
                 </div>
                 <div class="modal-footer">
-                    <p class="modal-tip"><b>说明</b>：脉序=累计天赋条数（非洗髓次数）。神脉均可选推演：已有其他神脉则互冲置换；尚无则可锁留作底，待他紫置换出神脉后再互冲。神脉与普通紫不同——锁定一条后刷出其他神脉，槽内<b>所有神脉都可点置换</b>（可同时 2～3 条）。一心/无非紫冲突不可走锁冲突。无 LuckTalent 时锁紫再洗会改变置换序列。<br><b>保底注意</b>：表中标「保底」的紫按<b>未锁定</b>连洗预测；中途锁脉后保底紫可能换成别的——与游戏一致。</p>
-                    <button id="btnRefreshPurpleAnalysis" class="btn btn-wash-gold" type="button">重新推算</button>
+                    <button id="btnRefreshPurpleModal" class="btn btn-wash-gold" type="button">重新推演</button>
                 </div>
             </div>
         </div>
@@ -650,24 +722,156 @@
         </footer>
     </div>
 
-    <script src="../shared/version.js?v=1.4.38"></script>
-    <script src="../shared/data.js?v=1.4.38"></script>
-    <script src="../shared/wash_role_data.js?v=1.4.38"></script>
-    <script src="../shared/equip_data.js?v=1.4.38"></script>
-    <script src="../shared/runtime_loader.js?v=1.4.38"></script>
-    <script src="../shared/algorithm_wasm_bridge.js?v=1.4.38"></script>
-    <script src="../shared/pako.min.js?v=1.4.38"></script>
-    <script src="../shared/save_decrypt.js?v=1.4.38"></script>
-    <script src="../shared/access_gate.js?v=1.4.38"></script>
-    <script src="../shared/wasm_algorithm_api.js?v=1.4.38" data-wasm-modules="wash"></script>
-    <script src="../shared/calculation_worker_client.js?v=1.4.38"></script>
-    <script src="../shared/archive_state.js?v=1.4.38"></script>
-    <script src="../shared/table_export.js?v=1.4.38"></script>
-    <script src="./simulator.js?v=1.4.38"></script>
-    <script src="../shared/feature_registry.js?v=1.4.38"></script>
-    <script src="../shared/feature_shell.js?v=1.4.38"></script>
-    <script src="../shared/site_cache.js?v=1.4.38"></script>
-    <script src="../shared/jianghu_companion.js?v=1.4.38"></script>
-    <script src="../shared/page_reset.js?v=1.4.38"></script>
+
+    <script src="../shared/data.js"></script>
+    <script src="../shared/equip_data.js"></script>
+    <!-- 旧内核（wasm-bindgen ABI）—— 与「观星-洗脉修正」一致，脉序经实测准确。
+         如需换回新内核（支持首紫跳脉 wash.firstPityJumpCandidates）：
+         注释掉下方两行，再取消下方「新内核」四行注释即可。 -->
+    <script src="../shared/wasm_data.js"></script>
+    <script src="../shared/core_glue.js"></script>
+
+    <!-- 新内核（yanyu_call ABI，支持 wash.firstPityJumpCandidates）。
+         加载顺序不可调整：b64 → boot(注入加载器) → bridge → api。 -->
+    <!-- <script src="../shared/wash_engine_b64.js"></script>
+    <script src="../shared/wash_offline_boot.js"></script>
+    <script src="../shared/algorithm_wasm_bridge.js"></script>
+    <script src="../shared/wasm_algorithm_api.js"></script> -->
+
+    <script src="../shared/international_wash.js"></script>
+    <script src="../shared/wash_source_engine.js?v=20261005before1"></script>
+    <script src="../shared/wash_source_optimizer.js"></script>
+    <script src="../shared/wash_engine_registry.js?v=20261005before1"></script>
+    <script src="../shared/equip_auto_optimizer.js"></script>
+    <script src="../shared/exchange_sequence_filter.js?v=20260926merge6"></script>
+    <script src="../shared/pako.min.js"></script>
+    <script src="../shared/sql-wasm.js"></script>
+    <script src="../shared/sql-wasm-embed.js"></script>
+    <script src="../shared/save_decrypt.js"></script>
+    <script src="../shared/archive_state.js"></script>
+    <script src="../shared/simulator.js?v=20261005before1"></script>
+    <script src="../shared/anchor_route_planner.js?v=20261006firstlock1"></script>
+    <script src="../shared/anchor_route_worker_bundle.js?v=20261006firstlock1"></script>
+    <script src="../shared/anchor_route_ui.js?v=20261006auto5"></script>
+    <script>
+    (function () {
+        function diagnose() {
+            try {
+                var res = (performance.getEntriesByType && performance.getEntriesByType('resource')) || [];
+                var hit = res.filter(function (r) { return /wash_engine_registry|wash_source_engine|simulator|international_wash/.test(r.name); });
+                console.error('[原始脉序诊断] 关键脚本资源加载情况：', hit.map(function (r) {
+                    return r.name.split('/').pop() + ' => size=' + (r.transferSize || 0) + 'B dur=' + Math.round(r.duration || 0) + 'ms';
+                }));
+            } catch (e) { console.error('[原始脉序诊断] 资源读取失败', e); }
+        }
+        if (typeof window.WashEngineRegistry === 'undefined') {
+            console.error('[原始脉序] WashEngineRegistry 未加载，正在尝试不带缓存重新加载 registry 脚本…');
+            diagnose();
+            var b = document.createElement('div');
+            b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#c0392b;color:#fff;padding:8px 12px;font-size:13px;line-height:1.5;box-shadow:0 2px 6px rgba(0,0,0,.3)';
+            b.textContent = '⚠ 最新洗脉引擎脚本未正常加载（WashEngineRegistry 缺失）。「原始脉序」的最新算法将不可用，且不会用其它算法冒充。请按 Ctrl+F5 强制刷新；若反复出现，看控制台「原始脉序诊断」';
+            document.body.appendChild(b);
+            var s = document.createElement('script');
+            s.src = '../shared/wash_engine_registry.js?t=' + Date.now();
+            s.onload = function () {
+                if (typeof window.WashEngineRegistry !== 'undefined') {
+                    try { window.WashEngineRegistry.selectForProfile(); console.warn('[原始脉序] registry 重试加载成功，已 selectForProfile'); if (b.parentNode) b.parentNode.removeChild(b); }
+                    catch (e) { console.error('[原始脉序] selectForProfile 失败', e); }
+                } else { console.error('[原始脉序] registry 脚本已加载但未定义 WashEngineRegistry'); }
+            };
+            s.onerror = function () { console.error('[原始脉序] registry 脚本重试也加载失败，请检查文件路径/是否被拦截'); };
+            document.head.appendChild(s);
+        }
+    })();
+    </script>
+!-- ===== WASH-FIRST-PURPLE-SWITCH v1 END ===== -->
+
+<!-- ===== WASH-FIRST-PURPLE-SWITCH v1 START ===== -->
+<style>
+#washFpsSwitch{margin:7px 0 2px;font-size:12.5px;color:#b8b2a6;line-height:1.7}
+#washFpsSwitch label{display:inline-flex;align-items:center;gap:7px;cursor:pointer}
+#washFpsSwitch .fps-tip{color:#8a90a6;margin-left:8px}
+#washFpsSwitch.skipped label{color:#e0a94a}
+</style>
+<script>
+/* 首脉优化 · 开关 UI：首紫为神脉且无法置换时 —— 保留 / 跳过（默认保留）
+   与 shared/simulator.js 里的首脉规则共用 localStorage 键 yyjh_first_shenmai_keep。 */
+(function () {
+    'use strict';
+    var KEY = 'yyjh_first_shenmai_keep';
+    var MARK = 'WASH-FIRST-PURPLE-SWITCH v1';
+    if (window.__WASH_FPS__ === MARK) return;
+    window.__WASH_FPS__ = MARK;
+
+    function readKeep() { try { return localStorage.getItem(KEY) !== '0'; } catch (e) { return true; } }
+    function writeKeep(v) { try { localStorage.setItem(KEY, v ? '1' : '0'); } catch (e) { /* 无存储环境忽略 */ } }
+    function firstRealLabel() {
+        var sel = document.getElementById('exchangeSequenceJumpPurpleSelect');
+        var opt = sel && sel.options && sel.options[sel.selectedIndex];
+        return opt ? String(opt.textContent || '').trim() : '';
+    }
+    function refreshTip() {
+        var tip = document.getElementById('washFpsTip');
+        if (!tip) return;
+        var keep = readKeep();
+        var label = firstRealLabel();
+        var isShenmai = label.indexOf('神脉') >= 0;
+        var skipped = label.indexOf('已跳过') >= 0;
+        tip.textContent = '当前：' + (keep ? '保留' : '跳过')
+            + (isShenmai ? '（默认锚点是神脉' + (skipped ? '，但已被跳过' : '，将优先走神脉置换') + '）' : '')
+            + ' · 首紫是一心两用始终跳过';
+    }
+    /* 神脉置换自动优先：默认锚点是「未被跳过的神脉」时，把查询模式切到含「神脉」的那一项。
+       完全按运行时的 DOM 选项文字判断，不依赖内部枚举值，避免写死。 */
+    var lastPref = '';
+    function preferShenmaiMode() {
+        var modeSel = document.getElementById('exchangeSequenceQueryMode');
+        var anchor = document.getElementById('exchangeSequenceJumpPurpleSelect');
+        if (!modeSel || !anchor) return false;
+        var opt = anchor.options[anchor.selectedIndex];
+        var label = opt ? String(opt.textContent || '') : '';
+        if (label.indexOf('神脉') < 0 || label.indexOf('已跳过') >= 0) return false;
+        var target = null;
+        Array.prototype.forEach.call(modeSel.options, function (o) {
+            if (!target && String(o.textContent || '').indexOf('神脉') >= 0) target = o;
+        });
+        if (!target) return false;
+        if (modeSel.value === target.value || lastPref === label) return false;
+        modeSel.value = target.value;
+        try { modeSel.dispatchEvent(new Event('change', { bubbles: true })); } catch (e) { }
+        lastPref = label;
+        var tip = document.getElementById('washFpsTip');
+        if (tip) tip.textContent += ' · 已自动切到「' + String(target.textContent || '').trim() + '」';
+        return true;
+    }
+    function place() {
+        var sel = document.getElementById('exchangeSequenceJumpPurpleSelect');
+        if (!sel || !sel.parentNode) return false;
+        if (!document.getElementById('washFpsSwitch')) {
+            var wrap = document.createElement('div');
+            wrap.id = 'washFpsSwitch';
+            wrap.innerHTML = '<label><input type="checkbox" id="washFpsKeep">'
+                + '首紫为神脉且无法置换（脉序里没有另一条不同名神脉）时：保留该神脉</label>'
+                + '<span class="fps-tip" id="washFpsTip"></span>';
+            sel.parentNode.insertBefore(wrap, sel.nextSibling);
+            var cb = document.getElementById('washFpsKeep');
+            cb.checked = readKeep();
+            cb.addEventListener('change', function () { writeKeep(cb.checked); refreshTip(); });
+            sel.addEventListener('change', refreshTip);
+        }
+        refreshTip();
+        return true;
+    }
+    var tries = 0;
+    var timer = setInterval(function () {
+        if (place() || ++tries > 120) {
+            if (place()) preferShenmaiMode();
+            if (tries > 120) clearInterval(timer);
+        }
+    }, 500);
+    if (document.readyState !== 'loading') place();
+})();
+</script>
+<!-- ===== WASH-FIRST-PURPLE-SWITCH v1 END ===== -->
 </body>
 </html>
