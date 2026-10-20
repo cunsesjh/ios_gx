@@ -15,6 +15,3 @@ xxtea>=6.0
 # —— .so 逆向（yyjh elf *）——
 pyelftools>=0.30
 capstone>=5.0
-
-# —— 生成 .yanyu（网页原生统一存档格式）必需 ——
-cryptography>=41

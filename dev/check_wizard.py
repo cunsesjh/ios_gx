@@ -63,14 +63,21 @@ class Stub:
         self._copy = wizard._copy_path
         self._game = wizard._ensure_game_running
         self._ws = (webserve.ensure_server, webserve.write_last_import,
-                    webserve.webbrowser)
+                    webserve._served_last_import, webserve.webbrowser)
         webserve.ensure_server = lambda: 'http://127.0.0.1:8765/'
 
-        def fake_autoload(row):
+        self.autoload_head = 'window.__latestPlainSave={};\n'
+        self.autoload_file = os.path.join(self.outdir, 'fake_last_import.js')
+        with open(self.autoload_file, 'w', encoding='utf-8') as f:
+            f.write(self.autoload_head + '/* shim */')
+
+        def fake_autoload(row, port=8080):
             self.autoloads.append(row)
-            return os.path.join(webserve.web_dir(), webserve.LAST_IMPORT_NAME)
+            return self.autoload_file
 
         webserve.write_last_import = fake_autoload
+        # 核验函数：假装服务把刚写的那份原样端出去了
+        webserve._served_last_import = lambda port: self.autoload_head + '/* shim */'
         webserve.webbrowser = types.SimpleNamespace(
             open=lambda uri: (self.opened.append(uri), True)[1])
         wizard._ensure_game_running = lambda args: True  # 自检不碰设备，默认"游戏开着"
@@ -89,7 +96,7 @@ class Stub:
         wizard._copy_path = self._copy
         wizard._ensure_game_running = self._game
         (webserve.ensure_server, webserve.write_last_import,
-         webserve.webbrowser) = self._ws
+         webserve._served_last_import, webserve.webbrowser) = self._ws
         return False
 
 
@@ -211,9 +218,8 @@ def case_use_existing():
         rc, txt = drive(['1'], args_for(out))
     check('返回 0', rc == 0, rc)
     check('调用了浏览器', len(s.opened) == 1, s.opened)
-    check('打开的是网页版自动载入页',
-          bool(s.opened) and s.opened[0]
-          == 'http://127.0.0.1:8765/' + webserve.LAST_IMPORT_NAME, s.opened)
+    check('打开的是网页版首页（自动导入走 index 里的 last-import.js）',
+          bool(s.opened) and s.opened[0] == 'http://127.0.0.1:8765/', s.opened)
     check('存档交给了自动载入', len(s.autoloads) == 1, s.autoloads)
     check('没有跑任何子命令（不重复导入）', s.runs == [], s.runs)
     check('剪贴板里是存档目录（不是文件路径）',
@@ -533,8 +539,8 @@ def case_open_site():
     out = new_outdir(seed=1)
     with Stub(out) as s:
         rc, txt = drive(['1'], args_for(out))
-    check('浏览器打开的是自动载入页',
-          s.opened == ['http://127.0.0.1:8765/' + webserve.LAST_IMPORT_NAME], s.opened)
+    check('浏览器打开的是网页版首页',
+          s.opened == ['http://127.0.0.1:8765/'], s.opened)
     check('自动载入拿到了这条存档', len(s.autoloads) == 1, s.autoloads)
     check('剪贴板里是目录而不是文件路径',
           bool(s.copied) and not s.copied[-1].endswith('.db'), s.copied)
@@ -562,14 +568,14 @@ def case_last_import():
                  encoding='utf-8') as f:
         orig = f.read()
 
-    check('开头是 .yanyu 自动导入赋值（APK 同款机制）',
-          got.startswith('window.__latestYanyuB64='), got[:60])
+    check('开头是 dat.json 明文自动导入赋值（APK 同款机制）',
+          got.startswith('window.__latestPlainSave='), got[:60])
     check('后面拼的是原版 shim（一字未改）', got.endswith(orig))
     check('键名没写错（对照站点源码逐字）',
           webserve.SAVE_SHARE_KEY == 'yyjh_s' + 'hare_save_v1',
           webserve.SAVE_SHARE_KEY)
-    check('脚本生成在缓存目录（web/ 不落痕）',
-          os.path.dirname(page) == webserve.paths.CACHE_DIR, page)
+    check('脚本生成在跨实例共享目录（web/ 不落痕）',
+          os.path.dirname(page) == webserve.runtime_dir(), page)
 
     os.remove(page)
 

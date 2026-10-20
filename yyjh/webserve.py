@@ -2,22 +2,24 @@
 """网页版（web/）本地服务 + 存档自动导入（guanxing4.0 新网页，纯静态）。
 
 web/ 里是 guanxing4.0 的网页整站。这版站点**不需要任何服务端接口**：
-存档导入只认 `.yanyu`（YANYUPL1 本地加密容器）和明文 JSON，全程离线。
+存档导入只认明文 JSON（`dat.json`）和 `.yanyu`，全程离线。
 
 自动导入走站点自带的「last-import 通道」—— home.js 的 initializeHome()
-本来就在读 `window.__latestYanyuB64` / `window.__latestPlainSave`；
-APK / PC 导出工具的做法是**在 last-import.js 前面拼一行赋值**，
-我们用「虚拟路由」原样复刻：请求 /last-import.js 时动态返回
-"赋值语句 + 原版 last-import.js"，网页源码一字不动。
+本来就在读 `window.__latestPlainSave`；APK / PC 导出工具的做法是
+**在 last-import.js 前面拼一行赋值**，我们用「虚拟路由」原样复刻：
+请求 /last-import.js 时动态返回"赋值语句 + 原版 last-import.js"，
+网页源码一字不动。首页 index.html 本来就把 last-import.js 当脚本引入，
+所以开首页 = 自动导入 + 落在首页。
 
 向导导入完存档会自动：
 
     1. 拉起本服务（后台独立进程，不需要命令行窗口）；
-    2. 把存档转成 .yanyu（统一格式）并交给 last-import 通道；
-    3. 打开浏览器 —— 进去就是「已导入」状态。
+    2. 把 dat.json 交给 last-import 通道；
+    3. 打开浏览器（首页）—— 进去就是「已导入」状态。
 
 服务默认 http://127.0.0.1:8080 （被占自动顺延到 8085），
-后台常驻、下次直接复用；不用了跑 `python run.py serve --stop`。
+后台常驻、下次直接复用；空闲 30 分钟自动退出，
+不用了也可手动跑 `python run.py serve --stop`。
 
 用法::
 
@@ -33,8 +35,10 @@ import socket
 import socketserver
 import subprocess
 import sys
+import tempfile
 import threading
 import time
+import urllib.parse
 import urllib.request
 import webbrowser
 import zlib
@@ -45,6 +49,8 @@ from .config import paths
 
 DEFAULT_PORT = 8080          # 与 web/serve.js 一致；被占时自动顺延 8081..8085
 PORT_RANGE = 6
+BG_IDLE_MIN = 30             # 后台服务空闲多久自动退出（分钟；0 = 不退）
+_LAST_HIT = 0.0              # 最后一次 HTTP 请求的时间（空闲自动退出用）
 # 判断"占着端口的是不是这个站"
 PING_PATH = '/'
 PING_MARK = 'last-import.js'
@@ -52,6 +58,30 @@ PING_MARK = 'last-import.js'
 LAST_IMPORT_NAME = 'last-import.js'
 LAST_IMPORT_FILE = 'last_import.js'
 PID_FILE = 'webserver.pid'
+
+
+def runtime_dir():
+    """自动导入脚本 / pid 文件的落盘位置：系统临时目录下的固定子目录。
+
+    **必须跨实例共享**：端口上的服务可能是另一个实例（另一个 exe 位置、
+    仓库里的开发版）起的，要是写在各自工具目录的缓存里，它读不到这边写的
+    文件，自动导入就静默失效。放全局共享目录后，谁起的服务都读得到。
+    """
+    return os.path.join(tempfile.gettempdir(), 'yyjh_web')
+
+
+def _last_import_path(port):
+    """按端口分文件：服务只认发给**自己端口**的那份，互不串台。"""
+    return os.path.join(runtime_dir(), f'{LAST_IMPORT_FILE[:-3]}_{port}.js')
+
+
+def _pid_path(port=None):
+    name = PID_FILE if port is None else f'{PID_FILE[:-4]}_{port}.pid'
+    return os.path.join(runtime_dir(), name)
+
+
+def _legacy_pid_path():
+    return os.path.join(paths.CACHE_DIR, PID_FILE)
 
 # 与 web/shared/save_decrypt.js 里的键名保持一致（dev/check_site_import.py 会逐字比对）
 SAVE_SHARE_KEY = 'yyjh_share_save_v1'
@@ -88,9 +118,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):                                     # noqa: N802
         path = self.path.split('?')[0]
         if path == '/' + LAST_IMPORT_NAME:
-            # 优先给「自动导入版」（缓存里由 write_last_import 生成）；
+            # 优先给「自动导入版」（write_last_import 刚写的那份）；
             # 没有就回落原版 —— 等于没有自动导入，页面照常可用。
-            for p in (os.path.join(paths.CACHE_DIR, LAST_IMPORT_FILE),
+            port = self.server.server_address[1]
+            for p in (_last_import_path(port),
+                      os.path.join(paths.CACHE_DIR, LAST_IMPORT_FILE),
                       os.path.join(web_dir(), LAST_IMPORT_NAME)):
                 try:
                     with open(p, 'rb') as f:
@@ -110,6 +142,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         super().do_GET()
 
     def log_message(self, fmt, *args):
+        global _LAST_HIT
+        _LAST_HIT = time.time()                       # 空闲自动退出的依据
         if os.environ.get('YYJH_SERVE_VERBOSE'):
             super().log_message(fmt, *args)
 
@@ -128,12 +162,20 @@ def make_httpd(port=DEFAULT_PORT):
                        ['关掉占用端口的程序后重试'])
 
 
-def serve_forever(port=DEFAULT_PORT, open_browser=False):
-    """前台跑服务（`yyjh serve` / 内部子进程都走这里）。"""
+def serve_forever(port=DEFAULT_PORT, open_browser=False, idle_min=0):
+    """前台跑服务（`yyjh serve` / 内部子进程都走这里）。
+
+    `idle_min` > 0 时：这么久没碰过任何页面就自己退出，不占端口不占内存。
+    """
+    global _LAST_HIT
+    _LAST_HIT = time.time()
     httpd, p = make_httpd(port)
     httpd.daemon_threads = True
     url = f'http://127.0.0.1:{p}/'
     ui.info(f'网页版服务已启动：{url}（停止：python run.py serve --stop）')
+    if idle_min:
+        threading.Thread(target=_idle_watchdog, args=(httpd, idle_min),
+                         daemon=True).start()
     if open_browser:
         threading.Timer(0.6, lambda: webbrowser.open(url)).start()
     try:
@@ -141,6 +183,18 @@ def serve_forever(port=DEFAULT_PORT, open_browser=False):
     except KeyboardInterrupt:
         ui.info('\n已停止服务。')
     return 0
+
+
+def _idle_watchdog(httpd, idle_min):
+    """空闲太久就把服务关掉 —— 免得后台进程一直占着端口和内存。"""
+    deadline = idle_min * 60.0
+    while True:
+        time.sleep(max(1.0, min(30.0, deadline / 3)))
+        if time.time() - _LAST_HIT >= deadline:
+            ui.info(f'空闲超过 {idle_min:g} 分钟，网页版服务自动退出。')
+            ui.info('  下次跑向导会自动再拉起来；手动停：python run.py serve --stop')
+            httpd.shutdown()
+            return
 
 
 # ───────────────────────── 服务启停 ─────────────────────────
@@ -158,26 +212,7 @@ def _live_ports():
     return [p for p in range(DEFAULT_PORT, DEFAULT_PORT + PORT_RANGE) if ping(p)]
 
 
-def _pid_path():
-    return os.path.join(paths.CACHE_DIR, PID_FILE)
-
-
-def stop_server():
-    """停掉**由工具启动**的后台服务。返回 True = 停掉了。"""
-    pid_file = _pid_path()
-    if not os.path.exists(pid_file):
-        return False
-    try:
-        with open(pid_file, encoding='utf-8') as f:
-            pid = int(f.read().strip())
-    except Exception:                                    # noqa: BLE001
-        pid = None
-    try:
-        os.remove(pid_file)
-    except OSError:
-        pass
-    if not pid:
-        return False
+def _kill_pid(pid):
     try:
         if os.name == 'nt':
             subprocess.run(['taskkill', '/PID', str(pid), '/F'],
@@ -189,17 +224,53 @@ def stop_server():
         return False
 
 
+def stop_server():
+    """停掉**由工具启动**的后台服务（含其它实例起的）。返回 True = 停掉了。"""
+    killed = False
+    seen = set()
+    candidates = []
+    run_dir = runtime_dir()
+    if os.path.isdir(run_dir):
+        candidates += [os.path.join(run_dir, n) for n in sorted(os.listdir(run_dir))
+                       if n.startswith(PID_FILE[:-4]) and n.endswith('.pid')]
+    candidates.append(_legacy_pid_path())
+    for pid_file in candidates:
+        try:
+            with open(pid_file, encoding='utf-8') as f:
+                pid = int(f.read().strip())
+        except Exception:                                # noqa: BLE001
+            pid = None
+        try:
+            os.remove(pid_file)
+        except OSError:
+            pass
+        if pid and pid not in seen:
+            seen.add(pid)
+            killed = _kill_pid(pid) or killed
+    return killed
+
+
 def _spawn_server(port):
     """后台独立进程起服务：冻结（exe）= 自己带 serve 子命令；开发 = python -m yyjh。"""
     if getattr(sys, 'frozen', False):
-        cmd = [sys.executable, 'serve', '--no-browser', '--port', str(port)]
+        cmd = [sys.executable, 'serve', '--no-browser', '--port', str(port),
+               '--idle-min', str(BG_IDLE_MIN)]
     else:
         cmd = [sys.executable, '-m', 'yyjh', 'serve', '--no-browser',
-               '--port', str(port)]
+               '--port', str(port), '--idle-min', str(BG_IDLE_MIN)]
     kwargs = dict(cwd=os.path.dirname(web_dir()) if getattr(sys, 'frozen', False)
                   else paths.TOOL_DIR,
                   stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
                   stderr=subprocess.DEVNULL)
+    # 关键：把 PyInstaller 的「复用父进程解压目录」变量清掉。
+    # 不清的话子服务跑在**向导自己的解压目录**里，向导一退出就被清理，
+    # 子服务的 web/ 静态文件跟着消失 —— 现象就是首页能开、点子页面 404。
+    env = {k: v for k, v in os.environ.items() if not k.startswith('_PYI_')}
+    env.pop('LD_LIBRARY_PATH', None)
+    if env.get('PATH'):
+        env['PATH'] = os.pathsep.join(
+            e for e in env['PATH'].split(os.pathsep) if '_MEI' not in e)
+    kwargs['env'] = env
     if os.name == 'nt':
         # 独立后台进程：不弹黑窗口，也不跟着向导一起退出
         kwargs['creationflags'] = (getattr(subprocess, 'CREATE_NEW_PROCESS_GROUP', 0)
@@ -208,8 +279,8 @@ def _spawn_server(port):
     else:
         kwargs['start_new_session'] = True
     proc = subprocess.Popen(cmd, **kwargs)
-    paths.ensure_dir(paths.CACHE_DIR)
-    with open(_pid_path(), 'w', encoding='utf-8') as f:
+    paths.ensure_dir(runtime_dir())
+    with open(_pid_path(port), 'w', encoding='utf-8') as f:
         f.write(str(proc.pid))
 
 
@@ -238,7 +309,7 @@ def ensure_server():
                 continue
     _spawn_server(port)
 
-    for _ in range(80):            # 最多等 8 秒（服务自己还会顺延端口）
+    for _ in range(300):           # 最多等 30 秒（冻结版首次解压 50MB 可能要十几秒）
         live = _live_ports()
         if live:
             return f'http://127.0.0.1:{live[0]}/'
@@ -255,17 +326,17 @@ def pack_save(data):
     return base64.b64encode(zlib.compress(raw, 9)).decode('ascii')
 
 
-def write_last_import(row):
-    """生成「自动导入版」last-import.js（缓存目录，经 /last-import.js 虚拟路由提供）。
+def write_last_import(row, port=DEFAULT_PORT):
+    """生成「自动导入版」last-import.js（经 /last-import.js 虚拟路由提供）。
 
     与 APK / PC 导出工具的做法一致：在原版 last-import.js **前面**拼一行赋值，
     home.js 的 initializeHome() 读到就把存档接进来。web/ 里既有文件一字不动。
 
-    首选 `window.__latestYanyuB64`（.yanyu 统一格式）；
-    打不了包（缺 cryptography 等）就退 `window.__latestPlainSave`（明文）。
+    走 `window.__latestPlainSave` 明文通道 —— 直接把 dat.json 交给网页。
+    文件写到**跨实例共享**的 runtime_dir()（按端口分文件，谁起的服务都读得到），
+    另在本实例缓存里留一份兼容副本。返回生成的文件路径。
     """
     from . import report
-    from .game import yanyu
     json_path = row.get('json')
     if not json_path or not os.path.exists(json_path):
         return None
@@ -279,36 +350,71 @@ def write_last_import(row):
         shim = ''
 
     old = row.get('meta') or {}
-    name = os.path.basename(row.get('yanyu') or 'dat.yanyu')
-    try:
-        b64 = base64.b64encode(yanyu.pack(data)).decode('ascii')
-        head = (f'window.__latestYanyuB64={json.dumps(b64)};'
-                f'window.__latestYanyuName={json.dumps(name)};\n')
-    except Exception as e:                                # noqa: BLE001
-        ui.debug(f'打 .yanyu 失败，退明文通道：{e}')
-        payload = {'data': data, 'platform': report.platform_tag(
-            old.get('runtime') or ''), 'version': '明文'}
-        head = f'window.__latestPlainSave={json.dumps(payload, ensure_ascii=False)};\n'
+    payload = {'data': data, 'platform': report.platform_tag(
+        old.get('runtime') or ''), 'version': '明文'}
+    head = f'window.__latestPlainSave={json.dumps(payload, ensure_ascii=False)};\n'
+    body = head + shim
 
-    out = os.path.join(paths.CACHE_DIR, LAST_IMPORT_FILE)
-    paths.ensure_dir(paths.CACHE_DIR)
+    out = _last_import_path(port)
+    paths.ensure_dir(runtime_dir())
     with open(out, 'w', encoding='utf-8', newline='\n') as f:
-        f.write(head + shim)
+        f.write(body)
+    # 兼容副本：给还在读旧缓存目录的老版本服务
+    try:
+        paths.ensure_dir(paths.CACHE_DIR)
+        with open(os.path.join(paths.CACHE_DIR, LAST_IMPORT_FILE), 'w',
+                  encoding='utf-8', newline='\n') as f:
+            f.write(body)
+    except OSError:
+        pass
     return out
 
 
+def _served_last_import(port):
+    """端口上的服务实际端出的 last-import.js 内容（拿不到返回 ''）。"""
+    try:
+        with urllib.request.urlopen(
+                f'http://127.0.0.1:{port}/{LAST_IMPORT_NAME}', timeout=3) as r:
+            return r.read().decode('utf-8', 'replace')
+    except Exception:                                    # noqa: BLE001
+        return ''
+
+
+def _deliver(snapshot, port):
+    """把存档交给端口上的服务并**核验**它真的会端出去。返回 True = 成功。"""
+    page = write_last_import(snapshot, port)
+    if not page:
+        return False
+    with open(page, encoding='utf-8') as f:
+        head = f.readline()
+    return _served_last_import(port).startswith(head)
+
+
 def open_site(snapshot=None):
-    """起服务（如需）→ 自动导入存档（如给了）→ 打开浏览器。"""
+    """起服务（如需）→ 自动导入存档（如给了）→ 打开浏览器首页。
+
+    打开前先核验端口上的服务真的会把这份存档端出去 ——
+    免得再出现「网页开了但没导入」的静默失败。
+    """
     base = ensure_server()
-    target = base
+    port = urllib.parse.urlsplit(base).port or DEFAULT_PORT
+    target = base                       # 首页 index.html（内嵌 last-import.js 自动导入）
+    auto = False
     if snapshot:
         try:
-            if write_last_import(snapshot):
-                target = base + LAST_IMPORT_NAME
-            else:
-                ui.debug('这条记录没有明文 JSON，开普通入口页（手动导入）')
+            auto = _deliver(snapshot, port)
+            if not auto:
+                # 端口上的服务是别的实例/旧版本起的、读不到刚写的文件：重启掉再来一次
+                ui.debug('自动导入脚本没被端出去，重启服务后再试')
+                stop_server()
+                base = ensure_server()
+                port = urllib.parse.urlsplit(base).port or DEFAULT_PORT
+                target = base
+                auto = _deliver(snapshot, port)
+            if not auto:
+                ui.warn('自动导入没生效（端口上的服务不认这份存档），请手动导入。')
         except Exception as e:                           # noqa: BLE001
-            ui.warn(f'生成自动导入脚本失败，改开普通入口页：{e}')
+            ui.warn(f'准备自动导入失败，改开普通入口页：{e}')
     ok = False
     try:
         ok = bool(webbrowser.open(target))
@@ -316,10 +422,10 @@ def open_site(snapshot=None):
         ui.debug(f'webbrowser.open 失败: {e}')
     if ok:
         ui.ok('已用默认浏览器打开网页版模拟器')
-        if target != base:
+        if auto:
             ui.info('  存档已自动载入，进去就能直接用。')
         else:
-            ui.info('  在网页里点「导入数据」，选存档目录里的 dat.yanyu。')
+            ui.info('  在网页里点「导入数据」，选存档目录里的 dat.json。')
     else:
         ui.warn('没能自动打开浏览器，请手动打开：')
         ui.info(f'  {target}')
@@ -332,6 +438,8 @@ def add_parsers(sub):
     p.add_argument('--port', type=int, default=DEFAULT_PORT,
                    help=f'监听端口（默认 {DEFAULT_PORT}）')
     p.add_argument('--no-browser', action='store_true', help='不自动打开浏览器')
+    p.add_argument('--idle-min', type=float, default=0,
+                   help='空闲这么多分钟后自动退出（默认 0 = 一直跑）')
     p.add_argument('--stop', action='store_true', help='停掉工具启动的后台服务后退出')
     p.set_defaults(func=cmd_serve)
     return p
@@ -345,7 +453,8 @@ def cmd_serve(args):
             ui.info('没有由工具启动的后台服务')
         return 0
     return serve_forever(port=getattr(args, 'port', DEFAULT_PORT),
-                         open_browser=not getattr(args, 'no_browser', False))
+                         open_browser=not getattr(args, 'no_browser', False),
+                         idle_min=getattr(args, 'idle_min', 0) or 0)
 
 
 def main(argv=None):
@@ -356,6 +465,7 @@ def main(argv=None):
         description='网页版本地服务（向导会自动拉起，这里一般只用来手动启停）')
     ap.add_argument('--port', type=int, default=DEFAULT_PORT)
     ap.add_argument('--no-browser', action='store_true')
+    ap.add_argument('--idle-min', type=float, default=0)
     ap.add_argument('--stop', action='store_true')
     args = ap.parse_args(sys.argv[1:] if argv is None else list(argv))
     return cmd_serve(args)

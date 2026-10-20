@@ -34,10 +34,13 @@ datas = tree('web', 'web',
 datas += tree('adb', 'adb')
 datas += [(os.path.join(ROOT, 'keys.json'), '.')]
 
+# favicon 不在包里就不用图标（仓库里没这个文件也能打包）
+_ICON = os.path.join(ROOT, 'web', 'favicon.ico')
+
 hiddenimports = [
     'yyjh', 'yyjh.config', 'yyjh.core', 'yyjh.game', 'yyjh.localdb',
     'yyjh.memscan', 'yyjh.capture', 'yyjh.unpack', 'yyjh.reverse',
-    'tqdm', 'xxtea', 'elftools', 'capstone', 'cryptography',
+    'tqdm', 'xxtea', 'elftools', 'capstone',
 ]
 
 a = Analysis(
@@ -60,7 +63,7 @@ exe = EXE(
     a.datas,
     [],
     name='yanyu-guanxing',
-    icon=os.path.join(ROOT, 'web', 'favicon.ico'),
+    icon=_ICON if os.path.exists(_ICON) else None,
     console=True,          # 控制台形态：向导是交互式的
     disable_windowed_traceback=False,
     upx=False,

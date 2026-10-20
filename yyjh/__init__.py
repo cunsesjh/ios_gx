@@ -7,7 +7,7 @@
   core/      基础算法：XXTEA / base64 / zlib / 长度预言机（纯函数，无 IO）
   game/      游戏结构：协议密钥推导、存档格式（初版/新版）、player 摘要
   capture/   抓包：HAR 解析与解密
-  localdb/   本地存档：dat.db / .yanyu 解密与写出
+  localdb/   本地存档：dat.db 解密与写出
   memscan/   内存：adb / maps / dump / 候选提取 / 爆破
   unpack/    解包：.whale 容器 / res_encrypt / APK / PE(exe)
   reverse/   逆向辅助：ELF 符号、反汇编、调用点扫描

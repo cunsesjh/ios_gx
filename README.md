@@ -49,13 +49,15 @@ python run.py
 
 ## 存档与网页（guanxing4.0 整合版）
 
-- **统一存档 = `dat.yanyu`**（网页原生格式，YANYUPL1 本地加密容器）：
-  har 转存档后自动多产出一份 `output/<ios区-昵称>/<时间戳>/dat.yanyu`；
-  `dat.json` 仍保留作明文备份，网页「导入数据」两种都认。
-- **自动导入**：向导导入完自动拉起本地网页服务并把存档交给网页的
-  last-import 通道（与导出工具 App 同款机制），打开即「已导入」。
+- **存档 = `dat.json`**（明文）：har 转存档后只出一份
+  `output/<ios区-昵称>/<时间戳>/dat.json`，网页「导入数据」直接认。
+- **自动导入 + 自动开首页**：向导导入完自动拉起本地网页服务，把 dat.json 交给网页的
+  last-import 通道（与导出工具 App 同款机制），浏览器打开的是**首页 index.html**，
+  进去就是「已导入」状态。
 - 网页在 `web/`（guanxing4.0 资源整站），本地服务用 Python 直接跑，
   **不需要 Node**：`python run.py serve` / `python run.py serve --stop`。
+  向导拉起的后台服务**空闲 30 分钟会自动退出**（不占端口/内存），
+  下次跑向导自动再拉起。
 
 ## 打包 Windows exe
 

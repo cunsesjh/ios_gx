@@ -4,8 +4,8 @@
   1. 静态页 /index.html 字节一致；.js 的 MIME；不缓存头
   2. /last-import.js 虚拟路由：
      · 没生成时 = 原版（shim 本体，无自动导入）
-     · write_last_import 生成后 = 「赋值语句 + 原版」（__latestYanyuB64 通道）
-     · 打不了 .yanyu 时退 __latestPlainSave 明文通道
+     · write_last_import 生成后 = 「赋值语句 + 原版」（__latestPlainSave 明文通道，
+       载荷就是 dat.json 的数据）
   3. 与 Node 版 serve.js 对照（index.html / 404 行为）
   4. ping 探测、ensure_server -> stop_server 往返
 
@@ -79,10 +79,12 @@ def main():
         check('ping 认得自己的站', webserve.ping(port) is True)
 
         # ── /last-import.js 虚拟路由 ─────────────────────────
-        try:
-            os.remove(os.path.join(webserve.paths.CACHE_DIR, webserve.LAST_IMPORT_FILE))
-        except OSError:
-            pass
+        for _p in (webserve._last_import_path(port),
+                   os.path.join(webserve.paths.CACHE_DIR, webserve.LAST_IMPORT_FILE)):
+            try:
+                os.remove(_p)
+            except OSError:
+                pass
         st, body, _h = get(base + '/' + webserve.LAST_IMPORT_NAME)
         src_shim = open(os.path.join(webserve.web_dir(), webserve.LAST_IMPORT_NAME),
                         encoding='utf-8').read()
@@ -94,29 +96,26 @@ def main():
             jp = os.path.join(tmp, 'dat.json')
             json.dump(sample, open(jp, 'w', encoding='utf-8'), ensure_ascii=False)
             row = {'json': jp, 'db': None, 'meta': {'runtime': 'android'}}
-            page = webserve.write_last_import(row)
+            page = webserve.write_last_import(row, port)
             check('write_last_import 落盘成功', bool(page) and os.path.exists(page), page)
+            check('交接文件在跨实例共享目录（别的实例起的服务也读得到）',
+                  os.path.dirname(page) == webserve.runtime_dir(), page)
+            check('_deliver 核验通过（服务真的会把这份端出去）',
+                  webserve._deliver(row, port) is True, port)
             st, body, _h = get(base + '/' + webserve.LAST_IMPORT_NAME)
             js = body.decode('utf-8', 'replace')
-            check('生成版含 .yanyu 自动导入赋值',
-                  st == 200 and 'window.__latestYanyuB64=' in js, st)
+            check('生成版含 dat.json 明文自动导入赋值',
+                  st == 200 and 'window.__latestPlainSave=' in js, st)
             check('生成版 = 赋值 + 原版 shim（APK 同款机制）',
                   js.endswith(src_shim) and 'APK-WEB-SHIM' in js)
-            check('yanyu 里的平台标识是 ios',
-                  bool(re.search(r'__latestYanyuName="[^"]*"', js)))
-
-            # 退化通道：打不了 .yanyu 时走明文
-            from yyjh.game import yanyu as ymod
-            real_pack = ymod.pack
-            ymod.pack = lambda *a, **k: (_ for _ in ()).throw(RuntimeError('no crypto'))
-            try:
-                page2 = webserve.write_last_import(row)
-            finally:
-                ymod.pack = real_pack
-            st, body, _h = get(base + '/' + webserve.LAST_IMPORT_NAME)
-            js2 = body.decode('utf-8', 'replace')
-            check('打不了 .yanyu 时退明文通道',
-                  'window.__latestPlainSave=' in js2 and page2)
+            check('不再走 .yanyu 通道', '__latestYanyuB64' not in js)
+            m = re.search(r'window\.__latestPlainSave=(.*?);\s*\n', js)
+            check('载荷里是 dat.json 的数据（逐字一致）',
+                  bool(m) and json.loads(m.group(1))['data'] == sample,
+                  (m.group(1)[:80] if m else 'no match'))
+            check('明文载荷带平台标识',
+                  bool(m) and json.loads(m.group(1)).get('platform') == 'ios',
+                  (json.loads(m.group(1)).get('platform') if m else None))
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 

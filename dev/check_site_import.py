@@ -3,23 +3,23 @@
 
 用**网站自己的代码**验证，不猜：
 
-  1. 用工具真实产出 dat.json（明文）与 dat.yanyu（统一格式）
+  1. 用工具真实产出 dat.json（唯一存档格式，不再出 dat.yanyu）
   2. 丢给 node 跑真正的 web/shared/save_decrypt.js：
-     · dat.yanyu -> decryptSaveBytes（自动导入 __latestYanyuB64 通道同款）
-     · dat.json  -> readPlainJsonBytes（网页「导入数据」明文路径）
-     · saveShareStore -> 键名与 webserve 里的一字不差
-  3. 用官方 web/tools/yanyu-pack.js --unpack 反解我方 dat.yanyu（格式权威对照）
+     · dat.json -> readPlainJsonBytes（网页「导入数据」明文路径）
+     · saveShareStore / loadShareStore -> 键名与 webserve 里的一字不差
+  3. 自动导入通道：webserve.write_last_import 生成的 `__latestPlainSave`
+     载荷与 dat.json 逐字一致（home.js 的明文分支直接吃）
 
-结论对应「存档文件类型统一」：dat.yanyu 就是网页原生格式；
-dat.json 是明文备份，网页同样认。
+结论对应「存档只出 dat.json」：明文存档就是网页原生吃的格式，
+网页「导入数据」与自动导入通道都认。
 
 跑法::
 
     python dev/check_site_import.py
 """
-import base64
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -27,8 +27,8 @@ import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from yyjh import webserve                          # noqa: E402
-from yyjh.game import yanyu                        # noqa: E402
+from yyjh import report, webserve                          # noqa: E402
+from yyjh.model import SaveResult                          # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WEB = os.path.join(ROOT, 'web')
@@ -82,23 +82,19 @@ const out = {};
 const same = (a) => !!a && JSON.stringify(a.data) === JSON.stringify(inp.sample);
 (async () => {
   try {
-    // ① .yanyu（自动导入 __latestYanyuB64 通道走的就是 decryptSaveBytes）
-    const yb = new Uint8Array(Buffer.from(inp.yanyuB64, 'base64'));
-    const r1 = await sandbox.decryptSaveBytes(yb, 'dat.yanyu', false);
-    out.yanyuImport = same(r1);
-    out.yanyuFormat = r1 && r1.format;
-
-    // ② 明文 JSON（网页「导入数据」直接选 dat.json）
+    // ① 明文 JSON（网页「导入数据」直接选 dat.json）
     const jb = new TextEncoder().encode(inp.jsonText);
-    const r2 = sandbox.readPlainJsonBytes(jb, 'dat.json');
-    out.jsonImport = same(r2);
-    out.jsonFormat = r2 && r2.format;
+    const r1 = sandbox.readPlainJsonBytes(jb, 'dat.json');
+    out.jsonImport = same(r1);
+    out.jsonFormat = r1 && r1.format;
 
-    // ③ 共享存储键名以站点实际写入为准
-    sandbox.saveShareStore(inp.sample, { platform: 'ios', importedAt: 1 });
+    // ② 自动导入通道：home.js 的明文分支 = saveShareStore(payload.data, …)
+    sandbox.saveShareStore(inp.autoData, {
+      version: '明文', platform: inp.autoPlatform || '', channel: '', format: 'plain-json',
+    });
     out.shareKeys = [...store.keys()];
-    const r3 = sandbox.loadShareStore();
-    out.shareRoundTrip = same(r3);
+    const r2 = sandbox.loadShareStore();
+    out.shareRoundTrip = same(r2);
   } catch (e) {
     out.error = String((e && e.stack) || e);
   }
@@ -111,18 +107,37 @@ def main():
     tmp = tempfile.mkdtemp(prefix='yyjh_site_')
     try:
         # ── 1. 站点部署完整性 ─────────────────────────────────
-        need = ['index.html', 'last-import.js', os.path.join('shared', 'save_decrypt.js'),
-                os.path.join('tools', 'yanyu-pack.js')]
+        need = ['index.html', 'last-import.js', os.path.join('shared', 'save_decrypt.js')]
         check('4.0 站点在 web/（关键文件齐全）',
               all(os.path.isfile(os.path.join(WEB, f)) for f in need), need)
 
-        # ── 2. 产一份工具真实输出 ─────────────────────────────
-        yb = yanyu.pack(SAMPLE)
-        check('dat.yanyu 打包成功（YANYUPL1 v1）',
-              yb[:8] == b'YANYUPL1' and yb[8] == 1, yb[:10])
-        check('yanyu.unpack 回环一致', yanyu.unpack(yb) == SAMPLE)
+        # ── 2. 工具真实产出：只出 dat.json ─────────────────────
+        res = SaveResult(kind='har', runtime='ios', server='3', version='00073460')
+        res.data = dict(SAMPLE)
+        outs = report.write_all(res, outdir=tmp)
+        check('工具产出 dat.json', 'json' in outs and os.path.exists(outs['json']),
+              outs)
+        snap = os.path.dirname(outs.get('json') or tmp)
+        check('不再产出 dat.yanyu', 'yanyu' not in outs
+              and not os.path.exists(os.path.join(snap, 'dat.yanyu')),
+              sorted(os.listdir(snap)))
+        with open(outs['json'], encoding='utf-8') as f:
+            json_text = f.read()
+        check('dat.json 与存档逐字一致', json.loads(json_text) == SAMPLE)
 
-        # ── 3. 跑真正的 save_decrypt.js ───────────────────────
+        # ── 3. 自动导入脚本：明文通道，载荷 = dat.json ─────────
+        row = {'json': outs['json'], 'db': None, 'meta': {'runtime': 'ios'}}
+        page = webserve.write_last_import(row)
+        check('write_last_import 生成成功', bool(page) and os.path.exists(page), page)
+        with open(page, encoding='utf-8') as f:
+            head = f.readline()
+        m = re.match(r'window\.__latestPlainSave=(.*);\s*$', head)
+        check('自动导入走 __latestPlainSave 明文通道', bool(m), head[:80])
+        payload = json.loads(m.group(1)) if m else {}
+        check('自动导入载荷 = dat.json（逐字一致）',
+              payload.get('data') == SAMPLE, payload.get('data'))
+
+        # ── 4. 跑真正的 save_decrypt.js ───────────────────────
         harness = os.path.join(tmp, 'harness.js')
         inp = os.path.join(tmp, 'inp.json')
         out = os.path.join(tmp, 'out.json')
@@ -130,8 +145,9 @@ def main():
             f.write(NODE_HARNESS)
         with open(inp, 'w', encoding='utf-8') as f:
             json.dump({'sample': SAMPLE,
-                       'yanyuB64': base64.b64encode(yb).decode('ascii'),
-                       'jsonText': json.dumps(SAMPLE, ensure_ascii=False)}, f)
+                       'jsonText': json_text,
+                       'autoData': payload.get('data') or {},
+                       'autoPlatform': payload.get('platform') or ''}, f)
 
         node = shutil.which('node') or shutil.which('node.exe')
         if not node:
@@ -145,35 +161,17 @@ def main():
             if r.returncode != 0 or not os.path.exists(out):
                 check('JS 验证跑通', False, (r.stderr or r.stdout)[-300:])
             else:
-                res = json.load(open(out, encoding='utf-8'))
-                check('JS 验证跑通', not res.get('error'), res.get('error'))
-                check('dat.yanyu 被站点解出（自动导入通道）',
-                      bool(res.get('yanyuImport')), res.get('yanyuImport'))
-                check('dat.json 明文被站点认（手动导入）',
-                      bool(res.get('jsonImport')), res.get('jsonImport'))
-                keys = res.get('shareKeys') or []
+                res_js = json.load(open(out, encoding='utf-8'))
+                check('JS 验证跑通', not res_js.get('error'), res_js.get('error'))
+                check('dat.json 被站点解出（导入数据）',
+                      bool(res_js.get('jsonImport')), res_js.get('jsonImport'))
+                check('自动导入载荷被站点存下并回读一致',
+                      bool(res_js.get('shareRoundTrip')), res_js.get('shareRoundTrip'))
+                keys = res_js.get('shareKeys') or []
                 check('共享存储键名与 webserve 逐字一致',
                       sorted(keys) == sorted([webserve.SAVE_SHARE_KEY,
                                               webserve.SAVE_SHARE_META_KEY]),
                       (keys, webserve.SAVE_SHARE_KEY, webserve.SAVE_SHARE_META_KEY))
-
-            # ── 4. 官方打包器权威对照（--unpack 反解我方产物）──
-            yp = os.path.join(WEB, 'tools', 'yanyu-pack.js')
-            yf = os.path.join(tmp, 'dat.yanyu')
-            jf = os.path.join(tmp, 'dat.json')
-            with open(yf, 'wb') as f:
-                f.write(yb)
-            r = subprocess.run([node, yp, '--unpack', yf, jf],
-                               capture_output=True, text=True, timeout=120)
-            ok = False
-            if r.returncode == 0 and os.path.exists(jf):
-                try:
-                    got = json.load(open(jf, encoding='utf-8'))
-                    ok = got == SAMPLE
-                except Exception:                        # noqa: BLE001
-                    ok = False
-            check('官方 yanyu-pack.js 能反解我方 dat.yanyu', ok,
-                  (r.returncode, (r.stdout or '')[-120:], (r.stderr or '')[-120:]))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 

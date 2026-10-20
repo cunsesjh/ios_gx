@@ -108,7 +108,7 @@ window.__latestPlainSave={"data": {"MainRole": {"Name": "自检", "Platform": "i
         msg.classList.remove('is-error');
         msg.textContent = hasStoredSave()
             ? '存档已导入，选择下方板块开始观星。'
-            : '点顶部「一键开始」获取存档，或直接导入 .yanyu 文件。';
+            : '点顶部「一键开始」获取存档，或直接导入存档文件 dat.json。';
     }
 
     function applyUi() {
