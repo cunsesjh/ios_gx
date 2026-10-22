@@ -1,0 +1,44 @@
+name: build-exe
+
+# 推 v* 标签自动构建 Windows exe 并挂到 Release
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write   # 创建 Release / 上传资产需要（Settings→Actions→Workflow permissions 也要允许 Read and write）
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pyinstaller -r requirements.txt
+
+      - name: 下载 adb (platform-tools)
+        shell: pwsh
+        run: |
+          Invoke-WebRequest https://dl.google.com/android/repository/platform-tools-latest-windows.zip -OutFile $env:TEMP\pt.zip
+          Expand-Archive $env:TEMP\pt.zip -DestinationPath $env:TEMP\pt -Force
+          New-Item -ItemType Directory -Force adb | Out-Null
+          Copy-Item $env:TEMP\pt\platform-tools\adb.exe adb\
+          Copy-Item $env:TEMP\pt\platform-tools\AdbWinApi.dll adb\
+          Copy-Item $env:TEMP\pt\platform-tools\AdbWinUsbApi.dll adb\
+
+      - name: PyInstaller 打包
+        run: python -m PyInstaller yyjh-guanxing.spec --noconfirm
+
+      # 关键：直接把 exe 作为 Release 资产上传，不要用 upload-artifact（那个只出 zip）
+      - name: 发布到 Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/yanyu-guanxing.exe
+          generate_release_notes: true
