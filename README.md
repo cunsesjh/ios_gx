@@ -25,6 +25,15 @@ pip install -r requirements.txt
 
 ## 使用方法
 
+### 直接用 exe（推荐，不用装 Python）
+
+到 GitHub Releases 页下载最新的 `ios观星.exe`，双击即用：
+
+- 无需安装 Python，单文件自带全部运行环境和网页版
+- 生成的存档/密钥文件统一在 `%LOCALAPPDATA%\yanyu-guanxing\`，不污染桌面
+- 首次运行若弹出蓝色的“已保护你的电脑”（SmartScreen），点“更多信息 → 仍要运行”即可（exe 未买代码签名证书，正常现象）
+- 建议放到普通文件夹（如 `D:\ios观星\`）再双击
+
 ### 快速启动
 
 ```bash
