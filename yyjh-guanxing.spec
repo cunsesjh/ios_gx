@@ -3,11 +3,11 @@
 #
 #   python -m PyInstaller yyjh-guanxing.spec --noconfirm
 #
-# 产物 dist/yanyu-guanxing.exe 自包含：
+# 产物 dist/ios观星.exe 自包含：
 #   · Python 工具全套（向导 / 解密 / 挖密钥）
 #   · web/ 网页版整站（不带 web/bin/node.exe —— 服务已用 Python 实现，不需要 Node）
 #   · adb/ platform-tools（构建时放入；运行时 find_adb() 会自动用它）
-#   · keys.json（首次运行自动释放到 exe 旁边）
+#   · keys.json（首次运行自动释放到 %LOCALAPPDATA%\yanyu-guanxing\）
 
 import os
 
@@ -62,7 +62,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='yanyu-guanxing',
+    name='ios观星',
     icon=_ICON if os.path.exists(_ICON) else None,
     console=True,          # 控制台形态：向导是交互式的
     disable_windowed_traceback=False,

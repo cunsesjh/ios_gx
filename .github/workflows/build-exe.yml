@@ -40,5 +40,5 @@ jobs:
       - name: 发布到 Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/yanyu-guanxing.exe
+          files: dist/ios观星.exe
           generate_release_notes: true

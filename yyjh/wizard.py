@@ -193,15 +193,77 @@ def _ask_path(prompt, hint):
 
 
 # ───────────────────────── 向导主体 ─────────────────────────
+def _open_out_dir():
+    """在资源管理器里打开输出目录（生成物都在里面）。"""
+    root = paths.OUT_DIR
+    try:
+        os.makedirs(root, exist_ok=True)
+        if os.name == 'nt':
+            os.startfile(root)                       # noqa: S606
+        elif sys.platform == 'darwin':
+            subprocess.Popen(['open', root])
+        else:
+            subprocess.Popen(['xdg-open', root])
+        ui.ok(f'已打开输出目录：{root}')
+    except Exception as e:                           # noqa: BLE001
+        ui.error(f'没能打开目录：{e}')
+        ui.info(f'  目录在这里：{root}')
+
+
+def _delete_saves(rows):
+    """删除已有存档：选一条 → 二次确认 → 删目录。返回后 rows 已同步。"""
+    import shutil
+    while rows:
+        shown = rows[:LIST_LIMIT]
+        lines = [describe(r) for r in shown]
+        lines.append('↩　返回（不删了）')
+        idx = ui.choose('🗑 删除存档 —— 选要删的那条（删了就找不回来了）：',
+                        lines, default=len(lines) - 1)
+        if idx >= len(shown):
+            return
+        row = shown[idx]
+        ui.warn(f'将永久删除：{describe(row)}')
+        ui.info(f'  位置：{row["dir"]}')
+        if ui.choose('确定要删除吗？', ['不删了，返回', '确定删除'], default=0) != 1:
+            continue
+        try:
+            shutil.rmtree(row['dir'])
+        except OSError as e:
+            ui.error(f'删除失败：{e}')
+            continue
+        rows.remove(row)
+        # 空掉的账号组目录顺手清掉
+        try:
+            gdir = os.path.dirname(row['dir'])
+            if os.path.isdir(gdir) and not os.listdir(gdir):
+                os.rmdir(gdir)
+        except OSError:
+            pass
+        ui.ok(f'已删除：{describe(row)}')
+
+
 def _pick_saved(rows):
     """列已导入的存档。返回选中的 row，或 None 表示"导入新存档"。"""
-    shown = rows[:LIST_LIMIT]
-    lines = [describe(r) for r in shown]
-    lines.append('＋　导入新存档')
-    idx = ui.choose('已导入的存档（默认最新的那条）：', lines, default=0)
-    if idx >= len(shown):
-        return None
-    return shown[idx]
+    while True:
+        shown = rows[:LIST_LIMIT]
+        n_use = len(shown)
+        lines = [describe(r) for r in shown]
+        lines.append('＋　导入新存档')
+        lines.append('🗑　删除现有存档')
+        lines.append('📂　打开输出目录')
+        idx = ui.choose('已导入的存档（默认最新的那条）：', lines, default=0)
+        if idx < n_use:
+            return shown[idx]
+        kind = idx - n_use
+        if kind == 0:                                # 导入新存档
+            return None
+        if kind == 1:                                # 删除现有存档
+            _delete_saves(rows)
+            if not rows:
+                return None                          # 删光了 -> 去导入新存档
+            continue
+        _open_out_dir()                              # 打开输出目录
+        continue
 
 
 def _forward_key(args):

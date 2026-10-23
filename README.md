@@ -64,5 +64,5 @@ python run.py
 - 云端构建：推送 `v*` 标签到 GitHub，Actions 自动构建并挂到 Release
   （`.github/workflows/build-exe.yml`；首次用去 Settings→Actions→Workflow
   permissions 勾 Read and write）。
-- 本地构建：Windows 上双击 `build.bat`，产物在 `dist\yanyu-guanxing.exe`
-  （单文件，内含网页整站与 adb，输出/密钥文件生成在 exe 旁边）。
+- 本地构建：Windows 上双击 `build.bat`，产物在 `dist\ios观星.exe`
+  （单文件，内含网页整站与 adb；输出/密钥文件生成在 `%LOCALAPPDATA%\yanyu-guanxing\`）。

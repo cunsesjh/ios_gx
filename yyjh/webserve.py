@@ -162,6 +162,32 @@ def make_httpd(port=DEFAULT_PORT):
                        ['关掉占用端口的程序后重试'])
 
 
+def _dress_console():
+    """把服务窗口打扮得像个人样：标题 + 一行说明（仅 Windows 有窗口）。"""
+    if os.name != 'nt':
+        return
+    try:
+        import ctypes
+        ctypes.windll.kernel32.SetConsoleTitleW('网页服务运行中 · 关闭此窗口=停止网页')
+    except Exception:                                # noqa: BLE001
+        pass
+    try:
+        if sys.stdout is None or not getattr(sys.stdout, 'fileno', lambda: -1)():
+            raise ValueError('no stdout')
+    except Exception:                                # noqa: BLE001
+        try:
+            sys.stdout = open('CONOUT$', 'w', encoding='utf-8', errors='replace')
+            sys.stderr = sys.stdout
+        except Exception:                            # noqa: BLE001
+            return
+    ui.info('')
+    ui.info('  ── 网页服务运行中 ──────────────────────────')
+    ui.info('  这个窗口别关：关闭本窗口 = 停止网页服务，')
+    ui.info('  浏览器里的页面就会打不开（拒绝连接）。')
+    ui.info('  不用了：直接关掉本窗口，或空闲 30 分钟自动退出。')
+    ui.info('  ────────────────────────────────────────────')
+
+
 def serve_forever(port=DEFAULT_PORT, open_browser=False, idle_min=0):
     """前台跑服务（`yyjh serve` / 内部子进程都走这里）。
 
@@ -169,6 +195,7 @@ def serve_forever(port=DEFAULT_PORT, open_browser=False, idle_min=0):
     """
     global _LAST_HIT
     _LAST_HIT = time.time()
+    _dress_console()
     httpd, p = make_httpd(port)
     httpd.daemon_threads = True
     url = f'http://127.0.0.1:{p}/'
@@ -260,8 +287,7 @@ def _spawn_server(port):
                '--port', str(port), '--idle-min', str(BG_IDLE_MIN)]
     kwargs = dict(cwd=os.path.dirname(web_dir()) if getattr(sys, 'frozen', False)
                   else paths.TOOL_DIR,
-                  stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
-                  stderr=subprocess.DEVNULL)
+                  stdin=subprocess.DEVNULL)
     # 关键：把 PyInstaller 的「复用父进程解压目录」变量清掉。
     # 不清的话子服务跑在**向导自己的解压目录**里，向导一退出就被清理，
     # 子服务的 web/ 静态文件跟着消失 —— 现象就是首页能开、点子页面 404。
@@ -272,9 +298,10 @@ def _spawn_server(port):
             e for e in env['PATH'].split(os.pathsep) if '_MEI' not in e)
     kwargs['env'] = env
     if os.name == 'nt':
-        # 独立后台进程：不弹黑窗口，也不跟着向导一起退出
+        # 独立后台进程：给它一个**自己的可见控制台**（带标题和说明），
+        # 不跟着向导一起退出；关掉那个窗口 = 停止网页服务
         kwargs['creationflags'] = (getattr(subprocess, 'CREATE_NEW_PROCESS_GROUP', 0)
-                                   | getattr(subprocess, 'DETACHED_PROCESS', 0))
+                                   | getattr(subprocess, 'CREATE_NEW_CONSOLE', 0))
         kwargs['close_fds'] = True
     else:
         kwargs['start_new_session'] = True

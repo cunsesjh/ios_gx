@@ -768,7 +768,7 @@
             console.error('[原始脉序] WashEngineRegistry 未加载，正在尝试不带缓存重新加载 registry 脚本…');
             diagnose();
             var b = document.createElement('div');
-            b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#c0392b;color:#fff;padding:8px 12px;font-size:13px;line-height:1.5;box-shadow:0 2px 6px rgba(0,0,0,.3)';
+            b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#c0392b;color:#fff;padding:8px 12px;font-size:13px;line-height:1.5;box-shadow:0 2px 6px rgba(38,82,152,.15)';
             b.textContent = '⚠ 最新洗脉引擎脚本未正常加载（WashEngineRegistry 缺失）。「原始脉序」的最新算法将不可用，且不会用其它算法冒充。请按 Ctrl+F5 强制刷新；若反复出现，看控制台「原始脉序诊断」';
             document.body.appendChild(b);
             var s = document.createElement('script');
@@ -788,9 +788,9 @@
 
 <!-- ===== WASH-FIRST-PURPLE-SWITCH v1 START ===== -->
 <style>
-#washFpsSwitch{margin:7px 0 2px;font-size:12.5px;color:#b8b2a6;line-height:1.7}
+#washFpsSwitch{margin:7px 0 2px;font-size:12.5px;color:#5b6c86;line-height:1.7}
 #washFpsSwitch label{display:inline-flex;align-items:center;gap:7px;cursor:pointer}
-#washFpsSwitch .fps-tip{color:#8a90a6;margin-left:8px}
+#washFpsSwitch .fps-tip{color:#8194ad;margin-left:8px}
 #washFpsSwitch.skipped label{color:#e0a94a}
 </style>
 <script>

@@ -31,5 +31,5 @@ if errorlevel 1 (
 )
 
 echo.
-echo 构建完成：dist\yanyu-guanxing.exe
+echo 构建完成：dist\ios观星.exe
 pause

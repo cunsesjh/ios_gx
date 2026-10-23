@@ -13,17 +13,23 @@ import sys
 # tool_1.1/yyjh/config/paths.py
 _THIS = os.path.abspath(__file__)
 YYJH_PKG = os.path.dirname(os.path.dirname(_THIS))      # .../tool_1.1/yyjh
-if getattr(sys, 'frozen', False):
-    # exe 打包：网页资源在包内（webserve 走 sys._MEIPASS 找 web/），
-    # 但 output/keys.json 要落在 **exe 旁边**（可写、跨次运行不丢）
+FROZEN = getattr(sys, 'frozen', False)
+if FROZEN:
+    # exe 打包：网页资源在包内（webserve 走 sys._MEIPASS 找 web/）。
+    # 生成物（keys.json / output/）统一放 %LOCALAPPDATA%\yanyu-guanxing\，
+    # exe 所在目录（桌面等）保持干净 —— 2026-10 起的新约定。
     TOOL_DIR = os.path.dirname(os.path.abspath(sys.executable))
+    USER_DIR = os.environ.get('YYJH_USER_DIR') or os.path.join(
+        os.environ.get('LOCALAPPDATA') or os.path.expanduser('~'),
+        'yanyu-guanxing')
 else:
     TOOL_DIR = os.path.dirname(YYJH_PKG)                # .../tool_1.1
+    USER_DIR = TOOL_DIR                                 # 开发模式照旧放工具目录
 WORKSPACE = os.environ.get('YYJH_WORKSPACE') or (
-    TOOL_DIR if getattr(sys, 'frozen', False) else os.path.dirname(TOOL_DIR))
+    USER_DIR if FROZEN else os.path.dirname(TOOL_DIR))
 
 DATA_DIR = os.path.join(WORKSPACE, 'data')
-OUT_DIR = os.path.join(TOOL_DIR, 'output')     # 所有生成物都落在这里
+OUT_DIR = os.path.join(USER_DIR, 'output')     # 所有生成物都落在这里
 # 中间产物（内存候选缓存之类）不乱丢，单独放
 CACHE_DIR = os.path.join(OUT_DIR, '_cache')
 DOCS_DIR = os.path.join(WORKSPACE, 'docs')
@@ -34,20 +40,53 @@ DOCS_DIR = os.path.join(WORKSPACE, 'docs')
 #   keys.json       —— 内层密钥表。**可以分享/提交/从别人那拉一份覆盖**，换机器照样用。
 #   keys.local.json —— 本机信息（adb 路径/设备/包名）+ 外层密钥（跟账号绑），
 #                      属于"不该给别人"的东西，已加进 .gitignore。
-KEYS_FILE = os.path.join(TOOL_DIR, 'keys.json')
-if getattr(sys, 'frozen', False) and not os.path.exists(KEYS_FILE):
-    # 首次运行：把打包内置的 keys.json 释放到 exe 旁边（之后可自行更新/分享）
+KEYS_FILE = os.path.join(USER_DIR, 'keys.json')
+
+
+def _migrate_legacy_files():
+    """旧版把 keys*.json / output/ 放在 exe 旁边 —— 首次运行搬进 USER_DIR。"""
+    if not FROZEN or os.path.abspath(USER_DIR) == os.path.abspath(TOOL_DIR):
+        return
+    try:
+        os.makedirs(USER_DIR, exist_ok=True)
+    except OSError:
+        return
+    import shutil
+    for name in ('keys.json', 'keys.local.json', 'keys.user.json'):
+        src = os.path.join(TOOL_DIR, name)
+        dst = os.path.join(USER_DIR, name)
+        if os.path.exists(src) and not os.path.exists(dst):
+            try:
+                shutil.move(src, dst)
+            except OSError:
+                try:
+                    shutil.copy2(src, dst)
+                except OSError:
+                    pass
+    src_out = os.path.join(TOOL_DIR, 'output')
+    dst_out = os.path.join(USER_DIR, 'output')
+    if os.path.isdir(src_out) and not os.path.isdir(dst_out):
+        try:
+            shutil.move(src_out, dst_out)
+        except OSError:
+            pass
+
+
+_migrate_legacy_files()
+if FROZEN and not os.path.exists(KEYS_FILE):
+    # 首次运行：把打包内置的 keys.json 释放到用户目录（之后可自行更新/分享）
     import shutil
     _bundled_keys = os.path.join(getattr(sys, '_MEIPASS', ''), 'keys.json')
     if os.path.exists(_bundled_keys):
         try:
+            os.makedirs(USER_DIR, exist_ok=True)
             shutil.copy2(_bundled_keys, KEYS_FILE)
         except OSError:
             pass
-LOCAL_FILE = os.path.join(TOOL_DIR, 'keys.local.json')
+LOCAL_FILE = os.path.join(USER_DIR, 'keys.local.json')
 USER_KEYS = KEYS_FILE                 # 兼容旧名字
 # 早期把两样东西混在一个文件里，第一次运行会自动拆开（原文件改名保留）
-LEGACY_KEYS = os.path.join(TOOL_DIR, 'keys.user.json')
+LEGACY_KEYS = os.path.join(USER_DIR, 'keys.user.json')
 
 # 设备相关：这里是**可选的显式覆盖**，真正的自动发现在 memscan.adb.find_adb()
 # （会依次看 --adb / YYJH_ADB / keys.local.json / PATH / 常见安装位置 / 模拟器自带）

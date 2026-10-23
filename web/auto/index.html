@@ -452,7 +452,7 @@
             console.error('[原始脉序] WashEngineRegistry 未加载，正在尝试不带缓存重新加载 registry 脚本…');
             diagnose();
             var b = document.createElement('div');
-            b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#c0392b;color:#fff;padding:8px 12px;font-size:13px;line-height:1.5;box-shadow:0 2px 6px rgba(0,0,0,.3)';
+            b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#c0392b;color:#fff;padding:8px 12px;font-size:13px;line-height:1.5;box-shadow:0 2px 6px rgba(38,82,152,.15)';
             b.textContent = '⚠ 先行服洗脉引擎脚本未正常加载（WashEngineRegistry 缺失）。「原始脉序」的先行服算法将不可用，且不会用正式服冒充。请按 Ctrl+F5 强制刷新；若反复出现，看控制台「原始脉序诊断」';
             document.body.appendChild(b);
             var s = document.createElement('script');
