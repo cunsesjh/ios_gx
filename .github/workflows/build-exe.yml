@@ -42,3 +42,29 @@ jobs:
         with:
           files: dist/ios观星.exe
           generate_release_notes: true
+
+      # 同步一份到 Gitee 的同名 Release（镜像）
+      - name: 同步 exe 到 Gitee Release
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+        run: |
+          if (-not $env:GITEE_TOKEN) { Write-Host '未配置 secrets.GITEE_TOKEN，跳过 Gitee 同步'; exit 0 }
+          $tag = "${{ github.ref_name }}"
+          $repo = "cunses/yanyu_ios_guanxing"
+          $h = @{ Authorization = "token $env:GITEE_TOKEN" }
+          $rels = Invoke-RestMethod -Headers $h -Uri "https://gitee.com/api/v5/repos/$repo/releases?per_page=20"
+          $mine = $rels | Where-Object { $_.tag_name -eq $tag } | Select-Object -First 1
+          if (-not $mine) {
+            $b = @{ tag_name = $tag; name = $tag; target_commitish = 'main'
+                    body = "构建产物见附件 ios观星.exe（与 GitHub Release 同一份）"
+                    prerelease = 'false'; draft = 'false' }
+            $mine = Invoke-RestMethod -Method Post -Headers $h `
+              -Uri "https://gitee.com/api/v5/repos/$repo/releases" -Body $b
+          }
+          $f = Get-Item 'dist/ios观星.exe'
+          Invoke-RestMethod -Method Post -Headers $h `
+            -Uri "https://gitee.com/api/v5/repos/$repo/releases/$($mine.id)/attach_files" `
+            -Form @{ access_token = $env:GITEE_TOKEN; file = $f }
+          Write-Host "Gitee Release $($mine.tag_name) 已同步 $($f.Name)"
